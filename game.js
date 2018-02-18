@@ -14,6 +14,29 @@ var victims =
   "Overpass": 0
 }
 
+function getOnePrey(area)
+{
+  var potential = ["Person", "Car", "Bus", "House", "Train", "Parking Garage"];
+
+  var potAreas = []
+
+  potential.forEach(function (x) {
+    potAreas.push([x,areas[x]]);
+  });
+
+  potAreas = potAreas.sort(function (x,y) {
+    return x[1] < y[1];
+  });
+
+  for (var i=0; i<potAreas.length; i++) {
+    x = potAreas[i];
+    if (x[1] < area) {
+      return new things[x[0]](1);
+    }
+  };
+
+  return new Person(1);
+}
 function getPrey(region, area)
 {
   switch(region)
@@ -50,19 +73,17 @@ function feed()
   var log = document.getElementById("log");
   var line = document.createElement('div');
 
-  var prey = getPrey("suburb", 2*scale*scale);
+  var prey = getPrey("suburb", 0.5*scale*scale);
   updateVictims(prey);
 
   line.innerHTML = prey.eat();
   log.appendChild(line);
 
-  var preyMass = prey.sum_property("mass") * 3;
+  var preyMass = prey.sum_property("mass");
 
   scale = scaleAddMass(scale, baseMass, preyMass);
 
   update();
-
-  setTimeout(feed, 2000);
 }
 
 function stomp()
@@ -70,7 +91,7 @@ function stomp()
   var log = document.getElementById("log");
   var line = document.createElement('div');
 
-  var prey = getPrey("suburb", 2*scale*scale);
+  var prey = getPrey("suburb", 1.5*scale*scale);
   updateVictims(prey);
 
   line.innerHTML = prey.stomp();
@@ -81,8 +102,6 @@ function stomp()
   scale = scaleAddMass(scale, baseMass, preyMass);
 
   update();
-
-  setTimeout(stomp, 1250);
 }
 
 function anal_vore()
@@ -90,21 +109,17 @@ function anal_vore()
   var log = document.getElementById("log");
   var line = document.createElement('div');
 
-  var prey = getPrey("suburb", 4*scale*scale);
-  if (prey.name == "Person" && prey.count == 1 && scale*scale > 4)
-    prey = new Car(1);
+  var prey = getOnePrey(scale*scale*2)
   updateVictims(prey);
 
   line.innerHTML = prey.anal_vore();
   log.appendChild(line);
 
-  var preyMass = prey.sum_property("mass") * 5;
+  var preyMass = prey.sum_property("mass");
 
   scale = scaleAddMass(scale, baseMass, preyMass);
 
   update();
-
-  setTimeout(anal_vore, 4500);
 }
 
 function update()
@@ -126,10 +141,24 @@ function update()
   }
 }
 
+function pick_move()
+{
+  var choice = Math.random();
+
+  if (choice < 0.2) {
+    anal_vore();
+    setTimeout(pick_move, 4000);
+  } else if (choice < 0.6) {
+    stomp();
+    setTimeout(pick_move, 1500);
+  } else {
+    feed();
+    setTimeout(pick_move, 2000);
+  }
+}
+
 window.addEventListener('load', function(event) {
-  setTimeout(feed, 2000);
-  setTimeout(stomp, 1250);
-  setTimeout(anal_vore, 4500);
+  setTimeout(pick_move, 2000);
 
   update();
 });
