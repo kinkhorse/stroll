@@ -237,7 +237,7 @@ function doDigest(containerName)
   for (var key in victims[containerName]) {
     if (victims[containerName].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
       victims["digested"][key] += digested[key];
-      victims["stomach"][key] -= digested[key];
+      victims[containerName][key] -= digested[key];
     }
   }
 
