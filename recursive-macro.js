@@ -73,6 +73,7 @@ var masses =
   "Person": 80,
   "Car": 1000,
   "Bus": 5000,
+  "Tram": 10000,
   "Motorcycle": 200,
   "House": 10000,
   "Train": 50000,
@@ -420,7 +421,7 @@ function Bus(count = 1) {
 }
 
 function Tram(count = 1) {
-  this.name = "Bus";
+  this.name = "Tram";
 
   copy_defaults(this,new DefaultEntity());
   this.count = count;
