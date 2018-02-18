@@ -1,3 +1,28 @@
+
+var areas =
+{
+  "Person": 1,
+  "Car": 4,
+  "Bus": 12,
+  "Motorcycle": 2,
+  "House": 1000,
+  "Train": 10000,
+  "Parking Garage": 20000,
+  "Overpass": 10000
+};
+
+var masses =
+{
+  "Person": 80,
+  "Car": 1000,
+  "Bus": 5000,
+  "Motorcycle": 200,
+  "House": 10000,
+  "Train": 50000,
+  "Parking Garage": 100000,
+  "Overpass": 100000
+};
+
 // describes everything in the container
 
 function describe_all(contents) {
@@ -88,11 +113,11 @@ function defaultAnalVore(thing) {
 }
 
 function defaultArea(thing) {
-  return 1;
+  return areas[thing.name];
 }
 
 function defaultMass(thing) {
-  return 80;
+  return masses[thing.name];
 }
 
 
@@ -140,6 +165,7 @@ function DefaultEntity() {
   this.kick = defaultKick;
   this.anal_vore = defaultAnalVore;
   this.sum = defaultSum;
+  this.area = defaultArea;
   this.mass = defaultMass;
   this.sum_property = defaultSumProperty;
   return this;
@@ -156,9 +182,10 @@ function copy_defaults(self,proto) {
 }
 
 function Person(count = 1) {
+  this.name = "Person";
+
   copy_defaults(this,new DefaultEntity());
 
-  this.name = "Person";
   this.count = count;
   this.contents = {};
 
@@ -186,13 +213,14 @@ function Person(count = 1) {
 }
 
 function EmptyCar(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Car";
+
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 4;
-  this.mass = 1000;
+
+
 
   this.describeOne = function() {
     color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"]);
@@ -215,13 +243,14 @@ function EmptyCar(count = 1) {
 }
 
 function Car(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Car";
+
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 4;
-  this.mass = 1000;
+
+
 
   var amount = distribution(2,5,count);
   this.contents.person = new Person(amount);
@@ -247,13 +276,14 @@ function Car(count = 1) {
 }
 
 function Bus(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Bus";
+
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 12;
-  this.mass = 3000;
+
+
 
   var amount = distribution(10,35,count);
   this.contents.person = new Person(amount);
@@ -278,39 +308,40 @@ function Bus(count = 1) {
 }
 
 function Motorcycle(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Motorcycle";
+
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 2;
-  this.mass = 200;
+
+
 
   var amount = distribution(1,2,count);
   this.contents.person = new Person(amount);
 }
 
 function Train(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Train";
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 200;
-  this.mass = 10000;
+
+
 
   var amount = distribution(20,60,count);
   this.contents.person = new Person(amount);
 }
 
 function House(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "House";
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 400;
-  this.mass = 20000;
+
+
 
   var amount = distribution(0,8,count);
   this.contents.person = new Person(amount);
@@ -338,13 +369,13 @@ function House(count = 1) {
 }
 
 function ParkingGarage(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Parking Garage";
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 20000;
-  this.mass = 2000000;
+
+
 
   var amount = distribution(10,200,count);
   this.contents.person = new Person(amount);
@@ -371,13 +402,13 @@ function ParkingGarage(count = 1) {
 }
 
 function Overpass(count = 1) {
-  copy_defaults(this,new DefaultEntity());
   this.name = "Overpass";
+  copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
 
-  this.area = 20000;
-  this.mass = 1000000;
+
+
 
   var amount = distribution(0,20,count);
   this.contents.person = new Person(amount);
