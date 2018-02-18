@@ -10,6 +10,7 @@ var things =
   "Motorcycle": Motorcycle,
   "House": House,
   "Train": Train,
+  "Train Car": TrainCar,
   "Parking Garage": ParkingGarage,
   "Overpass": Overpass,
 };
@@ -23,7 +24,8 @@ var areas =
   "Tram": 20,
   "Motorcycle": 2,
   "House": 1000,
-  "Train": 10000,
+  "Train": 500,
+  "TrainCar": 500,
   "Parking Garage": 20000,
   "Overpass": 10000,
 };
@@ -76,7 +78,8 @@ var masses =
   "Tram": 10000,
   "Motorcycle": 200,
   "House": 10000,
-  "Train": 50000,
+  "Train": 5000,
+  "Train Car": 5000,
   "Parking Garage": 100000,
   "Overpass": 100000,
 };
@@ -476,11 +479,11 @@ function Train(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(50,250,count);
+  var amount = distribution(1,4,count);
   this.contents.person = new Person(amount);
 
-  amount = distribution(10,50,count);
-  this.contents.emptycar = new EmptyCar(amount);
+  amount = distribution(1,10,count);
+  this.contents.traincar = new TrainCar(amount);
 
 
   this.describeOne = function(verbose=true) {
@@ -496,12 +499,48 @@ function Train(count = 1) {
       for (var i = 0; i < this.count; i++) {
         list.push(this.describeOne(this.count < 2));
       }
+      return merge_things(list) + " with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
+    } else {
+      return this.count + " trains with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
+    }
+  }
+
+  this.anal_vore = function() {
+    var cars = (this.contents.traincar.count == 1 ? this.contents.traincar.describe() + " follows it inside" : this.contents.traincar.describe() + " are pulled slowly inside");
+    return "You snatch up " + this.describeOne() + " and stuff it into your pucker, moaning as " + cars;
+  }
+}
+
+function TrainCar(count = 1) {
+  this.name = "Train Car";
+  copy_defaults(this,new DefaultEntity());
+
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(10,40,count);
+  this.contents.person = new Person(amount);
+
+  this.describeOne = function(verbose=true) {
+    adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
+    color = random_desc(["black","tan","gray"], (verbose ? 1 : 0));
+    type = random_desc(["train car","passenger train car","freight train car"]);
+    return "a " + merge_desc([adjective,color,type]);
+  }
+
+  this.describe = function() {
+    if (this.count <= 3) {
+      list = [];
+      for (var i = 0; i < this.count; i++) {
+        list.push(this.describeOne(this.count < 2));
+      }
       return merge_things(list) + " with " + describe_all(this.contents) + " inside";
     } else {
-      return this.count + " trains with " + describe_all(this.contents) + " inside";
+      return this.count + " train cars with " + describe_all(this.contents) + " inside";
     }
   }
 }
+
 function House(count = 1) {
   this.name = "House";
   copy_defaults(this,new DefaultEntity());

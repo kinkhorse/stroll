@@ -23,6 +23,7 @@ function initVictims()
     "Motorcycle": 0,
     "House": 0,
     "Train": 0,
+    "Train Car": 0,
     "Parking Garage": 0,
     "Overpass": 0,
   };
