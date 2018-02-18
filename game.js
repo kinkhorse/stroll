@@ -4,8 +4,8 @@ var scale = 1;
 
 var strolling = false;
 
-var stomachDigesting = 0;
-var bowelsDigesting = 0;
+var maxStomachDigest = 10;
+var maxBowelsDigest = 10;
 
 victims = {};
 
@@ -102,10 +102,8 @@ function feed()
 
   stomach.push(prey);
 
-  if (stomachDigesting == 0)
+  if (stomach.length == 1)
     setTimeout(function() { doDigest("stomach"); }, 15000);
-
-  ++stomachDigesting;
 
   updateVictims("stomach",prey);
   update([line]);
@@ -135,10 +133,8 @@ function anal_vore()
 
   bowels.push(prey);
 
-  if (bowelsDigesting == 0)
+  if (bowels.length == 1)
     setTimeout(function() { doDigest("bowels"); }, 15000);
-
-  ++bowelsDigesting;
 
   updateVictims("bowels",prey);
   update([line]);
@@ -212,14 +208,14 @@ function grow()
 function doDigest(containerName)
 {
   var digestType = containerName == "stomach" ? stomach : bowels;
-  var count = 0;
+  var count = 0
 
   if (containerName == "stomach") {
-    count = stomachDigesting;
-    stomachDigesting = 0;
+    count = stomach.length;
+    count = Math.min(count,maxStomachDigest);
   } else if (containerName == "bowels") {
-    count = bowelsDigesting;
-    bowelsDigesting = 0;
+    count = bowels.length;
+    count = Math.min(count,maxBowelsDigest);
   }
 
   var container = new Container();
@@ -246,6 +242,11 @@ function doDigest(containerName)
   else if (containerName == "bowels")
     update(["Your bowels churn as they absorb " + container.describe() + " " + summarize(container.sum())]);
 
+  if (digestType.length > 0) {
+    setTimeout(function() {
+      doDigest(containerName);
+    }, 15000);
+  }
 }
 
 window.addEventListener('load', function(event) {
