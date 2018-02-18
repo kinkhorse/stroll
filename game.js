@@ -20,13 +20,14 @@ function initVictims()
     "House": 0,
     "Train": 0,
     "Parking Garage": 0,
-    "Overpass": 0
+    "Overpass": 0,
+    "Tide Pod": 0
   };
 };
 
 function getOnePrey(area)
 {
-  var potential = ["Person", "Car", "Bus", "House", "Train", "Parking Garage"];
+  var potential = ["Person", "Car", "Bus", "House", "Train", "Parking Garage", "Tide Pod"];
 
   var potAreas = []
 
@@ -57,7 +58,7 @@ function getPrey(region, area)
 
 function suburbPrey(area)
 {
-  return fill_area(area, {"Person": 0.5, "House": 0.5, "Car": 0.2});
+  return fill_area(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tide Pod": 100});
 }
 
 function updateVictims(type,prey)

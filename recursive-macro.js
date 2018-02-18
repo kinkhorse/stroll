@@ -10,20 +10,22 @@ var things =
   "House": House,
   "Train": Train,
   "Parking Garage": ParkingGarage,
-  "Overpass": Overpass
+  "Overpass": Overpass,
+  "Tide Pod": TidePod
 };
 
 var areas =
 {
   "Container": 0,
-  "Person": 1,
+  "Person": 3,
   "Car": 4,
   "Bus": 12,
   "Motorcycle": 2,
   "House": 1000,
   "Train": 10000,
   "Parking Garage": 20000,
-  "Overpass": 10000
+  "Overpass": 10000,
+  "Tide Pod": 0.01,
 };
 
 function fill_area(area, weights = {"Person": 0.1})
@@ -75,7 +77,8 @@ var masses =
   "House": 10000,
   "Train": 50000,
   "Parking Garage": 100000,
-  "Overpass": 100000
+  "Overpass": 100000,
+  "Tide Pod": 1
 };
 
 // describes everything in the container
@@ -294,6 +297,36 @@ function Person(count = 1) {
   return this;
 }
 
+
+function TidePod(count = 1) {
+  this.name = "Tide Pod";
+
+  copy_defaults(this,new DefaultEntity());
+
+  this.count = count;
+  this.contents = {};
+
+
+  this.describeOne = function (verbose=true) {
+    species = random_desc(["delicious","scrumptious","savory"]);
+    return "a " + merge_desc([species,"tide pod"]);
+  }
+
+  this.describe = function() {
+    if (count <= 3) {
+      list = [];
+      for (var i = 0; i < count; i++) {
+        list.push(this.describeOne(this.count <= 2));
+      }
+      return merge_things(list);
+    } else {
+      return this.count + " tide pods"
+    }
+  }
+
+  return this;
+}
+
 function EmptyCar(count = 1) {
   this.name = "Car";
 
@@ -431,7 +464,6 @@ function Train(count = 1) {
     }
   }
 }
-
 function House(count = 1) {
   this.name = "House";
   copy_defaults(this,new DefaultEntity());
