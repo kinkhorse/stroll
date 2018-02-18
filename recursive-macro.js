@@ -83,13 +83,18 @@ function defaultEat(thing) {
   return function() { return "You scoop up " + thing.describe() + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
 }
 
-function defaultMassOne(thing) {
-  return 80;
+function defaultAnalVore(thing) {
+  return function() { return "Your ass slams down on " + thing.describe() + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
+}
+
+function defaultArea(thing) {
+  return 1;
 }
 
 function defaultMass(thing) {
-  return function() { return thing.mass_one * thing.count; }
+  return 80;
 }
+
 
 function defaultSum(thing) {
   return function() {
@@ -113,14 +118,30 @@ function defaultSum(thing) {
   }
 }
 
+function defaultSumProperty(thing) {
+  return function(prop) {
+    var total = 0;
+
+    total += thing[prop] * thing.count;
+
+    for (var key in thing.contents) {
+      if (thing.contents.hasOwnProperty(key)) {
+        total += thing.contents[key].sum_property(prop);
+      }
+    }
+
+    return total;
+  }
+}
+
 function DefaultEntity() {
   this.stomp = defaultStomp;
   this.eat = defaultEat;
   this.kick = defaultKick;
+  this.anal_vore = defaultAnalVore;
   this.sum = defaultSum;
-  this.mass_one = defaultMassOne;
   this.mass = defaultMass;
-
+  this.sum_property = defaultSumProperty;
   return this;
 }
 
@@ -170,7 +191,8 @@ function EmptyCar(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 1000;
+  this.area = 4;
+  this.mass = 1000;
 
   this.describeOne = function() {
     color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"]);
@@ -198,7 +220,8 @@ function Car(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 1000;
+  this.area = 4;
+  this.mass = 1000;
 
   var amount = distribution(2,5,count);
   this.contents.person = new Person(amount);
@@ -229,7 +252,8 @@ function Bus(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 3000;
+  this.area = 12;
+  this.mass = 3000;
 
   var amount = distribution(10,35,count);
   this.contents.person = new Person(amount);
@@ -259,7 +283,8 @@ function Motorcycle(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 200;
+  this.area = 2;
+  this.mass = 200;
 
   var amount = distribution(1,2,count);
   this.contents.person = new Person(amount);
@@ -271,7 +296,8 @@ function Train(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 10000;
+  this.area = 200;
+  this.mass = 10000;
 
   var amount = distribution(20,60,count);
   this.contents.person = new Person(amount);
@@ -283,7 +309,8 @@ function House(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 20000;
+  this.area = 400;
+  this.mass = 20000;
 
   var amount = distribution(0,8,count);
   this.contents.person = new Person(amount);
@@ -316,7 +343,8 @@ function ParkingGarage(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 2000000;
+  this.area = 20000;
+  this.mass = 2000000;
 
   var amount = distribution(10,200,count);
   this.contents.person = new Person(amount);
@@ -348,7 +376,8 @@ function Overpass(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.mass_one = 4000000;
+  this.area = 20000;
+  this.mass = 1000000;
 
   var amount = distribution(0,20,count);
   this.contents.person = new Person(amount);
