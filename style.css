@@ -1,7 +1,14 @@
+
+body {
+  background: #eee;
+  font-family: Arial;
+}
+
 #log {
   height:600px;
-  width:600px;
+  width:1000px;
   border:1px solid #ccc;
+  background-color: #fff;
   overflow:auto;
   float:left;
 }
@@ -9,9 +16,19 @@
 .stat-header {
   font-weight: bold;
   font-size: 150%;
+  min-width:130px;
 }
 
 .stat-line {
   font-weight: normal;
   font-size: 12pt;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  
 }
