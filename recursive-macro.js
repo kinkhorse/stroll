@@ -1,6 +1,21 @@
 
+var things =
+{
+  "Container": Container,
+  "Person": Person,
+  "Empty Car": EmptyCar,
+  "Car": Car,
+  "Bus": Bus,
+  "Motorcycle": Motorcycle,
+  "House": House,
+  "Train": Train,
+  "Parking Garage": ParkingGarage,
+  "Overpass": Overpass
+};
+
 var areas =
 {
+  "Container": 0,
   "Person": 1,
   "Car": 4,
   "Bus": 12,
@@ -11,8 +26,48 @@ var areas =
   "Overpass": 10000
 };
 
+function fill_area(area, weights = {"Person": 0.1})
+{
+  var testRadius = Math.sqrt(area / Math.PI);
+  result = []
+  for (var key in weights) {
+    if (weights.hasOwnProperty(key)) {
+      var objArea = areas[key];
+      var objRadius = Math.sqrt(objArea / Math.PI);
+      var newRadius = testRadius - objRadius;
+
+      if (newRadius > 0) {
+        var newArea = newRadius * newRadius * Math.PI;
+        var numObjs = weights[key] * newArea;
+        if (numObjs < 1) {
+          numObjs = Math.random() > numObjs ? 0 : 1;
+        }
+        else {
+          numObjs = Math.round(numObjs);
+        }
+
+        if (numObjs > 0)
+          result.push(new things[key](numObjs));
+        else {
+          // try again with a better chance for just one
+        }
+
+      }
+
+    }
+  }
+
+  if (result.length > 1)
+    return new Container(result);
+  else if (result.length == 1)
+    return result[0];
+  else
+    return new Person();
+}
+
 var masses =
 {
+  "Container": 0,
   "Person": 80,
   "Car": 1000,
   "Bus": 5000,
@@ -26,7 +81,7 @@ var masses =
 // describes everything in the container
 
 function describe_all(contents) {
-    things = [];
+    var things = [];
     for (var key in contents) {
       if (contents.hasOwnProperty(key)) {
         things.push(contents[key].describe());
@@ -125,7 +180,8 @@ function defaultSum(thing) {
   return function() {
     var counts = {}
 
-    counts[thing.name] = thing.count;
+    if (thing.name != "Container")
+      counts[thing.name] = thing.count;
 
     for (var key in thing.contents) {
       if (thing.contents.hasOwnProperty(key)) {
@@ -179,6 +235,32 @@ function copy_defaults(self,proto) {
       self[key] = proto[key](self)
     }
   }
+}
+
+function Container(contents = []) {
+  this.name = "Container";
+
+  copy_defaults(this,new DefaultEntity());
+
+  this.count = 0;
+
+  this.contents = {}
+
+  for (var i=0; i < contents.length; i++) {
+    this.contents[contents[i].name] = contents[i];
+  }
+
+  for (var key in this.contents) {
+    if (this.contents.hasOwnProperty(key)) {
+      this.count += this.contents[key].count;
+    }
+  }
+
+  this.describe = function() {
+    return describe_all(this.contents)
+  }
+
+  return this;
 }
 
 function Person(count = 1) {
