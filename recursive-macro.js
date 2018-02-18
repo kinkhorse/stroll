@@ -11,7 +11,6 @@ var things =
   "Train": Train,
   "Parking Garage": ParkingGarage,
   "Overpass": Overpass,
-  "Tide Pod": TidePod
 };
 
 var areas =
@@ -25,7 +24,6 @@ var areas =
   "Train": 10000,
   "Parking Garage": 20000,
   "Overpass": 10000,
-  "Tide Pod": 0.01,
 };
 
 function fill_area(area, weights = {"Person": 0.1})
@@ -78,7 +76,6 @@ var masses =
   "Train": 50000,
   "Parking Garage": 100000,
   "Overpass": 100000,
-  "Tide Pod": 1
 };
 
 // describes everything in the container
@@ -309,36 +306,6 @@ function Person(count = 1) {
       return this.count + " people"
     }
   }
-  return this;
-}
-
-
-function TidePod(count = 1) {
-  this.name = "Tide Pod";
-
-  copy_defaults(this,new DefaultEntity());
-
-  this.count = count;
-  this.contents = {};
-
-
-  this.describeOne = function (verbose=true) {
-    species = random_desc(["delicious","scrumptious","savory"]);
-    return "a " + merge_desc([species,"tide pod"]);
-  }
-
-  this.describe = function() {
-    if (count <= 3) {
-      list = [];
-      for (var i = 0; i < count; i++) {
-        list.push(this.describeOne(this.count <= 2));
-      }
-      return merge_things(list);
-    } else {
-      return this.count + " tide pods"
-    }
-  }
-
   return this;
 }
 
