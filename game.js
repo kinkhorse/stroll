@@ -232,6 +232,12 @@ window.addEventListener('load', function(event) {
   victims["stomach"] = initVictims();
   victims["bowels"] = initVictims();
 
+  document.getElementById("button-grow").addEventListener("click",grow);
+  document.getElementById("button-feed").addEventListener("click",feed);
+  document.getElementById("button-stomp").addEventListener("click",stomp);
+  document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
+  document.getElementById("button-stroll").addEventListener("click",toggle_auto);
+
   setTimeout(pick_move, 2000);
   setTimeout(digest, 5000);
 
