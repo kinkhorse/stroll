@@ -144,7 +144,7 @@ function merge_desc(list) {
 
 function distribution(min, max, samples) {
   var result = 0;
-  var limit = Math.min(100,max)
+  var limit = Math.min(100,samples)
   for (var i = 0; i < limit; i++) {
     result += Math.floor(Math.random() * (max - min + 1) + min);
   }
