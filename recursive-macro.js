@@ -263,6 +263,22 @@ function Container(contents = []) {
     return describe_all(this.contents)
   }
 
+  // put another container into this one
+
+  this.merge = function(container) {
+    for (var key in container.contents) {
+      if (container.contents.hasOwnProperty(key)) {
+        if (this.contents.hasOwnProperty(key)) {
+          this.count += container.contents[key].count;
+          this.contents[key] = new things[container.contents[key].name](container.contents[key].count + this.contents[key].count);
+        } else {
+          this.count += container.contents[key].count;
+          this.contents[key] = new things[container.contents[key].name](container.contents[key].count);
+        }
+      }
+    }
+  }
+
   return this;
 }
 
@@ -293,7 +309,6 @@ function Person(count = 1) {
       return this.count + " people"
     }
   }
-
   return this;
 }
 

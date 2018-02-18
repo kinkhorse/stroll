@@ -4,6 +4,9 @@ var scale = 1;
 
 var strolling = false;
 
+var stomachDigesting = 0;
+var bowelsDigesting = 0;
+
 victims = {};
 
 function toggle_auto()
@@ -24,6 +27,9 @@ function initVictims()
     "Tide Pod": 0
   };
 };
+
+var stomach = []
+var bowels = []
 
 function getOnePrey(area)
 {
@@ -89,6 +95,13 @@ function feed()
 
   scale = scaleAddMass(scale, baseMass, preyMass);
 
+  stomach.push(prey);
+
+  if (stomachDigesting == 0)
+    setTimeout(function() { doDigest("stomach"); }, 15000);
+
+  ++stomachDigesting;
+
   updateVictims("stomach",prey);
   update([line]);
 }
@@ -104,7 +117,6 @@ function stomp()
 
   updateVictims("stomped",prey);
   update([line]);
-
 }
 
 function anal_vore()
@@ -116,6 +128,13 @@ function anal_vore()
   var preyMass = prey.sum_property("mass");
 
   scale = scaleAddMass(scale, baseMass, preyMass);
+
+  bowels.push(prey);
+
+  if (bowelsDigesting == 0)
+    setTimeout(function() { doDigest("bowels"); }, 15000);
+
+  ++bowelsDigesting;
 
   updateVictims("bowels",prey);
   update([line]);
@@ -184,6 +203,47 @@ function grow()
   update();
 }
 
+// pop the list and digest that object
+
+function doDigest(containerName)
+{
+  var digestType = containerName == "stomach" ? stomach : bowels;
+  var count = 0;
+
+  if (containerName == "stomach") {
+    count = stomachDigesting;
+    stomachDigesting = 0;
+  } else if (containerName == "bowels") {
+    count = bowelsDigesting;
+    bowelsDigesting = 0;
+  }
+
+  var container = new Container();
+
+  while (count > 0) {
+    --count;
+    var toDigest = digestType.shift();
+    if (toDigest.name != "Container")
+      toDigest = new Container([toDigest]);
+    container.merge(toDigest);
+  }
+
+  var digested = container.sum();
+
+  for (var key in victims[digestType]) {
+    if (victims[containerName].hasOwnProperty(key)) {
+      victims["digested"][key] += digested[key];
+      victims["stomach"][key] -= digested[key];
+    }
+  }
+
+  if (containerName == "stomach")
+    update(["Your stomach gurgles as it digests " + container.describe()]);
+  else if (containerName == "bowels")
+    update(["Your bowels churn as they absorb " + container.describe()]);
+
+}
+
 function digest()
 {
   var newlyDigested = initVictims();
@@ -239,7 +299,6 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
 
   setTimeout(pick_move, 2000);
-  setTimeout(digest, 5000);
 
   update();
 });
