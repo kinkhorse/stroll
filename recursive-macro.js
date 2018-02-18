@@ -331,9 +331,6 @@ function Car(count = 1) {
   this.count = count;
   this.contents = {};
 
-
-
-
   var amount = distribution(2,5,count);
   this.contents.person = new Person(amount);
 
@@ -364,13 +361,11 @@ function Bus(count = 1) {
   this.count = count;
   this.contents = {};
 
-
-
-
   var amount = distribution(10,35,count);
   this.contents.person = new Person(amount);
 
   this.describeOne = function(verbose=true) {
+    adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
     color = random_desc(["black","tan","gray"], (verbose ? 1 : 0));
     type = random_desc(["bus","double-decker bus","articulating bus"]);
     return "a " + merge_desc([adjective,color,type]);
@@ -406,14 +401,35 @@ function Motorcycle(count = 1) {
 function Train(count = 1) {
   this.name = "Train";
   copy_defaults(this,new DefaultEntity());
+
   this.count = count;
   this.contents = {};
 
-
-
-
-  var amount = distribution(20,60,count);
+  var amount = distribution(50,250,count);
   this.contents.person = new Person(amount);
+
+  amount = distribution(10,50,count);
+  this.contents.emptycar = new EmptyCar(amount);
+
+
+  this.describeOne = function(verbose=true) {
+    adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
+    color = random_desc(["black","tan","gray"], (verbose ? 1 : 0));
+    type = random_desc(["train","passenger train","freight train"]);
+    return "a " + merge_desc([adjective,color,type]);
+  }
+
+  this.describe = function() {
+    if (this.count <= 3) {
+      list = [];
+      for (var i = 0; i < this.count; i++) {
+        list.push(this.describeOne(this.count < 2));
+      }
+      return merge_things(list) + " with " + describe_all(this.contents) + " inside";
+    } else {
+      return this.count + " trains with " + describe_all(this.contents) + " inside";
+    }
+  }
 }
 
 function House(count = 1) {

@@ -3,4 +3,15 @@
   width:600px;
   border:1px solid #ccc;
   overflow:auto;
+  float:left;
+}
+
+.stat-header {
+  font-weight: bold;
+  font-size: 150%;
+}
+
+.stat-line {
+  font-weight: normal;
+  font-size: 12pt;
 }

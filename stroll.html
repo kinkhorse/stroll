@@ -8,14 +8,32 @@
     <script src="game.js"></script>
   </head>
   <body>
-    <div id=log>
-      It's a nice day for a walk.
+    <div id=game-area>
+      <div id=log>
+        It's a nice day for a walk.
+      </div>
+      <button onclick="grow()">Get Bigger</button>
+      <button onclick="feed()">Eat</button>
+      <button onclick="stomp()">Stomp</button>
+      <button onclick="anal_vore()">Sit</button>
+      <div></div>
+      <button onclick="toggle_auto()">Stroll</button>
+      
+      <p>Stats</p>
+      <div id=height></div>
+      <div id=mass></div>
+      <div class=stat-header id=stats-stomped>
+        <p>Stomped</p>
+      </div>
+      <div class=stat-header id=stats-digested>
+        <p>Digested</p>
+      </div>
+      <div class=stat-header id=stats-stomach>
+        <p>Stomach</p>
+      </div>
+      <div class=stat-header id=stats-bowels>
+        <p>Bowels</p>
+      </div>
     </div>
-    <div id=height></div>
-    <div id=mass></div>
-    <div id=Person></div>
-    <div id=Car></div>
-    <div id=Bus></div>
-    <div id=House></div>
   </body>
 </html>
