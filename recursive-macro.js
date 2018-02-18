@@ -6,6 +6,7 @@ var things =
   "Empty Car": EmptyCar,
   "Car": Car,
   "Bus": Bus,
+  "Tram": Tram,
   "Motorcycle": Motorcycle,
   "House": House,
   "Train": Train,
@@ -19,6 +20,7 @@ var areas =
   "Person": 3,
   "Car": 4,
   "Bus": 12,
+  "Tram": 20,
   "Motorcycle": 2,
   "House": 1000,
   "Train": 10000,
@@ -414,6 +416,41 @@ function Bus(count = 1) {
     } else {
       return this.count + " buses with " + this.contents.person.describe() + " inside";
     }
+  }
+}
+
+function Tram(count = 1) {
+  this.name = "Bus";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(40,60,count);
+  this.contents.person = new Person(amount);
+
+  this.describeOne = function(verbose=true) {
+    adjective = random_desc(["rusty","weathered"], (verbose ? 0.3 : 0));
+    color = random_desc(["blue","brown","gray"], (verbose ? 1 : 0));
+    type = random_desc(["tram"]);
+    return "a " + merge_desc([adjective,color,type]);
+  }
+
+  this.describe = function() {
+    if (this.count <= 3) {
+      list = [];
+      for (var i = 0; i < this.count; i++) {
+        list.push(this.describeOne(this.count < 2));
+      }
+      return merge_things(list) + " with " + this.contents.person.describe() + " inside";
+    } else {
+      return this.count + " trams with " + this.contents.person.describe() + " inside";
+    }
+  }
+
+
+  this.anal_vore = function() {
+    return "You slide " + this.describe() + " up your tight ass";
   }
 }
 

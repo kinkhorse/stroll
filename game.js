@@ -19,6 +19,7 @@ function initVictims()
     "Person": 0,
     "Car": 0,
     "Bus": 0,
+    "Tram": 0,
     "Motorcycle": 0,
     "House": 0,
     "Train": 0,
@@ -38,7 +39,7 @@ var bowels = []
 
 function getOnePrey(area)
 {
-  var potential = ["Person", "Car", "Bus", "House", "Train", "Parking Garage"];
+  var potential = ["Person", "Car", "Bus", "Tram", "House", "Train", "Parking Garage"];
 
   var potAreas = []
 
@@ -69,7 +70,7 @@ function getPrey(region, area)
 
 function suburbPrey(area)
 {
-  return fill_area(area, {"Person": 0.5, "House": 0.5, "Car": 0.2});
+  return fill_area(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tram": 0.1, "Bus": 0.1});
 }
 
 function updateVictims(type,prey)
