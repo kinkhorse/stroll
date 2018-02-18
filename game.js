@@ -27,6 +27,12 @@ function initVictims()
   };
 };
 
+// lists out total people
+function summarize(sum)
+{
+  return "(" + sum["Person"] + " people)";
+}
+
 var stomach = []
 var bowels = []
 
@@ -88,7 +94,7 @@ function feed()
 {
   var prey = getPrey("suburb", 0.5*scale*scale);
 
-  var line = prey.eat();
+  var line = prey.eat() + " " + summarize(prey.sum());
 
   var preyMass = prey.sum_property("mass");
 
@@ -108,7 +114,7 @@ function feed()
 function stomp()
 {
   var prey = getPrey("suburb", 1.5*scale*scale);
-  var line = prey.stomp();
+  var line = prey.stomp() + " " + summarize(prey.sum());
 
   var preyMass = prey.sum_property("mass");
 
@@ -121,8 +127,7 @@ function stomp()
 function anal_vore()
 {
   var prey = getOnePrey(scale*scale*2)
-
-  var line = prey.anal_vore();
+  var line = prey.anal_vore() + " " + summarize(prey.sum());
 
   var preyMass = prey.sum_property("mass");
 
@@ -237,52 +242,10 @@ function doDigest(containerName)
   }
 
   if (containerName == "stomach")
-    update(["Your stomach gurgles as it digests " + container.describe()]);
+    update(["Your stomach gurgles as it digests " + container.describe() + " " + summarize(container.sum())]);
   else if (containerName == "bowels")
-    update(["Your bowels churn as they absorb " + container.describe()]);
+    update(["Your bowels churn as they absorb " + container.describe() + " " + summarize(container.sum())]);
 
-}
-
-function digest()
-{
-  var newlyDigested = initVictims();
-
-  var stomach = victims["stomach"];
-
-  for (var key in stomach) {
-    if (stomach.hasOwnProperty(key)) {
-      var digested = Math.ceil(stomach[key] / 2);
-      newlyDigested[key] += digested;
-      victims["digested"][key] += digested;
-      victims["stomach"][key] -= digested;
-    }
-  }
-
-  var bowels = victims["bowels"];
-
-  for (var key in bowels) {
-    if (bowels.hasOwnProperty(key)) {
-      var digested = Math.ceil(bowels[key] / 3);
-      newlyDigested[key] += digested;
-      victims["digested"][key] += digested;
-      victims["bowels"][key] -= digested;
-    }
-  }
-
-  var melted = [];
-  for (var key in newlyDigested) {
-    if (newlyDigested.hasOwnProperty(key) && newlyDigested[key] > 0) {
-      melted.push(new things[key](newlyDigested[key]));
-    }
-  }
-
-  var meltedTotal = new Container(melted);
-
-  if (meltedTotal.count > 0)
-    update(["Your stomach gurgles as it digests " + meltedTotal.describe()]);
-  else
-    update();
-  setTimeout(digest, 5000);
 }
 
 window.addEventListener('load', function(event) {
