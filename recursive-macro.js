@@ -1,3 +1,14 @@
+// describes everything in the container
+
+function describe_all(contents) {
+    things = [];
+    for (var key in contents) {
+      if (contents.hasOwnProperty(key)) {
+        things.push(contents[key].describe());
+      }
+    }
+    return merge_things(things);
+}
 
 function random_desc(list, odds=1) {
   if (Math.random() < odds)
@@ -5,6 +16,8 @@ function random_desc(list, odds=1) {
   else
     return "";
 }
+
+// combine strings into a list with proper grammar
 
 function merge_things(list,semicolons=false) {
   if (list.length == 0) {
@@ -26,6 +39,8 @@ function merge_things(list,semicolons=false) {
   }
 }
 
+// combine the adjectives for something into a single string
+
 function merge_desc(list) {
   result = ""
 
@@ -41,6 +56,7 @@ function merge_desc(list) {
 
   return result;
 }
+
 // maybe make this something that approximates a
 // normal distribution; doing this 15,000,000 times is bad...
 
@@ -56,28 +72,76 @@ function distribution(min, max, samples) {
 /* default actions */
 
 function defaultStomp(thing) {
-  return "You crush " + thing.describe() + " underfoot.";
+  return function () { return "You crush " + thing.describe() + " underfoot."};
 }
 
 function defaultKick(thing) {
-  return "You punt " + thing.describe() + ", destroying " + (thing.count > 1 ? "them" : "it") + ".";
+  return function() { return "You punt " + thing.describe() + ", destroying " + (thing.count > 1 ? "them" : "it") + "."; }
 }
 
 function defaultEat(thing) {
-  return "You scoop up " + thing.describe() + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole.";
+  return function() { return "You scoop up " + thing.describe() + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
+}
+
+function defaultMassOne(thing) {
+  return 80;
+}
+
+function defaultMass(thing) {
+  return function() { return thing.mass_one * thing.count; }
+}
+
+function defaultSum(thing) {
+  return function() {
+    var counts = {}
+
+    counts[thing.name] = thing.count;
+
+    for (var key in thing.contents) {
+      if (thing.contents.hasOwnProperty(key)) {
+        subcount = thing.contents[key].sum();
+        for (var subkey in subcount) {
+          if (!counts.hasOwnProperty(subkey)) {
+            counts[subkey] = 0;
+          }
+          counts[subkey] += subcount[subkey];
+        }
+      }
+    }
+
+    return counts;
+  }
 }
 
 function DefaultEntity() {
   this.stomp = defaultStomp;
   this.eat = defaultEat;
   this.kick = defaultKick;
+  this.sum = defaultSum;
+  this.mass_one = defaultMassOne;
+  this.mass = defaultMass;
 
   return this;
 }
+
+// god I love reinventing the wheel
+
+function copy_defaults(self,proto) {
+  for (var key in proto) {
+    if (proto.hasOwnProperty(key)) {
+      self[key] = proto[key](self)
+    }
+  }
+}
+
 function Person(count = 1) {
+  copy_defaults(this,new DefaultEntity());
+
   this.name = "Person";
   this.count = count;
   this.contents = {};
+
+
   this.describeOne = function (verbose=true) {
     sex = random_desc(["male", "female"], (verbose ? 1 : 0));
     body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
@@ -101,9 +165,12 @@ function Person(count = 1) {
 }
 
 function EmptyCar(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Car";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 1000;
 
   this.describeOne = function() {
     color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"]);
@@ -120,15 +187,19 @@ function EmptyCar(count = 1) {
       }
       return merge_things(list);
     } else {
-      return this.count + " parked cars"
+      return this.count + " parked cars";
     }
   }
 }
 
 function Car(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Car";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 1000;
+
   var amount = distribution(2,5,count);
   this.contents.person = new Person(amount);
 
@@ -153,10 +224,13 @@ function Car(count = 1) {
 }
 
 function Bus(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Bus";
   this.count = count;
   this.contents = {};
-  this.resolved = false;
+
+  this.mass_one = 3000;
+
   var amount = distribution(10,35,count);
   this.contents.person = new Person(amount);
 
@@ -180,25 +254,37 @@ function Bus(count = 1) {
 }
 
 function Motorcycle(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Motorcycle";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 200;
+
   var amount = distribution(1,2,count);
   this.contents.person = new Person(amount);
 }
 
 function Train(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Train";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 10000;
+
   var amount = distribution(20,60,count);
   this.contents.person = new Person(amount);
 }
 
 function House(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "House";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 20000;
+
   var amount = distribution(0,8,count);
   this.contents.person = new Person(amount);
   amount = distribution(0,2,count);
@@ -225,9 +311,13 @@ function House(count = 1) {
 }
 
 function ParkingGarage(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Parking Garage";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 2000000;
+
   var amount = distribution(10,200,count);
   this.contents.person = new Person(amount);
   amount = distribution(30,100,count);
@@ -245,17 +335,21 @@ function ParkingGarage(count = 1) {
       for (var i = 0; i < this.count; i++) {
         list.push(this.describeOne(this.count < 2));
       }
-      return merge_things(list) + " with " + merge_things([this.contents.person.describe(),this.contents.emptycar.describe(),this.contents.car.describe()]) + " inside";
+      return merge_things(list) + " with " + describe_all(this.contents) + " inside";
     } else {
-      return this.count + " parking garages with " + this.contents.person.describe() + " inside";
+      return this.count + " parking garages with " + describe_all(this.contents) + " inside";
     }
   }
 }
 
 function Overpass(count = 1) {
+  copy_defaults(this,new DefaultEntity());
   this.name = "Overpass";
   this.count = count;
   this.contents = {};
+
+  this.mass_one = 4000000;
+
   var amount = distribution(0,20,count);
   this.contents.person = new Person(amount);
   amount = distribution(25,100,count);
