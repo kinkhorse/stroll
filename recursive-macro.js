@@ -18,7 +18,7 @@ var things =
 var areas =
 {
   "Container": 0,
-  "Person": 3,
+  "Person": 1,
   "Car": 4,
   "Bus": 12,
   "Tram": 20,
@@ -29,6 +29,59 @@ var areas =
   "Parking Garage": 20000,
   "Overpass": 10000,
 };
+
+// general logic: each step fills in a fraction of the remaining space
+
+function fill_area2(area, weights = {"Person": 0.1, "Car": 0.05, "House": 0.1})
+{
+  result = [];
+  candidates = [];
+  for (var key in weights) {
+    if (weights.hasOwnProperty(key)) {
+      candidates.push({"name": key, "area": areas[key], "weight": weights[key]});
+    }
+  }
+
+  candidates = candidates.sort(function (x,y) {
+    return x.area > y.area
+  });
+
+  while(candidates.length > 0) {
+    var candidate = candidates.pop();
+
+    if (candidate.area > area)
+      continue;
+
+    var max = Math.floor(area / candidate.area);
+    var limit = Math.min(max, 100);
+
+    var count = 0;
+
+    // for small amounts, actually do the randomness
+    while (limit > 0) {
+      count += Math.random() < candidate.weight ? 1 : 0;
+      --limit;
+    }
+
+    if (limit < max) {
+      count += Math.round((max-limit) * candidate.weight);
+    }
+
+    area -= count * candidate.area;
+
+    if (count > 0)
+      result.push(new things[candidate.name](count));
+  }
+
+  if (result.length > 1) {
+    return new Container(result);
+  } else if (result.length == 1) {
+    return result[0];
+  } else {
+    return new Person(1);
+  }
+
+}
 
 function fill_area(area, weights = {"Person": 0.1})
 {
@@ -296,7 +349,7 @@ function Container(contents = []) {
     }
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     return describe_all(this.contents)
   }
 
@@ -313,22 +366,27 @@ function Person(count = 1) {
 
 
   this.describeOne = function (verbose=true) {
-    sex = random_desc(["male", "female"], (verbose ? 1 : 0));
     body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
+    sex = random_desc(["male", "female"], (verbose ? 1 : 0));
     species = random_desc(["wolf","cat","dog","squirrel","horse","hyena","fox","jackal","crux","sergal"]);
-    return "a " + merge_desc([sex,body,species]);
+    return "a " + merge_desc([body,sex,species]);
   }
 
-  this.describe = function() {
-    if (count <= 3) {
-      list = [];
-      for (var i = 0; i < count; i++) {
-        list.push(this.describeOne(this.count <= 2));
+  this.describe = function(verbose=true) {
+    if (verbose) {
+      if (count <= 3) {
+        list = [];
+        for (var i = 0; i < count; i++) {
+          list.push(this.describeOne(this.count <= 2));
+        }
+        return merge_things(list);
+      } else {
+        return this.count + " people"
       }
-      return merge_things(list);
     } else {
-      return this.count + " people"
+      return this.count + " " + (this.count > 1 ? "people" : "person");
     }
+
   }
   return this;
 }
@@ -343,23 +401,28 @@ function EmptyCar(count = 1) {
 
 
 
-  this.describeOne = function() {
+  this.describeOne = function(verbose=true) {
     color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"]);
     adjective = random_desc(["rusty","brand-new"],0.3);
     type = random_desc(["SUV","coupe","sedan","truck","van","convertible"]);
     return "a parked " + merge_desc([adjective,color,type]);
   }
 
-  this.describe = function() {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne());
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne());
+        }
+        return merge_things(list);
+      } else {
+        return this.count + " parked cars";
       }
-      return merge_things(list);
     } else {
-      return this.count + " parked cars";
+      return this.count + " parked " + (this.count > 1 ? "cars" : "car");
     }
+
   }
 }
 
@@ -380,16 +443,21 @@ function Car(count = 1) {
     return "a " + merge_desc([adjective,color,type]);
   }
 
-  this.describe = function() {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + this.contents.person.describe(false) + " inside";
+      } else {
+        return this.count + " cars with " + this.contents.person.describe(false) + " inside";
       }
-      return merge_things(list) + " with " + this.contents.person.describe() + " inside";
     } else {
-      return this.count + " cars with " + this.contents.person.describe() + " inside";
+      return this.count + " " + (this.count > 1 ? "cars" : "car");
     }
+
   }
 }
 
@@ -410,7 +478,7 @@ function Bus(count = 1) {
     return "a " + merge_desc([adjective,color,type]);
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     if (this.count <= 3) {
       list = [];
       for (var i = 0; i < this.count; i++) {
@@ -440,7 +508,7 @@ function Tram(count = 1) {
     return "a " + merge_desc([adjective,color,type]);
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     if (this.count <= 3) {
       list = [];
       for (var i = 0; i < this.count; i++) {
@@ -493,7 +561,7 @@ function Train(count = 1) {
     return "a " + merge_desc([adjective,color,type]);
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     if (this.count <= 3) {
       list = [];
       for (var i = 0; i < this.count; i++) {
@@ -528,7 +596,7 @@ function TrainCar(count = 1) {
     return "a " + merge_desc([adjective,color,type]);
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     if (this.count <= 3) {
       list = [];
       for (var i = 0; i < this.count; i++) {
@@ -562,7 +630,7 @@ function House(count = 1) {
     return "a " + merge_desc([size,color,name]);
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     if (this.count <= 3) {
       list = [];
       for (var i = 0; i < this.count; i++) {
@@ -595,7 +663,7 @@ function ParkingGarage(count = 1) {
     return "a parking garage";
   }
 
-  this.describe = function() {
+  this.describe = function(verbose = true) {
     if (this.count <= 3) {
       list = [];
       for (var i = 0; i < this.count; i++) {

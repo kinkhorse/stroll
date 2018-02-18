@@ -71,7 +71,7 @@ function getPrey(region, area)
 
 function suburbPrey(area)
 {
-  return fill_area(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tram": 0.1, "Bus": 0.1});
+  return fill_area2(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tram": 0.1, "Bus": 0.1});
 }
 
 function updateVictims(type,prey)
