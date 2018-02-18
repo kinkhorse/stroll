@@ -140,10 +140,17 @@ function merge_desc(list) {
 // maybe make this something that approximates a
 // normal distribution; doing this 15,000,000 times is bad...
 
+// solution: only a few are random lul
+
 function distribution(min, max, samples) {
   var result = 0;
-  for (var i = 0; i < samples; i++) {
+  var limit = Math.min(100,max)
+  for (var i = 0; i < limit; i++) {
     result += Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  if (limit < samples) {
+    result += Math.round((max - min) * (samples - limit));
   }
 
   return result;
@@ -187,7 +194,7 @@ function defaultMerge(thing) {
         newThing.contents[key] = this.contents[key];
       }
     }
-    
+
     for (var key in container.contents) {
       if (container.contents.hasOwnProperty(key)) {
         if (this.contents.hasOwnProperty(key)) {
