@@ -229,7 +229,7 @@ function doDigest(containerName)
     var toDigest = digestType.shift();
     if (toDigest.name != "Container")
       toDigest = new Container([toDigest]);
-    container.merge(toDigest);
+    container = container.merge(toDigest);
   }
 
   var digested = container.sum();

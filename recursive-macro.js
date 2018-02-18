@@ -175,6 +175,32 @@ function defaultMass(thing) {
   return masses[thing.name];
 }
 
+function defaultMerge(thing) {
+  return function(container) {
+    var newCount = this.count + container.count;
+
+    var newThing = new things[thing.name](newCount);
+    newThing.contents = {};
+
+    for (var key in this.contents) {
+      if (this.contents.hasOwnProperty(key)) {
+        newThing.contents[key] = this.contents[key];
+      }
+    }
+    
+    for (var key in container.contents) {
+      if (container.contents.hasOwnProperty(key)) {
+        if (this.contents.hasOwnProperty(key)) {
+          newThing.contents[key] = this.contents[key].merge(container.contents[key]);
+        } else {;
+          newThing.contents[key] = container.contents[key];
+        }
+      }
+    }
+
+    return newThing;
+  }
+}
 
 function defaultSum(thing) {
   return function() {
@@ -224,6 +250,7 @@ function DefaultEntity() {
   this.area = defaultArea;
   this.mass = defaultMass;
   this.sum_property = defaultSumProperty;
+  this.merge = defaultMerge;
   return this;
 }
 
@@ -258,22 +285,6 @@ function Container(contents = []) {
 
   this.describe = function() {
     return describe_all(this.contents)
-  }
-
-  // put another container into this one
-
-  this.merge = function(container) {
-    for (var key in container.contents) {
-      if (container.contents.hasOwnProperty(key)) {
-        if (this.contents.hasOwnProperty(key)) {
-          this.count += container.contents[key].count;
-          this.contents[key] = new things[container.contents[key].name](container.contents[key].count + this.contents[key].count);
-        } else {
-          this.count += container.contents[key].count;
-          this.contents[key] = new things[container.contents[key].name](container.contents[key].count);
-        }
-      }
-    }
   }
 
   return this;
