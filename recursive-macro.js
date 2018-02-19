@@ -9,6 +9,7 @@ var things =
   "Tram": Tram,
   "Motorcycle": Motorcycle,
   "House": House,
+  "Small Skyscraper": SmallSkyscraper,
   "Train": Train,
   "Train Car": TrainCar,
   "Parking Garage": ParkingGarage,
@@ -24,10 +25,27 @@ var areas =
   "Tram": 20,
   "Motorcycle": 2,
   "House": 1000,
+  "Small Skyscraper": 10000,
   "Train": 500,
   "TrainCar": 500,
-  "Parking Garage": 20000,
+  "Parking Garage": 5000,
   "Overpass": 10000,
+};
+
+var masses =
+{
+  "Container": 0,
+  "Person": 80,
+  "Car": 1000,
+  "Bus": 5000,
+  "Tram": 10000,
+  "Motorcycle": 200,
+  "House": 10000,
+  "Small Skyscraper": 100000,
+  "Train": 5000,
+  "Train Car": 5000,
+  "Parking Garage": 100000,
+  "Overpass": 100000,
 };
 
 // general logic: each step fills in a fraction of the remaining space
@@ -127,21 +145,6 @@ function fill_area(area, weights = {"Person": 0.1})
     return new Person();
 }
 
-var masses =
-{
-  "Container": 0,
-  "Person": 80,
-  "Car": 1000,
-  "Bus": 5000,
-  "Tram": 10000,
-  "Motorcycle": 200,
-  "House": 10000,
-  "Train": 5000,
-  "Train Car": 5000,
-  "Parking Garage": 100000,
-  "Overpass": 100000,
-};
-
 // describes everything in the container
 
 function describe_all(contents,verbose=true) {
@@ -223,23 +226,23 @@ function distribution(min, max, samples) {
 /* default actions */
 
 function defaultStomp(thing) {
-  return function () { return "You crush " + thing.describe() + " underfoot."};
+  return function (height=10) { return "You crush " + thing.describe() + " underfoot."};
 }
 
 function defaultKick(thing) {
-  return function() { return "You punt " + thing.describe() + ", destroying " + (thing.count > 1 ? "them" : "it") + "."; }
+  return function(height=10) { return "You punt " + thing.describe() + ", destroying " + (thing.count > 1 ? "them" : "it") + "."; }
 }
 
 function defaultEat(thing) {
-  return function() { return "You scoop up " + thing.describe() + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
+  return function(height=10) { return "You scoop up " + thing.describe() + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
 }
 
 function defaultAnalVore(thing) {
-  return function() { return "You sit yourself down on " + thing.describe() + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
+  return function(height=10) { return "You sit yourself down on " + thing.describe() + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
 }
 
 function defaultButtcrush(thing) {
-  return function() { return "Your heavy ass obliterates " + thing.describe() + ". "; }
+  return function(height=10) { return "Your heavy ass obliterates " + thing.describe() + ". "; }
 }
 
 function defaultArea(thing) {
@@ -649,9 +652,6 @@ function House(count = 1) {
   this.count = count;
   this.contents = {};
 
-
-
-
   var amount = distribution(0,8,count);
   this.contents.person = new Person(amount);
   amount = distribution(0,2,count);
@@ -677,14 +677,49 @@ function House(count = 1) {
   }
 }
 
+function SmallSkyscraper(count = 1) {
+  this.name = "Small Skyscraper";
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(50,500,1);
+  this.contents.person = new Person(amount);
+  amount = distribution(10,50,count);
+  this.contents.emptycar = new EmptyCar(amount);
+
+  this.describeOne = function(verbose=true) {
+    color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
+    name = random_desc(["skyscraper","office tower","office building"], 1);
+    return "a " + merge_desc([color,name]);
+  }
+
+  this.describe = function(verbose = true) {
+    if (this.count <= 3) {
+      list = [];
+      for (var i = 0; i < this.count; i++) {
+        list.push(this.describeOne(this.count < 2));
+      }
+      return merge_things(list) + " with " + describe_all(this.contents,false) + " inside";
+    } else {
+      return this.count + " small skyscrapers with " + describe_all(this.contents,false) + " inside";
+    }
+  }
+
+  this.anal_vore = function(height=10) {
+    var line = skyscraperAnalVore(this,height);
+    if (line == "")
+      return defaultAnalVore(this)();
+    else
+      return line;
+  };
+}
+
 function ParkingGarage(count = 1) {
   this.name = "Parking Garage";
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
-
-
-
 
   var amount = distribution(10,200,count);
   this.contents.person = new Person(amount);
@@ -715,9 +750,6 @@ function Overpass(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
-
-
-
 
   var amount = distribution(0,20,count);
   this.contents.person = new Person(amount);

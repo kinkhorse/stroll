@@ -39,6 +39,7 @@ function initVictims()
     "Tram": 0,
     "Motorcycle": 0,
     "House": 0,
+    "Small Skyscraper": 0,
     "Train": 0,
     "Train Car": 0,
     "Parking Garage": 0,
@@ -57,7 +58,7 @@ var bowels = []
 
 function getOnePrey(area)
 {
-  var potential = ["Person", "Car", "Bus", "Tram", "House", "Train", "Parking Garage"];
+  var potential = ["Person", "Car", "Bus", "Tram", "House", "Train", "Parking Garage", "Small Skyscraper"];
 
   var potAreas = []
 
@@ -88,7 +89,7 @@ function getPrey(region, area)
 
 function suburbPrey(area)
 {
-  return fill_area2(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tram": 0.1, "Bus": 0.1});
+  return fill_area2(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tram": 0.1, "Bus": 0.1, "Small Skyscraper": 0.05, "Parking Garage": 0.02, "Train": 0.05});
 }
 
 function updateVictims(type,prey)
@@ -143,9 +144,9 @@ function stomp()
 
 function anal_vore()
 {
-  var prey = getOnePrey(scale*scale);
+  var prey = getOnePrey(0.25*scale*scale);
   var crushed = getPrey("suburb",3*scale*scale);
-  var line1 = prey.anal_vore() + " " + summarize(prey.sum(), false);
+  var line1 = prey.anal_vore(baseHeight*scale) + " " + summarize(prey.sum(), false);
   var line2 = crushed.buttcrush() + " " + summarize(crushed.sum(), false)
 
   var preyMass = prey.sum_property("mass");
