@@ -7,6 +7,8 @@ var strolling = false;
 var maxStomachDigest = 10;
 var maxBowelsDigest = 10;
 
+var metric = true;
+
 victims = {};
 
 function toggle_auto()
@@ -18,6 +20,16 @@ function toggle_auto()
   else
     update(["You stop walking."]);
 }
+
+function toggle_units()
+{
+  metric = !metric;
+
+  document.getElementById("button-units").innerHTML = metric ? "Metric" : "Customary";
+
+  update();
+}
+
 function initVictims()
 {
   return {
@@ -167,8 +179,8 @@ function update(lines = [])
   var height = baseHeight * scale;
   var mass = baseMass * Math.pow(scale, 3);
 
-  document.getElementById("height").innerHTML = "Height: " + Math.round(height * 3) + " feet";
-  document.getElementById("mass").innerHTML = "Mass: " + Math.round(mass * 2.2) + " pounds";
+  document.getElementById("height").innerHTML = "Height: " + (metric ? metricLength(height) : customaryLength(height));
+  document.getElementById("mass").innerHTML = "Mass: " + (metric ? metricMass(mass) : customaryMass(mass));
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -270,7 +282,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-stomp").addEventListener("click",stomp);
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
-
+  document.getElementById("button-units").addEventListener("click",toggle_units);
   setTimeout(pick_move, 2000);
 
   update();
