@@ -9,9 +9,18 @@ function metricMass(kg) {
   } else if (kg < 5000) {
     var mass = round(kg);
     return mass + (mass == 1 ? " kilogram" : " kilograms");
-  } else {
+  } else if (kg < 5000000) {
     var mass = round(kg / 1000);
     return mass + (mass == 1 ? " metric ton" : " metric tons");
+  } else if (kg < 5000000000) {
+    var mass = round(kg / 1000000);
+    return mass + (mass == 1 ? " kiloton" : " kilotons");
+  } else if (kg < 5000000000000) {
+    var mass = round(kg / 1000000000);
+    return mass + (mass == 1 ? " megaton" : " megatons");
+  } else {
+    var mass = round(kg / 1000000000000);
+    return mass + (mass == 1 ? " gigaton" : " gigatons");
   }
 }
 
