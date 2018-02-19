@@ -13,6 +13,12 @@ body {
   float:left;
 }
 
+.stat-header-self {
+  font-weight: bold;
+  font-size: 150%;
+  min-width:250px;
+  float:left;
+}
 .stat-header {
   font-weight: bold;
   font-size: 150%;
@@ -30,5 +36,5 @@ body {
 }
 
 .action-button {
-  
+
 }

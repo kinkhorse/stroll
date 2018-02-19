@@ -12,6 +12,11 @@ victims = {};
 function toggle_auto()
 {
   strolling = !strolling;
+  document.getElementById("strolling-indicator").innerHTML = strolling ? "Strolling" : "Standing";
+  if (strolling)
+    update(["You start walking."]);
+  else
+    update(["You stop walking."]);
 }
 function initVictims()
 {
@@ -32,7 +37,7 @@ function initVictims()
 // lists out total people
 function summarize(sum, fatal = true)
 {
-  return "(" + sum["Person"] + " " + (fatal ? "kills" : "people") + ")";
+  return "(" + sum["Person"] + " " + (fatal ? (sum["Person"] > 1 ? "kills" : "kill") : (sum["Person"] > 1 ? "people" : "person")) + ")";
 }
 
 var stomach = []
@@ -245,9 +250,9 @@ function doDigest(containerName)
   }
 
   if (containerName == "stomach")
-    update(["Your stomach gurgles as it digests " + container.describe() + " " + summarize(container.sum())]);
+    update(["Your stomach gurgles as it digests " + container.describe(false) + " " + summarize(container.sum())]);
   else if (containerName == "bowels")
-    update(["Your bowels churn as they absorb " + container.describe() + " " + summarize(container.sum())]);
+    update(["Your bowels churn as they absorb " + container.describe(false) + " " + summarize(container.sum())]);
 
   if (digestType.length > 0) {
     setTimeout(function() {

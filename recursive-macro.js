@@ -144,11 +144,11 @@ var masses =
 
 // describes everything in the container
 
-function describe_all(contents) {
+function describe_all(contents,verbose=true) {
     var things = [];
     for (var key in contents) {
       if (contents.hasOwnProperty(key)) {
-        things.push(contents[key].describe());
+        things.push(contents[key].describe(verbose));
       }
     }
     return merge_things(things);
@@ -360,7 +360,7 @@ function Container(contents = []) {
   }
 
   this.describe = function(verbose = true) {
-    return describe_all(this.contents)
+    return describe_all(this.contents,false)
   }
 
   return this;

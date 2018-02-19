@@ -8,9 +8,14 @@
     <script src="game.js"></script>
   </head>
   <body>
+    <div class=stat-header-self id=stats-self>
+      <p>Stats</p>
+      <div class=stat-line id=height></div>
+      <div class=stat-line id=mass></div>
+    </div>
     <div id=game-area>
       <div id=log>
-        <div>Welcome to Stroll 0.1.1</div>
+        <div>Welcome to Stroll 0.1.2</div>
         <div>It's a nice day for a walk</div>
       </div>
       <button id=button-grow>Get Bigger</button>
@@ -19,13 +24,8 @@
       <button id=button-anal_vore>Sit</button>
       <div></div>
       <button id=button-stroll>Stroll</button>
-
+      <div id=strolling-indicator>Standing</div>
       <div class=flex-container>
-        <div class=stat-header id=stats-self>
-          <p>Stats</p>
-          <div class=stat-line id=height></div>
-          <div class=stat-line id=mass></div>
-        </div>
         <div class=stat-header id=stats-stomped>
           <p>Stomped</p>
         </div>
