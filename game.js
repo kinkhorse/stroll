@@ -765,6 +765,48 @@ function grow()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
+function option_male() {
+  macro.maleParts = !macro.maleParts;
+
+  document.getElementById("button-male-genitals").innerHTML = (macro.maleParts ? "Male genitals" : "No male genitals");
+}
+
+function option_female() {
+  macro.femaleParts = !macro.femaleParts;
+
+  document.getElementById("button-female-genitals").innerHTML = (macro.femaleParts ? "Female genitals" : "No female genitals");
+}
+
+function startGame() {
+  document.getElementById("option-panel").style.display = 'none';
+  document.getElementById("action-panel").style.display = 'flex';
+
+  if (!macro.maleParts) {
+    document.getElementById("button-cockslap").style.display = 'none';
+    document.getElementById("button-cock_vore").style.display = 'none';
+    document.getElementById("button-ball_smother").style.display = 'none';
+    document.getElementById("stats-balls").style.display = 'none';
+    document.getElementById("stats-cock").style.display = 'none';
+    document.getElementById("stats-smothered").style.display = 'none';
+  }
+
+  if (!macro.femaleParts) {
+    document.getElementById("button-breast_crush").style.display = 'none';
+    document.getElementById("button-unbirth").style.display = 'none';
+    document.getElementById("stats-womb").style.display = 'none';
+    document.getElementById("stats-breasts").style.display = 'none';
+  }
+
+  var species = document.getElementById("option-species").value;
+  var re = /^[a-zA-Z\- ]+$/;
+
+  // tricksy tricksy players
+  if (re.test(species)) {
+    macro.species = species;
+  }
+
+  document.getElementById("stat-container").style.display = 'flex';
+}
 
 window.addEventListener('load', function(event) {
   victims["stomped"] = initVictims();
@@ -793,6 +835,10 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
+
+  document.getElementById("button-male-genitals").addEventListener("click",option_male);
+  document.getElementById("button-female-genitals").addEventListener("click",option_female);
+  document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);
 
   update();

@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class=game-area>
-      <div class=stat-container>
+      <div class=stat-container id=stat-container>
         <div class=stat-header-self id=stats-self>
           <p>Stats</p>
           <div class=stat-line id=height></div>
@@ -47,14 +47,14 @@
       </div>
       <div id=log-area>
         <div id=log>
-          <div>Welcome to Stroll 0.2.2</div>
+          <div>Welcome to Stroll 0.2.3</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div>It's a nice day for a walk</div>
           <div>&nbsp;</div>
         </div>
       </div>
-      <div class=button-container>
+      <div class=button-container id=action-panel>
         <button class=action-button id=button-look>Look</button>
         <button class=action-button id=button-grow>Get Bigger</button>
         <button class=action-button id=button-feed>Eat</button>
@@ -70,6 +70,12 @@
         <button class=action-button id=button-location>Location: Suburb</button>
         <button class=action-button class=action-button id=button-units>Units: Metric</button>
         <button class=action-button id=button-verbose>Descriptions: Verbose</button>
+      </div>
+      <div class=button-container id=option-panel>
+        <button class=option-button id=button-male-genitals>Male genitals</button>
+        <button class=option-button id=button-female-genitals>Female genitals</button>
+        <form class=option-form>Species:<br><input type="text" name="species" id="option-species"></input></form>
+        <button class=option-button id=button-start>Start game</button>
       </div>
     </div>
   </body>

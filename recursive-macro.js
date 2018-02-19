@@ -615,14 +615,14 @@ function Tram(count = 1) {
 
   this.describe = function(verbose = true) {
     if (verbose) {
-      if (this.count <= 3) {
+      if (this.count == 1) {
         list = [];
         for (var i = 0; i < this.count; i++) {
-          list.push(this.describeOne(this.count < 2));
+          list.push(this.describeOne(verbose));
         }
-        return merge_things(list) + " with " + this.contents.person.describe() + " inside";
+        return merge_things(list) + " with " + this.contents.person.describe(verbose) + " inside";
       } else {
-        return this.count + " trams with " + this.contents.person.describe() + " inside";
+        return this.count + " trams with " + this.contents.person.describe(verbose) + " inside";
       }
     } else {
       return (this.count > 1 ? this.count + " trams" : "a tram");
@@ -668,10 +668,10 @@ function Train(count = 1) {
 
   this.describe = function(verbose = true) {
     if (verbose) {
-      if (this.count <= 3) {
+      if (this.count == 1) {
         list = [];
         for (var i = 0; i < this.count; i++) {
-          list.push(this.describeOne(this.count < 2));
+          list.push(this.describeOne(verbose));
         }
         return merge_things(list) + " with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
       } else {
