@@ -11,25 +11,51 @@ var metric = true;
 
 var verbose = true;
 
+var biome = "suburb";
+
 var newline = "&nbsp;";
 
 victims = {};
 
+function get_living_prey(sum) {
+  var total = 0;
+  for (var key in sum) {
+    if (sum.hasOwnProperty(key)) {
+      if (key == "Person" || key == "Cow")
+        total += sum[key];
+    }
+  }
+
+  return total;
+}
+
 function toggle_auto()
 {
   strolling = !strolling;
-  document.getElementById("strolling-indicator").innerHTML = strolling ? "Strolling" : "Standing";
+  document.getElementById("button-stroll").innerHTML = "Status: " + (strolling ? "Strolling" : "Standing");
   if (strolling)
-    update(["You start walking."]);
+    update(["You start walking.",newline]);
   else
-    update(["You stop walking."]);
+    update(["You stop walking.",newline]);
+}
+
+function change_location()
+{
+  switch(biome) {
+    case "suburb": biome = "city"; break;
+    case "city": biome = "downtown"; break;
+    case "downtown": biome = "rural"; break;
+    case "rural": biome = "suburb"; break;
+  }
+
+  document.getElementById("button-location").innerHTML = "Location: " + biome.charAt(0).toUpperCase() + biome.slice(1);
 }
 
 function toggle_units()
 {
   metric = !metric;
 
-  document.getElementById("button-units").innerHTML = metric ? "Metric" : "Customary";
+  document.getElementById("button-units").innerHTML = "Units: " + (metric ? "Metric" : "Customary");
 
   update();
 }
@@ -38,18 +64,20 @@ function toggle_verbose()
 {
   verbose = !verbose;
 
-  document.getElementById("button-verbose").innerHTML = verbose ? "Verbose" : "Simple";
+  document.getElementById("button-verbose").innerHTML = "Descriptions: " + (verbose ? "Verbose" : "Simple");
 }
 
 function initVictims()
 {
   return {
     "Person": 0,
+    "Cow": 0,
     "Car": 0,
     "Bus": 0,
     "Tram": 0,
     "Motorcycle": 0,
     "House": 0,
+    "Barn": 0,
     "Small Skyscraper": 0,
     "Train": 0,
     "Train Car": 0,
@@ -61,15 +89,23 @@ function initVictims()
 // lists out total people
 function summarize(sum, fatal = true)
 {
-  return "<b>(" + sum["Person"] + " " + (fatal ? (sum["Person"] > 1 ? "kills" : "kill") : (sum["Person"] > 1 ? "people" : "person")) + ")</b>";
+  var count = get_living_prey(sum);
+  return "<b>(" + count + " " + (fatal ? (count > 1 ? "kills" : "kill") : (count > 1 ? "prey" : "prey")) + ")</b>";
 }
 
 var stomach = []
 var bowels = []
 
-function getOnePrey(area)
+function getOnePrey(biome,area)
 {
-  var potential = ["Person", "Car", "Bus", "Tram", "House", "Train", "Parking Garage", "Small Skyscraper"];
+  var potential = ["Person"];
+
+  switch(biome) {
+    case "suburb": potential = ["Person", "Car", "Bus", "Train", "House"]; break;
+    case "city": potential = ["Person", "Car", "Bus", "Train", "Tram", "House", "Parking Garage"]; break;
+    case "downtown": potential = ["Person", "Car", "Bus", "Tram", "Small Skyscraper", "Parking Garage"]; break;
+    case "rural": potential = ["Person", "Barn", "House", "Cow"]; break;
+  }
 
   var potAreas = []
 
@@ -92,16 +128,44 @@ function getOnePrey(area)
 }
 function getPrey(region, area)
 {
+  var weights = {"Person": 1};
+
   switch(region)
   {
-    case "suburb": return suburbPrey(area);
+    case "rural": weights = {
+      "Person": 0.05,
+      "House": 0.01,
+      "Barn": 0.01,
+      "Cow": 0.2
+    }; break;
+    case "suburb": weights = {
+      "Person": 0.5,
+      "House": 0.5,
+      "Car": 0.2,
+      "Train": 0.1,
+      "Bus": 0.1
+    }; break;
+    case "city": weights = {
+      "Person": 0.5,
+      "House": 0.2,
+      "Car": 0.2,
+      "Train": 0.1,
+      "Bus": 0.1,
+      "Tram": 0.1,
+      "Parking Garage": 0.02
+    }; break;
+    case "downtown": weights = {
+      "Person": 0.5,
+      "Car": 0.3,
+      "Bus": 0.15,
+      "Tram": 0.1,
+      "Parking Garage": 0.02,
+      "Small Skyscraper": 0.4
+    }; break;
   }
+  return fill_area2(area,weights);
 }
 
-function suburbPrey(area)
-{
-  return fill_area2(area, {"Person": 0.5, "House": 0.5, "Car": 0.2, "Tram": 0.1, "Bus": 0.1, "Small Skyscraper": 0.05, "Parking Garage": 0.02, "Train": 0.05});
-}
 
 function updateVictims(type,prey)
 {
@@ -123,12 +187,13 @@ function scaleAddMass(scale, baseMass, mass)
 
 function feed()
 {
-  var prey = getPrey("suburb", 0.5*scale*scale);
+  var area = baseHeight / 30 * scale * scale;
+  var prey = getPrey(biome, area);
 
   var line = prey.eat(verbose)
   var linesummary = summarize(prey.sum(), false);
 
-  var people = prey.sum()["Person"];
+  var people = get_living_prey(prey.sum());
   var sound = "Ulp";
 
   if (people < 3) {
@@ -160,11 +225,12 @@ function feed()
 
 function stomp()
 {
-  var prey = getPrey("suburb", 1.5*scale*scale);
+  var area = baseHeight / 15 * scale * scale;
+  var prey = getPrey(biome, area);
   var line = prey.stomp(verbose)
   var linesummary = summarize(prey.sum(), true);
 
-  var people = prey.sum()["Person"];
+  var people = get_living_prey(prey.sum());
 
   var sound = "Thump";
 
@@ -191,14 +257,17 @@ function stomp()
 
 function anal_vore()
 {
-  var prey = getOnePrey(0.25*scale*scale);
-  var crushed = getPrey("suburb",3*scale*scale);
+  var area = baseHeight / 30 * scale * scale;
+  var prey = getOnePrey(biome,area);
+
+  area = baseHeight * scale * scale / 5;
+  var crushed = getPrey(biome,3*scale*scale);
   var line1 = prey.anal_vore(verbose, baseHeight*scale);
   var line1summary = summarize(prey.sum(), false);
   var line2 = crushed.buttcrush(verbose);
   var line2summary = summarize(crushed.sum(), true);
 
-  var people = prey.sum()["Person"];
+  var people = get_living_prey(prey.sum());
   var sound = "Shlp";
 
   if (people < 3) {
@@ -215,7 +284,7 @@ function anal_vore()
     sound = "Oh the humanity!";
   }
 
-  people = crushed.sum()["Person"];
+  var people = get_living_prey(crushed.sum());
   var sound2 = "Thump";
 
   if (people < 3) {
@@ -305,8 +374,21 @@ function pick_move()
 
 function grow()
 {
+  var oldHeight = baseHeight * scale;
+  var oldMass = baseMass * Math.pow(scale,3);
+
   scale *= 1.2;
-  update();
+
+  var newHeight = baseHeight * scale;
+  var newMass = baseMass * Math.pow(scale,3);
+
+  var heightDelta = newHeight - oldHeight;
+  var massDelta = newMass - oldMass;
+
+  var heightStr = metric ? metricLength(heightDelta) : customaryLength(heightDelta);
+  var massStr = metric ? metricMass(massDelta) : customaryMass(massDelta);
+
+  update(["Power surges through you as you grow " + heightStr + " and gain " + massStr,newline]);
 }
 
 // pop the list and digest that object
@@ -368,6 +450,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
+  document.getElementById("button-location").addEventListener("click",change_location);
   setTimeout(pick_move, 2000);
 
   update();

@@ -4,22 +4,22 @@ function round(number,precision=3) {
 
 function metricMass(kg) {
   if (kg < 1) {
-    var mass = round(kg * 1000);
+    var mass = round(kg * 1000,0);
     return mass + (mass == 1 ? " gram" : " grams");
-  } else if (kg < 5000) {
+  } else if (kg < 5000,0) {
     var mass = round(kg);
     return mass + (mass == 1 ? " kilogram" : " kilograms");
   } else if (kg < 5000000) {
-    var mass = round(kg / 1000);
+    var mass = round(kg / 1000,1);
     return mass + (mass == 1 ? " metric ton" : " metric tons");
   } else if (kg < 5000000000) {
-    var mass = round(kg / 1000000);
+    var mass = round(kg / 1000000,1);
     return mass + (mass == 1 ? " kiloton" : " kilotons");
   } else if (kg < 5000000000000) {
-    var mass = round(kg / 1000000000);
+    var mass = round(kg / 1000000000,1);
     return mass + (mass == 1 ? " megaton" : " megatons");
   } else {
-    var mass = round(kg / 1000000000000);
+    var mass = round(kg / 1000000000000,1);
     return mass + (mass == 1 ? " gigaton" : " gigatons");
   }
 }
@@ -28,26 +28,26 @@ function customaryMass(kg) {
   var lbs = kg * 2.2;
 
   if (lbs < 1) {
-    var mass = round(lbs * 16);
+    var mass = round(lbs * 16,0);
     return mass + (mass == 1 ? " ounce" : " ounces");
   } else if (lbs < 2000) {
-    var mass = round(lbs);
+    var mass = round(lbs,0);
     return mass + (mass == 1 ? " pound" : " pounds");
   } else {
-    var mass = round(lbs / 2000);
+    var mass = round(lbs / 2000,1);
     return mass + (mass == 1 ? "ton" : " tons");
   }
 }
 
 function metricLength(m) {
   if (m < 1) {
-    var length = round(m * 100);
+    var length = round(m * 100,0);
     return length + (length == 1 ? " centimeter" : " centimeters");
   } else if (m < 500) {
-    var length = round(m);
+    var length = round(m,2);
     return length + (length == 1 ? " meter" : " meters");
   } else {
-    var length = round(m / 1000);
+    var length = round(m / 1000,1);
     return length + (length == 1 ? " kilometer" : " kilometers");
   }
 }
@@ -63,7 +63,7 @@ function customaryLength(m) {
     var length = Math.floor(ft);
     return length + (length == 1 ? " foot" : " feet") + " " + end;
   } else {
-    var length = round(ft/5280);
+    var length = round(ft/5280,1);
     return length + (length == 1 ? " mile" : " miles");
   }
 }

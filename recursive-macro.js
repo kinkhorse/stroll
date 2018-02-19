@@ -2,12 +2,14 @@ var things =
 {
   "Container": Container,
   "Person": Person,
+  "Cow": Cow,
   "Empty Car": EmptyCar,
   "Car": Car,
   "Bus": Bus,
   "Tram": Tram,
   "Motorcycle": Motorcycle,
   "House": House,
+  "Barn": Barn,
   "Small Skyscraper": SmallSkyscraper,
   "Train": Train,
   "Train Car": TrainCar,
@@ -19,11 +21,13 @@ var areas =
 {
   "Container": 0,
   "Person": 1,
+  "Cow": 2,
   "Car": 4,
   "Bus": 12,
   "Tram": 20,
   "Motorcycle": 2,
   "House": 1000,
+  "Barn": 750,
   "Small Skyscraper": 10000,
   "Train": 500,
   "TrainCar": 500,
@@ -35,11 +39,13 @@ var masses =
 {
   "Container": 0,
   "Person": 80,
+  "Cow": 300,
   "Car": 1000,
   "Bus": 5000,
   "Tram": 10000,
   "Motorcycle": 200,
   "House": 10000,
+  "Barn": 5000,
   "Small Skyscraper": 100000,
   "Train": 5000,
   "Train Car": 5000,
@@ -49,7 +55,7 @@ var masses =
 
 // general logic: each step fills in a fraction of the remaining space
 
-function fill_area2(area, weights = {"Person": 0.1, "Car": 0.05, "House": 0.1})
+function fill_area2(area, weights)
 {
   result = [];
   candidates = [];
@@ -76,10 +82,10 @@ function fill_area2(area, weights = {"Person": 0.1, "Car": 0.05, "House": 0.1})
 
     // for small amounts, actually do the randomness
 
-    // the first few ones get a better shot
+    // the first few ones get a much better shot
     while (limit > 0) {
       if (limit <= 3)
-        count += Math.random() < (1 - Math.pow((1 - candidate.weight),2)) ? 1 : 0;
+        count += Math.random() < (1 - Math.pow((1 - candidate.weight),limit*3)) ? 1 : 0;
       else
         count += Math.random() < candidate.weight ? 1 : 0;
       --limit;
@@ -406,7 +412,6 @@ function Person(count = 1) {
     } else {
       return (this.count > 1 ? this.count + " people" : "a person");
     }
-
   }
 
   this.stomp = function(verbose=true) {
@@ -424,6 +429,40 @@ function Person(count = 1) {
     else
       return line;
   };
+  return this;
+}
+
+function Cow(count = 1) {
+  this.name = "Cow";
+
+  copy_defaults(this,new DefaultEntity());
+
+  this.count = count;
+  this.contents = {};
+
+
+  this.describeOne = function (verbose=true) {
+    body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
+    sex = random_desc(["male", "female"], (verbose ? 1 : 0));
+    return "a " + merge_desc([body,sex,"cow"]);
+  }
+
+  this.describe = function(verbose=true) {
+    if (verbose) {
+      if (count <= 3) {
+        list = [];
+        for (var i = 0; i < count; i++) {
+          list.push(this.describeOne(this.count <= 2));
+        }
+        return merge_things(list);
+      } else {
+        return this.count + " cattle"
+      }
+    } else {
+      return (this.count > 1 ? this.count + " cattle" : "a cow");
+    }
+  }
+
   return this;
 }
 
@@ -690,6 +729,41 @@ function House(count = 1) {
       }
     } else {
       return (this.count > 1 ? this.count + " houses" : "a house");
+    }
+  }
+}
+
+function Barn(count = 1) {
+  this.name = "Barn";
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(0,2,count);
+  this.contents.person = new Person(amount);
+  amount = distribution(30,70,count);
+  this.contents.cow = new Cow(amount);
+
+  this.describeOne = function(verbose=true) {
+    size = random_desc(["little","big","large"], (verbose ? 0.5 : 0));
+    color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
+    name = random_desc(["barn","barn","barn","barn","barn","farmhouse"], 1);
+    return "a " + merge_desc([size,color,name]);
+  }
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
+      } else {
+        return this.count + " barns with " + describe_all(this.contents,verbose) + " inside";
+      }
+    } else {
+      return (this.count > 1 ? this.count + " barns" : "a barn");
     }
   }
 }
