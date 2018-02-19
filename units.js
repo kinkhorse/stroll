@@ -67,7 +67,7 @@ function customaryLength(m, singular=false) {
     var length = round(ft * 12,0);
     return length + (singular || length == 1 ? " inch" : " inches");
   } else if (ft < 5280) {
-    var end = customaryLength((ft - Math.floor(ft))/3.28084);
+    var end = customaryLength((ft - Math.floor(ft))/3.28084, singular);
     var length = Math.floor(ft);
     return length + (singular || length == 1 ? " foot" : " feet") + " " + end;
   } else {
