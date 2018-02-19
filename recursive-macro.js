@@ -58,8 +58,13 @@ function fill_area2(area, weights = {"Person": 0.1, "Car": 0.05, "House": 0.1})
     var count = 0;
 
     // for small amounts, actually do the randomness
+
+    // the first few ones get a better shot
     while (limit > 0) {
-      count += Math.random() < candidate.weight ? 1 : 0;
+      if (limit <= 3)
+        count += Math.random() < (1 - Math.pow((1 - candidate.weight),2)) ? 1 : 0;
+      else
+        count += Math.random() < candidate.weight ? 1 : 0;
       --limit;
     }
 
