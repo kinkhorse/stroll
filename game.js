@@ -1,7 +1,3 @@
-var baseHeight = 3.65;
-var baseMass = 1360;
-var scale = 1;
-
 var strolling = false;
 
 var maxStomachDigest = 10;
@@ -19,13 +15,33 @@ victims = {};
 
 var macro =
 {
+  "scaling": function(value, scale, factor) { return value * Math.pow(scale,factor); },
   "species": "crux",
-  "color" : "blue"
+  "color" : "blue",
+  "baseHeight": 3.65,
+  get height() { return this.scaling(this.baseHeight, this.scale, 1); },
+  "baseMass": 1360,
+  get mass () { return this.scaling(this.baseMass, this.scale, 3); },
+  "basePawArea": 1,
+  get pawArea() { return this.scaling(this.basePawArea, this.scale, 2); },
+  "baseAnalVoreArea": 1,
+  get analVoreArea() { return this.scaling(this.baseAnalVoreArea, this.scale, 2); },
+  "baseAssArea": 1,
+  get assArea() { return this.scaling(this.baseAssArea, this.scale, 2); },
+  "baseHandArea": 1,
+  get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
+  "scale": 1,
+
+  "scaleWithMass": function(mass) {
+    var startMass = this.mass;
+    var newMass = startMass + mass;
+    this.scale = Math.pow(newMass / this.baseMass, 1/3);
+  }
 }
 
 function look()
 {
-  var line1 = "You are a " + length(baseHeight * scale, metric, true) + " tall " + macro.species + ". You weigh " + mass(baseMass * Math.pow(scale,3)) + ".";
+  var line1 = "You are a " + length(macro.height, metric, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, metric) + ".";
 
   var line2 = ""
 
@@ -199,16 +215,9 @@ function updateVictims(type,prey)
   }
 }
 
-function scaleAddMass(scale, baseMass, mass)
-{
-  var startMass = Math.pow(scale, 3) * baseMass;
-  var newMass = startMass + mass;
-  return Math.pow(newMass / baseMass, 1/3) ;
-}
-
 function feed()
 {
-  var area = baseHeight / 30 * scale * scale;
+  var area = macro.handArea;
   var prey = getPrey(biome, area);
 
   var line = prey.eat(verbose)
@@ -233,7 +242,7 @@ function feed()
 
   var preyMass = prey.sum_property("mass");
 
-  scale = scaleAddMass(scale, baseMass, preyMass);
+  macro.scaleWithMass(preyMass);
 
   stomach.push(prey);
 
@@ -246,7 +255,7 @@ function feed()
 
 function stomp()
 {
-  var area = baseHeight / 15 * scale * scale;
+  var area = macro.pawArea;
   var prey = getPrey(biome, area);
   var line = prey.stomp(verbose)
   var linesummary = summarize(prey.sum(), true);
@@ -270,7 +279,7 @@ function stomp()
   }
   var preyMass = prey.sum_property("mass");
 
-  scale = scaleAddMass(scale, baseMass, preyMass);
+  macro.scaleWithMass(preyMass);
 
   updateVictims("stomped",prey);
   update([sound,line,linesummary,newline]);
@@ -278,13 +287,15 @@ function stomp()
 
 function anal_vore()
 {
-  var area = baseHeight / 30 * scale * scale;
+  var area = macro.analVoreArea;
   var prey = getOnePrey(biome,area);
 
-  area = baseHeight * scale * scale / 5;
-  var crushed = getPrey(biome,3*scale*scale);
-  var line1 = prey.anal_vore(verbose, baseHeight*scale);
+  area = macro.assArea;
+  var crushed = getPrey(biome,area);
+
+  var line1 = prey.anal_vore(verbose, macro.height);
   var line1summary = summarize(prey.sum(), false);
+
   var line2 = crushed.buttcrush(verbose);
   var line2summary = summarize(crushed.sum(), true);
 
@@ -325,8 +336,8 @@ function anal_vore()
   var preyMass = prey.sum_property("mass");
   var crushedMass = prey.sum_property("mass");
 
-  scale = scaleAddMass(scale, baseMass, preyMass);
-  scale = scaleAddMass(scale, baseMass, crushedMass);
+  macro.scaleWithMass(preyMass);
+  macro.scaleWithMass(crushedMass);
 
   bowels.push(prey);
 
@@ -350,11 +361,8 @@ function update(lines = [])
 
   log.scrollTop = log.scrollHeight;
 
-  var height = baseHeight * scale;
-  var mass = baseMass * Math.pow(scale, 3);
-
-  document.getElementById("height").innerHTML = "Height: " + (metric ? metricLength(height) : customaryLength(height));
-  document.getElementById("mass").innerHTML = "Mass: " + (metric ? metricMass(mass) : customaryMass(mass));
+  document.getElementById("height").innerHTML = "Height: " + (metric ? metricLength(macro.height) : customaryLength(macro.height));
+  document.getElementById("mass").innerHTML = "Mass: " + (metric ? metricMass(macro.mass) : customaryMass(macro.mass));
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -378,7 +386,7 @@ function update(lines = [])
 function pick_move()
 {
   if (!strolling) {
-    setTimeout(pick_move, 1500 * Math.sqrt(scale));
+    setTimeout(pick_move, 1500 * Math.sqrt(macro.scale));
     return;
   }
   var choice = Math.random();
@@ -390,18 +398,18 @@ function pick_move()
   } else {
     feed();
   }
-  setTimeout(pick_move, 1500 * Math.sqrt(scale));
+  setTimeout(pick_move, 1500 * Math.sqrt(macro.scale));
 }
 
 function grow()
 {
-  var oldHeight = baseHeight * scale;
-  var oldMass = baseMass * Math.pow(scale,3);
+  var oldHeight = macro.height;
+  var oldMass = macro.mass;
 
-  scale *= 1.2;
+  macro.scale *= 1.2;
 
-  var newHeight = baseHeight * scale;
-  var newMass = baseMass * Math.pow(scale,3);
+  var newHeight = macro.height;
+  var newMass = macro.mass;
 
   var heightDelta = newHeight - oldHeight;
   var massDelta = newMass - oldMass;
