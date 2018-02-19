@@ -192,21 +192,19 @@ function update(lines = [])
 function pick_move()
 {
   if (!strolling) {
-    setTimeout(pick_move, 2000);
+    setTimeout(pick_move, 1500 * Math.sqrt(scale));
     return;
   }
   var choice = Math.random();
 
   if (choice < 0.2) {
     anal_vore();
-    setTimeout(pick_move, 2000);
   } else if (choice < 0.6) {
     stomp();
-    setTimeout(pick_move, 2000);
   } else {
     feed();
-    setTimeout(pick_move, 2000);
   }
+  setTimeout(pick_move, 1500 * Math.sqrt(scale));
 }
 
 function grow()
