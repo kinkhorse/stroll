@@ -3,7 +3,7 @@ var strolling = false;
 var maxStomachDigest = 10;
 var maxBowelsDigest = 10;
 
-var metric = true;
+var unit = "metric";
 
 var verbose = true;
 
@@ -41,7 +41,7 @@ var macro =
 
 function look()
 {
-  var line1 = "You are a " + length(macro.height, metric, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, metric) + ".";
+  var line1 = "You are a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
 
   var line2 = ""
 
@@ -90,9 +90,13 @@ function change_location()
 
 function toggle_units()
 {
-  metric = !metric;
+  switch(unit) {
+    case "metric": unit = "customary"; break;
+    case "customary": unit = "approx"; break;
+    case "approx": unit = "metric"; break;
+  }
 
-  document.getElementById("button-units").innerHTML = "Units: " + (metric ? "Metric" : "Customary");
+  document.getElementById("button-units").innerHTML = "Units: " + unit.charAt(0).toUpperCase() + unit.slice(1);
 
   update();
 }
@@ -361,8 +365,8 @@ function update(lines = [])
 
   log.scrollTop = log.scrollHeight;
 
-  document.getElementById("height").innerHTML = "Height: " + (metric ? metricLength(macro.height) : customaryLength(macro.height));
-  document.getElementById("mass").innerHTML = "Mass: " + (metric ? metricMass(macro.mass) : customaryMass(macro.mass));
+  document.getElementById("height").innerHTML = "Height: " + length(macro.height, unit);
+  document.getElementById("mass").innerHTML = "Mass: " + mass(macro.mass, unit);
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -414,10 +418,10 @@ function grow()
   var heightDelta = newHeight - oldHeight;
   var massDelta = newMass - oldMass;
 
-  var heightStr = metric ? metricLength(heightDelta) : customaryLength(heightDelta);
-  var massStr = metric ? metricMass(massDelta) : customaryMass(massDelta);
+  var heightStr = length(heightDelta, unit);
+  var massStr = mass(massDelta, unit);
 
-  update(["Power surges through you as you grow " + heightStr + " and gain " + massStr,newline]);
+  update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
 // pop the list and digest that object
