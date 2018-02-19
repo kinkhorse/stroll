@@ -363,6 +363,14 @@ function Container(contents = []) {
     return describe_all(this.contents,false)
   }
 
+  this.eat = function() {
+    var line = containerEat(this);
+    if (line == "")
+      return defaultEat(this)();
+    else
+      return line;
+  };
+
   return this;
 }
 
@@ -398,6 +406,22 @@ function Person(count = 1) {
     }
 
   }
+
+  this.stomp = function() {
+    var line = personStomp(this);
+    if (line == "")
+      return defaultStomp(this)();
+    else
+      return line;
+  };
+
+  this.eat = function() {
+    var line = personEat(this);
+    if (line == "")
+      return defaultEat(this)();
+    else
+      return line;
+  };
   return this;
 }
 
