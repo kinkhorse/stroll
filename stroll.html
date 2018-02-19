@@ -10,26 +10,13 @@
     <script src="game.js"></script>
   </head>
   <body>
-    <div class=stat-header-self id=stats-self>
-      <p>Stats</p>
-      <div class=stat-line id=height></div>
-      <div class=stat-line id=mass></div>
-    </div>
-    <div id=game-area>
-      <div id=log>
-        <div>Welcome to Stroll 0.1.5</div>
-        <div>It's a nice day for a walk</div>
-      </div>
-      <button id=button-grow>Get Bigger</button>
-      <button id=button-feed>Eat</button>
-      <button id=button-stomp>Stomp</button>
-      <button id=button-anal_vore>Sit</button>
-      <div></div>
-      <button id=button-stroll>Stroll</button>
-      <div id=strolling-indicator>Standing</div>
-      <button id=button-units>Metric</button>
-      <button id=button-verbose>Verbose</button>
-      <div class=flex-container>
+    <div class=game-area>
+      <div class=stat-container>
+        <div class=stat-header-self id=stats-self>
+          <p>Stats</p>
+          <div class=stat-line id=height></div>
+          <div class=stat-line id=mass></div>
+        </div>
         <div class=stat-header id=stats-stomped>
           <p>Stomped</p>
         </div>
@@ -42,6 +29,27 @@
         <div class=stat-header id=stats-bowels>
           <p>Bowels</p>
         </div>
+      </div>
+      <div id=log-area>
+        <div id=log>
+          <div>Welcome to Stroll 0.1.5</div>
+          <div>It's a nice day for a walk</div>
+        </div>
+      </div>
+      <div class=button-container>
+        <button class=action-button id=button-grow>Get Bigger</button>
+        <p/>
+        <button class=action-button id=button-feed>Eat</button>
+        <p/>
+        <button class=action-button id=button-stomp>Stomp</button>
+        <p/>
+        <button class=action-button id=button-anal_vore>Sit</button>
+        <p/>
+        <div></div>
+        <button class=action-button id=button-stroll>Stroll</button>
+        <div id=strolling-indicator>Standing</div>
+        <button class=action-button class=action-button id=button-units>Metric</button>
+        <button class=action-button id=button-verbose>Verbose</button>
       </div>
     </div>
   </body>
