@@ -60,6 +60,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   max-width: 300px;
+  height: 400px;
   flex: 2;
 }
 

@@ -262,6 +262,10 @@ function defaultCockslap(thing) {
   return function(verbose=true,height=10) { return "Your swaying shaft crushes " + thing.describe(verbose) + ". "; }
 }
 
+function defaultCockVore(thing) {
+  return function(verbose=true,height=10) { return "You stuff " + thing.describe(verbose) + " into your throbbing shaft, forcing them down to your heavy balls."; }
+}
+
 function defaultBallSmother(thing) {
   return function(verbose=true,height=10) { return "Your weighty balls spread over " + thing.describe(verbose) + ", smothering them in musk. "; }
 }
@@ -349,6 +353,7 @@ function DefaultEntity() {
   this.breast_crush = defaultBreastCrush;
   this.unbirth = defaultUnbirth;
   this.cockslap = defaultCockslap;
+  this.cock_vore = defaultCockVore;
   this.ball_smother = defaultBallSmother;
   this.sum = defaultSum;
   this.area = defaultArea;

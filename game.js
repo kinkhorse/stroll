@@ -37,6 +37,9 @@ var macro =
   "dickScale": 1,
   get dickLength() { return this.scaling(this.baseDickLength * this.dickScale, this.scale, 1); },
   get dickDiameter() { return this.scaling(this.baseDickDiameter * this.dickScale, this.scale, 1); },
+  get dickGirth() {
+    return Math.pow((this.dickDiameter / 2),2) * Math.PI;
+  },
   get dickArea() {
     return this.dickLength * this.dickDiameter * Math.PI / 2;
   },
@@ -82,6 +85,110 @@ var macro =
   get breastMass() {
     var volume = this.breastVolume;
     return volume * this.breastDensity;
+  },
+
+  "digest": function(organ) {
+    var count = Math.min(organ.contents.length, organ.maxDigest);
+
+    var container = new Container();
+
+    while (count > 0) {
+      var victim = organ.contents.shift();
+      if (victim.name != "Container")
+        victim = new Container([victim]);
+      container = container.merge(victim);
+      --count;
+    }
+
+    var digested = container.sum();
+
+    for (var key in victims[organ.name]) {
+      if (victims[organ.name].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
+        victims["digested"][key] += digested[key];
+        victims[organ.name][key] -= digested[key];
+      }
+    }
+
+    var line = organ.describeDigestion(container);
+
+    var summary = summarize(container.sum());
+
+    update([line,summary,newline]);
+  },
+
+  "stomach": {
+    "name": "stomach",
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      if (self.contents.length == 0)
+        setTimeout(function() { owner.digest(self) }, 15000);
+      this.contents.push(prey);
+    },
+    "describeDigestion": function(container) {
+      return "Your stomach gurgles as it digests " + container.describe(false);
+    },
+    "contents": [],
+    "maxDigest": 5
+  },
+
+  "bowels": {
+    "name" : "bowels",
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      if (self.contents.length == 0)
+        setTimeout(function() { owner.digest(self) }, 15000);
+      this.contents.push(prey);
+    },
+    "describeDigestion" : function(container) {
+      return "Your bowels churn as they absorb " + container.describe(false);
+    },
+    "contents" : [],
+    "maxDigest" : 3
+  },
+
+  "womb": {
+    "name" : "womb",
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      if (self.contents.length == 0)
+        setTimeout(function() { owner.digest(self) }, 15000);
+      this.contents.push(prey);
+    },
+    "describeDigestion" : function(container) {
+      return "Your womb squeezes as it dissolves " + container.describe(false);
+    },
+    "contents" : [],
+    "maxDigest" : 1
+  },
+
+  "balls": {
+    "name" : "balls",
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      if (self.contents.length == 0)
+        setTimeout(function() { owner.digest(self) }, 15000);
+      this.contents.push(prey);
+    },
+    "describeDigestion" : function(container) {
+      return "Your balls slosh as they transform " + container.describe(false) + " into cum";
+    },
+    "contents" : [],
+    "maxDigest" : 1
+  },
+
+  "init": function() {
+    this.stomach.owner = this;
+    this.bowels.owner = this;
+    this.womb.owner = this;
+    this.balls.owner = this;
   },
 
   "maleParts": true,
@@ -211,9 +318,6 @@ function summarize(sum, fatal = true)
   return "<b>(" + count + " " + (fatal ? (count > 1 ? "kills" : "kill") : (count > 1 ? "prey" : "prey")) + ")</b>";
 }
 
-var stomach = []
-var bowels = []
-
 function getOnePrey(biome,area)
 {
   var potential = ["Person"];
@@ -325,10 +429,7 @@ function feed()
 
   macro.scaleWithMass(preyMass);
 
-  stomach.push(prey);
-
-  if (stomach.length == 1)
-    setTimeout(function() { doDigest("stomach"); }, 15000);
+  macro.stomach.feed(prey);
 
   updateVictims("stomach",prey);
   update([sound,line,linesummary,newline]);
@@ -420,10 +521,7 @@ function anal_vore()
   macro.scaleWithMass(preyMass);
   macro.scaleWithMass(crushedMass);
 
-  bowels.push(prey);
-
-  if (bowels.length == 1)
-    setTimeout(function() { doDigest("bowels"); }, 15000);
+  macro.bowels.feed(prey);
 
   updateVictims("bowels",prey);
   updateVictims("stomped",crushed);
@@ -467,7 +565,7 @@ function unbirth()
   var area = macro.vaginaArea;
   var prey = getPrey(biome, area);
   var line = prey.unbirth(verbose)
-  var linesummary = summarize(prey.sum(), true);
+  var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
 
@@ -490,6 +588,8 @@ function unbirth()
   var preyMass = prey.sum_property("mass");
 
   macro.scaleWithMass(preyMass);
+
+  macro.womb.feed(prey);
 
   updateVictims("womb",prey);
   update([sound,line,linesummary,newline]);
@@ -519,11 +619,46 @@ function cockslap()
   } else {
     sound = "Oh the humanity!";
   }
+
   var preyMass = prey.sum_property("mass");
 
   macro.scaleWithMass(preyMass);
 
   updateVictims("cock",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function cock_vore()
+{
+  var area = macro.dickGirth;
+  var prey = getPrey(biome, area);
+  var line = prey.cock_vore(verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "lp";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  macro.balls.feed(prey);
+
+  updateVictims("balls",prey);
   update([sound,line,linesummary,newline]);
 }
 
@@ -630,51 +765,6 @@ function grow()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
-// pop the list and digest that object
-
-function doDigest(containerName)
-{
-  var digestType = containerName == "stomach" ? stomach : bowels;
-  var count = 0
-
-  if (containerName == "stomach") {
-    count = stomach.length;
-    count = Math.min(count,maxStomachDigest);
-  } else if (containerName == "bowels") {
-    count = bowels.length;
-    count = Math.min(count,maxBowelsDigest);
-  }
-
-  var container = new Container();
-
-  while (count > 0) {
-    --count;
-    var toDigest = digestType.shift();
-    if (toDigest.name != "Container")
-      toDigest = new Container([toDigest]);
-    container = container.merge(toDigest);
-  }
-
-  var digested = container.sum();
-
-  for (var key in victims[containerName]) {
-    if (victims[containerName].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
-      victims["digested"][key] += digested[key];
-      victims[containerName][key] -= digested[key];
-    }
-  }
-
-  if (containerName == "stomach")
-    update(["Your stomach gurgles as it digests " + container.describe(false),summarize(container.sum()),newline]);
-  else if (containerName == "bowels")
-    update(["Your bowels churn as they absorb " + container.describe(false),summarize(container.sum()),newline]);
-
-  if (digestType.length > 0) {
-    setTimeout(function() {
-      doDigest(containerName);
-    }, 15000);
-  }
-}
 
 window.addEventListener('load', function(event) {
   victims["stomped"] = initVictims();
@@ -685,6 +775,9 @@ window.addEventListener('load', function(event) {
   victims["womb"] = initVictims();
   victims["cock"] = initVictims();
   victims["balls"] = initVictims();
+  victims["smothered"] = initVictims();
+
+  macro.init();
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-grow").addEventListener("click",grow);
@@ -693,6 +786,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
   document.getElementById("button-unbirth").addEventListener("click",unbirth);
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
+  document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
   document.getElementById("button-ball_smother").addEventListener("click",ball_smother);
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
