@@ -147,7 +147,7 @@ function anal_vore()
   var prey = getOnePrey(0.25*scale*scale);
   var crushed = getPrey("suburb",3*scale*scale);
   var line1 = prey.anal_vore(baseHeight*scale) + " " + summarize(prey.sum(), false);
-  var line2 = crushed.buttcrush() + " " + summarize(crushed.sum(), false)
+  var line2 = crushed.buttcrush() + " " + summarize(crushed.sum(), true)
 
   var preyMass = prey.sum_property("mass");
   var crushedMass = prey.sum_property("mass");
