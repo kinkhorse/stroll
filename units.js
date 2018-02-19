@@ -26,7 +26,10 @@ function volume(m3, type="metric", singular=false) {
   }
 }
 function metricMass(kg, singular=false) {
-  if (kg < 1) {
+  if (kg < 1/1000) {
+    var mass = round(kg * 1e6,0);
+    return mass + (singular || mass == 1 ? " milligram" : " milligrams");
+  } else if (kg < 1) {
     var mass = round(kg * 1000,0);
     return mass + (singular || mass == 1 ? " gram" : " grams");
   } else if (kg < 5000) {
@@ -82,7 +85,10 @@ function approxMass(kg, singular=false) {
 }
 
 function metricLength(m, singular=false) {
-  if (m < 1) {
+  if (m < 1/100) {
+    var length = round(m * 1000,2);
+    return length + (singular || length == 1 ? " millimeter" : " millimeters");
+  } else if (m < 1) {
     var length = round(m * 100,0);
     return length + (singular || length == 1 ? " centimeter" : " centimeters");
   } else if (m < 500) {
