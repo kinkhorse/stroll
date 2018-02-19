@@ -34,7 +34,7 @@ function getPreyCounts(contents) {
   return prey;
 }
 
-function containerEat(container) {
+function containerEat(container,verbose=true) {
   var preyNames = getPreyNames(container.contents);
   var preyCounts = getPreyCounts(container.contents);
   return "";
@@ -75,11 +75,17 @@ function personStomp(person) {
   return "";
 }
 
-function skyscraperAnalVore(skyscraper,height = 10) {
+function skyscraperAnalVore(skyscraper,verbose=true,height = 10) {
   if (height < 5000) {
-    return "You ease yourself down over the skyscraper, spreading your ass wide as you take it to the ground - then, with a powerful clench, snap it from its base. " + describe_all(skyscraper.contents) + " are sealed away in your ass.";
+    if (verbose)
+      return "You ease yourself down over the skyscraper, spreading your ass wide as you take it to the ground - then, with a powerful clench, snap it from its base. " + describe_all(skyscraper.contents) + " are sealed away in your ass.";
+    else
+      return "You ease yourself down over the skyscraper, spreading your ass wide as you take it to the ground - then, with a powerful clench, snap it from its base. ";
   } else {
-    return "You stuff the skyscraper up your ass with ease. Bad luck for " + describe_all(skyscraper.contents) + " inside.";
+    if (verbose)
+      return "You stuff the skyscraper up your ass with ease. Bad luck for " + describe_all(skyscraper.contents) + " inside.";
+    else
+      return "You stuff the skyscraper up your ass with ease.";
   }
 
   return "";

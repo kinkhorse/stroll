@@ -60,7 +60,7 @@ function fill_area2(area, weights = {"Person": 0.1, "Car": 0.05, "House": 0.1})
   }
 
   candidates = candidates.sort(function (x,y) {
-    return x.area > y.area
+    return x.area - y.area;
   });
 
   while(candidates.length > 0) {
@@ -365,10 +365,10 @@ function Container(contents = []) {
     return describe_all(this.contents,verbose)
   }
 
-  this.eat = function() {
-    var line = containerEat(this);
+  this.eat = function(verbose=true) {
+    var line = containerEat(this,verbose);
     if (line == "")
-      return defaultEat(this)();
+      return defaultEat(this)(verbose);
     else
       return line;
   };
@@ -409,18 +409,18 @@ function Person(count = 1) {
 
   }
 
-  this.stomp = function() {
+  this.stomp = function(verbose=true) {
     var line = personStomp(this);
     if (line == "")
-      return defaultStomp(this)();
+      return defaultStomp(this)(verbose);
     else
       return line;
   };
 
-  this.eat = function() {
+  this.eat = function(verbose=true) {
     var line = personEat(this);
     if (line == "")
-      return defaultEat(this)();
+      return defaultEat(this)(verbose);
     else
       return line;
   };
@@ -728,10 +728,10 @@ function SmallSkyscraper(count = 1) {
 
   }
 
-  this.anal_vore = function(height=10) {
-    var line = skyscraperAnalVore(this,height);
+  this.anal_vore = function(verbose=true,height=10) {
+    var line = skyscraperAnalVore(this,verbose,height);
     if (line == "")
-      return defaultAnalVore(this)();
+      return defaultAnalVore(this)(verbose);
     else
       return line;
   };

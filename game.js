@@ -76,7 +76,7 @@ function getOnePrey(area)
   });
 
   potAreas = potAreas.sort(function (x,y) {
-    return x[1] < y[1];
+    return y[1] - x[1];
   });
 
   for (var i=0; i<potAreas.length; i++) {
