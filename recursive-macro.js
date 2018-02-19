@@ -1,4 +1,3 @@
-
 var things =
 {
   "Container": Container,
@@ -226,23 +225,23 @@ function distribution(min, max, samples) {
 /* default actions */
 
 function defaultStomp(thing) {
-  return function (height=10) { return "You crush " + thing.describe() + " underfoot."};
+  return function (verbose=true,height=10) { return "You crush " + thing.describe(verbose) + " underfoot."};
 }
 
 function defaultKick(thing) {
-  return function(height=10) { return "You punt " + thing.describe() + ", destroying " + (thing.count > 1 ? "them" : "it") + "."; }
+  return function(verbose=true,height=10) { return "You punt " + thing.describe(verbose) + ", destroying " + (thing.count > 1 ? "them" : "it") + "."; }
 }
 
 function defaultEat(thing) {
-  return function(height=10) { return "You scoop up " + thing.describe() + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
+  return function(verbose=true,height=10) { return "You scoop up " + thing.describe(verbose) + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
 }
 
 function defaultAnalVore(thing) {
-  return function(height=10) { return "You sit yourself down on " + thing.describe() + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
+  return function(verbose=true,height=10) { return "You sit yourself down on " + thing.describe(verbose) + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
 }
 
 function defaultButtcrush(thing) {
-  return function(height=10) { return "Your heavy ass obliterates " + thing.describe() + ". "; }
+  return function(verbose=true,height=10) { return "Your heavy ass obliterates " + thing.describe(verbose) + ". "; }
 }
 
 function defaultArea(thing) {
@@ -363,7 +362,7 @@ function Container(contents = []) {
   }
 
   this.describe = function(verbose = true) {
-    return describe_all(this.contents,false)
+    return describe_all(this.contents,verbose)
   }
 
   this.eat = function() {
@@ -405,7 +404,7 @@ function Person(count = 1) {
         return this.count + " people"
       }
     } else {
-      return this.count + " " + (this.count > 1 ? "people" : "person");
+      return (this.count > 1 ? this.count + " people" : "a person");
     }
 
   }
@@ -457,7 +456,7 @@ function EmptyCar(count = 1) {
         return this.count + " parked cars";
       }
     } else {
-      return this.count + " parked " + (this.count > 1 ? "cars" : "car");
+      return (this.count > 1 ? this.count + " parked cars" : "a parked car");
     }
 
   }
@@ -492,7 +491,7 @@ function Car(count = 1) {
         return this.count + " cars with " + this.contents.person.describe(false) + " inside";
       }
     } else {
-      return this.count + " " + (this.count > 1 ? "cars" : "car");
+      return (this.count > 1 ? this.count + " cars" : "a car");
     }
 
   }
@@ -516,15 +515,20 @@ function Bus(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + this.contents.person.describe() + " inside";
+      } else {
+        return this.count + " buses with " + this.contents.person.describe() + " inside";
       }
-      return merge_things(list) + " with " + this.contents.person.describe() + " inside";
     } else {
-      return this.count + " buses with " + this.contents.person.describe() + " inside";
+      return (this.count > 1 ? this.count + " buses" : "a bus");
     }
+
   }
 }
 
@@ -546,14 +550,18 @@ function Tram(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + this.contents.person.describe() + " inside";
+      } else {
+        return this.count + " trams with " + this.contents.person.describe() + " inside";
       }
-      return merge_things(list) + " with " + this.contents.person.describe() + " inside";
     } else {
-      return this.count + " trams with " + this.contents.person.describe() + " inside";
+      return (this.count > 1 ? this.count + " trams" : "a tram");
     }
   }
 
@@ -569,9 +577,6 @@ function Motorcycle(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = {};
-
-
-
 
   var amount = distribution(1,2,count);
   this.contents.person = new Person(amount);
@@ -590,7 +595,6 @@ function Train(count = 1) {
   amount = distribution(1,10,count);
   this.contents.traincar = new TrainCar(amount);
 
-
   this.describeOne = function(verbose=true) {
     adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
     color = random_desc(["black","tan","gray"], (verbose ? 1 : 0));
@@ -599,15 +603,20 @@ function Train(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
+      } else {
+        return this.count + " trains with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
       }
-      return merge_things(list) + " with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
     } else {
-      return this.count + " trains with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
+      return (this.count > 1 ? this.count + " trains" : "a train");
     }
+
   }
 
   this.anal_vore = function() {
@@ -634,14 +643,18 @@ function TrainCar(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + describe_all(this.contents) + " inside";
+      } else {
+        return this.count + " train cars with " + describe_all(this.contents) + " inside";
       }
-      return merge_things(list) + " with " + describe_all(this.contents) + " inside";
     } else {
-      return this.count + " train cars with " + describe_all(this.contents) + " inside";
+      return (this.count > 1 ? this.count + " train cars" : "a train car");
     }
   }
 }
@@ -665,14 +678,18 @@ function House(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + this.contents.person.describe(verbose) + " inside";
+      } else {
+        return this.count + " homes with " + this.contents.person.describe(verbose) + " inside";
       }
-      return merge_things(list) + " with " + this.contents.person.describe() + " inside";
     } else {
-      return this.count + " homes with " + this.contents.person.describe() + " inside";
+      return (this.count > 1 ? this.count + " houses" : "a house");
     }
   }
 }
@@ -695,15 +712,20 @@ function SmallSkyscraper(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    if (this.count <= 3) {
-      list = [];
-      for (var i = 0; i < this.count; i++) {
-        list.push(this.describeOne(this.count < 2));
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
+      } else {
+        return this.count + " small skyscrapers with " + describe_all(this.contents,verbose) + " inside";
       }
-      return merge_things(list) + " with " + describe_all(this.contents,false) + " inside";
     } else {
-      return this.count + " small skyscrapers with " + describe_all(this.contents,false) + " inside";
+      return (this.count > 1 ? this.count + " skyscrapers" : "a skyscraper");
     }
+
   }
 
   this.anal_vore = function(height=10) {
@@ -733,7 +755,11 @@ function ParkingGarage(count = 1) {
   }
 
   this.describe = function(verbose = true) {
-    return (this.count == 1 ? "a parking garage" : this.count + " parking garages") + " with " + describe_all(this.contents) + " inside";
+    if (verbose) {
+      return (this.count == 1 ? "a parking garage" : this.count + " parking garages") + " with " + describe_all(this.contents, verbose) + " inside";
+    } else {
+      return (this.count == 1 ? "a parking garage" : this.count + " parking garages");
+    }
   }
 }
 

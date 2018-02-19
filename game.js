@@ -9,6 +9,8 @@ var maxBowelsDigest = 10;
 
 var metric = true;
 
+var verbose = true;
+
 victims = {};
 
 function toggle_auto()
@@ -28,6 +30,13 @@ function toggle_units()
   document.getElementById("button-units").innerHTML = metric ? "Metric" : "Customary";
 
   update();
+}
+
+function toggle_verbose()
+{
+  verbose = !verbose;
+
+  document.getElementById("button-verbose").innerHTML = verbose ? "Verbose" : "Simple";
 }
 
 function initVictims()
@@ -114,7 +123,7 @@ function feed()
 {
   var prey = getPrey("suburb", 0.5*scale*scale);
 
-  var line = prey.eat() + " " + summarize(prey.sum(), false);
+  var line = prey.eat(verbose) + " " + summarize(prey.sum(), false);
 
   var preyMass = prey.sum_property("mass");
 
@@ -132,7 +141,7 @@ function feed()
 function stomp()
 {
   var prey = getPrey("suburb", 1.5*scale*scale);
-  var line = prey.stomp() + " " + summarize(prey.sum(), true);
+  var line = prey.stomp(verbose) + " " + summarize(prey.sum(), true);
 
   var preyMass = prey.sum_property("mass");
 
@@ -146,8 +155,8 @@ function anal_vore()
 {
   var prey = getOnePrey(0.25*scale*scale);
   var crushed = getPrey("suburb",3*scale*scale);
-  var line1 = prey.anal_vore(baseHeight*scale) + " " + summarize(prey.sum(), false);
-  var line2 = crushed.buttcrush() + " " + summarize(crushed.sum(), true)
+  var line1 = prey.anal_vore(verbose, baseHeight*scale) + " " + summarize(prey.sum(), false);
+  var line2 = crushed.buttcrush(verbose) + " " + summarize(crushed.sum(), true)
 
   var preyMass = prey.sum_property("mass");
   var crushedMass = prey.sum_property("mass");
@@ -284,6 +293,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-units").addEventListener("click",toggle_units);
+  document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   setTimeout(pick_move, 2000);
 
   update();
