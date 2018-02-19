@@ -17,6 +17,27 @@ var newline = "&nbsp;";
 
 victims = {};
 
+var macro =
+{
+  "species": "crux",
+  "color" : "blue"
+}
+
+function look()
+{
+  var line1 = "You are a " + length(baseHeight * scale, metric, true) + " tall " + macro.species + ". You weigh " + mass(baseMass * Math.pow(scale,3)) + ".";
+
+  var line2 = ""
+
+  switch(biome) {
+    case "rural": line2 = "You're standing amongst rural farmhouses and expansive ranches. Cattle are milling about at your feet."; break;
+    case "suburb": line2 = "You're striding through the winding roads of a suburb."; break;
+    case "city": line2 = "You're terrorizing the streets of a city. Heavy traffic, worsened by your rampage, is everywhere."; break;
+    case "downtown": line2 = "You're lurking amongst the skyscrapers of downtown. The streets are packed, and the buildings are practically begging you to knock them over.";
+  }
+  update([line1,newline,line2,newline]);
+}
+
 function get_living_prey(sum) {
   var total = 0;
   for (var key in sum) {
@@ -443,14 +464,15 @@ window.addEventListener('load', function(event) {
   victims["stomach"] = initVictims();
   victims["bowels"] = initVictims();
 
+  document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-grow").addEventListener("click",grow);
   document.getElementById("button-feed").addEventListener("click",feed);
   document.getElementById("button-stomp").addEventListener("click",stomp);
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
+  document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
-  document.getElementById("button-location").addEventListener("click",change_location);
   setTimeout(pick_move, 2000);
 
   update();

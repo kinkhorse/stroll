@@ -1,3 +1,8 @@
+function configure(dict) {
+  foot = dict.foot;
+
+}
+
 function subset(list1,list2) {
   for (var i = 0; i < list1.length; i++) {
     if (!list2.includes(list1[i])){
