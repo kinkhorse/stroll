@@ -37,6 +37,9 @@ var macro =
   "dickScale": 1,
   get dickLength() { return this.scaling(this.baseDickLength * this.dickScale, this.scale, 1); },
   get dickDiameter() { return this.scaling(this.baseDickDiameter * this.dickScale, this.scale, 1); },
+  get dickArea() {
+    return this.dickLength * this.dickDiameter * Math.PI / 2;
+  },
   get dickVolume() {
     return this.dickLength * Math.pow(this.dickDiameter/2,2) * Math.PI;
   },
@@ -47,6 +50,7 @@ var macro =
   "ballDensity": 1000,
   "ballScale": 1,
   get ballDiameter() { return this.scaling(this.baseBallDiameter * this.ballScale, this.scale, 1); },
+  get ballArea() { return 2 * Math.PI * Math.pow(this.ballDiameter/2, 2) },
   get ballVolume() {
     var radius = this.ballDiameter / 2;
     return 4/3 * Math.PI * Math.pow(radius,3);
@@ -62,11 +66,15 @@ var macro =
 
   get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
+  get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
 
   "baseBreastDiameter": 0.1,
   "breastScale": 1,
   "breastDensity": 1000,
   get breastDiameter() { return this.scaling(this.baseDickLength * this.breastScale, this.scale, 1); },
+  get breastArea() {
+    return 2 * Math.PI * Math.pow(this.breastDiameter/2,2);
+  },
   get breastVolume() {
     var radius = this.breastDiameter / 2;
     return 4/3 * Math.PI * Math.pow(radius,3);
@@ -422,6 +430,135 @@ function anal_vore()
   update([sound,line1,line1summary,newline,sound2,line2,line2summary,newline]);
 }
 
+function breast_crush()
+{
+  var area = macro.breastArea;
+  var prey = getPrey(biome, area);
+  var line = prey.breast_crush(verbose);
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  updateVictims("breasts",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function unbirth()
+{
+  var area = macro.vaginaArea;
+  var prey = getPrey(biome, area);
+  var line = prey.unbirth(verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  updateVictims("womb",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function cockslap()
+{
+  var area = macro.dickArea;
+  var prey = getPrey(biome, area);
+  var line = prey.cockslap(verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  updateVictims("cock",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function ball_smother()
+{
+  var area = macro.ballArea * 2;
+  var prey = getPrey(biome, area);
+  var line = prey.ball_smother(verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Smoosh!";
+  } else if (people < 500) {
+    sound = "SMOOSH!";
+  } else if (people < 5000) {
+    sound = "SMOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  updateVictims("balls",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function update(lines = [])
 {
   var log = document.getElementById("log");
@@ -544,11 +681,19 @@ window.addEventListener('load', function(event) {
   victims["digested"] = initVictims();
   victims["stomach"] = initVictims();
   victims["bowels"] = initVictims();
+  victims["breasts"] = initVictims();
+  victims["womb"] = initVictims();
+  victims["cock"] = initVictims();
+  victims["balls"] = initVictims();
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-grow").addEventListener("click",grow);
   document.getElementById("button-feed").addEventListener("click",feed);
   document.getElementById("button-stomp").addEventListener("click",stomp);
+  document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
+  document.getElementById("button-unbirth").addEventListener("click",unbirth);
+  document.getElementById("button-cockslap").addEventListener("click",cockslap);
+  document.getElementById("button-ball_smother").addEventListener("click",ball_smother);
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);

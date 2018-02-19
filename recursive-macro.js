@@ -250,6 +250,22 @@ function defaultButtcrush(thing) {
   return function(verbose=true,height=10) { return "Your heavy ass obliterates " + thing.describe(verbose) + ". "; }
 }
 
+function defaultBreastCrush(thing) {
+  return function(verbose=true,height=10) { return "Your heavy breasts obliterate " + thing.describe(verbose) + ". "; }
+}
+
+function defaultUnbirth(thing) {
+  return function(verbose=true,height=10) { return "You gasp as you slide " + thing.describe(verbose) + " up your slit. "; }
+}
+
+function defaultCockslap(thing) {
+  return function(verbose=true,height=10) { return "Your swaying shaft crushes " + thing.describe(verbose) + ". "; }
+}
+
+function defaultBallSmother(thing) {
+  return function(verbose=true,height=10) { return "Your weighty balls spread over " + thing.describe(verbose) + ", smothering them in musk. "; }
+}
+
 function defaultArea(thing) {
   return areas[thing.name];
 }
@@ -330,6 +346,10 @@ function DefaultEntity() {
   this.kick = defaultKick;
   this.anal_vore = defaultAnalVore;
   this.buttcrush = defaultButtcrush;
+  this.breast_crush = defaultBreastCrush;
+  this.unbirth = defaultUnbirth;
+  this.cockslap = defaultCockslap;
+  this.ball_smother = defaultBallSmother;
   this.sum = defaultSum;
   this.area = defaultArea;
   this.mass = defaultMass;

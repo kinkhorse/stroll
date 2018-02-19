@@ -9,13 +9,13 @@ body {
   margin: auto;
 }
 
-@media (max-aspect-ratio: 1/1){
+@media (max-aspect-ratio: 1.2){
   .game-area {
     width: 100%
   }
 }
 
-@media (min-aspect-ratio: 1/1){
+@media (min-aspect-ratio: 16/9){
   .game-area {
     width: 75%
   }
@@ -59,12 +59,12 @@ body {
 .button-container {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  flex: 1;
+  max-width: 300px;
+  flex: 2;
 }
 
 .action-button {
   font-size: 24px;
-  width: 200px;
+  width: 120px;
   height: 75px;
 }
