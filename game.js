@@ -11,6 +11,8 @@ var metric = true;
 
 var verbose = true;
 
+var newline = "&nbsp;";
+
 victims = {};
 
 function toggle_auto()
@@ -59,7 +61,7 @@ function initVictims()
 // lists out total people
 function summarize(sum, fatal = true)
 {
-  return "(" + sum["Person"] + " " + (fatal ? (sum["Person"] > 1 ? "kills" : "kill") : (sum["Person"] > 1 ? "people" : "person")) + ")";
+  return "<b>(" + sum["Person"] + " " + (fatal ? (sum["Person"] > 1 ? "kills" : "kill") : (sum["Person"] > 1 ? "people" : "person")) + ")</b>";
 }
 
 var stomach = []
@@ -123,7 +125,25 @@ function feed()
 {
   var prey = getPrey("suburb", 0.5*scale*scale);
 
-  var line = prey.eat(verbose) + " " + summarize(prey.sum(), false);
+  var line = prey.eat(verbose)
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = prey.sum()["Person"];
+  var sound = "Ulp";
+
+  if (people < 3) {
+    sound = "Ulp.";
+  } else if (people < 10) {
+    sound = "Gulp.";
+  } else if (people < 50) {
+    sound = "Glrrp.";
+  } else if (people < 500) {
+    sound = "Glrrrpkh!";
+  } else if (people < 5000) {
+    sound = "GLRRKPKH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
 
   var preyMass = prey.sum_property("mass");
 
@@ -135,28 +155,82 @@ function feed()
     setTimeout(function() { doDigest("stomach"); }, 15000);
 
   updateVictims("stomach",prey);
-  update([line]);
+  update([sound,line,linesummary,newline]);
 }
 
 function stomp()
 {
   var prey = getPrey("suburb", 1.5*scale*scale);
-  var line = prey.stomp(verbose) + " " + summarize(prey.sum(), true);
+  var line = prey.stomp(verbose)
+  var linesummary = summarize(prey.sum(), true);
 
+  var people = prey.sum()["Person"];
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
   var preyMass = prey.sum_property("mass");
 
   scale = scaleAddMass(scale, baseMass, preyMass);
 
   updateVictims("stomped",prey);
-  update([line]);
+  update([sound,line,linesummary,newline]);
 }
 
 function anal_vore()
 {
   var prey = getOnePrey(0.25*scale*scale);
   var crushed = getPrey("suburb",3*scale*scale);
-  var line1 = prey.anal_vore(verbose, baseHeight*scale) + " " + summarize(prey.sum(), false);
-  var line2 = crushed.buttcrush(verbose) + " " + summarize(crushed.sum(), true)
+  var line1 = prey.anal_vore(verbose, baseHeight*scale);
+  var line1summary = summarize(prey.sum(), false);
+  var line2 = crushed.buttcrush(verbose);
+  var line2summary = summarize(crushed.sum(), true);
+
+  var people = prey.sum()["Person"];
+  var sound = "Shlp";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  people = crushed.sum()["Person"];
+  var sound2 = "Thump";
+
+  if (people < 3) {
+    sound2 = "Thump!";
+  } else if (people < 10) {
+    sound2 = "Squish!";
+  } else if (people < 50) {
+    sound2 = "Crunch!";
+  } else if (people < 500) {
+    sound2 = "CRUNCH!";
+  } else if (people < 5000) {
+    sound2 = "CRRUUUNCH!!";
+  } else {
+    sound2 = "Oh the humanity!";
+  }
 
   var preyMass = prey.sum_property("mass");
   var crushedMass = prey.sum_property("mass");
@@ -171,7 +245,7 @@ function anal_vore()
 
   updateVictims("bowels",prey);
   updateVictims("stomped",crushed);
-  update([line1,line2]);
+  update([sound,line1,line1summary,newline,sound2,line2,line2summary,newline]);
 }
 
 function update(lines = [])
@@ -270,9 +344,9 @@ function doDigest(containerName)
   }
 
   if (containerName == "stomach")
-    update(["Your stomach gurgles as it digests " + container.describe(false) + " " + summarize(container.sum())]);
+    update(["Your stomach gurgles as it digests " + container.describe(false),summarize(container.sum()),newline]);
   else if (containerName == "bowels")
-    update(["Your bowels churn as they absorb " + container.describe(false) + " " + summarize(container.sum())]);
+    update(["Your bowels churn as they absorb " + container.describe(false),summarize(container.sum()),newline]);
 
   if (digestType.length > 0) {
     setTimeout(function() {
