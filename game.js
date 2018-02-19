@@ -30,6 +30,73 @@ var macro =
   get assArea() { return this.scaling(this.baseAssArea, this.scale, 2); },
   "baseHandArea": 0.3,
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
+
+  "baseDickLength": 0.3048,
+  "baseDickDiameter": 0.08,
+  "dickDensity": 1000,
+  "dickScale": 1,
+  get dickLength() { return this.scaling(this.baseDickLength * this.dickScale, this.scale, 1); },
+  get dickDiameter() { return this.scaling(this.baseDickDiameter * this.dickScale, this.scale, 1); },
+  get dickVolume() {
+    return this.dickLength * Math.pow(this.dickDiameter/2,2) * Math.PI;
+  },
+  get dickMass() {
+    return this.dickVolume * this.dickDensity;
+  },
+  "baseBallDiameter": 0.05,
+  "ballDensity": 1000,
+  "ballScale": 1,
+  get ballDiameter() { return this.scaling(this.baseBallDiameter * this.ballScale, this.scale, 1); },
+  get ballVolume() {
+    var radius = this.ballDiameter / 2;
+    return 4/3 * Math.PI * Math.pow(radius,3);
+  },
+  get ballMass() {
+    var volume = this.ballVolume;
+    return volume * this.ballDensity;
+  },
+
+  "baseVaginaLength": 0.1,
+  "baseVaginaWidth": 0.05,
+  "vaginaScale": 1,
+
+  get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
+  get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
+
+  "baseBreastDiameter": 0.1,
+  "breastScale": 1,
+  "breastDensity": 1000,
+  get breastDiameter() { return this.scaling(this.baseDickLength * this.breastScale, this.scale, 1); },
+  get breastVolume() {
+    var radius = this.breastDiameter / 2;
+    return 4/3 * Math.PI * Math.pow(radius,3);
+  },
+  get breastMass() {
+    var volume = this.breastVolume;
+    return volume * this.breastDensity;
+  },
+
+  "maleParts": true,
+  "femaleParts": true,
+
+  get description() {
+    result = [];
+    line = "You are a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
+    result.push(line);
+    if (this.maleParts) {
+      line = "Your " + length(macro.dickLength, unit, true) + " long dick hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
+      result.push(line);
+    }
+    if (this.femaleParts) {
+      line = "Your glistening " + length(macro.vaginaLength, unit, true) + " long slit is oozing between your legs."
+      result.push(line);
+      line = "You have two " + length(macro.breastDiameter, unit, true) + "-wide breasts that weigh " + mass(macro.breastMass, unit) + " apiece.";
+      result.push(line);
+    }
+
+    return result;
+  },
+
   "scale": 3,
 
   "scaleWithMass": function(mass) {
@@ -41,7 +108,7 @@ var macro =
 
 function look()
 {
-  var line1 = "You are a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
+  var desc = macro.description;
 
   var line2 = ""
 
@@ -51,7 +118,9 @@ function look()
     case "city": line2 = "You're terrorizing the streets of a city. Heavy traffic, worsened by your rampage, is everywhere."; break;
     case "downtown": line2 = "You're lurking amongst the skyscrapers of downtown. The streets are packed, and the buildings are practically begging you to knock them over.";
   }
-  update([line1,newline,line2,newline]);
+
+  desc = desc.concat([newline,line2,newline]);
+  update(desc);
 }
 
 function get_living_prey(sum) {

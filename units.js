@@ -29,8 +29,8 @@ function metricMass(kg, singular=false) {
   if (kg < 1) {
     var mass = round(kg * 1000,0);
     return mass + (singular || mass == 1 ? " gram" : " grams");
-  } else if (kg < 5000,0) {
-    var mass = round(kg);
+  } else if (kg < 5000) {
+    var mass = round(kg,0);
     return mass + (singular || mass == 1 ? " kilogram" : " kilograms");
   } else if (kg < 5000000) {
     var mass = round(kg / 1000,1);
