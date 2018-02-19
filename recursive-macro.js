@@ -235,7 +235,11 @@ function defaultEat(thing) {
 }
 
 function defaultAnalVore(thing) {
-  return function() { return "Your ass slams down on " + thing.describe() + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
+  return function() { return "You sit yourself down on " + thing.describe() + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
+}
+
+function defaultButtcrush(thing) {
+  return function() { return "Your heavy ass obliterates " + thing.describe() + ". "; }
 }
 
 function defaultArea(thing) {
@@ -317,6 +321,7 @@ function DefaultEntity() {
   this.eat = defaultEat;
   this.kick = defaultKick;
   this.anal_vore = defaultAnalVore;
+  this.buttcrush = defaultButtcrush;
   this.sum = defaultSum;
   this.area = defaultArea;
   this.mass = defaultMass;

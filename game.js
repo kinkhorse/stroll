@@ -30,9 +30,9 @@ function initVictims()
 };
 
 // lists out total people
-function summarize(sum)
+function summarize(sum, fatal = true)
 {
-  return "(" + sum["Person"] + " people)";
+  return "(" + sum["Person"] + " " + (fatal ? "kills" : "people") + ")";
 }
 
 var stomach = []
@@ -96,7 +96,7 @@ function feed()
 {
   var prey = getPrey("suburb", 0.5*scale*scale);
 
-  var line = prey.eat() + " " + summarize(prey.sum());
+  var line = prey.eat() + " " + summarize(prey.sum(), false);
 
   var preyMass = prey.sum_property("mass");
 
@@ -114,7 +114,7 @@ function feed()
 function stomp()
 {
   var prey = getPrey("suburb", 1.5*scale*scale);
-  var line = prey.stomp() + " " + summarize(prey.sum());
+  var line = prey.stomp() + " " + summarize(prey.sum(), true);
 
   var preyMass = prey.sum_property("mass");
 
@@ -126,12 +126,16 @@ function stomp()
 
 function anal_vore()
 {
-  var prey = getOnePrey(scale*scale*2)
-  var line = prey.anal_vore() + " " + summarize(prey.sum());
+  var prey = getOnePrey(scale*scale);
+  var crushed = getPrey("suburb",3*scale*scale);
+  var line1 = prey.anal_vore() + " " + summarize(prey.sum(), false);
+  var line2 = crushed.buttcrush() + " " + summarize(crushed.sum(), false)
 
   var preyMass = prey.sum_property("mass");
+  var crushedMass = prey.sum_property("mass");
 
   scale = scaleAddMass(scale, baseMass, preyMass);
+  scale = scaleAddMass(scale, baseMass, crushedMass);
 
   bowels.push(prey);
 
@@ -139,7 +143,8 @@ function anal_vore()
     setTimeout(function() { doDigest("bowels"); }, 15000);
 
   updateVictims("bowels",prey);
-  update([line]);
+  updateVictims("stomped",crushed);
+  update([line1,line2]);
 }
 
 function update(lines = [])
