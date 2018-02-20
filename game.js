@@ -942,24 +942,32 @@ function female_orgasm(vol)
   update([sound,line,linesummary,newline]);
 }
 
+function transformNumbers(line)
+{
+  return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
+}
+
 function update(lines = [])
 {
   var log = document.getElementById("log");
 
   lines.forEach(function (x) {
     var line = document.createElement('div');
-    line.innerHTML = x.replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
+    line.innerHTML = transformNumbers(x);
     log.appendChild(line);
   });
 
   if (lines.length > 0)
     log.scrollTop = log.scrollHeight;
 
-  document.getElementById("height").innerHTML = "Height: " + length(macro.height, unit);
-  document.getElementById("mass").innerHTML = "Mass: " + mass(macro.mass, unit);
+  document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
+  document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.mass, unit));
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
-  document.getElementById("cum").innerHTML = "Cum: " + volume(macro.cumStorage.amount,unit,false) + "/" + volume(macro.cumStorage.limit,unit,false);
-  document.getElementById("femcum").innerHTML = "Femcum: " + volume(macro.femcumStorage.amount,unit,false) + "/" + volume(macro.femcumStorage.limit,unit,false);
+  document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false))
+  document.getElementById("cumPercent").innerHTML = Math.round(macro.cumStorage.amount / macro.cumStorage.limit * 100) + "%";
+  document.getElementById("femcum").innerHTML = "Femcum: " + transformNumbers(volume(macro.femcumStorage.amount,unit,false));
+  document.getElementById("femcumPercent").innerHTML = Math.round(macro.femcumStorage.amount / macro.femcumStorage.limit * 100) + "%";
+
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {

@@ -14,6 +14,9 @@ function number(value, type="full", precision=3) {
 
 function number_words(value) {
   var scale = Math.floor(Math.log(value) / Math.log(1000));
+  if (scale < 0) {
+    return value.toString();
+  }
   switch(scale) {
     case 0: return value.toString();
     case 1: return Math.round(value / 1e3).toString() + " thousand";
@@ -41,9 +44,11 @@ function number_words(value) {
 }
 
 function number_words_repeated(value) {
-  var scale = Math.floor(Math.log(value) / Math.log(1000));
   if (value == Infinity)
     return "a lot of";
+  var scale = Math.floor(Math.log(value) / Math.log(1000));
+  if (scale < 0)
+    return value.toString();
   switch(scale) {
     case 0: return value.toString();
     case 1: return Math.round(value / 1e3).toString() + " thousand";
@@ -58,6 +63,8 @@ function number_words_repeated(value) {
 
 function number_prefix(value) {
   var scale = Math.floor(Math.log(value) / Math.log(1000));
+  if (scale < 0)
+    return value.toString();
   switch(scale) {
     case 0: return value.toString();
     case 1: return Math.round(value / 1e3).toString() + "K";
