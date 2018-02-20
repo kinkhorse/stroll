@@ -147,13 +147,7 @@ function fill_area2(area, weights)
       result.push(new things[candidate.name](count));
   }
 
-  if (result.length > 1) {
-    return new Container(result);
-  } else if (result.length == 1) {
-    return result[0];
-  } else {
-    return new Person(1);
-  }
+  return new Container(result);
 }
 // describes everything in the container
 
@@ -379,18 +373,6 @@ function defaultAddContent(thing) {
 }
 
 function DefaultEntity() {
-  this.stomp = defaultStomp;
-  this.eat = defaultEat;
-  this.kick = defaultKick;
-  this.anal_vore = defaultAnalVore;
-  this.buttcrush = defaultButtcrush;
-  this.breast_crush = defaultBreastCrush;
-  this.unbirth = defaultUnbirth;
-  this.cockslap = defaultCockslap;
-  this.cock_vore = defaultCockVore;
-  this.ball_smother = defaultBallSmother;
-  this.male_orgasm = defaultMaleOrgasm;
-  this.female_orgasm = defaultFemaleOrgasm;
   this.sum = defaultSum;
   this.area = defaultArea;
   this.mass = defaultMass;
@@ -440,6 +422,19 @@ function Container(contents = []) {
     else
       return line;
   };
+
+  this.stomp = defaultStomp(this);
+  this.eat = defaultEat(this);
+  this.kick = defaultKick(this);
+  this.anal_vore = defaultAnalVore(this);
+  this.buttcrush = defaultButtcrush(this);
+  this.breast_crush = defaultBreastCrush(this);
+  this.unbirth = defaultUnbirth(this);
+  this.cockslap = defaultCockslap(this);
+  this.cock_vore = defaultCockVore(this);
+  this.ball_smother = defaultBallSmother(this);
+  this.male_orgasm = defaultMaleOrgasm(this);
+  this.female_orgasm = defaultFemaleOrgasm(this);
 
   return this;
 }

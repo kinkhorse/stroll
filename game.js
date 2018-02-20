@@ -492,11 +492,11 @@ function getOnePrey(biome,area)
   for (var i=0; i<potAreas.length; i++) {
     x = potAreas[i];
     if (x[1] < area) {
-      return new things[x[0]](1);
+      return new Container([new things[x[0]](1)]);
     }
   };
 
-  return new Person(1);
+  return new Container([new Person(1)]);
 }
 function getPrey(region, area)
 {
