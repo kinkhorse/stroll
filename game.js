@@ -430,7 +430,10 @@ function initVictims()
     "Town": 0,
     "City": 0,
     "Continent": 0,
-    "Planet": 0
+    "Planet": 0,
+    "Star": 0,
+    "Solar System": 0,
+    "Galaxy": 0
   };
 };
 
@@ -445,7 +448,9 @@ function getOnePrey(biome,area)
 {
   var potential = ["Person"];
 
-  if(macro.height > 1e6)
+  if (macro.height > 1e12)
+    potential = ["Planet","Star","Solar System","Galaxy"];
+  else if (macro.height > 1e6)
     potential = ["Town","City","Continent","Planet"];
   else
     switch(biome) {
@@ -478,12 +483,20 @@ function getPrey(region, area)
 {
   var weights = {"Person": 1};
 
-  if (macro.height > 1e6) {
+  if (macro.height > 1e12) {
+    weights = {
+      "Planet": 0.0001,
+      "Star": 0.0001,
+      "Solar System": 0.00001,
+      "Galaxy": 0.01
+    }
+  }
+  else if (macro.height > 1e6) {
     weights = {
       "Town": 0.1,
       "City": 0.05,
-      "Continent": 0.5,
-      "Planet": 1
+      "Continent": 0.005,
+      "Planet": 0.0001
     }
   }
   else {

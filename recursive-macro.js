@@ -18,7 +18,10 @@ var things =
   "Town": Town,
   "City": City,
   "Continent": Continent,
-  "Planet": Planet
+  "Planet": Planet,
+  "Star": Star,
+  "Solar System": SolarSystem,
+  "Galaxy": Galaxy
 };
 
 var areas =
@@ -40,7 +43,10 @@ var areas =
   "Town": 1e7,
   "City": 1e9,
   "Continent": 1.5e13,
-  "Planet": 5e14
+  "Planet": 2.5e14,
+  "Star": 3e18,
+  "Solar System": 3e21,
+  "Galaxy": 2e42,
 };
 
 var masses =
@@ -62,7 +68,35 @@ var masses =
   "Town": 0,
   "City": 0,
   "Continent": 1e12,
-  "Planet": 5.972e24
+  "Planet": 5.972e24,
+  "Star": 1e40,
+  "Solar System": 0,
+  "Galaxy": 0
+};
+
+var clusters =
+{
+  "Container": 0,
+  "Person": 5,
+  "Cow": 15,
+  "Car": 3,
+  "Bus": 1,
+  "Tram": 1,
+  "Motorcycle": 1,
+  "House": 5,
+  "Barn": 1,
+  "Small Skyscraper": 10,
+  "Train": 2,
+  "Train Car": 1,
+  "Parking Garage": 1,
+  "Overpass": 1,
+  "Town": 1,
+  "City": 1,
+  "Continent": 5,
+  "Planet": 1,
+  "Star": 1,
+  "Solar System": 1,
+  "Galaxy": 1
 };
 
 // general logic: each step fills in a fraction of the remaining space
@@ -96,8 +130,8 @@ function fill_area2(area, weights)
 
     // the first few ones get a much better shot
     while (limit > 0) {
-      if (limit <= 3)
-        count += Math.random() < (1 - Math.pow((1 - candidate.weight),limit*3)) ? 1 : 0;
+      if (limit <= clusters[candidate.name])
+        count += 1;
       else
         count += Math.random() < candidate.weight ? 1 : 0;
       --limit;
@@ -981,6 +1015,61 @@ function Planet(count = 1) {
       return (this.count == 1 ? "a planet" : this.count + " planets") + " with " + describe_all(this.contents, verbose) + " on " + (this.count == 1 ? "it" : "them");
     } else {
       return (this.count == 1 ? "a planet" : this.count + " planets");
+    }
+  }
+}
+
+function Star(count = 1) {
+  this.name = "Star";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.describe = function(verbose = true) {
+    return (this.count == 1 ? "a star" : this.count + " stars");
+  }
+}
+
+function SolarSystem(count = 1) {
+  this.name = "Solar System";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.contents.star = new Star(1);
+
+  var amount = distribution(5,15,count);
+  this.contents.planet = new Continent(amount);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a solar system" : this.count + " solar systems") + " made up of " + describe_all(this.contents, verbose);
+    } else {
+      return (this.count == 1 ? "a solar system" : this.count + " solar systems");
+    }
+  }
+}
+
+function Galaxy(count = 1) {
+  this.name = "Galaxy";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(1e9,500e9,count);
+  this.contents.star = new Star(amount);
+
+  var amount = distribution(1e8,500e8,count);
+  this.contents.solarsystem = new SolarSystem(amount);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a galaxy" : this.count + " galaxies") + " made up of " + describe_all(this.contents, verbose);
+    } else {
+      return (this.count == 1 ? "a galaxy" : this.count + " galaxies");
     }
   }
 }
