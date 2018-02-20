@@ -975,6 +975,25 @@ function grow()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
+function grow_lots()
+{
+  var oldHeight = macro.height;
+  var oldMass = macro.mass;
+
+  macro.scale *= 100;
+
+  var newHeight = macro.height;
+  var newMass = macro.mass;
+
+  var heightDelta = newHeight - oldHeight;
+  var massDelta = newMass - oldMass;
+
+  var heightStr = length(heightDelta, unit);
+  var massStr = mass(massDelta, unit);
+
+  update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
+}
+
 function option_male() {
   macro.maleParts = !macro.maleParts;
 
@@ -1109,6 +1128,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
+  document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
 
   document.getElementById("button-male-genitals").addEventListener("click",option_male);
   document.getElementById("button-female-genitals").addEventListener("click",option_female);
