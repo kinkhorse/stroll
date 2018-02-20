@@ -76,7 +76,7 @@ var macro =
   get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
   get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
-  get vaginaVolume() { return this.vaginaArea * this.vaginaLength },
+  get vaginaVolume() { return this.vaginaArea * this.vaginaWidth },
   "femcumRatio": 0.1,
   "femcumScale": 1,
   get femcumVolume() {
@@ -227,7 +227,7 @@ var macro =
   "fillCum": function(self) {
     self.cumStorage.amount += self.ballVolume / 30;
     if (self.cumStorage.amount > self.cumStorage.limit)
-      self.arouse(10 * (1 - self.cumStorage.amount / self.cumStorage.limit));
+      self.arouse(10 * (self.cumStorage.amount / self.cumStorage.limit - 1));
     setTimeout(function () { self.fillCum(self) }, 1000);
     update();
   },
@@ -235,7 +235,7 @@ var macro =
   "fillFemcum": function(self) {
     self.femcumStorage.amount += self.vaginaVolume / 30;
     if (self.femcumStorage.amount > self.femcumStorage.limit)
-      self.arouse(10 * (self.femcumStorage.amount / self.femcumStorage.limit));
+      self.arouse(10 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
     setTimeout(function () { self.fillFemcum(self) }, 1000);
     update();
   },
