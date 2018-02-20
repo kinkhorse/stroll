@@ -343,7 +343,9 @@ function look()
 
   var line2 = ""
 
-  if (macro.height > 1e6)
+  if (macro.height > 1e12)
+    line2 = "You're pretty much everywhere at once.";
+  else if (macro.height > 1e6)
     line2 = "You're standing...on pretty much everything at once.";
   else
     switch(biome) {

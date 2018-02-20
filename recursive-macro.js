@@ -65,13 +65,13 @@ var masses =
   "Train Car": 5000,
   "Parking Garage": 100000,
   "Overpass": 100000,
-  "Town": 0,
-  "City": 0,
+  "Town": 1,
+  "City": 1,
   "Continent": 1e12,
   "Planet": 5.972e24,
   "Star": 1e40,
-  "Solar System": 0,
-  "Galaxy": 0
+  "Solar System": 1,
+  "Galaxy": 1
 };
 
 var clusters =
@@ -83,9 +83,9 @@ var clusters =
   "Bus": 1,
   "Tram": 1,
   "Motorcycle": 1,
-  "House": 5,
+  "House": 20,
   "Barn": 1,
-  "Small Skyscraper": 10,
+  "Small Skyscraper": 5,
   "Train": 2,
   "Train Car": 1,
   "Parking Garage": 1,
