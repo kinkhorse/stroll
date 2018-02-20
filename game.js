@@ -77,7 +77,7 @@ var macro =
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
   get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
   get vaginaVolume() { return this.vaginaArea * this.vaginaWidth },
-  "femcumRatio": 0.1,
+  "femcumRatio": 0.25,
   "femcumScale": 1,
   get femcumVolume() {
     return this.vaginaVolume * this.femcumRatio * this.femcumScale + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
@@ -961,13 +961,13 @@ function grow()
 function option_male() {
   macro.maleParts = !macro.maleParts;
 
-  document.getElementById("button-male-genitals").innerHTML = (macro.maleParts ? "Male genitals" : "No male genitals");
+  document.getElementById("button-male-genitals").innerHTML = (macro.maleParts ? "Male genitals on" : "Male genitals off");
 }
 
 function option_female() {
   macro.femaleParts = !macro.femaleParts;
 
-  document.getElementById("button-female-genitals").innerHTML = (macro.femaleParts ? "Female genitals" : "No female genitals");
+  document.getElementById("button-female-genitals").innerHTML = (macro.femaleParts ? "Female genitals on" : "Female genitals off");
 }
 
 function startGame() {
@@ -1000,12 +1000,13 @@ function startGame() {
   var table = document.getElementById("victim-table");
 
   var tr = document.createElement('tr');
-
   var th = document.createElement('th');
+
   th.innerHTML = "Method";
   tr.appendChild(th);
   for (var i = 0; i < victimTypes.length; i++) {
     var th = document.createElement('th');
+    th.classList.add("victim-table-cell");
     th.innerHTML = victimTypes[i].charAt(0).toUpperCase() + victimTypes[i].slice(1);
     tr.appendChild(th);
   }

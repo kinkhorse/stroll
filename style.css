@@ -92,3 +92,7 @@ body {
   margin: auto;
   width: 80%;
 }
+
+.victim-table-cell {
+  width: 10%;
+}
