@@ -108,48 +108,7 @@ function fill_area2(area, weights)
   } else {
     return new Person(1);
   }
-
 }
-
-function fill_area(area, weights = {"Person": 0.1})
-{
-  var testRadius = Math.sqrt(area / Math.PI);
-  result = []
-  for (var key in weights) {
-    if (weights.hasOwnProperty(key)) {
-      var objArea = areas[key];
-      var objRadius = Math.sqrt(objArea / Math.PI);
-      var newRadius = testRadius - objRadius;
-
-      if (newRadius > 0) {
-        var newArea = newRadius * newRadius * Math.PI;
-        var numObjs = weights[key] * newArea;
-        if (numObjs < 1) {
-          numObjs = Math.random() > numObjs ? 0 : 1;
-        }
-        else {
-          numObjs = Math.round(numObjs);
-        }
-
-        if (numObjs > 0)
-          result.push(new things[key](numObjs));
-        else {
-          // try again with a better chance for just one
-        }
-
-      }
-
-    }
-  }
-
-  if (result.length > 1)
-    return new Container(result);
-  else if (result.length == 1)
-    return result[0];
-  else
-    return new Person();
-}
-
 // describes everything in the container
 
 function describe_all(contents,verbose=true) {
