@@ -66,7 +66,7 @@ var macro =
   "baseCumRatio": 0.25,
   "cumScale": 1,
   get cumVolume() {
-    return this.ballVolume * this.baseCumRatio * this.cumScale;
+    return this.ballVolume * this.baseCumRatio * this.cumScale + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
   },
 
   "baseVaginaLength": 0.1,
@@ -76,11 +76,11 @@ var macro =
   get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
   get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
-
+  get vaginaVolume() { return this.vaginaArea * this.vaginaLength },
   "femcumRatio": 0.1,
   "femcumScale": 1,
   get femcumVolume() {
-    return this.vaginaArea * this.vaginaLength * this.femcumRatio * this.femcumScale;
+    return this.vaginaVolume * this.femcumRatio * this.femcumScale + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
   },
 
   "baseBreastDiameter": 0.1,
@@ -122,7 +122,7 @@ var macro =
     }
 
     var line = organ.describeDigestion(container);
-
+    organ.fill(this,container);
     var summary = summarize(container.sum());
 
     update([line,summary,newline]);
@@ -141,6 +141,9 @@ var macro =
     "describeDigestion": function(container) {
       return "Your stomach gurgles as it digests " + container.describe(false);
     },
+    "fill": function(owner,container) {
+      //no-op
+    },
     "contents": [],
     "maxDigest": 5
   },
@@ -157,6 +160,9 @@ var macro =
     },
     "describeDigestion" : function(container) {
       return "Your bowels churn as they absorb " + container.describe(false);
+    },
+    "fill": function(owner,container) {
+      //no-op
     },
     "contents" : [],
     "maxDigest" : 3
@@ -175,6 +181,9 @@ var macro =
     "describeDigestion" : function(container) {
       return "Your womb squeezes as it dissolves " + container.describe(false);
     },
+    "fill": function(owner,container) {
+      owner.femcumStorage.amount += container.sum_property("mass") / 1e3;
+    },
     "contents" : [],
     "maxDigest" : 1
   },
@@ -189,8 +198,11 @@ var macro =
         setTimeout(function() { owner.digest(self) }, 15000);
       this.contents.push(prey);
     },
-    "describeDigestion" : function(container) {
+    "describeDigestion": function(container) {
       return "Your balls slosh as they transform " + container.describe(false) + " into cum";
+    },
+    "fill": function(owner,container) {
+      owner.cumStorage.amount += container.sum_property("mass") / 1e3;
     },
     "contents" : [],
     "maxDigest" : 1
@@ -201,11 +213,46 @@ var macro =
     this.bowels.owner = this;
     this.womb.owner = this;
     this.balls.owner = this;
+    this.cumStorage.owner = this;
+    this.femcumStorage.owner = this;
+    if (this.maleParts)
+      this.fillCum(this)
+    if (this.femaleParts)
+      this.fillFemcum(this)
   },
 
   "maleParts": true,
   "femaleParts": true,
 
+  "fillCum": function(self) {
+    self.cumStorage.amount += self.ballVolume / 30;
+    if (self.cumStorage.amount > self.cumStorage.limit)
+      self.arouse(10 * (1 - self.cumStorage.amount / self.cumStorage.limit));
+    setTimeout(function () { self.fillCum(self) }, 1000);
+    update();
+  },
+
+  "fillFemcum": function(self) {
+    self.femcumStorage.amount += self.vaginaVolume / 30;
+    if (self.femcumStorage.amount > self.femcumStorage.limit)
+      self.arouse(10 * (self.femcumStorage.amount / self.femcumStorage.limit));
+    setTimeout(function () { self.fillFemcum(self) }, 1000);
+    update();
+  },
+
+  "cumStorage": {
+    "amount": 0,
+    get limit() {
+      return this.owner.ballVolume;
+    }
+  },
+
+  "femcumStorage": {
+    "amount": 0,
+    get limit() {
+      return this.owner.vaginaVolume;
+    }
+  },
   "orgasm": false,
   "arousal": 0,
 
@@ -241,7 +288,9 @@ var macro =
   "maleOrgasm": function(self) {
     if (self.orgasm) {
       self.quench(10);
-      male_orgasm();
+      var amount = Math.min(this.cumVolume, this.cumStorage.amount);
+      this.cumStorage.amount -= amount;
+      male_orgasm(amount);
       setTimeout(function() { self.maleOrgasm(self) }, 2000);
     }
   },
@@ -249,7 +298,9 @@ var macro =
   "femaleOrgasm": function(self) {
     if (this.orgasm) {
       this.quench(10);
-      female_orgasm();
+      var amount = Math.min(this.femcumVolume, this.femcumStorage.amount);
+      this.femcumStorage.amount -= amount;
+      female_orgasm(amount);
       setTimeout(function() { self.femaleOrgasm(self) }, 2000);
     }
   },
@@ -770,10 +821,8 @@ function ball_smother()
   update([sound,line,linesummary,newline]);
 }
 
-function male_orgasm()
+function male_orgasm(vol)
 {
-  var vol = macro.cumVolume;
-
   // let's make it 10cm thick
 
   var area = vol * 10;
@@ -807,10 +856,8 @@ function male_orgasm()
   update([sound,line,linesummary,newline]);
 }
 
-function female_orgasm()
+function female_orgasm(vol)
 {
-  var vol = macro.femcumVolume;
-
   // let's make it 10cm thick
 
   var area = vol * 10;
@@ -858,7 +905,9 @@ function update(lines = [])
 
   document.getElementById("height").innerHTML = "Height: " + length(macro.height, unit);
   document.getElementById("mass").innerHTML = "Mass: " + mass(macro.mass, unit);
-  document.getElementById("arousal").innerHTML = "Arousal: " + macro.arousal + "%";
+  document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
+  document.getElementById("cum").innerHTML = "Cum: " + volume(macro.cumStorage.amount,unit,false) + "/" + volume(macro.cumStorage.limit,unit,false);
+  document.getElementById("femcum").innerHTML = "Femcum: " + volume(macro.femcumStorage.amount,unit,false) + "/" + volume(macro.femcumStorage.limit,unit,false);
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -938,7 +987,7 @@ function startGame() {
     document.getElementById("button-ball_smother").style.display = 'none';
     document.getElementById("stats-balls").style.display = 'none';
     document.getElementById("stats-cock").style.display = 'none';
-    document.getElementById("stats-smothered").style.display = 'none';
+    document.getElementById("cum").style.display = 'none';
   }
 
   if (!macro.femaleParts) {
@@ -946,6 +995,7 @@ function startGame() {
     document.getElementById("button-unbirth").style.display = 'none';
     document.getElementById("stats-womb").style.display = 'none';
     document.getElementById("stats-breasts").style.display = 'none';
+    document.getElementById("femcum").style.display = 'none';
   }
 
   if (!macro.maleParts && !macro.femaleParts) {
@@ -960,10 +1010,15 @@ function startGame() {
     macro.species = species;
   }
 
+  macro.init();
+
+  update();
+
   document.getElementById("stat-container").style.display = 'flex';
 }
 
 window.addEventListener('load', function(event) {
+
   victims["stomped"] = initVictims();
   victims["digested"] = initVictims();
   victims["stomach"] = initVictims();
@@ -974,8 +1029,6 @@ window.addEventListener('load', function(event) {
   victims["balls"] = initVictims();
   victims["smothered"] = initVictims();
   victims["splooged"] = initVictims();
-
-  macro.init();
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-grow").addEventListener("click",grow);
@@ -996,6 +1049,4 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-female-genitals").addEventListener("click",option_female);
   document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);
-
-  update();
 });
