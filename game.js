@@ -30,10 +30,11 @@ var macro =
   "baseAnalVoreArea": 0.1,
   get analVoreArea() { return this.scaling(this.baseAnalVoreArea, this.scale, 2); },
   "baseAssArea": 0.4,
-  get assArea() { return this.scaling(this.baseAssArea, this.scale, 2); },
+  get assArea() { return this.scaling(this.baseAssArea * this.assScale, this.scale, 2); },
   "baseHandArea": 0.1,
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
 
+  "assScale": 1,
   "baseDickLength": 0.3,
   "baseDickDiameter": 0.08,
   "dickDensity": 1000,
@@ -811,7 +812,7 @@ function cock_vore()
   var area = macro.dickGirth;
   var prey = getPrey(biome, area);
   var line = prey.cock_vore(verbose)
-  var linesummary = summarize(prey.sum(), true);
+  var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
 
@@ -1018,6 +1019,63 @@ function grow()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
+function grow_cock()
+{
+  var oldLength = macro.dickLength;
+  var oldMass = macro.dickMass;
+
+  macro.dickScale *= 1.2;
+
+  var lengthDelta = macro.dickLength - oldLength;
+  var massDelta = macro.dickMass - oldMass;
+  update(["Power surges through you as your cock grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
+}
+
+function grow_balls()
+{
+  var oldDiameter = macro.ballDiameter;
+  var oldMass = macro.ballMass;
+
+  macro.ballScale *= 1.2;
+
+  var diameterDelta = macro.ballDiameter - oldDiameter;
+  var massDelta = macro.ballMass - oldMass;
+  update(["Power surges through you as your balls swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
+}
+
+function grow_breasts()
+{
+  var oldDiameter = macro.breastDiameter;
+  var oldMass = macro.breastMass;
+
+  macro.breastScale *= 1.2;
+
+  var diameterDelta = macro.breastDiameter - oldDiameter;
+  var massDelta = macro.breastMass - oldMass;
+  update(["Power surges through you as your breasts swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
+}
+
+function grow_vagina()
+{
+  var oldLength = macro.vaginaLength;
+
+  macro.vaginaScale *= 1.2;
+
+  var lengthDelta = macro.vaginaLength - oldLength;
+
+  update(["Power surges through you as your moist slit expands by by " + length(lengthDelta, unit, false),newline]);
+}
+
+function grow_ass()
+{
+  var oldDiameter = Math.pow(macro.assArea,1/2);
+
+  macro.assScale *= 1.2;
+
+  var diameterDelta = Math.pow(macro.assArea,1/2) - oldDiameter;
+  update(["Power surges through you as your ass swells by " + length(diameterDelta, unit, false),newline]);
+}
+
 function grow_lots()
 {
   var oldHeight = macro.height;
@@ -1084,6 +1142,8 @@ function startGame(e) {
     document.getElementById("button-cock_vore").style.display = 'none';
     document.getElementById("button-ball_smother").style.display = 'none';
     document.getElementById("cum").style.display = 'none';
+    document.getElementById("button-grow-dick").style.display = 'none';
+    document.getElementById("button-grow-balls").style.display = 'none';
   }
 
   if (macro.femaleParts) {
@@ -1092,6 +1152,8 @@ function startGame(e) {
     document.getElementById("button-breast_crush").style.display = 'none';
     document.getElementById("button-unbirth").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
+    document.getElementById("button-grow-vagina").style.display = 'none';
+    document.getElementById("button-grow-breasts").style.display = 'none';
   }
 
   if (macro.maleParts || macro.femaleParts) {
@@ -1162,7 +1224,6 @@ window.addEventListener('load', function(event) {
   victims["splooged"] = initVictims();
 
   document.getElementById("button-look").addEventListener("click",look);
-  document.getElementById("button-grow").addEventListener("click",grow);
   document.getElementById("button-feed").addEventListener("click",feed);
   document.getElementById("button-stomp").addEventListener("click",stomp);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
@@ -1177,6 +1238,13 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
+
+  document.getElementById("button-grow").addEventListener("click",grow);
+  document.getElementById("button-grow-dick").addEventListener("click",grow_cock);
+  document.getElementById("button-grow-balls").addEventListener("click",grow_balls);
+  document.getElementById("button-grow-breasts").addEventListener("click",grow_breasts);
+  document.getElementById("button-grow-vagina").addEventListener("click",grow_vagina);
+  document.getElementById("button-grow-ass").addEventListener("click",grow_ass);
 
   document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);
