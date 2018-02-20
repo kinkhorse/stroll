@@ -2,6 +2,75 @@ function round(number,precision=3) {
   return Math.round(number*Math.pow(10,precision)) / Math.pow(10,precision);
 }
 
+function number(value, type="full", precision=3) {
+  var val = parseFloat(value);
+  switch(type) {
+    case "full": return val.toString();
+    case "scientific": return val.toExponential(precision).toString();
+    case "words": return number_words_repeated(val);
+    case "prefix": return number_prefix(val);
+  }
+}
+
+function number_words(value) {
+  var scale = Math.floor(Math.log(value) / Math.log(1000));
+  switch(scale) {
+    case 0: return value.toString();
+    case 1: return Math.round(value / 1e3).toString() + " thousand";
+    case 2: return Math.round(value / 1e6).toString() + " million";
+    case 3: return Math.round(value / 1e9).toString() + " billion";
+    case 4: return Math.round(value / 1e12).toString() + " trillion";
+    case 5: return Math.round(value / 1e15).toString() + " quadrillion";
+    case 6: return Math.round(value / 1e18).toString() + " quintillion";
+    case 7: return Math.round(value / 1e21).toString() + " sextillion";
+    case 8: return Math.round(value / 1e24).toString() + " septillion";
+    case 9: return Math.round(value / 1e27).toString() + " octillion";
+    case 10: return Math.round(value / 1e30).toString() + " nonillion";
+    case 11: return Math.round(value / 1e33).toString() + " decillion";
+    case 12: return Math.round(value / 1e36).toString() + " undecillion";
+    case 13: return Math.round(value / 1e39).toString() + " duodecillion";
+    case 14: return Math.round(value / 1e42).toString() + " tredecillion";
+    case 15: return Math.round(value / 1e45).toString() + " quattuordecillion";
+    case 16: return Math.round(value / 1e48).toString() + " quindecillion";
+    case 17: return Math.round(value / 1e51).toString() + " sexdecillion";
+    case 18: return Math.round(value / 1e54).toString() + " septendecillion";
+    case 19: return Math.round(value / 1e57).toString() + " octodecillion";
+    case 20: return Math.round(value / 1e60).toString() + " novemdecillion";
+    default: return Math.round(value / 1e63).toString() + " vigintillion";
+  }
+}
+
+function number_words_repeated(value) {
+  var scale = Math.floor(Math.log(value) / Math.log(1000));
+  if (value == Infinity)
+    return "a lot of";
+  switch(scale) {
+    case 0: return value.toString();
+    case 1: return Math.round(value / 1e3).toString() + " thousand";
+    case 2: return Math.round(value / 1e6).toString() + " million";
+    case 3: return Math.round(value / 1e9).toString() + " billion";
+    case 4: return Math.round(value / 1e12).toString() + " trillion";
+    case 5: return Math.round(value / 1e15).toString() + " quadrillion";
+    case 6: return Math.round(value / 1e18).toString() + " quintillion";
+    default: return number_words_repeated(value / 1e18) + " quintillion";
+  }
+}
+
+function number_prefix(value) {
+  var scale = Math.floor(Math.log(value) / Math.log(1000));
+  switch(scale) {
+    case 0: return value.toString();
+    case 1: return Math.round(value / 1e3).toString() + "K";
+    case 2: return Math.round(value / 1e6).toString() + "M";
+    case 3: return Math.round(value / 1e9).toString() + "G";
+    case 4: return Math.round(value / 1e12).toString() + "T";
+    case 5: return Math.round(value / 1e15).toString() + "P";
+    case 6: return Math.round(value / 1e18).toString() + "E";
+    case 7: return Math.round(value / 1e21).toString() + "Z";
+    default: return Math.round(value / 1e24).toString() + "Y";
+  }
+}
+
 function mass(kg, type="metric", singular=false) {
   switch(type) {
     case "metric": return metricMass(kg, singular); break;

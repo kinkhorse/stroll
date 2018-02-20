@@ -5,6 +5,9 @@ var maxBowelsDigest = 10;
 
 var unit = "metric";
 
+var numbers = "full";
+
+
 var verbose = true;
 
 var biome = "suburb";
@@ -402,6 +405,19 @@ function toggle_units()
   }
 
   document.getElementById("button-units").innerHTML = "Units: " + unit.charAt(0).toUpperCase() + unit.slice(1);
+
+  update();
+}
+
+function toggle_numbers() {
+  switch(numbers) {
+    case "full": numbers="prefix"; break;
+    case "prefix": numbers="words"; break;
+    case "words": numbers = "scientific"; break;
+    case "scientific": numbers = "full"; break;
+  }
+
+  document.getElementById("button-numbers").innerHTML = "Numbers: " + numbers.charAt(0).toUpperCase() + numbers.slice(1);
 
   update();
 }
@@ -932,7 +948,7 @@ function update(lines = [])
 
   lines.forEach(function (x) {
     var line = document.createElement('div');
-    line.innerHTML = x;
+    line.innerHTML = x.replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
     log.appendChild(line);
   });
 
@@ -1149,6 +1165,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);
+  document.getElementById("button-numbers").addEventListener("click",toggle_numbers);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
