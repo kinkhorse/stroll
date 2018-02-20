@@ -23,6 +23,7 @@ body {
 
 #log-area {
   flex: 3;
+  display:none;
 }
 
 #log {
@@ -61,9 +62,7 @@ body {
 }
 
 .option-container {
-  flex-wrap: wrap;
-  max-width: 300px;
-  flex: 2;
+  margin: auto;
 }
 
 .button-container {
@@ -77,10 +76,6 @@ body {
   display: none;
 }
 
-#option-panel {
-  display: flex;
-}
-
 .option-button {
   font-size: 20px;
   width: 120px;
@@ -92,6 +87,7 @@ body {
   width: 300px;
   height: 100px;
 }
+
 .action-button {
   font-size: 24px;
   width: 120px;
@@ -105,4 +101,41 @@ body {
 
 .victim-table-cell {
   width: 10%;
+}
+
+.reveal-if-active {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
+
+input[type="radio"]:checked ~ .reveal-if-active,
+input[type="checkbox"]:checked ~ .reveal-if-active {
+  opacity: 1;
+  max-height: 200px; /* little bit of a magic number :( */
+  overflow: visible;
+}
+
+.flex-outer li,
+.flex-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-outer > li > label,
+.flex-outer li p {
+  flex: 1 0 120px;
+  max-width: 220px;
+}
+
+.flex-outer > li > label + *,
+.flex-inner {
+  flex: 1 0 220px;
+}
+
+.has-tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }

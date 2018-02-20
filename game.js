@@ -28,10 +28,10 @@ var macro =
   get analVoreArea() { return this.scaling(this.baseAnalVoreArea, this.scale, 2); },
   "baseAssArea": 0.4,
   get assArea() { return this.scaling(this.baseAssArea, this.scale, 2); },
-  "baseHandArea": 0.3,
+  "baseHandArea": 0.1,
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
 
-  "baseDickLength": 0.3048,
+  "baseDickLength": 0.3,
   "baseDickDiameter": 0.08,
   "dickDensity": 1000,
   "dickScale": 1,
@@ -998,18 +998,6 @@ function grow_lots()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
-function option_male() {
-  macro.maleParts = !macro.maleParts;
-
-  document.getElementById("button-male-genitals").innerHTML = (macro.maleParts ? "Male genitals on" : "Male genitals off");
-}
-
-function option_female() {
-  macro.femaleParts = !macro.femaleParts;
-
-  document.getElementById("button-female-genitals").innerHTML = (macro.femaleParts ? "Female genitals on" : "Female genitals off");
-}
-
 function preset(name) {
   switch(name){
     case "Fen":
@@ -1027,7 +1015,26 @@ function preset(name) {
       macro.baseMass = 180591661866272;
   }
 }
-function startGame() {
+
+function startGame(e) {
+  if (e.preventDefault)
+    e.preventDefault();
+
+  form = document.forms.namedItem("custom-species-form");
+
+  for (var i=0; i<form.length; i++) {
+    if (form[i].value != "") {
+      if (form[i].type == "text")
+        macro[form[i].name] = form[i].value;
+      else if (form[i].type == "number")
+        macro[form[i].name] = parseFloat(form[i].value);
+      else if (form[i].type == "checkbox") {
+        macro[form[i].name] = form[i].checked;
+      }
+    }
+  }
+
+  document.getElementById("log-area").style.display = 'inline';
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
@@ -1068,7 +1075,6 @@ function startGame() {
     tr.appendChild(th);
   }
 
-
   table.appendChild(tr);
   for (var key in things) {
     if (things.hasOwnProperty(key) && key != "Container") {
@@ -1103,6 +1109,8 @@ function startGame() {
   update();
 
   document.getElementById("stat-container").style.display = 'flex';
+
+  return false;
 }
 
 window.addEventListener('load', function(event) {
@@ -1134,8 +1142,6 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
 
-  document.getElementById("button-male-genitals").addEventListener("click",option_male);
-  document.getElementById("button-female-genitals").addEventListener("click",option_female);
-  document.getElementById("button-start").addEventListener("click",startGame);
+  document.getElementById("custom-species-form").addEventListener("submit",startGame);
   setTimeout(pick_move, 2000);
 });

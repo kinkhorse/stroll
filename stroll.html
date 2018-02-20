@@ -23,7 +23,7 @@
       </div>
       <div id=log-area>
         <div id=log>
-          <div>Welcome to Stroll 0.2.6</div>
+          <div>Welcome to Stroll 0.2.7</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div>It's a nice day for a walk</div>
@@ -51,9 +51,97 @@
 
 
       <div class=option-container id=option-panel>
-        <button class=option-button id=button-male-genitals>Male genitals on</button>
-        <button class=option-button id=button-female-genitals>Female genitals on</button>
-        <button class=option-button id=button-start>Start game</button>
+        <p>Welcome to Stroll 0.2.7</p>
+        <p><b>This game features 18+ content</b></p>
+        <a href="https://chemicalcrux.org/stroll">Changelog</a>
+        <br>
+        <div id=custom-species>
+          <p>Build your Character</p>
+          <form id=custom-species-form name="custom-species-form">
+            <ul class="flex-outer">
+              <li>
+                <label for="species">Species</label>
+                <input type="text" name="species" placeholder="crux"/>
+              </li>
+              <li>
+                <label for="scale" class="has-tooltip" title="Multiply your base height by this much">Scale (?)</label>
+                <input type="text" name="scale" placeholder="1"/>
+              </li>
+              <li>
+                <label for="baseHeight">Height</label>
+                <input type="number" name="baseHeight" placeholder="2.26"/>
+              </li>
+              <li>
+                <label for="baseMass">Weight</label>
+                <input type="number" name="baseMass" placeholder="135">
+              </li>
+              <br>
+              <li>
+                Paw size (square meters):<br>
+                <input type="number" name="basePawArea" placeholder="0.1"><br>
+              </li>
+              <li>
+                Hand size (square meters):<br>
+                <input type="number" name="baseAnalVoreArea" placeholder="0.1"><br>
+              </li>
+              <li>
+                Tailhole size (square meters):<br>
+                <input type="number" name="baseAnalVoreArea" placeholder="0.1"><br>
+              </li>
+              <li>
+                Ass size (square meters):<br>
+                <input type="number" name="baseAnalVoreArea" placeholder="0.4"><br>
+              </li>
+              <br>
+              <div>
+                Male genitals:<br>
+                <input type="checkbox" checked=true name="maleParts"/><br>
+                <div class=reveal-if-active>
+                  <li>
+                    Dick length:
+                    <input type="text" name="baseDickLength" placeholder="0.3"/><br>
+                  </li>
+                  <li>
+                    Dick thickness:
+                    <input type="text" name="baseDickDiameter" placeholder="0.08"/><br>
+                  </li>
+                  <li>
+                    Ball diameter:
+                    <input type="text" name="baseBallDiameter" placeholder="0.05"/><br>
+                  </li>
+                  <li>
+                    Cum production factor:
+                    <input type="text" name="cumFactor" placeholder="1"/><br>
+                  </li>
+                </div>
+              </div>
+              <br>
+              <div>
+                Female genitals:<br>
+                <input type="checkbox" checked=true name="femaleParts"/><br>
+                <div class=reveal-if-active>
+                  <li>
+                    Slit length:<br>
+                    <input type="text" name="baseVaginaLength" placeholder="0.1"/><br>
+                  </li>
+                  <li>
+                    Slit width:<br>
+                    <input type="text" name="baseVaginaWidth" placeholder="0.05"/><br>
+                  </li>
+                  <li>
+                    Breast diameter:<br>
+                    <input type="text" name="baseBreastDiameter" placeholder="0.1"/><br>
+                  </li>
+                  <li>
+                    Femcum production factor:<br>
+                    <input type="text" name="femcumFactor" placeholder="1"/><br>
+                  </li>
+                </div>
+              </div>
+            </ul>
+            <input type="submit" value="Start game" class=option-button id=button-start></button>
+          </form>
+        </div>
       </div>
     </div>
     <table id=victim-table>
