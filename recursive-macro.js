@@ -219,16 +219,25 @@ function merge_desc(list) {
 
 // solution: only a few are random lul
 
+// improvement: take up to 100 samples, then use that to scale the final result
+
 function distribution(min, max, samples) {
   var result = 0;
   var limit = Math.min(100,samples)
-  for (var i = 0; i < limit; i++) {
-    result += Math.floor(Math.random() * (max - min + 1) + min);
-  }
 
   if (limit < samples) {
-    result += Math.round((max - min) * (samples - limit));
+
+    for (var i = 0; i < limit; i++) {
+      result += (i/10 + 1) * Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    result = Math.round((result / 595) * samples * (max - min) + min);
+  } else {
+    for (var i = 0; i < limit; i++) {
+      result += Math.floor(Math.random() * (max - min + 1) + min);
+    }
   }
+
 
   return result;
 }
@@ -308,7 +317,7 @@ function defaultMerge(thing) {
       if (container.contents.hasOwnProperty(key)) {
         if (this.contents.hasOwnProperty(key)) {
           newThing.contents[key] = this.contents[key].merge(container.contents[key]);
-        } else {;
+        } else {
           newThing.contents[key] = container.contents[key];
         }
       }
@@ -357,6 +366,18 @@ function defaultSumProperty(thing) {
   }
 }
 
+function defaultAddContent(thing) {
+  return function(name, min, max, count) {
+    if (min == max) {
+      var object = new things[name](min*count);
+      thing.contents[object.name] = object;
+    } else {
+      var object = new things[name](distribution(min, max, count));
+      thing.contents[object.name] = object;
+    }
+  }
+}
+
 function DefaultEntity() {
   this.stomp = defaultStomp;
   this.eat = defaultEat;
@@ -375,6 +396,7 @@ function DefaultEntity() {
   this.mass = defaultMass;
   this.sum_property = defaultSumProperty;
   this.merge = defaultMerge;
+  this.addContent = defaultAddContent;
   return this;
 }
 
@@ -548,8 +570,7 @@ function Car(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(2,5,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person", 2, 5, count);
 
   this.describeOne = function(verbose=true) {
     color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"], (verbose ? 1 : 0));
@@ -565,9 +586,9 @@ function Car(count = 1) {
         for (var i = 0; i < this.count; i++) {
           list.push(this.describeOne(this.count < 2));
         }
-        return merge_things(list) + " with " + this.contents.person.describe(false) + " inside";
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
       } else {
-        return this.count + " cars with " + this.contents.person.describe(false) + " inside";
+        return this.count + " cars with " + describe_all(this.contents,verbose) + " inside";
       }
     } else {
       return (this.count > 1 ? this.count + " cars" : "a car");
@@ -583,8 +604,7 @@ function Bus(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(10,35,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",10,35,count);
 
   this.describeOne = function(verbose=true) {
     adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
@@ -600,9 +620,9 @@ function Bus(count = 1) {
         for (var i = 0; i < this.count; i++) {
           list.push(this.describeOne(this.count < 2));
         }
-        return merge_things(list) + " with " + this.contents.person.describe() + " inside";
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
       } else {
-        return this.count + " buses with " + this.contents.person.describe() + " inside";
+        return this.count + " buses with " + describe_all(this.contents,verbose) + " inside";
       }
     } else {
       return (this.count > 1 ? this.count + " buses" : "a bus");
@@ -618,8 +638,7 @@ function Tram(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(40,60,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",40,60,count);
 
   this.describeOne = function(verbose=true) {
     adjective = random_desc(["rusty","weathered"], (verbose ? 0.3 : 0));
@@ -635,9 +654,9 @@ function Tram(count = 1) {
         for (var i = 0; i < this.count; i++) {
           list.push(this.describeOne(verbose));
         }
-        return merge_things(list) + " with " + this.contents.person.describe(verbose) + " inside";
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
       } else {
-        return this.count + " trams with " + this.contents.person.describe(verbose) + " inside";
+        return this.count + " trams with " + describe_all(this.contents,verbose) + " inside";
       }
     } else {
       return (this.count > 1 ? this.count + " trams" : "a tram");
@@ -657,8 +676,7 @@ function Motorcycle(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(1,2,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",1,2,count);
 }
 
 function Train(count = 1) {
@@ -668,11 +686,9 @@ function Train(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(1,4,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person", 1, 4, count);
 
-  amount = distribution(1,10,count);
-  this.contents.traincar = new TrainCar(amount);
+  this.addContent("Train Car", 2, 10, count);
 
   this.describeOne = function(verbose=true) {
     adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
@@ -688,9 +704,9 @@ function Train(count = 1) {
         for (var i = 0; i < this.count; i++) {
           list.push(this.describeOne(verbose));
         }
-        return merge_things(list) + " with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
+        return merge_things(list) + " with " + this.contents["Person"].describe(false) + " in the engine and " + this.contents["Train Car"].describe()  + " attached";
       } else {
-        return this.count + " trains with " + this.contents.person.describe() + " in the engine and " + this.contents.traincar.describe()  + " attached";
+        return this.count + " trains with " + this.contents["Person"].describe(false) + " in the engine and " + this.contents["Train Car"].describe()  + " attached";
       }
     } else {
       return (this.count > 1 ? this.count + " trains" : "a train");
@@ -699,7 +715,7 @@ function Train(count = 1) {
   }
 
   this.anal_vore = function() {
-    var cars = (this.contents.traincar.count == 1 ? this.contents.traincar.describe() + " follows it inside" : this.contents.traincar.describe() + " are pulled slowly inside");
+    var cars = (this.contents["Train Car"].count == 1 ? this.contents["Train Car"].describe() + " follows it inside" : this.contents["Train Car"].describe() + " are pulled slowly inside");
     return "You snatch up " + this.describeOne() + " and stuff it into your pucker, moaning as " + cars;
   }
 }
@@ -711,8 +727,7 @@ function TrainCar(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(10,40,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",10,40,count);
 
   this.describeOne = function(verbose=true) {
     adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
@@ -744,10 +759,8 @@ function House(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(0,8,count);
-  this.contents.person = new Person(amount);
-  amount = distribution(0,2,count);
-  this.contents.emptycar = new EmptyCar(amount);
+  this.addContent("Person",0,8,count);
+  this.addContent("Empty Car",0,2,count);
 
   this.describeOne = function(verbose=true) {
     size = random_desc(["little","two-story","large"], (verbose ? 0.5 : 0));
@@ -763,9 +776,9 @@ function House(count = 1) {
         for (var i = 0; i < this.count; i++) {
           list.push(this.describeOne(this.count < 2));
         }
-        return merge_things(list) + " with " + this.contents.person.describe(verbose) + " inside";
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
       } else {
-        return this.count + " homes with " + this.contents.person.describe(verbose) + " inside";
+        return this.count + " homes with " + describe_all(this.contents,verbose) + " inside";
       }
     } else {
       return (this.count > 1 ? this.count + " houses" : "a house");
@@ -779,10 +792,9 @@ function Barn(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(0,2,count);
-  this.contents.person = new Person(amount);
-  amount = distribution(30,70,count);
-  this.contents.cow = new Cow(amount);
+  this.addContent("Person",0,2,count);
+
+  this.addContent("Cow",30,70,count);
 
   this.describeOne = function(verbose=true) {
     size = random_desc(["little","big","large"], (verbose ? 0.5 : 0));
@@ -814,10 +826,9 @@ function SmallSkyscraper(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(50,500,count);
-  this.contents.person = new Person(amount);
-  amount = distribution(10,50,count);
-  this.contents.emptycar = new EmptyCar(amount);
+  this.addContent("Person",50,500,count);
+
+  this.addContent("Empty Car",10,50,count);
 
   this.describeOne = function(verbose=true) {
     color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
@@ -857,12 +868,12 @@ function ParkingGarage(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(10,200,count);
-  this.contents.person = new Person(amount);
-  amount = distribution(30,100,count);
-  this.contents.emptycar = new EmptyCar(amount);
-  amount = distribution(5,20,count);
-  this.contents.car = new Car(amount);
+  this.addContent("Person",10,200,count);
+
+  this.addContent("Empty Car",30,100,count);
+
+  this.addContent("Car",5,30,count);
+
 
   this.describeOne = function(verbose=true) {
     return "a parking garage";
@@ -883,10 +894,9 @@ function Overpass(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(0,20,count);
-  this.contents.person = new Person(amount);
-  amount = distribution(25,100,count);
-  this.contents.car = new Car(amount);
+  this.addContent("Person",0,20,count);
+
+  this.addContent("Car",25,100,count);
 }
 
 function Town(count = 1) {
@@ -896,26 +906,19 @@ function Town(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(1000,15000,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",1000,15000,count);
 
-  var amount = distribution(500,10000,count);
-  this.contents.house = new House(amount);
+  this.addContent("House",500,10000,count);
 
-  var amount = distribution(250,3750,count);
-  this.contents.emptycar = new EmptyCar(amount);
+  this.addContent("Empty Car",250,3750,count);
 
-  var amount = distribution(250,3750,count);
-  this.contents.car = new Car(amount);
+  this.addContent("Car",250,3750,count);
 
-  var amount = distribution(5,10,count);
-  this.contents.train = new Train(amount);
+  this.addContent("Train",5,10,count);
 
-  var amount = distribution(2,10,count);
-  this.contents.smallskyscraper = new SmallSkyscraper(amount);
+  this.addContent("Small Skyscraper",2,10,count);
 
-  var amount = distribution(1,5,count);
-  this.contents.parkinggarage = new ParkingGarage(amount);
+  this.addContent("Parking Garage",1,5,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -933,29 +936,21 @@ function City(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(10000,150000,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",10000,150000,count);
 
-  var amount = distribution(5000,100000,count);
-  this.contents.house = new House(amount);
+  this.addContent("House",5000,100000,count);
 
-  var amount = distribution(2500,37500,count);
-  this.contents.emptycar = new EmptyCar(amount);
+  this.addContent("Empty Car",2500,37500,count);
 
-  var amount = distribution(2500,37500,count);
-  this.contents.car = new Car(amount);
+  this.addContent("Car",2500,37500,count);
 
-  var amount = distribution(50,100,count);
-  this.contents.train = new Train(amount);
+  this.addContent("Train",50,100,count);
 
-  var amount = distribution(100,300,count);
-  this.contents.tram = new Tram(amount);
+  this.addContent("Tram",100,300,count);
 
-  var amount = distribution(20,100,count);
-  this.contents.smallskyscraper = new SmallSkyscraper(amount);
+  this.addContent("Small Skyscraper",20,100,count);
 
-  var amount = distribution(10,50,count);
-  this.contents.parkinggarage = new ParkingGarage(amount);
+  this.addContent("Parking Garage",10,50,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -973,23 +968,17 @@ function Continent(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(100000,1500000,count);
-  this.contents.person = new Person(amount);
+  this.addContent("Person",100000,1500000,count);
 
-  var amount = distribution(5000,100000,count);
-  this.contents.house = new House(amount);
+  this.addContent("House",5000,100000,count);
 
-  var amount = distribution(25000,375000,count);
-  this.contents.car = new Car(amount);
+  this.addContent("Car",25000,375000,count);
 
-  var amount = distribution(500,1000,count);
-  this.contents.train = new Train(amount);
+  this.addContent("Train",500,1000,count);
 
-  var amount = distribution(2000,5000,count);
-  this.contents.town = new Town(amount);
+  this.addContent("Town",2000,5000,count);
 
-  var amount = distribution(200,500,count);
-  this.contents.city = new City(amount);
+  this.addContent("City",200,500,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -1007,8 +996,7 @@ function Planet(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(4,9,count);
-  this.contents.continent = new Continent(amount);
+  this.addContent("Continent",4,9,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -1038,10 +1026,9 @@ function SolarSystem(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.contents.star = new Star(1);
+  this.addContent("Star",1,1,count);
 
-  var amount = distribution(5,15,count);
-  this.contents.planet = new Planet(amount);
+  this.addContent("Planet",5,15,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -1059,11 +1046,9 @@ function Galaxy(count = 1) {
   this.count = count;
   this.contents = {};
 
-  var amount = distribution(1e9,500e9,count);
-  this.contents.star = new Star(amount);
+  this.addContent("Star",1e9,500e9,count);
 
-  var amount = distribution(1e8,500e8,count);
-  this.contents.solarsystem = new SolarSystem(amount);
+  this.addContent("Solar System",1e8,500e8,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
