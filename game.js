@@ -99,7 +99,7 @@ var macro =
     return volume * this.breastDensity;
   },
 
-  "digest": function(organ) {
+  "digest": function(owner,organ) {
     var count = Math.min(organ.contents.length, organ.maxDigest);
 
     var container = new Container();
@@ -125,6 +125,10 @@ var macro =
     organ.fill(this,container);
     var summary = summarize(container.sum());
 
+    if (organ.contents.length > 0) {
+      setTimeout(function() { owner.digest(owner,organ) }, 15000);
+    }
+
     update([line,summary,newline]);
   },
 
@@ -135,7 +139,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self) }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
@@ -155,7 +159,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self) }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
@@ -175,7 +179,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self) }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
@@ -195,7 +199,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self) }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
