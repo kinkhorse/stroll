@@ -1017,8 +1017,6 @@ function preset(name) {
 }
 
 function startGame(e) {
-  if (e.preventDefault)
-    e.preventDefault();
 
   form = document.forms.namedItem("custom-species-form");
 
@@ -1109,8 +1107,6 @@ function startGame(e) {
   update();
 
   document.getElementById("stat-container").style.display = 'flex';
-
-  return false;
 }
 
 window.addEventListener('load', function(event) {
@@ -1142,6 +1138,6 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
 
-  document.getElementById("custom-species-form").addEventListener("submit",startGame);
+  document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);
 });
