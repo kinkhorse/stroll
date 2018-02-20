@@ -324,7 +324,7 @@ var macro =
     return result;
   },
 
-  "scale": 3,
+  "scale": 1,
 
   "scaleWithMass": function(mass) {
     var startMass = this.mass;
@@ -339,12 +339,15 @@ function look()
 
   var line2 = ""
 
-  switch(biome) {
-    case "rural": line2 = "You're standing amongst rural farmhouses and expansive ranches. Cattle are milling about at your feet."; break;
-    case "suburb": line2 = "You're striding through the winding roads of a suburb."; break;
-    case "city": line2 = "You're terrorizing the streets of a city. Heavy traffic, worsened by your rampage, is everywhere."; break;
-    case "downtown": line2 = "You're lurking amongst the skyscrapers of downtown. The streets are packed, and the buildings are practically begging you to knock them over.";
-  }
+  if (macro.height > 1e6)
+    line2 = "You're standing...on pretty much everything at once.";
+  else
+    switch(biome) {
+      case "rural": line2 = "You're standing amongst rural farmhouses and expansive ranches. Cattle are milling about at your feet."; break;
+      case "suburb": line2 = "You're striding through the winding roads of a suburb."; break;
+      case "city": line2 = "You're terrorizing the streets of a city. Heavy traffic, worsened by your rampage, is everywhere."; break;
+      case "downtown": line2 = "You're lurking amongst the skyscrapers of downtown. The streets are packed, and the buildings are practically begging you to knock them over.";
+    }
 
   desc = desc.concat([newline,line2,newline]);
   update(desc);
@@ -420,6 +423,10 @@ function initVictims()
     "Train Car": 0,
     "Parking Garage": 0,
     "Overpass": 0,
+    "Town": 0,
+    "City": 0,
+    "Continent": 0,
+    "Planet": 0
   };
 };
 
@@ -434,12 +441,15 @@ function getOnePrey(biome,area)
 {
   var potential = ["Person"];
 
-  switch(biome) {
-    case "suburb": potential = ["Person", "Car", "Bus", "Train", "House"]; break;
-    case "city": potential = ["Person", "Car", "Bus", "Train", "Tram", "House", "Parking Garage"]; break;
-    case "downtown": potential = ["Person", "Car", "Bus", "Tram", "Small Skyscraper", "Parking Garage"]; break;
-    case "rural": potential = ["Person", "Barn", "House", "Cow"]; break;
-  }
+  if(macro.height > 1e6)
+    potential = ["Town","City","Continent","Planet"];
+  else
+    switch(biome) {
+      case "suburb": potential = ["Person", "Car", "Bus", "Train", "House"]; break;
+      case "city": potential = ["Person", "Car", "Bus", "Train", "Tram", "House", "Parking Garage"]; break;
+      case "downtown": potential = ["Person", "Car", "Bus", "Tram", "Small Skyscraper", "Parking Garage"]; break;
+      case "rural": potential = ["Person", "Barn", "House", "Cow"]; break;
+    }
 
   var potAreas = []
 
@@ -464,38 +474,48 @@ function getPrey(region, area)
 {
   var weights = {"Person": 1};
 
-  switch(region)
-  {
-    case "rural": weights = {
-      "Person": 0.05,
-      "House": 0.01,
-      "Barn": 0.01,
-      "Cow": 0.2
-    }; break;
-    case "suburb": weights = {
-      "Person": 0.5,
-      "House": 0.5,
-      "Car": 0.2,
-      "Train": 0.1,
-      "Bus": 0.1
-    }; break;
-    case "city": weights = {
-      "Person": 0.5,
-      "House": 0.2,
-      "Car": 0.2,
-      "Train": 0.1,
-      "Bus": 0.1,
-      "Tram": 0.1,
-      "Parking Garage": 0.02
-    }; break;
-    case "downtown": weights = {
-      "Person": 0.5,
-      "Car": 0.3,
-      "Bus": 0.15,
-      "Tram": 0.1,
-      "Parking Garage": 0.02,
-      "Small Skyscraper": 0.4
-    }; break;
+  if (macro.height > 1e6) {
+    weights = {
+      "Town": 0.1,
+      "City": 0.05,
+      "Continent": 0.5,
+      "Planet": 1
+    }
+  }
+  else {
+    switch(region)
+    {
+      case "rural": weights = {
+        "Person": 0.05,
+        "House": 0.01,
+        "Barn": 0.01,
+        "Cow": 0.2
+      }; break;
+      case "suburb": weights = {
+        "Person": 0.5,
+        "House": 0.5,
+        "Car": 0.2,
+        "Train": 0.1,
+        "Bus": 0.1
+      }; break;
+      case "city": weights = {
+        "Person": 0.5,
+        "House": 0.2,
+        "Car": 0.2,
+        "Train": 0.1,
+        "Bus": 0.1,
+        "Tram": 0.1,
+        "Parking Garage": 0.02
+      }; break;
+      case "downtown": weights = {
+        "Person": 0.5,
+        "Car": 0.3,
+        "Bus": 0.15,
+        "Tram": 0.1,
+        "Parking Garage": 0.02,
+        "Small Skyscraper": 0.4
+      }; break;
+    }
   }
   return fill_area2(area,weights);
 }
@@ -823,9 +843,7 @@ function ball_smother()
 
 function male_orgasm(vol)
 {
-  // let's make it 10cm thick
-
-  var area = vol * 10;
+  var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
   var line = prey.male_orgasm(verbose).replace("$VOLUME",volume(vol,unit,false))
@@ -858,9 +876,7 @@ function male_orgasm(vol)
 
 function female_orgasm(vol)
 {
-  // let's make it 10cm thick
-
-  var area = vol * 10;
+  var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
   var line = prey.female_orgasm(verbose).replace("$VOLUME",volume(vol,unit,false));
@@ -901,7 +917,8 @@ function update(lines = [])
     log.appendChild(line);
   });
 
-  log.scrollTop = log.scrollHeight;
+  if (lines.length > 0)
+    log.scrollTop = log.scrollHeight;
 
   document.getElementById("height").innerHTML = "Height: " + length(macro.height, unit);
   document.getElementById("mass").innerHTML = "Mass: " + mass(macro.mass, unit);
@@ -970,6 +987,23 @@ function option_female() {
   document.getElementById("button-female-genitals").innerHTML = (macro.femaleParts ? "Female genitals on" : "Female genitals off");
 }
 
+function preset(name) {
+  switch(name){
+    case "Fen":
+      macro.species = "crux";
+      macro.baseHeight = 2.2606;
+      macro.baseMass = 124.738;
+      break;
+    case "Renard":
+      macro.species = "fox";
+      macro.baseHeight = 1.549;
+      macro.baseMass = 83.9;
+    case "Vulpes":
+      macro.species = "fox";
+      macro.baseHeight = 20000;
+      macro.baseMass = 180591661866272;
+  }
+}
 function startGame() {
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
@@ -1033,13 +1067,13 @@ function startGame() {
   }
 
 
-  var species = document.getElementById("option-species").value;
-  var re = /^[a-zA-Z\- ]+$/;
+  //var species = document.getElementById("option-species").value;
+  //var re = /^[a-zA-Z\- ]+$/;
 
   // tricksy tricksy players
-  if (re.test(species)) {
-    macro.species = species;
-  }
+  //if (re.test(species)) {
+  //  macro.species = species;
+  //}
 
   macro.init();
 

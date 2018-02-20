@@ -15,6 +15,10 @@ var things =
   "Train Car": TrainCar,
   "Parking Garage": ParkingGarage,
   "Overpass": Overpass,
+  "Town": Town,
+  "City": City,
+  "Continent": Continent,
+  "Planet": Planet
 };
 
 var areas =
@@ -33,6 +37,10 @@ var areas =
   "TrainCar": 500,
   "Parking Garage": 5000,
   "Overpass": 10000,
+  "Town": 1e7,
+  "City": 1e9,
+  "Continent": 1.5e13,
+  "Planet": 5e14
 };
 
 var masses =
@@ -51,6 +59,10 @@ var masses =
   "Train Car": 5000,
   "Parking Garage": 100000,
   "Overpass": 100000,
+  "Town": 0,
+  "City": 0,
+  "Continent": 1e12,
+  "Planet": 5.972e24
 };
 
 // general logic: each step fills in a fraction of the remaining space
@@ -841,4 +853,134 @@ function Overpass(count = 1) {
   this.contents.person = new Person(amount);
   amount = distribution(25,100,count);
   this.contents.car = new Car(amount);
+}
+
+function Town(count = 1) {
+  this.name = "Town";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(1000,15000,count);
+  this.contents.person = new Person(amount);
+
+  var amount = distribution(500,10000,count);
+  this.contents.house = new House(amount);
+
+  var amount = distribution(250,3750,count);
+  this.contents.emptycar = new EmptyCar(amount);
+
+  var amount = distribution(250,3750,count);
+  this.contents.car = new Car(amount);
+
+  var amount = distribution(5,10,count);
+  this.contents.train = new Train(amount);
+
+  var amount = distribution(2,10,count);
+  this.contents.smallskyscraper = new SmallSkyscraper(amount);
+
+  var amount = distribution(1,5,count);
+  this.contents.parkinggarage = new ParkingGarage(amount);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a town" : this.count + " towns") + " with " + describe_all(this.contents, verbose) + " in " + (this.count == 1 ? "it" : "them");
+    } else {
+      return (this.count == 1 ? "a town" : this.count + " towns");
+    }
+  }
+}
+
+function City(count = 1) {
+  this.name = "City";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(10000,150000,count);
+  this.contents.person = new Person(amount);
+
+  var amount = distribution(5000,100000,count);
+  this.contents.house = new House(amount);
+
+  var amount = distribution(2500,37500,count);
+  this.contents.emptycar = new EmptyCar(amount);
+
+  var amount = distribution(2500,37500,count);
+  this.contents.car = new Car(amount);
+
+  var amount = distribution(50,100,count);
+  this.contents.train = new Train(amount);
+
+  var amount = distribution(100,300,count);
+  this.contents.tram = new Tram(amount);
+
+  var amount = distribution(20,100,count);
+  this.contents.smallskyscraper = new SmallSkyscraper(amount);
+
+  var amount = distribution(10,50,count);
+  this.contents.parkinggarage = new ParkingGarage(amount);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a city" : this.count + " cities") + " with " + describe_all(this.contents, verbose) + " in " + (this.count == 1 ? "it" : "them");
+    } else {
+      return (this.count == 1 ? "a city" : this.count + " cities");
+    }
+  }
+}
+
+function Continent(count = 1) {
+  this.name = "Continent";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(100000,1500000,count);
+  this.contents.person = new Person(amount);
+
+  var amount = distribution(5000,100000,count);
+  this.contents.house = new House(amount);
+
+  var amount = distribution(25000,375000,count);
+  this.contents.car = new Car(amount);
+
+  var amount = distribution(500,1000,count);
+  this.contents.train = new Train(amount);
+
+  var amount = distribution(2000,5000,count);
+  this.contents.town = new Town(amount);
+
+  var amount = distribution(200,500,count);
+  this.contents.city = new City(amount);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a continent" : this.count + " continents") + " with " + describe_all(this.contents, verbose) + " on " + (this.count == 1 ? "it" : "them");
+    } else {
+      return (this.count == 1 ? "a continent" : this.count + " continents");
+    }
+  }
+}
+
+function Planet(count = 1) {
+  this.name = "Planet";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  var amount = distribution(4,9,count);
+  this.contents.continent = new Continent(amount);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a planet" : this.count + " planets") + " with " + describe_all(this.contents, verbose) + " on " + (this.count == 1 ? "it" : "them");
+    } else {
+      return (this.count == 1 ? "a planet" : this.count + " planets");
+    }
+  }
 }

@@ -56,6 +56,16 @@ body {
   flex: 1;
 }
 
+.preset-selector {
+  height: 25px;
+}
+
+.option-container {
+  flex-wrap: wrap;
+  max-width: 300px;
+  flex: 2;
+}
+
 .button-container {
   flex-wrap: wrap;
   max-width: 300px;
