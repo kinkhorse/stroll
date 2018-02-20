@@ -1041,7 +1041,7 @@ function SolarSystem(count = 1) {
   this.contents.star = new Star(1);
 
   var amount = distribution(5,15,count);
-  this.contents.planet = new Continent(amount);
+  this.contents.planet = new Planet(amount);
 
   this.describe = function(verbose = true) {
     if (verbose) {
