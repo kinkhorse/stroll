@@ -234,7 +234,7 @@ function defaultMaleOrgasm(thing) {
 }
 
 function defaultFemaleOrgasm(thing) {
-  return function(verbose=true,height=10) { return "You're cumming! Your moist slit sprays $VOLUME of sluck femcum, splooging " + thing.describe(verbose) + "."; }
+  return function(verbose=true,height=10) { return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, splooging " + thing.describe(verbose) + "."; }
 }
 
 function defaultArea(thing) {
