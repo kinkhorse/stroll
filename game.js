@@ -573,12 +573,14 @@ function feed()
   var area = macro.handArea;
   var prey = getPrey(biome, area);
 
-  var line = prey.eat(verbose)
+  var line = describe("eat", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
-  var sound = "Ulp";
-  if (people < 3) {
+  var sound = "";
+  if (people == 0) {
+    sound = "";
+  } else if (people < 3) {
     sound = "Ulp.";
   } else if (people < 10) {
     sound = "Gulp.";
@@ -608,7 +610,7 @@ function stomp()
 {
   var area = macro.pawArea;
   var prey = getPrey(biome, area);
-  var line = prey.stomp(verbose)
+  var line = describe("stomp", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -646,10 +648,10 @@ function anal_vore()
   area = macro.assArea;
   var crushed = getPrey(biome,area);
 
-  var line1 = prey.anal_vore(verbose, macro.height);
+  var line1 = describe("anal-vore", prey, macro, verbose);
   var line1summary = summarize(prey.sum(), false);
 
-  var line2 = crushed.buttcrush(verbose);
+  var line2 = describe("ass-crush", crushed, macro, verbose);
   var line2summary = summarize(crushed.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -705,7 +707,7 @@ function breast_crush()
 {
   var area = macro.breastArea;
   var prey = getPrey(biome, area);
-  var line = prey.breast_crush(verbose);
+  var line = describe("breast-crush", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -739,7 +741,7 @@ function unbirth()
 {
   var area = macro.vaginaArea;
   var prey = getPrey(biome, area);
-  var line = prey.unbirth(verbose)
+  var line = describe("unbirth", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -776,7 +778,7 @@ function cockslap()
 {
   var area = macro.dickArea;
   var prey = getPrey(biome, area);
-  var line = prey.cockslap(verbose)
+  var line = describe("cockslap", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -811,7 +813,7 @@ function cock_vore()
 {
   var area = macro.dickGirth;
   var prey = getPrey(biome, area);
-  var line = prey.cock_vore(verbose)
+  var line = describe("cock-vore", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -847,7 +849,7 @@ function ball_smother()
 {
   var area = macro.ballArea * 2;
   var prey = getPrey(biome, area);
-  var line = prey.ball_smother(verbose)
+  var line = describe("ball-smother", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -882,7 +884,7 @@ function male_orgasm(vol)
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
-  var line = prey.male_orgasm(verbose).replace("$VOLUME",volume(vol,unit,false))
+  var line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -915,7 +917,7 @@ function female_orgasm(vol)
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
-  var line = prey.female_orgasm(verbose).replace("$VOLUME",volume(vol,unit,false));
+  var line = describe("female-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());

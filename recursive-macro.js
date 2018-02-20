@@ -236,56 +236,6 @@ function distribution(min, max, samples) {
   return result;
 }
 
-/* default actions */
-
-function defaultStomp(thing) {
-  return function (verbose=true,height=10) { return "You crush " + thing.describe(verbose) + " underfoot."};
-}
-
-function defaultKick(thing) {
-  return function(verbose=true,height=10) { return "You punt " + thing.describe(verbose) + ", destroying " + (thing.count > 1 ? "them" : "it") + "."; }
-}
-
-function defaultEat(thing) {
-  return function(verbose=true,height=10) { return "You scoop up " + thing.describe(verbose) + " and swallow " + (thing.count > 1 ? "them" : "it") + " whole."; }
-}
-
-function defaultAnalVore(thing) {
-  return function(verbose=true,height=10) { return "You sit yourself down on " + thing.describe(verbose) + ". " + (thing.count > 1 ? "They slide" : "It slides") + " inside with ease."; }
-}
-
-function defaultButtcrush(thing) {
-  return function(verbose=true,height=10) { return "Your heavy ass obliterates " + thing.describe(verbose) + ". "; }
-}
-
-function defaultBreastCrush(thing) {
-  return function(verbose=true,height=10) { return "Your heavy breasts obliterate " + thing.describe(verbose) + ". "; }
-}
-
-function defaultUnbirth(thing) {
-  return function(verbose=true,height=10) { return "You gasp as you slide " + thing.describe(verbose) + " up your slit. "; }
-}
-
-function defaultCockslap(thing) {
-  return function(verbose=true,height=10) { return "Your swaying shaft crushes " + thing.describe(verbose) + ". "; }
-}
-
-function defaultCockVore(thing) {
-  return function(verbose=true,height=10) { return "You stuff " + thing.describe(verbose) + " into your throbbing shaft, forcing them down to your heavy balls."; }
-}
-
-function defaultBallSmother(thing) {
-  return function(verbose=true,height=10) { return "Your weighty balls spread over " + thing.describe(verbose) + ", smothering them in musk."; }
-}
-
-function defaultMaleOrgasm(thing) {
-  return function(verbose=true,height=10) { return "You're cumming! Your thick cock spurts out $VOLUME of seed, splooging " + thing.describe(verbose) + "."; }
-}
-
-function defaultFemaleOrgasm(thing) {
-  return function(verbose=true,height=10) { return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, splooging " + thing.describe(verbose) + "."; }
-}
-
 function defaultArea(thing) {
   return areas[thing.name];
 }
@@ -422,20 +372,7 @@ function Container(contents = []) {
     else
       return line;
   };
-
-  this.stomp = defaultStomp(this);
-  this.eat = defaultEat(this);
-  this.kick = defaultKick(this);
-  this.anal_vore = defaultAnalVore(this);
-  this.buttcrush = defaultButtcrush(this);
-  this.breast_crush = defaultBreastCrush(this);
-  this.unbirth = defaultUnbirth(this);
-  this.cockslap = defaultCockslap(this);
-  this.cock_vore = defaultCockVore(this);
-  this.ball_smother = defaultBallSmother(this);
-  this.male_orgasm = defaultMaleOrgasm(this);
-  this.female_orgasm = defaultFemaleOrgasm(this);
-
+  
   return this;
 }
 
