@@ -232,7 +232,7 @@ var macro =
   "femaleParts": true,
 
   "fillCum": function(self) {
-    self.cumStorage.amount += self.ballVolume / 30;
+    self.cumStorage.amount += self.cumScale * self.ballVolume / 120;
     if (self.cumStorage.amount > self.cumStorage.limit)
       self.arouse(10 * (self.cumStorage.amount / self.cumStorage.limit - 1));
     setTimeout(function () { self.fillCum(self) }, 1000);
@@ -240,7 +240,7 @@ var macro =
   },
 
   "fillFemcum": function(self) {
-    self.femcumStorage.amount += self.vaginaVolume / 30;
+    self.femcumStorage.amount += self.femcumScale * self.vaginaVolume / 120;
     if (self.femcumStorage.amount > self.femcumStorage.limit)
       self.arouse(10 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
     setTimeout(function () { self.fillFemcum(self) }, 1000);
@@ -966,7 +966,7 @@ function update(lines = [])
       for (var key in victims[type]){
         if (victims[type].hasOwnProperty(key) && victims[type][key] > 0) {
           document.getElementById("stat-" + key).style.display = "table-row";
-          document.getElementById("stat-" + type + "-" + key).innerHTML = victims[type][key];
+          document.getElementById("stat-" + type + "-" + key).innerHTML = number(victims[type][key],numbers);
         }
       }
     }

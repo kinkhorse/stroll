@@ -121,15 +121,18 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  width: 500px;
 }
 
 .flex-outer > li > label,
+.flex-outer > div > div > li > label,
 .flex-outer li p {
   flex: 1 0 120px;
   max-width: 220px;
 }
 
 .flex-outer > li > label + *,
+.flex-outer > div > div > li > label + *,
 .flex-inner {
   flex: 1 0 220px;
 }
