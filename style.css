@@ -87,3 +87,8 @@ body {
   width: 120px;
   height: 75px;
 }
+
+#victim-table {
+  margin: auto;
+  width: 80%;
+}

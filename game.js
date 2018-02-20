@@ -912,16 +912,9 @@ function update(lines = [])
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
       for (var key in victims[type]){
-        if (victims[type].hasOwnProperty(key)) {
-          if (document.getElementById("stats-" + type + "-" + key) == null) {
-            if (victims[type][key] == 0)
-              continue;
-            child = document.createElement('div');
-            child.id = "stats-" + type + "-" + key;
-            child.classList.add("stat-line");
-            document.getElementById("stats-" + type).appendChild(child);
-          }
-          document.getElementById("stats-" + type + "-" + key).innerHTML = key + ": " + victims[type][key];
+        if (victims[type].hasOwnProperty(key) && victims[type][key] > 0) {
+          document.getElementById("stat-" + key).style.display = "table-row";
+          document.getElementById("stat-" + type + "-" + key).innerHTML = victims[type][key];
         }
       }
     }
@@ -981,26 +974,63 @@ function startGame() {
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
-  if (!macro.maleParts) {
+  victimTypes = ["stomped","digested","stomach","bowels"];
+
+  if (macro.maleParts) {
+    victimTypes = victimTypes.concat(["cock","balls"]);
+  } else {
     document.getElementById("button-cockslap").style.display = 'none';
     document.getElementById("button-cock_vore").style.display = 'none';
     document.getElementById("button-ball_smother").style.display = 'none';
-    document.getElementById("stats-balls").style.display = 'none';
-    document.getElementById("stats-cock").style.display = 'none';
     document.getElementById("cum").style.display = 'none';
   }
 
-  if (!macro.femaleParts) {
+  if (macro.femaleParts) {
+    victimTypes = victimTypes.concat(["breasts"],["womb"]);
+  } else {
     document.getElementById("button-breast_crush").style.display = 'none';
     document.getElementById("button-unbirth").style.display = 'none';
-    document.getElementById("stats-womb").style.display = 'none';
-    document.getElementById("stats-breasts").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
   }
 
-  if (!macro.maleParts && !macro.femaleParts) {
-  document.getElementById("stats-splooged").style.display = 'none';
+  if (macro.maleParts || macro.femaleParts) {
+    victimTypes.push("splooged");
   }
+
+  var table = document.getElementById("victim-table");
+
+  var tr = document.createElement('tr');
+
+  var th = document.createElement('th');
+  th.innerHTML = "Method";
+  tr.appendChild(th);
+  for (var i = 0; i < victimTypes.length; i++) {
+    var th = document.createElement('th');
+    th.innerHTML = victimTypes[i].charAt(0).toUpperCase() + victimTypes[i].slice(1);
+    tr.appendChild(th);
+  }
+
+
+  table.appendChild(tr);
+  for (var key in things) {
+    if (things.hasOwnProperty(key) && key != "Container") {
+      var tr = document.createElement('tr');
+      tr.id = "stat-" + key;
+      tr.style.display = "none";
+      var th = document.createElement('th');
+      th.innerHTML = key;
+      tr.appendChild(th);
+
+      for (var i = 0; i < victimTypes.length; i++) {
+        var th = document.createElement('th');
+        th.innerHTML = 0;
+        th.id = "stat-" + victimTypes[i] + "-" + key;
+        tr.appendChild(th);
+      }
+      table.appendChild(tr);
+    }
+  }
+
 
   var species = document.getElementById("option-species").value;
   var re = /^[a-zA-Z\- ]+$/;
