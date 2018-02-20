@@ -63,6 +63,12 @@ var macro =
     return volume * this.ballDensity;
   },
 
+  "baseCumRatio": 0.25,
+  "cumScale": 1,
+  get cumVolume() {
+    return this.ballVolume * this.baseCumRatio * this.cumScale;
+  },
+
   "baseVaginaLength": 0.1,
   "baseVaginaWidth": 0.05,
   "vaginaScale": 1,
@@ -70,6 +76,12 @@ var macro =
   get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
   get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
+
+  "femcumRatio": 0.1,
+  "femcumScale": 1,
+  get femcumVolume() {
+    return this.vaginaArea * this.vaginaLength * this.femcumRatio * this.femcumScale;
+  },
 
   "baseBreastDiameter": 0.1,
   "breastScale": 1,
@@ -193,6 +205,55 @@ var macro =
 
   "maleParts": true,
   "femaleParts": true,
+
+  "orgasm": false,
+  "arousal": 0,
+
+  "arouse": function(amount) {
+    this.arousal += amount;
+
+    if (this.arousal >= 100) {
+      this.arousal = 100;
+
+      if (!this.orgasm) {
+        this.orgasm = true;
+        if (this.maleParts) {
+          this.maleOrgasm(this);
+        }
+        if (this.femaleParts) {
+          this.femaleOrgasm(this);
+        }
+      }
+    }
+  },
+
+  "quench": function(amount) {
+    this.arousal -= amount;
+
+    if (this.arousal <= 0) {
+      this.arousal = 0;
+      if (this.orgasm) {
+        this.orgasm = false;
+      }
+    }
+  },
+
+  "maleOrgasm": function(self) {
+    if (self.orgasm) {
+      self.quench(10);
+      male_orgasm();
+      setTimeout(function() { self.maleOrgasm(self) }, 2000);
+    }
+  },
+
+  "femaleOrgasm": function(self) {
+    if (this.orgasm) {
+      this.quench(10);
+      female_orgasm();
+      setTimeout(function() { self.femaleOrgasm(self) }, 2000);
+    }
+  },
+
 
   get description() {
     result = [];
@@ -410,7 +471,6 @@ function feed()
 
   var people = get_living_prey(prey.sum());
   var sound = "Ulp";
-
   if (people < 3) {
     sound = "Ulp.";
   } else if (people < 10) {
@@ -430,6 +490,8 @@ function feed()
   macro.scaleWithMass(preyMass);
 
   macro.stomach.feed(prey);
+
+  macro.arouse(5);
 
   updateVictims("stomach",prey);
   update([sound,line,linesummary,newline]);
@@ -462,6 +524,8 @@ function stomp()
   var preyMass = prey.sum_property("mass");
 
   macro.scaleWithMass(preyMass);
+
+  macro.arouse(5);
 
   updateVictims("stomped",prey);
   update([sound,line,linesummary,newline]);
@@ -523,6 +587,8 @@ function anal_vore()
 
   macro.bowels.feed(prey);
 
+  macro.arouse(10);
+
   updateVictims("bowels",prey);
   updateVictims("stomped",crushed);
   update([sound,line1,line1summary,newline,sound2,line2,line2summary,newline]);
@@ -555,6 +621,8 @@ function breast_crush()
   var preyMass = prey.sum_property("mass");
 
   macro.scaleWithMass(preyMass);
+
+  macro.arouse(10);
 
   updateVictims("breasts",prey);
   update([sound,line,linesummary,newline]);
@@ -591,6 +659,8 @@ function unbirth()
 
   macro.womb.feed(prey);
 
+  macro.arouse(20);
+
   updateVictims("womb",prey);
   update([sound,line,linesummary,newline]);
 }
@@ -623,6 +693,8 @@ function cockslap()
   var preyMass = prey.sum_property("mass");
 
   macro.scaleWithMass(preyMass);
+
+  macro.arouse(15);
 
   updateVictims("cock",prey);
   update([sound,line,linesummary,newline]);
@@ -658,6 +730,8 @@ function cock_vore()
 
   macro.balls.feed(prey);
 
+  macro.arouse(20);
+
   updateVictims("balls",prey);
   update([sound,line,linesummary,newline]);
 }
@@ -690,7 +764,83 @@ function ball_smother()
 
   macro.scaleWithMass(preyMass);
 
+  macro.arouse(10);
+
   updateVictims("balls",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function male_orgasm()
+{
+  var vol = macro.cumVolume;
+
+  // let's make it 10cm thick
+
+  var area = vol * 10;
+
+  var prey = getPrey(biome, area);
+  var line = prey.male_orgasm(verbose).replace("$VOLUME",volume(vol,unit,false))
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Spurt!";
+
+  if (people < 3) {
+    sound = "Spurt!";
+  } else if (people < 10) {
+    sound = "Sploosh!";
+  } else if (people < 50) {
+    sound = "Sploooooosh!";
+  } else if (people < 500) {
+    sound = "SPLOOSH!";
+  } else if (people < 5000) {
+    sound = "SPLOOOOOOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  updateVictims("splooged",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function female_orgasm()
+{
+  var vol = macro.femcumVolume;
+
+  // let's make it 10cm thick
+
+  var area = vol * 10;
+
+  var prey = getPrey(biome, area);
+  var line = prey.female_orgasm(verbose).replace("$VOLUME",volume(vol,unit,false));
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Spurt!";
+
+  if (people < 3) {
+    sound = "Spurt!";
+  } else if (people < 10) {
+    sound = "Sploosh!";
+  } else if (people < 50) {
+    sound = "Sploooooosh!";
+  } else if (people < 500) {
+    sound = "SPLOOSH!";
+  } else if (people < 5000) {
+    sound = "SPLOOOOOOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.scaleWithMass(preyMass);
+
+  updateVictims("splooged",prey);
   update([sound,line,linesummary,newline]);
 }
 
@@ -708,6 +858,7 @@ function update(lines = [])
 
   document.getElementById("height").innerHTML = "Height: " + length(macro.height, unit);
   document.getElementById("mass").innerHTML = "Mass: " + mass(macro.mass, unit);
+  document.getElementById("arousal").innerHTML = "Arousal: " + macro.arousal + "%";
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -797,6 +948,10 @@ function startGame() {
     document.getElementById("stats-breasts").style.display = 'none';
   }
 
+  if (!macro.maleParts && !macro.femaleParts) {
+  document.getElementById("stats-splooged").style.display = 'none';
+  }
+
   var species = document.getElementById("option-species").value;
   var re = /^[a-zA-Z\- ]+$/;
 
@@ -818,6 +973,7 @@ window.addEventListener('load', function(event) {
   victims["cock"] = initVictims();
   victims["balls"] = initVictims();
   victims["smothered"] = initVictims();
+  victims["splooged"] = initVictims();
 
   macro.init();
 

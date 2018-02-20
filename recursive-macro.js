@@ -267,7 +267,15 @@ function defaultCockVore(thing) {
 }
 
 function defaultBallSmother(thing) {
-  return function(verbose=true,height=10) { return "Your weighty balls spread over " + thing.describe(verbose) + ", smothering them in musk. "; }
+  return function(verbose=true,height=10) { return "Your weighty balls spread over " + thing.describe(verbose) + ", smothering them in musk."; }
+}
+
+function defaultMaleOrgasm(thing) {
+  return function(verbose=true,height=10) { return "You're cumming! Your thick cock spurts out $VOLUME of seed, splooging " + thing.describe(verbose) + "."; }
+}
+
+function defaultFemaleOrgasm(thing) {
+  return function(verbose=true,height=10) { return "You're cumming! Your moist slit sprays $VOLUME of sluck femcum, splooging " + thing.describe(verbose) + "."; }
 }
 
 function defaultArea(thing) {
@@ -355,6 +363,8 @@ function DefaultEntity() {
   this.cockslap = defaultCockslap;
   this.cock_vore = defaultCockVore;
   this.ball_smother = defaultBallSmother;
+  this.male_orgasm = defaultMaleOrgasm;
+  this.female_orgasm = defaultFemaleOrgasm;
   this.sum = defaultSum;
   this.area = defaultArea;
   this.mass = defaultMass;

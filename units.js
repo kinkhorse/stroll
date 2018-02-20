@@ -25,6 +25,7 @@ function volume(m3, type="metric", singular=false) {
     case "approx": return approxVolume(m3, singular); break;
   }
 }
+
 function metricMass(kg, singular=false) {
   if (kg < 1/1000) {
     var mass = round(kg * 1e6,0);
@@ -139,8 +140,11 @@ function approxLength(m, singular=false) {
 }
 
 function metricVolume(m3, singular=false) {
-  if (m3 < 1) {
-    var volume = round(m3/1000, 1);
+  if (m3 < 1/1000) {
+    var volume = round(m3*1e6, 0);
+    return volume + (singular || volume == 1 ? " milliliter" : " milliliters");
+  } else if (m3 < 1) {
+    var volume = round(m3*1000, 1);
     return volume + (singular || volume == 1 ? " liter" : " liters");
   } else if (m3 < 1000000) {
     var volume = round(m3, 0);
