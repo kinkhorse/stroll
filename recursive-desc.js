@@ -22,6 +22,13 @@ function hasNothing(container, thing, amount) {
   return true;
 }
 
+function hasLessThan(container, thing, amount) {
+  if (container.contents.hasOwnProperty(thing))
+    if (container.contents[thing].count < amount && container.contents[thing].count > 0)
+      return true;
+  return false;
+}
+
 function hasExactly(container, thing, amount) {
   if (!container.contents.hasOwnProperty(thing) && amount == 0)
     return true;
@@ -30,6 +37,21 @@ function hasExactly(container, thing, amount) {
   return false;
 }
 
+function hasOnly(container, things) {
+  for (var key in container.contents) {
+    if (container.contents.hasOwnProperty(key))
+      if (!things.includes(key))
+        return false;
+  }
+
+  for (var i=0; i<things.length; i++) {
+    if (!container.contents.hasOwnProperty(things[i]))
+      return false;
+  }
+
+  return true;
+
+}
 function describe(action, container, macro, verbose=true) {
   options = [];
 
@@ -76,9 +98,33 @@ rules["eat"].push({
 
 rules["eat"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Person", 1);
+    return hasOnly(container, ["Person"])
+    && hasLessThan(container, "Person", 6)
+    && macro.height >= 10;
   },
-  "desc": function(conatiner, macro) {
-    return "you eat them lol";
+  "desc": function(container, macro) {
+    return "You pluck up the " + container.describe() + " and stuff them into your mouth, swallowing lightly to drag them down to your bubbling guts.";
   }
 });
+
+rules["eat"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 1)
+    && macro.height < 10;
+  },
+  "desc": function(container, macro) {
+    return "You grasp " + container.describe() + " and greedily wolf them down, swallowing forcefully to cram them into your bulging stomach. A crass belch escapes your lips as they curl up in your slimy gut.";
+  }
+})
+
+rules["eat"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person","Car"])
+    && hasExactly(container, "Car", 1)
+    && hasLessThan(container, "Person", 5);
+  },
+  "desc": function(container, macro) {
+    return "You crush the " + container.contents["Car"].describe() + " with your tight throat, washing it down with " + container.contents["Person"].describe();
+  }
+})

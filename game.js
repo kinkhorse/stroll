@@ -553,7 +553,7 @@ function getPrey(region, area)
       }; break;
     }
   }
-  return fill_area2(area,weights);
+  return fill_area(area,weights);
 }
 
 

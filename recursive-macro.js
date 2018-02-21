@@ -101,7 +101,7 @@ var clusters =
 
 // general logic: each step fills in a fraction of the remaining space
 
-function fill_area2(area, weights)
+function fill_area(area, weights)
 {
   result = [];
   candidates = [];
@@ -147,7 +147,10 @@ function fill_area2(area, weights)
       result.push(new things[candidate.name](count));
   }
 
-  return new Container(result);
+  if (result.length > 0)
+    return new Container(result);
+  else
+    return new Container([new Person(1)]);
 }
 // describes everything in the container
 
@@ -372,7 +375,7 @@ function Container(contents = []) {
     else
       return line;
   };
-  
+
   return this;
 }
 
