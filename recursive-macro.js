@@ -11,6 +11,7 @@ var things =
   "House": House,
   "Barn": Barn,
   "Small Skyscraper": SmallSkyscraper,
+  "Large Skyscraper": LargeSkyscraper,
   "Train": Train,
   "Train Car": TrainCar,
   "Parking Garage": ParkingGarage,
@@ -36,9 +37,10 @@ var areas =
   "House": 1000,
   "Barn": 750,
   "Small Skyscraper": 2500,
+  "Large Skyscraper": 5000,
   "Train": 500,
   "TrainCar": 500,
-  "Parking Garage": 5000,
+  "Parking Garage": 10000,
   "Overpass": 10000,
   "Town": 1e7,
   "City": 1e9,
@@ -61,13 +63,14 @@ var masses =
   "House": 10000,
   "Barn": 5000,
   "Small Skyscraper": 10000000,
-  "Train": 5000,
-  "Train Car": 5000,
-  "Parking Garage": 100000,
-  "Overpass": 100000,
+  "Large Skyscraper": 80000000,
+  "Train": 50000,
+  "Train Car": 7500,
+  "Parking Garage": 10000000,
+  "Overpass": 1000000,
   "Town": 1,
   "City": 1,
-  "Continent": 1e12,
+  "Continent": 1e21,
   "Planet": 5.972e24,
   "Star": 1e40,
   "Solar System": 1,
@@ -83,12 +86,13 @@ var clusters =
   "Bus": 1,
   "Tram": 1,
   "Motorcycle": 1,
-  "House": 20,
+  "House": 5,
   "Barn": 1,
-  "Small Skyscraper": 5,
+  "Small Skyscraper": 2,
+  "Large Skyscraper": 1,
   "Train": 2,
   "Train Car": 1,
-  "Parking Garage": 0,
+  "Parking Garage": 1,
   "Overpass": 1,
   "Town": 1,
   "City": 1,
@@ -369,14 +373,6 @@ function Container(contents = []) {
     return describe_all(this.contents,verbose)
   }
 
-  this.eat = function(verbose=true) {
-    var line = containerEat(this,verbose);
-    if (line == "")
-      return defaultEat(this)(verbose);
-    else
-      return line;
-  };
-
   return this;
 }
 
@@ -412,21 +408,6 @@ function Person(count = 1) {
     }
   }
 
-  this.stomp = function(verbose=true) {
-    var line = personStomp(this);
-    if (line == "")
-      return defaultStomp(this)(verbose);
-    else
-      return line;
-  };
-
-  this.eat = function(verbose=true) {
-    var line = personEat(this);
-    if (line == "")
-      return defaultEat(this)(verbose);
-    else
-      return line;
-  };
   return this;
 }
 
@@ -784,7 +765,7 @@ function SmallSkyscraper(count = 1) {
         return this.count + " small skyscrapers with " + describe_all(this.contents,verbose) + " inside";
       }
     } else {
-      return (this.count > 1 ? this.count + " skyscrapers" : "a skyscraper");
+      return (this.count > 1 ? this.count + " small skyscrapers" : "a small skyscraper");
     }
 
   }
@@ -796,6 +777,39 @@ function SmallSkyscraper(count = 1) {
     else
       return line;
   };
+}
+
+function LargeSkyscraper(count = 1) {
+  this.name = "Large Skyscraper";
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.addContent("Person",150,1500,count);
+
+  this.addContent("Empty Car",20,100,count);
+
+  this.describeOne = function(verbose=true) {
+    color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
+    name = random_desc(["skyscraper","office tower","office building"], 1);
+    return "a " + merge_desc(["towering",color,name]);
+  }
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      if (this.count <= 3) {
+        list = [];
+        for (var i = 0; i < this.count; i++) {
+          list.push(this.describeOne(this.count < 2));
+        }
+        return merge_things(list) + " with " + describe_all(this.contents,verbose) + " inside";
+      } else {
+        return this.count + " large skyscrapers with " + describe_all(this.contents,verbose) + " inside";
+      }
+    } else {
+      return (this.count > 1 ? this.count + " large skyscrapers" : "a large skyscraper");
+    }
+  }
 }
 
 function ParkingGarage(count = 1) {
@@ -885,6 +899,8 @@ function City(count = 1) {
   this.addContent("Tram",100,300,count);
 
   this.addContent("Small Skyscraper",20,100,count);
+
+  this.addContent("Large Skyscraper",10,50,count);
 
   this.addContent("Parking Garage",10,50,count);
 

@@ -442,6 +442,7 @@ function initVictims()
     "House": 0,
     "Barn": 0,
     "Small Skyscraper": 0,
+    "Large Skyscraper": 0,
     "Train": 0,
     "Train Car": 0,
     "Parking Garage": 0,
@@ -475,7 +476,7 @@ function getOnePrey(biome,area)
     switch(biome) {
       case "suburb": potential = ["Person", "Car", "Bus", "Train", "House"]; break;
       case "city": potential = ["Person", "Car", "Bus", "Train", "Tram", "House", "Parking Garage"]; break;
-      case "downtown": potential = ["Person", "Car", "Bus", "Tram", "Small Skyscraper", "Parking Garage"]; break;
+      case "downtown": potential = ["Person", "Car", "Bus", "Tram", "Small Skyscraper", "Large Skyscraper", "Parking Garage"]; break;
       case "rural": potential = ["Person", "Barn", "House", "Cow"]; break;
     }
 
@@ -549,7 +550,8 @@ function getPrey(region, area)
         "Bus": 0.15,
         "Tram": 0.1,
         "Parking Garage": 0.02,
-        "Small Skyscraper": 0.4
+        "Small Skyscraper": 0.4,
+        "Large Skyscraper": 0.1
       }; break;
     }
   }
