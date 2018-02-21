@@ -35,7 +35,7 @@ var areas =
   "Motorcycle": 2,
   "House": 1000,
   "Barn": 750,
-  "Small Skyscraper": 10000,
+  "Small Skyscraper": 2500,
   "Train": 500,
   "TrainCar": 500,
   "Parking Garage": 5000,
@@ -60,7 +60,7 @@ var masses =
   "Motorcycle": 200,
   "House": 10000,
   "Barn": 5000,
-  "Small Skyscraper": 100000,
+  "Small Skyscraper": 10000000,
   "Train": 5000,
   "Train Car": 5000,
   "Parking Garage": 100000,
@@ -88,7 +88,7 @@ var clusters =
   "Small Skyscraper": 5,
   "Train": 2,
   "Train Car": 1,
-  "Parking Garage": 1,
+  "Parking Garage": 0,
   "Overpass": 1,
   "Town": 1,
   "City": 1,
@@ -125,16 +125,17 @@ function fill_area(area, weights)
     var limit = Math.min(max, 100);
 
     var count = 0;
+    var loopvar = limit;
 
     // for small amounts, actually do the randomness
 
     // the first few ones get a much better shot
-    while (limit > 0) {
-      if (limit <= clusters[candidate.name])
+    while (loopvar > 0) {
+      if (loopvar <= clusters[candidate.name])
         count += 1;
       else
         count += Math.random() < candidate.weight ? 1 : 0;
-      --limit;
+      --loopvar;
     }
 
     if (limit < max) {
@@ -154,10 +155,10 @@ function fill_area(area, weights)
 }
 // describes everything in the container
 
-function describe_all(contents,verbose=true) {
+function describe_all(contents,verbose=true,except=[]) {
     var things = [];
     for (var key in contents) {
-      if (contents.hasOwnProperty(key)) {
+      if (contents.hasOwnProperty(key) && !except.includes(key)) {
         things.push(contents[key].describe(verbose));
       }
     }

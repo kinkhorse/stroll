@@ -50,7 +50,15 @@ function hasOnly(container, things) {
   }
 
   return true;
+}
 
+function nothingLarger(container, thing) {
+  for (var key in container.contents)
+    if (container.contents.hasOwnProperty(key))
+      if (areas[key] > areas[thing])
+        return false;
+
+  return true;
 }
 function describe(action, container, macro, verbose=true) {
   options = [];
@@ -62,7 +70,7 @@ function describe(action, container, macro, verbose=true) {
   }
 
   if (options.length > 0)
-    return options[0](container, macro);
+    return options[0](container, macro, verbose);
   else {
     return describeDefault(action, container, macro, verbose);
   }
@@ -91,7 +99,7 @@ rules["eat"].push({
   "test": function(container, macro) {
     return hasNothing(container);
   },
-  "desc": function(container, macro) {
+  "desc": function(container, macro, verbose) {
     return "You scoop up...nothing. Oh well.";
   }
 });
@@ -102,7 +110,7 @@ rules["eat"].push({
     && hasLessThan(container, "Person", 6)
     && macro.height >= 10;
   },
-  "desc": function(container, macro) {
+  "desc": function(container, macro, verbose) {
     return "You pluck up the " + container.describe() + " and stuff them into your mouth, swallowing lightly to drag them down to your bubbling guts.";
   }
 });
@@ -113,7 +121,7 @@ rules["eat"].push({
     && hasExactly(container, "Person", 1)
     && macro.height < 10;
   },
-  "desc": function(container, macro) {
+  "desc": function(container, macro, verbose) {
     return "You grasp " + container.describe() + " and greedily wolf them down, swallowing forcefully to cram them into your bulging stomach. A crass belch escapes your lips as they curl up in your slimy gut.";
   }
 })
@@ -124,7 +132,35 @@ rules["eat"].push({
     && hasExactly(container, "Car", 1)
     && hasLessThan(container, "Person", 5);
   },
-  "desc": function(container, macro) {
+  "desc": function(container, macro, verbose) {
     return "You crush the " + container.contents["Car"].describe() + " with your tight throat, washing it down with " + container.contents["Person"].describe();
+  }
+})
+
+rules["eat"].push({
+  "test": function(container, macro) {
+    return hasExactly(container, "Small Skyscraper", 1)
+    && nothingLarger(container, "Small Skyscraper")
+    && macro.height < 500;
+  },
+  "desc": function(container, macro, verbose) {
+    return "You drop onto your hands and knees, jaws opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
+    and you suckle on it for a long moment before twisting your head to snap it loose. The entire building and the " + describe_all(container.contents["Small Skyscraper"].contents, verbose) + "\
+    within plunge into your roiling guts, along with some delicious treats you slurped up along with it - " + describe_all(container.contents, verbose, ["Small Skyscraper"]) + ".";
+  }
+})
+
+rules["eat"].push({
+  "test": function(container, macro) {
+    return hasExactly(container, "Small Skyscraper", 2)
+    && nothingLarger(container, "Small Skyscraper")
+    && macro.height < 750;
+  },
+  "desc": function(container, macro, verbose) {
+    return "You drop onto your hands and knees, jaws opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
+    and you suckle on it for a long moment before twisting your head to snap it loose. Without missing a beat, you rise back up, sloppy tongue slathering over the side \
+    of the remaining tower, sucking on its tip and roughly shoving it into your maw. It breaks from its foundation, vanishing past your lips as you use two fingers to shove it \
+    down your sultry throat. Your gut bubbles as " + describe_all(container.contents["Small Skyscraper"].contents, verbose) + " are crunched and crushed within, along with the \
+    " + describe_all(container.contents, verbose, ["Small Skyscraper"]) + " that were unfortunate enough to be caught up by your slimy tongue.";
   }
 })
