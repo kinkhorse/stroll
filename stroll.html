@@ -76,6 +76,7 @@
         <button class=action-button id=button-cockslap>Cockslap</button>
         <button class=action-button id=button-cock_vore>Cock Vore</button>
         <button class=action-button id=button-ball_smother>Ball Smother</button>
+        <button class=action-button id=button-arousal>Arousal On</button>
         <button class=action-button id=button-stroll>Status: Standing</button>
         <button class=action-button id=button-location>Location: Suburb</button>
         <button class=action-button class=action-button id=button-numbers>Numbers: Full</button>
@@ -127,6 +128,17 @@
                 <label for="baseAsArea">Ass area</label>
                 <input type="number" name="baseAsArea" placeholder="0.4"><br>
               </li>
+              <br>
+              <div>
+                Arousal:<br>
+                <input type="checkbox" checked=true name="arousalEnabled"/><br>
+                <div class=reveal-if-active>
+                  <li>
+                    <label class="has-tooltip" for="arousalFactor" title="Multiplies arousal gain by this much">Arousal multiplier</label>
+                    <input type="text" name="arousalFactor" placeholder="1"/><br>
+                  </li>
+                </div>
+              </div>
               <br>
               <div>
                 Male genitals:<br>

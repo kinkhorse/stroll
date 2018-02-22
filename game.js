@@ -89,7 +89,7 @@ var macro =
   "baseBreastDiameter": 0.1,
   "breastScale": 1,
   "breastDensity": 1000,
-  get breastDiameter() { return this.scaling(this.baseDickLength * this.breastScale, this.scale, 1); },
+  get breastDiameter() { return this.scaling(this.baseBreastDiameter * this.breastScale, this.scale, 1); },
   get breastArea() {
     return 2 * Math.PI * Math.pow(this.breastDiameter/2,2);
   },
@@ -261,10 +261,18 @@ var macro =
     }
   },
   "orgasm": false,
+
+  "arousalEnabled": true,
+
+  "arousalFactor": 1,
+
   "arousal": 0,
 
   "arouse": function(amount) {
-    this.arousal += amount;
+    if (!this.arousalEnabled)
+      return;
+
+    this.arousal += amount * this.arousalFactor;
 
     if (this.arousal >= 100) {
       this.arousal = 100;
@@ -282,6 +290,9 @@ var macro =
   },
 
   "quench": function(amount) {
+    if (!this.arousalEnabled)
+      return;
+
     this.arousal -= amount;
 
     if (this.arousal <= 0) {
@@ -293,6 +304,9 @@ var macro =
   },
 
   "maleOrgasm": function(self) {
+    if (!this.arousalEnabled)
+      return;
+
     if (self.orgasm) {
       self.quench(10);
       var amount = Math.min(this.cumVolume, this.cumStorage.amount);
@@ -303,6 +317,9 @@ var macro =
   },
 
   "femaleOrgasm": function(self) {
+    if (!this.arousalEnabled)
+      return;
+
     if (this.orgasm) {
       this.quench(10);
       var amount = Math.min(this.femcumVolume, this.femcumStorage.amount);
@@ -427,6 +444,18 @@ function toggle_verbose()
   verbose = !verbose;
 
   document.getElementById("button-verbose").innerHTML = "Descriptions: " + (verbose ? "Verbose" : "Simple");
+}
+
+function toggle_arousal()
+{
+  macro.arousalEnabled = !macro.arousalEnabled;
+
+  document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");
+  if (macro.arousalEnabled)
+    document.getElementById("arousal").style.display = "block";
+  else
+    document.getElementById("arousal").style.display = "none";
+
 }
 
 function initVictims()
@@ -1209,8 +1238,8 @@ function startGame(e) {
     document.getElementById("button-cock_vore").style.display = 'none';
     document.getElementById("button-ball_smother").style.display = 'none';
     document.getElementById("cum").style.display = 'none';
-    document.getElementById("button-grow-dick").style.display = 'none';
-    document.getElementById("button-grow-balls").style.display = 'none';
+    document.querySelector("#part-balls+label").style.display = 'none';
+    document.querySelector("#part-dick+label").style.display = 'none';
   }
 
   if (macro.femaleParts) {
@@ -1219,8 +1248,8 @@ function startGame(e) {
     document.getElementById("button-breast_crush").style.display = 'none';
     document.getElementById("button-unbirth").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
-    document.getElementById("button-grow-vagina").style.display = 'none';
-    document.getElementById("button-grow-breasts").style.display = 'none';
+    document.querySelector("#part-breasts+label").style.display = 'none';
+    document.querySelector("#part-vagina+label").style.display = 'none';
   }
 
   if (macro.maleParts || macro.femaleParts) {
@@ -1260,6 +1289,10 @@ function startGame(e) {
       table.appendChild(tr);
     }
   }
+
+  document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");
+  if (!macro.arousalEnabled)
+    document.getElementById("arousal").style.display = "none";
 
 
   //var species = document.getElementById("option-species").value;
@@ -1304,6 +1337,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
+  document.getElementById("button-arousal").addEventListener("click",toggle_arousal);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
 
   document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
