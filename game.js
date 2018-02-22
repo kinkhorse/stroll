@@ -36,6 +36,7 @@ var macro =
 
   "assScale": 1,
 
+  "hasTail": true,
   "tailType": "slinky",
   "tailCount": 1,
   "baseTailLength": 1,
@@ -429,6 +430,13 @@ var macro =
     line = "You are " + (macro.name == "" ? "" : macro.name + ", ") + "a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
     result.push(line);
 
+    if (this.hasTail) {
+      line = "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails sway as you walk," : "sways as you walk.");
+      if (this.tailMaw) {
+        line += (macro.tailCount > 1 ? "Their maws are drooling" : "Its maw is drooling");
+      }
+      result.push(line);
+    }
     if (this.arousalEnabled) {
       if (this.afterglow) {
         result.push("You're basking in the afterglow of a powerful orgasm.");
@@ -1300,7 +1308,7 @@ function tail_vore()
   var area = macro.tailGirth * macro.tailCount;
   var prey = getPrey(biome, area);
   var line = describe("tail-vore", prey, macro, verbose)
-  var linesummary = summarize(prey.sum(), true);
+  var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
 
