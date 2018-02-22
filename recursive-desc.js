@@ -14,6 +14,14 @@ rules["male-orgasm"] = [];
 rules["female-orgasm"] = [];
 rules["grind"] = [];
 
+function isFatal(macro) {
+  return macro.brutality >= 1;
+}
+
+function isGory(macro) {
+  return macro.brutality >= 2;
+}
+
 function hasNothing(container, thing, amount) {
   for (var key in container.contents) {
     if (container.contents.hasOwnProperty(key))
@@ -61,6 +69,7 @@ function nothingLarger(container, thing) {
 
   return true;
 }
+
 function describe(action, container, macro, verbose=true) {
   options = [];
 
@@ -70,8 +79,10 @@ function describe(action, container, macro, verbose=true) {
     }
   }
 
-  if (options.length > 0)
-    return options[0](container, macro, verbose);
+  if (options.length > 0) {
+    let choice = Math.floor(Math.random() * options.length);
+    return options[choice](container, macro, verbose);
+  }
   else {
     return describeDefault(action, container, macro, verbose);
   }
@@ -136,7 +147,7 @@ rules["eat"].push({
   "desc": function(container, macro, verbose) {
     return "You grasp " + container.describe() + " and greedily wolf them down, swallowing forcefully to cram them into your bulging stomach. A crass belch escapes your lips as they curl up in your slimy gut.";
   }
-})
+});
 
 rules["eat"].push({
   "test": function(container, macro) {
@@ -147,7 +158,7 @@ rules["eat"].push({
   "desc": function(container, macro, verbose) {
     return "You crush the " + container.contents["Car"].describe() + " with your tight throat, washing it down with " + container.contents["Person"].describe();
   }
-})
+});
 
 rules["eat"].push({
   "test": function(container, macro) {
@@ -160,7 +171,7 @@ rules["eat"].push({
     and you suckle on it for a long moment before twisting your head to snap it loose. The entire building and the " + describe_all(container.contents["Small Skyscraper"].contents, verbose) + "\
     within plunge into your roiling guts, along with some delicious treats you slurped up along with it - " + describe_all(container.contents, verbose, ["Small Skyscraper"]) + ".";
   }
-})
+});
 
 rules["eat"].push({
   "test": function(container, macro) {
@@ -175,4 +186,36 @@ rules["eat"].push({
     down your sultry throat. Your gut bubbles as " + describe_all(container.contents["Small Skyscraper"].contents, verbose) + " are crunched and crushed within, along with the \
     " + describe_all(container.contents, verbose, ["Small Skyscraper"]) + " that were unfortunate enough to be caught up by your slimy tongue.";
   }
-})
+});
+
+// STOMPING
+
+rules["stomp"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 1)
+    && isFatal(macro);
+  }, "desc": function(container, macro, verbose) {
+    return "Your heavy paw slams down on " + container.describe(verbose) + ", smashing the poor thing like an insect.";
+  }
+});
+
+rules["stomp"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 1)
+    && isGory(macro);
+  }, "desc": function(container, macro, verbose) {
+    return "Your paw thumps " + container.describe(verbose) + ", shoving your victim to the ground and cracking them open like an egg.";
+  }
+});
+
+rules["stomp"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 1)
+    && isGory(macro);
+  }, "desc": function(container, macro, verbose) {
+    return "Your shadow falls over " + container.describe(verbose) + ", and your paw follows, crushing their soft body and reducing them to a heap of broken gore.";
+  }
+});

@@ -467,6 +467,12 @@ var macro =
     this.growthPoints += Math.round(50 * mass / (this.scale*this.scale));
   },
 
+  // 0 = entirely non-fatal
+  // 1 = fatal, but not specific
+  // 2 = gory
+
+  "brutality": 1,
+
   "scale": 1,
 }
 
@@ -1423,6 +1429,14 @@ function startGame(e) {
         macro[form[i].name] = parseFloat(form[i].value);
       else if (form[i].type == "checkbox") {
         macro[form[i].name] = form[i].checked;
+      } else if (form[i].type == "radio") {
+        if (form[i].checked) {
+          switch(form[i].id) {
+            case "brutality-0": macro.brutality = 0; break;
+            case "brutality-1": macro.brutality = 1; break;
+            case "brutality-2": macro.brutality = 2; break;
+          }
+        }
       }
     }
   }
