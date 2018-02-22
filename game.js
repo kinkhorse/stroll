@@ -1317,6 +1317,50 @@ function preset(name) {
   }
 }
 
+function saveSettings() {
+  storage = window.localStorage;
+
+  settings = {};
+
+  form = document.forms.namedItem("custom-species-form");
+
+  for (var i=0; i<form.length; i++) {
+    if (form[i].value != "") {
+      if (form[i].type == "text")
+        settings[form[i].name] = form[i].value;
+      else if (form[i].type == "number")
+        settings[form[i].name] = parseFloat(form[i].value);
+      else if (form[i].type == "checkbox") {
+        settings[form[i].name] = form[i].checked;
+      }
+    }
+  }
+
+  storage.setItem('settings',JSON.stringify(settings));
+}
+
+function loadSettings() {
+  if (window.localStorage.getItem('settings') == null)
+    return;
+
+  storage = window.localStorage;
+
+  settings = JSON.parse(storage.getItem('settings'));
+  form = document.forms.namedItem("custom-species-form");
+
+  for (var i=0; i<form.length; i++) {
+    if (settings[form[i].name] != undefined) {
+      if (form[i].type == "text")
+        form[i].value = settings[form[i].name];
+      else if (form[i].type == "number")
+        form[i].value = settings[form[i].name];
+      else if (form[i].type == "checkbox") {
+        form[i].checked = settings[form[i].name];
+      }
+    }
+  }
+}
+
 function startGame(e) {
 
   form = document.forms.namedItem("custom-species-form");
@@ -1457,6 +1501,8 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
   document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
 
+  document.getElementById("button-load-custom").addEventListener("click",loadSettings);
+  document.getElementById("button-save-custom").addEventListener("click",saveSettings);
   document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);
 });
