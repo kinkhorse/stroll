@@ -140,5 +140,34 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
 .has-tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    border-bottom: 1px dotted black;
+}
+
+#grow-panel {
+  width: 100%;
+}
+
+th {
+  font-weight: normal;
+}
+
+.growth-option {
+  display: none;
+}
+
+.growth-label {
+  font-size: 20pt;
+}
+
+input[type="radio"]:checked+
+.growth-label {
+  font-weight: bold;
+}
+
+.growth-amount {
+  width: 50%;
+}
+
+ul {
+  list-style: none;
 }

@@ -7,7 +7,6 @@ var unit = "metric";
 
 var numbers = "full";
 
-
 var verbose = true;
 
 var biome = "suburb";
@@ -332,13 +331,13 @@ var macro =
     return result;
   },
 
-  "scale": 1,
+  "growthPoints": 0,
 
-  "scaleWithMass": function(mass) {
-    var startMass = this.mass;
-    var newMass = startMass + mass;
-    this.scale = Math.pow(newMass / this.baseMass, 1/3);
-  }
+  "addGrowthPoints": function(mass) {
+    this.growthPoints += Math.round(50 * mass / (this.scale*this.scale));
+  },
+
+  "scale": 3,
 }
 
 function look()
@@ -505,10 +504,10 @@ function getPrey(region, area)
 
   if (macro.height > 1e12) {
     weights = {
-      "Planet": 0.0001,
-      "Star": 0.0001,
-      "Solar System": 0.00001,
-      "Galaxy": 0.01
+      "Planet": 1e-10,
+      "Star": 1e-10,
+      "Solar System": 1e-10,
+      "Galaxy": 1e-10
     }
   }
   else if (macro.height > 1e6) {
@@ -598,7 +597,7 @@ function feed()
 
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.stomach.feed(prey);
 
@@ -634,7 +633,7 @@ function stomp()
   }
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.arouse(5);
 
@@ -693,8 +692,8 @@ function anal_vore()
   var preyMass = prey.sum_property("mass");
   var crushedMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
-  macro.scaleWithMass(crushedMass);
+  macro.addGrowthPoints(preyMass);
+  macro.addGrowthPoints(crushedMass);
 
   macro.bowels.feed(prey);
 
@@ -731,7 +730,7 @@ function breast_crush()
   }
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.arouse(10);
 
@@ -766,7 +765,7 @@ function unbirth()
 
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.womb.feed(prey);
 
@@ -803,7 +802,7 @@ function cockslap()
 
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.arouse(15);
 
@@ -837,7 +836,7 @@ function cock_vore()
   }
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.balls.feed(prey);
 
@@ -873,7 +872,7 @@ function ball_smother()
   }
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   macro.arouse(10);
 
@@ -908,7 +907,7 @@ function male_orgasm(vol)
   }
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   updateVictims("splooged",prey);
   update([sound,line,linesummary,newline]);
@@ -941,7 +940,7 @@ function female_orgasm(vol)
   }
   var preyMass = prey.sum_property("mass");
 
-  macro.scaleWithMass(preyMass);
+  macro.addGrowthPoints(preyMass);
 
   updateVictims("splooged",prey);
   update([sound,line,linesummary,newline]);
@@ -967,6 +966,7 @@ function update(lines = [])
 
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.mass, unit));
+  document.getElementById("growth-points").innerHTML = "Growth Points:" + macro.growthPoints;
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
   document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false))
   document.getElementById("cumPercent").innerHTML = Math.round(macro.cumStorage.amount / macro.cumStorage.limit * 100) + "%";
@@ -1004,12 +1004,40 @@ function pick_move()
   setTimeout(pick_move, 1500 * Math.sqrt(macro.scale));
 }
 
-function grow()
+function grow_pick(times) {
+  if (document.getElementById("part-body").checked == true) {
+    grow(times);
+  }
+  else if (document.getElementById("part-ass").checked == true) {
+    grow_ass(times);
+  }
+  else if (document.getElementById("part-dick").checked == true) {
+    grow_dick(times);
+  }
+  else if (document.getElementById("part-balls").checked == true) {
+    grow_balls(times);
+  }
+  else if (document.getElementById("part-breasts").checked == true) {
+    grow_breasts(times);
+  }
+  else if (document.getElementById("part-vagina").checked == true) {
+    grow_vagina(times);
+  }
+}
+
+function grow(times=1)
 {
+  if (macro.growthPoints < 100 * times) {
+    update(["You don't feel like growing right now."]);
+    return;
+  }
+
+  macro.growthPoints -= 100 * times;
+
   var oldHeight = macro.height;
   var oldMass = macro.mass;
 
-  macro.scale *= 1.2;
+  macro.scale *= Math.pow(1.02,times);
 
   var newHeight = macro.height;
   var newMass = macro.mass;
@@ -1023,58 +1051,93 @@ function grow()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
-function grow_cock()
+function grow_dick(times=1)
 {
+  if (macro.growthPoints < 10 * times) {
+    update(["You don't feel like growing right now."]);
+    return;
+  }
+
+  macro.growthPoints -= 10 * times;
+
   var oldLength = macro.dickLength;
   var oldMass = macro.dickMass;
 
-  macro.dickScale *= 1.2;
+  macro.dickScale = Math.pow(macro.dickScale * macro.dickScale + 1.02*times, 1/2) ;
 
   var lengthDelta = macro.dickLength - oldLength;
   var massDelta = macro.dickMass - oldMass;
   update(["Power surges through you as your cock grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
 }
 
-function grow_balls()
+function grow_balls(times=1)
 {
+  if (macro.growthPoints < 10 * times) {
+    update(["You don't feel like growing right now."]);
+    return;
+  }
+
+  macro.growthPoints -= 10 * times;
+
   var oldDiameter = macro.ballDiameter;
   var oldMass = macro.ballMass;
 
-  macro.ballScale *= 1.2;
+  macro.ballScale = Math.pow(macro.ballScale * macro.ballScale + 1.02*times, 1/2) ;
 
   var diameterDelta = macro.ballDiameter - oldDiameter;
   var massDelta = macro.ballMass - oldMass;
   update(["Power surges through you as your balls swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
 }
 
-function grow_breasts()
+function grow_breasts(times=1)
 {
+  if (macro.growthPoints < 10 * times) {
+    update(["You don't feel like growing right now."]);
+    return;
+  }
+
+  macro.growthPoints -= 10 * times;
+
   var oldDiameter = macro.breastDiameter;
   var oldMass = macro.breastMass;
 
-  macro.breastScale *= 1.2;
+  macro.breastScale = Math.pow(macro.breastScale * macro.breastScale + 1.02*times, 1/2) ;
 
   var diameterDelta = macro.breastDiameter - oldDiameter;
   var massDelta = macro.breastMass - oldMass;
   update(["Power surges through you as your breasts swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
 }
 
-function grow_vagina()
+function grow_vagina(times=1)
 {
+  if (macro.growthPoints < 10 * times) {
+    update(["You don't feel like growing right now."]);
+    return;
+  }
+
+  macro.growthPoints -= 10 * times;
+
   var oldLength = macro.vaginaLength;
 
-  macro.vaginaScale *= 1.2;
+  macro.vaginaScale = Math.pow(macro.vaginaScale * macro.vaginaScale + 1.02*times, 1/2) ;
 
   var lengthDelta = macro.vaginaLength - oldLength;
 
   update(["Power surges through you as your moist slit expands by by " + length(lengthDelta, unit, false),newline]);
 }
 
-function grow_ass()
+function grow_ass(times=1)
 {
+  if (macro.growthPoints < 10 * times) {
+    update(["You don't feel like growing right now."]);
+    return;
+  }
+
+  macro.growthPoints -= 10 * times;
+
   var oldDiameter = Math.pow(macro.assArea,1/2);
 
-  macro.assScale *= 1.2;
+  macro.assScale = Math.pow(macro.assScale * macro.assScale + 1.02*times, 1/2) ;
 
   var diameterDelta = Math.pow(macro.assArea,1/2) - oldDiameter;
   update(["Power surges through you as your ass swells by " + length(diameterDelta, unit, false),newline]);
@@ -1243,12 +1306,12 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
 
-  document.getElementById("button-grow").addEventListener("click",grow);
-  document.getElementById("button-grow-dick").addEventListener("click",grow_cock);
-  document.getElementById("button-grow-balls").addEventListener("click",grow_balls);
-  document.getElementById("button-grow-breasts").addEventListener("click",grow_breasts);
-  document.getElementById("button-grow-vagina").addEventListener("click",grow_vagina);
-  document.getElementById("button-grow-ass").addEventListener("click",grow_ass);
+  document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
+  document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });
+  document.getElementById("button-amount-10").addEventListener("click",function() { grow_pick(10); });
+  document.getElementById("button-amount-20").addEventListener("click",function() { grow_pick(20); });
+  document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
+  document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
 
   document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);

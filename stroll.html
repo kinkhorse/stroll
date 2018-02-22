@@ -16,25 +16,50 @@
           <p>Stats</p>
           <div class=stat-line id=height></div>
           <div class=stat-line id=mass></div>
+          <div class=stat-line id=growth-points></div>
           <div class=stat-line id=arousal></div>
           <div class=stat-line id=cum></div>
           <div class=stat-line id=cumPercent></div>
           <div class=stat-line id=femcum></div>
           <div class=stat-line id=femcumPercent></div>
         </div>
-        <div class=button-container id=grow-panel>
-          <p class=stat-header-self>Growth</p>
-          <button class=action-button id=button-grow>Body</button>
-          <button class=action-button id=button-grow-dick>Cock</button>
-          <button class=action-button id=button-grow-vagina>Slit</button>
-          <button class=action-button id=button-grow-breasts>Breasts</button>
-          <button class=action-button id=button-grow-balls>Balls</button>
-          <button class=action-button id=button-grow-ass>Ass</button>
-        </div>
+        <div class=stat-header-self>Growth</div>
+        <table id=grow-panel>
+          <tr>
+            <th><input class=growth-option type="radio" name="part" checked=true id="part-body">
+            <label class=growth-label for="part-body" >Body</label></th>
+            <th><button class=growth-amount id="button-amount-1">1x</button></th>
+          </tr>
+          <tr>
+            <th><input class=growth-option type="radio" name="part" id="part-ass">
+            <label class=growth-label for="part-ass">Ass</label></th>
+            <th><button class=growth-amount id="button-amount-5">5x</button></th>
+          </tr>
+          <tr>
+            <th><input class=growth-option type="radio" name="part" id="part-dick">
+            <label class=growth-label for="part-dick">Cock</label></th>
+            <th><button class=growth-amount id="button-amount-10">10x</button></th>
+          </tr>
+          <tr>
+            <th><input class=growth-option type="radio" name="part" id="part-balls">
+            <label class=growth-label for="part-balls">Balls</label></th>
+            <th><button class=growth-amount id="button-amount-20">20x</button></th>
+          </tr>
+          <tr>
+            <th><input class=growth-option type="radio" name="part" id="part-breasts">
+            <label class=growth-label for="part-breasts">Breasts</label></th>
+            <th><button class=growth-amount id="button-amount-50">50x</button></th>
+          </tr>
+          <tr>
+            <th><input class=growth-option type="radio" name="part" id="part-vagina">
+            <label class=growth-label for="part-vagina">Slit</label></th>
+            <th><button class=growth-amount id="button-amount-100">100x</button></th>
+          </tr>
+        </table>
       </div>
       <div id=log-area>
         <div id=log>
-          <div>Welcome to Stroll 0.3.1</div>
+          <div>Welcome to Stroll 0.3.2</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div>It's a nice day for a walk</div>
@@ -61,7 +86,7 @@
 
 
       <div class=option-container id=option-panel>
-        <p>Welcome to Stroll 0.3.1</p>
+        <p>Welcome to Stroll 0.3.2</p>
         <p><b>This game features 18+ content</b></p>
         <a href="https://chemicalcrux.org/stroll">Changelog</a>
         <br>
@@ -75,7 +100,7 @@
               </li>
               <li>
                 <label for="scale" class="has-tooltip" title="Multiply your base height by this much">Scale (?)</label>
-                <input type="text" name="scale" placeholder="1"/>
+                <input type="text" name="scale" placeholder="3"/>
               </li>
               <li>
                 <label for="baseHeight">Height</label>
