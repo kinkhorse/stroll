@@ -1397,6 +1397,10 @@ function saveSettings() {
         settings[form[i].name] = parseFloat(form[i].value);
       else if (form[i].type == "checkbox") {
         settings[form[i].name] = form[i].checked;
+      } else if (form[i].type == "radio") {
+        let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
+        if (form[i].checked)
+          settings[name] = form[i].id
       }
     }
   }
@@ -1421,6 +1425,9 @@ function loadSettings() {
         form[i].value = settings[form[i].name];
       else if (form[i].type == "checkbox") {
         form[i].checked = settings[form[i].name];
+      } else if (form[i].type == "radio") {
+        let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
+        form[i].checked = (settings[name] == form[i].id);
       }
     }
   }
