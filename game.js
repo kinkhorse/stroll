@@ -34,23 +34,43 @@ var macro =
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
 
   "assScale": 1,
+
+  "dickType": "canine",
   "baseDickLength": 0.3,
   "baseDickDiameter": 0.08,
   "dickDensity": 1000,
   "dickScale": 1,
-  get dickLength() { return this.scaling(this.baseDickLength * this.dickScale, this.scale, 1); },
-  get dickDiameter() { return this.scaling(this.baseDickDiameter * this.dickScale, this.scale, 1); },
+  get dickLength() {
+    factor = 1;
+    if (!this.arousalEnabled || this.arousal < 25) {
+      factor = 0.5;
+    } else if (this.arousal < 75) {
+      factor = 0.5 + (this.arousal - 25) / 10;
+    }
+
+    return this.scaling(this.baseDickLength * this.dickScale * factor, this.scale, 1);
+  },
+  get dickDiameter() {
+    factor = 1;
+    if (!this.arousalEnabled || this.arousal < 25) {
+      factor = 0.5;
+    } else if (this.arousal < 75) {
+      factor = 0.5 + (this.arousal - 25) / 10;
+    }
+
+    return this.scaling(this.baseDickDiameter * this.dickScale * factor, this.scale, 1);
+  },
   get dickGirth() {
-    return Math.pow((this.dickDiameter / 2),2) * Math.PI;
+    return Math.pow((this.dickDiameter/ 2),2) * Math.PI;
   },
   get dickArea() {
-    return this.dickLength * this.dickDiameter * Math.PI / 2;
+    return this.dickLength* this.dickDiameter* Math.PI / 2;
   },
   get dickVolume() {
-    return this.dickLength * Math.pow(this.dickDiameter/2,2) * Math.PI;
+    return this.dickLength* Math.pow(this.dickDiameter2,2) * Math.PI;
   },
   get dickMass() {
-    return this.dickVolume * this.dickDensity;
+    return this.dickVolume* this.dickDensity;
   },
   "baseBallDiameter": 0.05,
   "ballDensity": 1000,
@@ -66,10 +86,10 @@ var macro =
     return volume * this.ballDensity;
   },
 
-  "baseCumRatio": 0.25,
+  "baseCumRatio": 1,
   "cumScale": 1,
   get cumVolume() {
-    return this.ballVolume * this.baseCumRatio * this.cumScale + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
+    return this.dickGirth * this.baseCumRatio * this.cumScale + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
   },
 
   "baseVaginaLength": 0.1,
@@ -80,10 +100,10 @@ var macro =
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
   get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
   get vaginaVolume() { return this.vaginaArea * this.vaginaWidth },
-  "femcumRatio": 0.25,
+  "baseFemcumRatio": 1,
   "femcumScale": 1,
   get femcumVolume() {
-    return this.vaginaVolume * this.femcumRatio * this.femcumScale + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
+    return this.vaginaArea * this.baseFemcumRatio * this.femcumScale + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
   },
 
   "baseBreastDiameter": 0.1,
@@ -226,6 +246,9 @@ var macro =
       this.fillCum(this)
     if (this.femaleParts)
       this.fillFemcum(this)
+    if (this.maleParts || this.femaleParts) {
+
+    }
   },
 
   "maleParts": true,
@@ -274,8 +297,8 @@ var macro =
 
     this.arousal += amount * this.arousalFactor;
 
-    if (this.arousal >= 100) {
-      this.arousal = 100;
+    if (this.arousal >= 200) {
+      this.arousal = 200;
 
       if (!this.orgasm) {
         this.orgasm = true;
@@ -302,6 +325,14 @@ var macro =
       }
     }
   },
+
+  "quenchExcess": function(self) {
+    if (self.arousalEnabled) {
+      if (self.arousal > 100 && !self.orgasm) {
+        self.arousal = Math.max(100,self.arousal-10);
+      }
+    }    
+  }
 
   "maleOrgasm": function(self) {
     if (!this.arousalEnabled)
@@ -335,11 +366,44 @@ var macro =
     line = "You are a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
     result.push(line);
     if (this.maleParts) {
-      line = "Your " + length(macro.dickLength, unit, true) + " long dick hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
+      state = "";
+      if (!this.arousalEnabled) {
+        state = "limp";
+      } else if (this.orgasm) {
+        state = "spurting";
+      } else {
+        if (this.arousal < 25) {
+          state = "limp";
+        } else if (this.arousal < 50) {
+          state = "swelling";
+        } else if (this.arousal < 75) {
+          state = "erect";
+        } else if (this.arousal < 100) {
+          state = "erect, precum-oozing";
+        }
+      }
+
+      line = "Your " + length(macro.dickLength, unit, true) + " long " + state + " " + macro.dickType + " cock hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
       result.push(line);
     }
     if (this.femaleParts) {
-      line = "Your glistening " + length(macro.vaginaLength, unit, true) + " long slit is oozing between your legs."
+      state = "";
+      if (!this.arousalEnabled) {
+        state = "unassuming";
+      } else if (this.orgasm) {
+        state = "gushing, quivering";
+      } else {
+        if (this.arousal < 25) {
+          state = "unassuming";
+        } else if (this.arousal < 50) {
+          state = "moist";
+        } else if (this.arousal < 75) {
+          state = "glistening";
+        } else if (this.arousal < 100) {
+          state = "dripping";
+        }
+      }
+      line = "Your glistening " + length(macro.vaginaLength, unit, true) + " long " + state + " slit is oozing between your legs."
       result.push(line);
       line = "You have two " + length(macro.breastDiameter, unit, true) + "-wide breasts that weigh " + mass(macro.breastMass, unit) + " apiece.";
       result.push(line);
@@ -1096,7 +1160,7 @@ function grow_dick(times=1)
 
   var lengthDelta = macro.dickLength - oldLength;
   var massDelta = macro.dickMass - oldMass;
-  update(["Power surges through you as your cock grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
+  update(["Power surges through you as your " + macro.dickType + " cock grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
 }
 
 function grow_balls(times=1)
