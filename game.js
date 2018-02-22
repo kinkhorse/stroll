@@ -45,7 +45,7 @@ var macro =
     if (!this.arousalEnabled || this.arousal < 25) {
       factor = 0.5;
     } else if (this.arousal < 75) {
-      factor = 0.5 + (this.arousal - 25) / 10;
+      factor = 0.5 + (this.arousal - 25) / 100;
     }
 
     return this.scaling(this.baseDickLength * this.dickScale * factor, this.scale, 1);
@@ -55,7 +55,7 @@ var macro =
     if (!this.arousalEnabled || this.arousal < 25) {
       factor = 0.5;
     } else if (this.arousal < 75) {
-      factor = 0.5 + (this.arousal - 25) / 10;
+      factor = 0.5 + (this.arousal - 25) / 100;
     }
 
     return this.scaling(this.baseDickDiameter * this.dickScale * factor, this.scale, 1);
@@ -247,7 +247,7 @@ var macro =
     if (this.femaleParts)
       this.fillFemcum(this)
     if (this.maleParts || this.femaleParts) {
-
+      this.quenchExcess(this);
     }
   },
 
@@ -284,6 +284,7 @@ var macro =
     }
   },
   "orgasm": false,
+  "afterglow": true,
 
   "arousalEnabled": true,
 
@@ -293,6 +294,9 @@ var macro =
 
   "arouse": function(amount) {
     if (!this.arousalEnabled)
+      return;
+
+    if (this.afterglow)
       return;
 
     this.arousal += amount * this.arousalFactor;
@@ -318,21 +322,31 @@ var macro =
 
     this.arousal -= amount;
 
-    if (this.arousal <= 0) {
-      this.arousal = 0;
+    if (this.arousal <= 100) {
       if (this.orgasm) {
         this.orgasm = false;
+        this.afterglow = true;
       }
     }
+
+    if (this.arousal < 0) {
+      this.arousal = 0;
+      this.afterglow = false;
+    }
+    update();
   },
 
   "quenchExcess": function(self) {
     if (self.arousalEnabled) {
       if (self.arousal > 100 && !self.orgasm) {
-        self.arousal = Math.max(100,self.arousal-10);
+        self.arousal = Math.max(100,self.arousal-1);
+        update();
+      } else if (self.afterglow) {
+        self.quench(0.5);
       }
-    }    
-  }
+    }
+    setTimeout(function() { self.quenchExcess(self); }, 200);
+  },
 
   "maleOrgasm": function(self) {
     if (!this.arousalEnabled)
@@ -365,6 +379,23 @@ var macro =
     result = [];
     line = "You are a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
     result.push(line);
+
+    if (this.arousalEnabled) {
+      if (this.afterglow) {
+        result.push("You're basking in the afterglow of a powerful orgasm.");
+      }
+      else if (this.orgasm) {
+        result.push("You're cumming!");
+      } else if (this.arousal < 25) {
+
+      } else if (this.arousal < 75) {
+        result.push("You're feeling a little aroused.");
+      } else if (this.arousal < 150) {
+        result.push("You're feeling aroused.");
+      } else if (this.arousal < 200) {
+        result.push("You're on the edge of an orgasm!");
+      }
+    }
     if (this.maleParts) {
       state = "";
       if (!this.arousalEnabled) {
@@ -374,12 +405,14 @@ var macro =
       } else {
         if (this.arousal < 25) {
           state = "limp";
-        } else if (this.arousal < 50) {
-          state = "swelling";
         } else if (this.arousal < 75) {
-          state = "erect";
+          state = "swelling";
         } else if (this.arousal < 100) {
-          state = "erect, precum-oozing";
+          state = "erect";
+        } else if (this.arousal < 150) {
+          state = "erect, throbbing";
+        } else if (this.arousal < 200) {
+        state = "erect, throbbing, pre-soaked";
         }
       }
 
@@ -395,12 +428,14 @@ var macro =
       } else {
         if (this.arousal < 25) {
           state = "unassuming";
-        } else if (this.arousal < 50) {
-          state = "moist";
         } else if (this.arousal < 75) {
-          state = "glistening";
+          state = "moist";
         } else if (this.arousal < 100) {
+          state = "glistening";
+        } else if (this.arousal < 150) {
           state = "dripping";
+        } else if (this.arousal < 200) {
+          state = "dripping, quivering";
         }
       }
       line = "Your glistening " + length(macro.vaginaLength, unit, true) + " long " + state + " slit is oozing between your legs."
