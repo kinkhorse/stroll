@@ -720,10 +720,10 @@ function getPrey(region, area)
 
   if (macro.height > 1e12) {
     weights = {
-      "Planet": 1e-10,
-      "Star": 1e-10,
-      "Solar System": 1e-10,
-      "Galaxy": 1e-10
+      "Planet": 1.47e-10,
+      "Star": 1.7713746e-12,
+      "Solar System": 4e-10,
+      "Galaxy": 0.1,
     }
   }
   else if (macro.height > 1e6) {
