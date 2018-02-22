@@ -18,6 +18,7 @@ victims = {};
 var macro =
 {
   "scaling": function(value, scale, factor) { return value * Math.pow(scale,factor); },
+  "name": "",
   "species": "crux",
   "color" : "blue",
   "baseHeight": 2.26,
@@ -382,7 +383,7 @@ var macro =
 
   get description() {
     result = [];
-    line = "You are a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
+    line = "You are " + (macro.name == "" ? "" : macro.name + ", ") + "a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
     result.push(line);
 
     if (this.arousalEnabled) {

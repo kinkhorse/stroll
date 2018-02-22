@@ -19,6 +19,10 @@ rules["balls"] = [];
 rules["womb"] = [];
 rules["bowels"] = [];
 
+function isNonFatal(macro) {
+  return macro.brutality == 0;
+}
+
 function isFatal(macro) {
   return macro.brutality >= 1;
 }
@@ -52,15 +56,22 @@ function hasExactly(container, thing, amount) {
 }
 
 function hasOnly(container, things) {
-  for (var key in container.contents) {
-    if (container.contents.hasOwnProperty(key))
-      if (!things.includes(key))
-        return false;
-  }
+  if (!hasNothingElse(container, things))
+    return false;
 
   for (var i=0; i<things.length; i++) {
     if (!container.contents.hasOwnProperty(things[i]))
       return false;
+  }
+
+  return true;
+}
+
+function hasNothingElse(container, things) {
+  for (var key in container.contents) {
+    if (container.contents.hasOwnProperty(key))
+      if (!things.includes(key))
+        return false;
   }
 
   return true;
@@ -329,5 +340,15 @@ rules["stomp"].push({
     && isGory(macro);
   }, "desc": function(container, macro, verbose) {
     return "Your shadow falls over " + container.describe(verbose) + ", and your paw follows, crushing their soft body and reducing them to a heap of broken gore.";
+  }
+});
+
+rules["stomp"].push({
+  "test": function(container, macro) {
+    return hasNothingElse(container, ["Person","Cow","Car"])
+    && isNonFatal(macro);
+  }, "desc": function(container, macro, verbose) {
+    return "Your soft paws smoosh over " + container.describe(verbose) + ". They stick to your toes, carried along for the ride as you take another few steps before finally\
+    falling off.";
   }
 });
