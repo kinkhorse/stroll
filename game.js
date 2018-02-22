@@ -458,7 +458,7 @@ var macro =
     this.growthPoints += Math.round(50 * mass / (this.scale*this.scale));
   },
 
-  "scale": 3,
+  "scale": 1,
 }
 
 function look()
