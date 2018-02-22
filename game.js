@@ -284,7 +284,7 @@ var macro =
     }
   },
   "orgasm": false,
-  "afterglow": true,
+  "afterglow": false,
 
   "arousalEnabled": true,
 
@@ -402,54 +402,63 @@ var macro =
       }
     }
     if (this.maleParts) {
-      state = "";
-      if (!this.arousalEnabled) {
-        state = "limp";
-      } else if (this.orgasm) {
-        state = "spurting";
-      } else {
-        if (this.arousal < 25) {
-          state = "limp";
-        } else if (this.arousal < 75) {
-          state = "swelling";
-        } else if (this.arousal < 100) {
-          state = "erect";
-        } else if (this.arousal < 150) {
-          state = "erect, throbbing";
-        } else if (this.arousal < 200) {
-        state = "erect, throbbing, pre-soaked";
-        }
-      }
-
-      line = "Your " + length(macro.dickLength, unit, true) + " long " + state + " " + macro.dickType + " cock hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
+      line = "Your " + this.describeDick + " cock hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
       result.push(line);
     }
     if (this.femaleParts) {
-      state = "";
-      if (!this.arousalEnabled) {
-        state = "unassuming";
-      } else if (this.orgasm) {
-        state = "gushing, quivering";
-      } else {
-        if (this.arousal < 25) {
-          state = "unassuming";
-        } else if (this.arousal < 75) {
-          state = "moist";
-        } else if (this.arousal < 100) {
-          state = "glistening";
-        } else if (this.arousal < 150) {
-          state = "dripping";
-        } else if (this.arousal < 200) {
-          state = "dripping, quivering";
-        }
-      }
-      line = "Your glistening " + length(macro.vaginaLength, unit, true) + " long " + state + " slit is oozing between your legs."
+
+      line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs."
       result.push(line);
       line = "You have two " + length(macro.breastDiameter, unit, true) + "-wide breasts that weigh " + mass(macro.breastMass, unit) + " apiece.";
       result.push(line);
     }
 
     return result;
+  },
+
+  get describeDick() {
+    state = "";
+    if (!this.arousalEnabled) {
+      state = "limp";
+    } else if (this.orgasm) {
+      state = "spurting";
+    } else {
+      if (this.arousal < 25) {
+        state = "limp";
+      } else if (this.arousal < 75) {
+        state = "swelling";
+      } else if (this.arousal < 100) {
+        state = "erect";
+      } else if (this.arousal < 150) {
+        state = "erect, throbbing";
+      } else if (this.arousal < 200) {
+      state = "erect, throbbing, pre-soaked";
+      }
+    }
+    return length(macro.dickLength, unit, true) + " long " + state + " " + macro.dickType;
+  },
+
+  get describeVagina() {
+    state = "";
+    if (!this.arousalEnabled) {
+      state = "unassuming";
+    } else if (this.orgasm) {
+      state = "gushing, quivering";
+    } else {
+      if (this.arousal < 25) {
+        state = "unassuming";
+      } else if (this.arousal < 75) {
+        state = "moist";
+      } else if (this.arousal < 100) {
+        state = "glistening";
+      } else if (this.arousal < 150) {
+        state = "dripping";
+      } else if (this.arousal < 200) {
+        state = "dripping, quivering";
+      }
+    }
+
+    return length(macro.vaginaLength, unit, true) + " long " + state
   },
 
   "growthPoints": 0,
@@ -774,6 +783,47 @@ function stomp()
   macro.arouse(5);
 
   updateVictims("stomped",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function grind()
+{
+  var area = macro.assArea / 2;
+
+  if (macro.maleParts)
+    area += macro.dickArea
+  if (macro.femalePartS)
+    area += macro.vaginaArea;
+
+  var prey = getPrey(biome,area);
+
+  var line = describe("grind", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Thump.";
+  } else if (people < 10) {
+    sound = "Crunch.";
+  } else if (people < 50) {
+    sound = "Crrrrunch.";
+  } else if (people < 500) {
+    sound = "SMASH!";
+  } else if (people < 5000) {
+    sound = "CCCRASH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse(20);
+
+  updateVictims("ground",prey);
   update([sound,line,linesummary,newline]);
 }
 
@@ -1381,7 +1431,7 @@ function startGame(e) {
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
-  victimTypes = ["stomped","digested","stomach","bowels"];
+  victimTypes = ["stomped","digested","stomach","bowels","ground"];
 
   if (macro.maleParts) {
     victimTypes = victimTypes.concat(["cock","balls"]);
@@ -1476,6 +1526,7 @@ window.addEventListener('load', function(event) {
   victims["balls"] = initVictims();
   victims["smothered"] = initVictims();
   victims["splooged"] = initVictims();
+  victims["ground"] = initVictims();
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-feed").addEventListener("click",feed);
@@ -1485,6 +1536,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
   document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
   document.getElementById("button-ball_smother").addEventListener("click",ball_smother);
+  document.getElementById("button-grind").addEventListener("click",grind);
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);

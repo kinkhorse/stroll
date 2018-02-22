@@ -12,6 +12,7 @@ rules["cockslap"] = [];
 rules["ball-smother"] = [];
 rules["male-orgasm"] = [];
 rules["female-orgasm"] = [];
+rules["grind"] = [];
 
 function hasNothing(container, thing, amount) {
   for (var key in container.contents) {
@@ -90,6 +91,17 @@ function describeDefault(action, container, macro, verbose=true) {
     case "ball-smother": return "Your weighty balls spread over " + container.describe(verbose) + ", smothering them in musk.";
     case "male-orgasm": return "You're cumming! Your thick cock spurts out $VOLUME of seed, splooging " + container.describe(verbose) + ".";
     case "female-orgasm": return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
+    case "grind":
+      var end = (macro.arousalEnabled ? ", smashing them to fuel your lust." : ", smashing them to bits.");
+      if (macro.maleParts && macro.femaleParts) {
+        return "You grind your " + macro.describeDick + " cock and " + macro.describeVagina + " slit against " + container.describe(verbose) + end;
+      } else if (macro.maleParts && !macro.femaleParts) {
+        return "You grind your " + macro.describeDick + " shaft against " + container.describe(verbose) + end;
+      } else if (!macro.maleParts && macro.femaleParts) {
+        return "You grind your " + macro.describeVagina + " slit against " + container.describe(verbose) + end;
+      } else if (!macro.maleParts && !macro.femaleParts) {
+        return "You grind your hips against " + container.describe(verbose) + end;
+      }
   }
 }
 
