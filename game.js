@@ -166,7 +166,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
-      return "Your stomach gurgles as it digests " + container.describe(false);
+      return describe("stomach",container,verbose);
     },
     "fill": function(owner,container) {
       //no-op
@@ -186,7 +186,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
-      return "Your bowels churn as they absorb " + container.describe(false);
+      return describe("bowels",container,verbose);
     },
     "fill": function(owner,container) {
       //no-op
@@ -206,7 +206,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
-      return "Your womb squeezes as it dissolves " + container.describe(false);
+      return describe("womb",container,verbose);
     },
     "fill": function(owner,container) {
       owner.femcumStorage.amount += container.sum_property("mass") / 1e3;
@@ -226,7 +226,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
-      return "Your balls slosh as they transform " + container.describe(false) + " into cum";
+      return describe("balls",container,verbose);
     },
     "fill": function(owner,container) {
       owner.cumStorage.amount += container.sum_property("mass") / 1e3;

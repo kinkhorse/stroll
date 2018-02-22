@@ -14,6 +14,11 @@ rules["male-orgasm"] = [];
 rules["female-orgasm"] = [];
 rules["grind"] = [];
 
+rules["stomach"] = [];
+rules["balls"] = [];
+rules["womb"] = [];
+rules["ass"] = [];
+
 function isFatal(macro) {
   return macro.brutality >= 1;
 }
@@ -110,9 +115,13 @@ function describeDefault(action, container, macro, verbose=true) {
         return "You grind your " + macro.describeDick + " shaft against " + container.describe(verbose) + end;
       } else if (!macro.maleParts && macro.femaleParts) {
         return "You grind your " + macro.describeVagina + " slit against " + container.describe(verbose) + end;
-      } else if (!macro.maleParts && !macro.femaleParts) {
+      } else {
         return "You grind your hips against " + container.describe(verbose) + end;
       }
+    case "stomach": return "Your stomach gurgles as it digests " + container.describe(false);
+    case "bowels": return "Your bowels churn as they absorb " + container.describe(false);
+    case "womb": return "Your womb squeezes as it dissolves " + container.describe(false);
+    case "balls": return "Your balls slosh as they transform " + container.describe(false) + " into cum";
   }
 }
 

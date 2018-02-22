@@ -105,8 +105,9 @@ var clusters =
 
 // general logic: each step fills in a fraction of the remaining space
 
-function fill_area(area, weights)
+function fill_area(area, weights, variance=0.15)
 {
+  area = area + Math.random() * variance * 2 - variance;
   result = [];
   candidates = [];
   for (var key in weights) {
