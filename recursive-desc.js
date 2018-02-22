@@ -4,6 +4,8 @@ rules["eat"] = [];
 rules["stomp"] = [];
 rules["kick"] = [];
 rules["anal-vore"] = [];
+rules["tail-slap"] = [];
+rules["tail-vore"] = [];
 rules["ass-crush"] = [];
 rules["breast-crush"] = [];
 rules["unbirth"] = [];
@@ -113,6 +115,8 @@ function describeDefault(action, container, macro, verbose=true) {
     case "kick": return defaultKick(container, macro, verbose);
     case "anal-vore": return defaultAnalVore(container, macro, verbose);
     case "ass-crush": return defaultAssCrush(container, macro, verbose);
+    case "tail-slap": return defaultTailSlap(container, macro, verbose);
+    case "tail-vore": return defaultTailVore(container, macro, verbose);
     case "breast-crush": return defaultBreastCrush(container, macro, verbose);
     case "unbirth": return defaultUnbirth(container, macro, verbose);
     case "cock-vore": return defaultCockVore(container, macro, verbose);
@@ -156,6 +160,23 @@ function defaultAssCrush(container, macro, verbose) {
     return "Your heavy ass obliterates " + container.describe(verbose) + ". ";
   else
     return "You sit on " + container.describe(verbose);
+}
+
+function defaultTailSlap(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails swing" : " tail swings") + " into " + container.describe(verbose) + ", smashing everything in "
+    + (macro.tailCount > 1 ? "their" : "its") + " path.";
+  else
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails slap" : " tail slaps") + " against " + container.describe(verbose) + ", bowling them over.";
+}
+
+function defaultTailVore(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose)
+    + ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully to drag your prey into your sloppy guts.";
+  else
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose)
+    + ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully and pulling everything into your belly.";
 }
 
 function defaultBreastCrush(container, macro, verbose) {

@@ -36,6 +36,32 @@ var macro =
 
   "assScale": 1,
 
+  "tailType": "slinky",
+  "tailCount": 1,
+  "baseTailLength": 1,
+  "baseTailDiameter": 0.1,
+  "tailDensity": 250,
+  "tailScale": 1,
+  "tailMaw": false,
+
+  get tailLength() {
+    return this.scaling(this.baseTailLength * this.tailScale, this.scale, 1);
+  },
+  get tailDiameter() {
+    return this.scaling(this.baseTailDiameter * this.tailScale, this.scale, 1);
+  },
+  get tailGirth() {
+    return Math.pow(this.tailDiameter/2,2) * Math.PI;
+  },
+  get tailArea() {
+    return this.tailLength * this.tailDiameter;
+  },
+  get tailVolume() {
+    return this.tailGirth * this.tailLength;
+  },
+  get tailMass() {
+    return this.tailVolume * this.tailDensity;
+  },
   "dickType": "canine",
   "baseDickLength": 0.3,
   "baseDickDiameter": 0.08,
@@ -434,6 +460,11 @@ var macro =
     return result;
   },
 
+  get describeTail() {
+    return (this.tailCount > 1 ? this.tailCount + " " : "") + length(this.tailLength, unit, true) + "-long " + this.tailType;
+  },
+
+
   get describeDick() {
     state = "";
     if (!this.arousalEnabled) {
@@ -453,7 +484,7 @@ var macro =
       state = "erect, throbbing, pre-soaked";
       }
     }
-    return length(macro.dickLength, unit, true) + " long " + state + " " + macro.dickType;
+    return length(this.dickLength, unit, true) + " long " + state + " " + this.dickType;
   },
 
   get describeVagina() {
@@ -476,7 +507,7 @@ var macro =
       }
     }
 
-    return length(macro.vaginaLength, unit, true) + " long " + state
+    return length(this.vaginaLength, unit, true) + " long " + state
   },
 
   "growthPoints": 0,
@@ -1230,6 +1261,77 @@ function female_orgasm(vol)
   update([sound,line,linesummary,newline]);
 }
 
+function tail_slap()
+{
+  var area = macro.tailArea * macro.tailCount;
+  var prey = getPrey(biome, area);
+  var line = describe("tail-slap", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse(5);
+
+  updateVictims("tailslapped",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function tail_vore()
+{
+  var area = macro.tailGirth * macro.tailCount;
+  var prey = getPrey(biome, area);
+  var line = describe("tail-vore", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+  if (people == 0) {
+    sound = "";
+  } else if (people < 3) {
+    sound = "Ulp.";
+  } else if (people < 10) {
+    sound = "Gulp.";
+  } else if (people < 50) {
+    sound = "Glrrp.";
+  } else if (people < 500) {
+    sound = "Glrrrpkh!";
+  } else if (people < 5000) {
+    sound = "GLRRKPKH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse(5);
+
+  macro.stomach.feed(prey);
+
+  updateVictims("tailmaw'd",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -1540,11 +1642,27 @@ function startGame(e) {
     }
   }
 
+  if (!macro.hasTail) {
+    macro.tailCount = 0;
+  }
+
   document.getElementById("log-area").style.display = 'inline';
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
   victimTypes = ["stomped","digested","stomach","bowels","ground"];
+
+  if (macro.tailCount > 0) {
+    victimTypes = victimTypes.concat(["tailslapped"]);
+    if (macro.tailMaw) {
+      victimTypes = victimTypes.concat(["tailmaw'd"]);
+    } else {
+      document.getElementById("button-tail_vore").style.display = 'none';
+    }
+  } else {
+    document.getElementById("button-tail_slap").style.display = 'none';
+    document.getElementById("button-tail_vore").style.display = 'none';
+  }
 
   if (macro.maleParts) {
     victimTypes = victimTypes.concat(["cock","balls"]);
@@ -1630,9 +1748,11 @@ function startGame(e) {
 window.addEventListener('load', function(event) {
 
   victims["stomped"] = initVictims();
+  victims["tailslapped"] = initVictims();
+  victims["tailmaw'd"] = initVictims();
+  victims["bowels"] = initVictims();
   victims["digested"] = initVictims();
   victims["stomach"] = initVictims();
-  victims["bowels"] = initVictims();
   victims["breasts"] = initVictims();
   victims["womb"] = initVictims();
   victims["cock"] = initVictims();
@@ -1644,13 +1764,15 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-feed").addEventListener("click",feed);
   document.getElementById("button-stomp").addEventListener("click",stomp);
+  document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
+  document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
+  document.getElementById("button-tail_vore").addEventListener("click",tail_vore);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
   document.getElementById("button-unbirth").addEventListener("click",unbirth);
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
   document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
   document.getElementById("button-ball_smother").addEventListener("click",ball_smother);
   document.getElementById("button-grind").addEventListener("click",grind);
-  document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);
