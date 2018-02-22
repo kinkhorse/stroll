@@ -294,6 +294,9 @@ var macro =
   "arousal": 0,
   "edge": 0,
 
+  "maleSpurt": 0,
+  "femaleSpurt": 0,
+
   "arouse": function(amount) {
     if (!this.arousalEnabled)
       return;
@@ -345,6 +348,18 @@ var macro =
         self.edge += Math.sqrt((self.arousal - 100)) / 500;
         self.edge = Math.min(1,self.edge);
         self.edge = Math.max(0,self.edge - 0.002);
+
+        self.maleSpurt += ((self.arousal-100)/100 + Math.random()) / 25 * (self.edge);
+        self.femaleSpurt += ((self.arousal-100)/100 + Math.random()) / 25 * (self.edge);
+
+        if (self.maleSpurt > 1) {
+          male_spurt(macro.cumVolume * (0.1 + Math.random() / 10));
+          self.maleSpurt = 0;
+        }
+        if (self.femaleSpurt > 1) {
+          female_spurt(macro.femcumVolume * (0.1 + Math.random() / 10));
+          self.femaleSpurt = 0;
+        }
         update();
       } else if (self.afterglow) {
         self.quench(0.5);
@@ -1081,12 +1096,78 @@ function ball_smother()
   update([sound,line,linesummary,newline]);
 }
 
+function male_spurt(vol)
+{
+  var area = Math.pow(vol, 2/3);
+
+  var prey = getPrey(biome, area);
+  var line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Spurt!";
+
+  if (people < 3) {
+    sound = "Spurt!";
+  } else if (people < 10) {
+    sound = "Sploosh!";
+  } else if (people < 50) {
+    sound = "Sploooooosh!";
+  } else if (people < 500) {
+    sound = "SPLOOSH!";
+  } else if (people < 5000) {
+    sound = "SPLOOOOOOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("splooged",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function male_orgasm(vol)
 {
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
   var line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Spurt!";
+
+  if (people < 3) {
+    sound = "Spurt!";
+  } else if (people < 10) {
+    sound = "Sploosh!";
+  } else if (people < 50) {
+    sound = "Sploooooosh!";
+  } else if (people < 500) {
+    sound = "SPLOOSH!";
+  } else if (people < 5000) {
+    sound = "SPLOOOOOOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("splooged",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function female_spurt(vol)
+{
+  var area = Math.pow(vol, 2/3);
+
+  var prey = getPrey(biome, area);
+  var line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());

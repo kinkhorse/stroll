@@ -10,7 +10,9 @@ rules["unbirth"] = [];
 rules["cock-vore"] = [];
 rules["cockslap"] = [];
 rules["ball-smother"] = [];
+rules["male-spurt"] = [];
 rules["male-orgasm"] = [];
+rules["female-spurt"] = [];
 rules["female-orgasm"] = [];
 rules["grind"] = [];
 
@@ -95,7 +97,7 @@ function describe(action, container, macro, verbose=true) {
     }
   }
 
-  if (options.length > 0) {
+  if (options.length > 0 && Math.random() > (1 / (2 + rules[action].length))) {
     let choice = Math.floor(Math.random() * options.length);
     return options[choice](container, macro, verbose);
   }
@@ -116,7 +118,9 @@ function describeDefault(action, container, macro, verbose=true) {
     case "cock-vore": return defaultCockVore(container, macro, verbose);
     case "cockslap": return defaultCockslap(container, macro, verbose);
     case "ball-smother": return defaultBallSmother(container, macro, verbose);
+    case "male-spurt": return defaultMaleSpurt(container, macro, verbose);
     case "male-orgasm": return defaultMaleOrgasm(container, macro, verbose);
+    case "female-spurt": return defaultFemaleSpurt(container, macro, verbose);
     case "female-orgasm": return defaultFemaleOrgasm(container, macro, verbose);
     case "grind": return defaultGrind(container, macro, verbose);
     case "stomach": return defaultStomach(container, macro, verbose);
@@ -183,18 +187,32 @@ function defaultBallSmother(container, macro, verbose) {
     return "Your weighty balls spread over " + container.describe(verbose) + ".";
 }
 
+function defaultMaleSpurt(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your " + macro.describeDick + " cock spurts out $VOLUME of bitter precum, drowning " + container.describe(verbose) + " in a deluge of musk.";
+  else
+    return "Your " + macro.describeDick + " shaft spurts out $VOLUME of precum, splooging " + container.describe(verbose) + ".";
+}
+
 function defaultMaleOrgasm(container, macro, verbose) {
   if (isFatal(macro))
-    return "You're cumming! Your " + macro.describeDick + " cock spurts out $VOLUME of seed, obliterating " + container.describe(verbose) + " in a torrent of cum.";
+    return "You're cumming! Your " + macro.describeDick + " cock gushes $VOLUME of seed, obliterating " + container.describe(verbose) + " in a torrent of cum.";
   else
-    return "You're cumming! Your " + macro.describeDick + " shaft spurts out $VOLUME of seed, splooging " + container.describe(verbose) + ".";
+    return "You're cumming! Your " + macro.describeDick + " shaft gushes $VOLUME of seed, splooging " + container.describe(verbose) + ".";
+}
+
+function defaultFemaleSpurt(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your moist slit splatters $VOLUME of slick juices, drowning " + container.describe(verbose) + " in your building lust.";
+  else
+    return "Your moist slit splatters $VOLUME of slick juices, splooging " + container.describe(verbose) + ".";
 }
 
 function defaultFemaleOrgasm(container, macro, verbose) {
   if (isFatal(macro))
-    return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in a torrent of femcum.";
+    return "Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in a torrent of femcum.";
   else
-    return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
+    return "Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
 }
 
 function defaultGrind(container, macro, verbose) {
@@ -350,5 +368,50 @@ rules["stomp"].push({
   }, "desc": function(container, macro, verbose) {
     return "Your soft paws smoosh over " + container.describe(verbose) + ". They stick to your toes, carried along for the ride as you take another few steps before finally\
     falling off.";
+  }
+});
+
+// ANAL VORE
+
+rules["anal-vore"].push({
+  "test": function(container, macro) {
+    return hasExactly(container, "Person", 1)
+    && hasOnly(container, ["Person"]);
+  }, "desc": function(container, macro, verbose) {
+    let adjective = ["musky","winding","churning"][Math.floor(Math.random()*3)];
+    return "Your weighty rump slams against the ground. A shock of pleasure runs up your spine as a " + container.describe(verbose) + " slides up your ass,"
+    + (macro.maleParts ? " grinding against your prostate" : "") + ". A powerful clench drags them deeper into your bowels, sealing them away in your " + adjective + " depths.";
+  }
+});
+
+rules["anal-vore"].push({
+  "test": function(container, macro) {
+    return hasExactly(container, "Car", 1)
+    && hasOnly(container, ["Car"]);
+  }, "desc": function(container, macro, verbose) {
+    return "You ram " + container.describe(verbose) + " up your ass, biting your lip as it" + (macro.maleParts ? " rubs along your prostate" : " slides into velvety depths") + ".\
+    You moan and clench hard, yanking it in with a wet <i>shlrrp</i> and abruplty silencing its blaring horn.";
+  }
+});
+
+rules["anal-vore"].push({
+  "test": function(container, macro) {
+    return hasExactly(container, "Bus", 1)
+    && hasOnly(container, ["Bus"]);
+  }, "desc": function(container, macro, verbose) {
+    return "A speeding bus slams on its brakes as you abruptly sit - but it's too late to stop. A gasp flies from your lips as it penetrates your greedy ass, sinking halfway in and coming to a halt. \
+    You grunt and squeeze, causing its frame to creak and groan. Two fingers to the back are enough to get it moving again, and it slowly works inside. You shiver and moan, taking it in all the way. \
+    Your ass claims " + container.describe(verbose) + ".";
+  }
+});
+
+rules["anal-vore"].push({
+  "test": function(container, macro) {
+    return hasExactly(container, "Bus", 1)
+    && hasOnly(container, ["Bus"]);
+  }, "desc": function(container, macro, verbose) {
+    return "A speeding bus slams on its brakes as you abruptly sit - but it's too late to stop. A gasp flies from your lips as it penetrates your greedy ass, sinking halfway in and coming to a halt. \
+    You grunt and squeeze, causing its frame to creak and groan. Two fingers to the back are enough to get it moving again, and it slowly works inside. You shiver and moan, taking it in all the way. \
+    Your ass claims " + container.describe(verbose) + ".";
   }
 });
