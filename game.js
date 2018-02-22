@@ -89,7 +89,7 @@ var macro =
   "baseCumRatio": 1,
   "cumScale": 1,
   get cumVolume() {
-    return this.dickGirth * this.baseCumRatio * this.cumScale + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
+    return this.dickGirth * this.baseCumRatio * this.cumScale * (1 + this.edge) + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
   },
 
   "baseVaginaLength": 0.1,
@@ -103,7 +103,7 @@ var macro =
   "baseFemcumRatio": 1,
   "femcumScale": 1,
   get femcumVolume() {
-    return this.vaginaArea * this.baseFemcumRatio * this.femcumScale + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
+    return this.vaginaArea * this.baseFemcumRatio * this.femcumScale * (1 + this.edge) + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
   },
 
   "baseBreastDiameter": 0.1,
@@ -291,6 +291,7 @@ var macro =
   "arousalFactor": 1,
 
   "arousal": 0,
+  "edge": 0,
 
   "arouse": function(amount) {
     if (!this.arousalEnabled)
@@ -340,9 +341,13 @@ var macro =
     if (self.arousalEnabled) {
       if (self.arousal > 100 && !self.orgasm) {
         self.arousal = Math.max(100,self.arousal-1);
+        self.edge += Math.sqrt((self.arousal - 100)) / 500;
+        self.edge = Math.min(1,self.edge);
+        self.edge = Math.max(0,self.edge - 0.002);
         update();
       } else if (self.afterglow) {
         self.quench(0.5);
+        self.edge = Math.max(0,self.edge - 0.01);
       }
     }
     setTimeout(function() { self.quenchExcess(self); }, 200);
@@ -550,10 +555,13 @@ function toggle_arousal()
   macro.arousalEnabled = !macro.arousalEnabled;
 
   document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");
-  if (macro.arousalEnabled)
+  if (macro.arousalEnabled) {
     document.getElementById("arousal").style.display = "block";
-  else
+    document.getElementById("edge").style.display = "block";
+  } else {
     document.getElementById("arousal").style.display = "none";
+    document.getElementById("edge").style.display = "none";
+  }
 
 }
 
@@ -1096,6 +1104,7 @@ function update(lines = [])
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.mass, unit));
   document.getElementById("growth-points").innerHTML = "Growth Points:" + macro.growthPoints;
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
+  document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
   document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false))
   document.getElementById("cumPercent").innerHTML = Math.round(macro.cumStorage.amount / macro.cumStorage.limit * 100) + "%";
   document.getElementById("femcum").innerHTML = "Femcum: " + transformNumbers(volume(macro.femcumStorage.amount,unit,false));
@@ -1390,8 +1399,10 @@ function startGame(e) {
   }
 
   document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");
-  if (!macro.arousalEnabled)
+  if (!macro.arousalEnabled) {
     document.getElementById("arousal").style.display = "none";
+    document.getElementById("edge").style.display = "none";
+  }
 
 
   //var species = document.getElementById("option-species").value;
