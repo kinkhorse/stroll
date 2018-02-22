@@ -166,7 +166,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
-      return describe("stomach",container,verbose);
+      return describe("stomach",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
       //no-op
@@ -186,7 +186,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
-      return describe("bowels",container,verbose);
+      return describe("bowels",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
       //no-op
@@ -206,7 +206,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
-      return describe("womb",container,verbose);
+      return describe("womb",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
       owner.femcumStorage.amount += container.sum_property("mass") / 1e3;
@@ -226,7 +226,7 @@ var macro =
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
-      return describe("balls",container,verbose);
+      return describe("balls",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
       owner.cumStorage.amount += container.sum_property("mass") / 1e3;

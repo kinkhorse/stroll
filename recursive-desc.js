@@ -95,103 +95,137 @@ function describe(action, container, macro, verbose=true) {
 
 function describeDefault(action, container, macro, verbose=true) {
   switch(action) {
-    case "eat": return defaultEat(action, container, macro, verbose);
-    case "stomp": return defaultStomp(action, container, macro, verbose);
-    case "kick": return defaultKick(action, container, macro, verbose);
-    case "anal-vore": return defaultAnalVore(action, container, macro, verbose);
-    case "ass-crush": return defaultAssCrush(action, container, macro, verbose);
-    case "breast-crush": return defaultBreastCrush(action, container, macro, verbose);
-    case "unbirth": return defaultUnbirth(action, container, macro, verbose);
-    case "cock-vore": return defaultCockVore(action, container, macro, verbose);
-    case "cockslap": return defaultCockslap(action, container, macro, verbose);
-    case "ball-smother": return defaultBallSmother(action, container, macro, verbose);
-    case "male-orgasm": return defaultMaleOrgasm(action, container, macro, verbose);
-    case "female-orgasm": return defaultFemaleOrgasm(action, container, macro, verbose);
-    case "grind": return defaultGrind(action, container, macro, verbose);
-    case "stomach": return defaultStomach(action, container, macro, verbose);
-    case "bowels": return defaultBowels(action, container, macro, verbose);
-    case "womb": return defaultWomb(action, container, macro, verbose);
-    case "balls": return defaultBalls(action, container, macro, verbose);
+    case "eat": return defaultEat(container, macro, verbose);
+    case "stomp": return defaultStomp(container, macro, verbose);
+    case "kick": return defaultKick(container, macro, verbose);
+    case "anal-vore": return defaultAnalVore(container, macro, verbose);
+    case "ass-crush": return defaultAssCrush(container, macro, verbose);
+    case "breast-crush": return defaultBreastCrush(container, macro, verbose);
+    case "unbirth": return defaultUnbirth(container, macro, verbose);
+    case "cock-vore": return defaultCockVore(container, macro, verbose);
+    case "cockslap": return defaultCockslap(container, macro, verbose);
+    case "ball-smother": return defaultBallSmother(container, macro, verbose);
+    case "male-orgasm": return defaultMaleOrgasm(container, macro, verbose);
+    case "female-orgasm": return defaultFemaleOrgasm(container, macro, verbose);
+    case "grind": return defaultGrind(container, macro, verbose);
+    case "stomach": return defaultStomach(container, macro, verbose);
+    case "bowels": return defaultBowels(container, macro, verbose);
+    case "womb": return defaultWomb(container, macro, verbose);
+    case "balls": return defaultBalls(container, macro, verbose);
   }
 }
 
 // DEFAULTS
 
-function defaultEat(action, conatiner, macro, verbose) {
+function defaultEat(conatiner, macro, verbose) {
   return "You scoop up " + container.describe(verbose) + " and swallow " + (container.count > 1 ? "them" : "it") + " whole.";
 }
 
-function defaultStomp(action, container, macro, verbose) {
-  return "You crush " + container.describe(verbose) + " underfoot.";
+function defaultStomp(container, macro, verbose) {
+  if (isFatal(macro))
+    return "You crush " + container.describe(verbose) + " underfoot.";
+  else
+    return "You step on " + container.describe(verbose) + ".";
 }
 
-function defaultKick(action, container, macro, verbose) {
+function defaultKick(container, macro, verbose) {
   return "You punt " + container.describe(verbose) + ", destroying " + (container.count > 1 ? "them" : "it") + ".";
 }
 
-function defaultAnalVore(action, container, macro, verbose) {
+function defaultAnalVore(container, macro, verbose) {
   return "You sit yourself down on " + container.describe(verbose) + ". " + (container.count > 1 ? "They slide" : "It slides") + " inside with ease.";
 }
 
-function defaultAssCrush(action, container, macro, verbose) {
-  return "Your heavy ass obliterates " + container.describe(verbose) + ". ";
+function defaultAssCrush(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your heavy ass obliterates " + container.describe(verbose) + ". ";
+  else
+    return "You sit on " + container.describe(verbose);
 }
 
-function defaultBreastCrush(action, container, macro, verbose) {
-  return "Your heavy breasts obliterate " + container.describe(verbose) + ". ";
+function defaultBreastCrush(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your heavy breasts obliterate " + container.describe(verbose) + ". ";
+  else
+    return "You smoosh " + container.describe(verbose) + " with your breasts.";
 }
 
-function defaultUnbirth(action, container, macro, verbose) {
+function defaultUnbirth(container, macro, verbose) {
   return "You gasp as you slide " + container.describe(verbose) + " up your slit. ";
 }
 
-function defaultCockVore(action, container, macro, verbose) {
+function defaultCockVore(container, macro, verbose) {
   return "You stuff " + container.describe(verbose) + " into your throbbing shaft, forcing them down to your heavy balls.";
 }
 
-function defaultCockslap(action, container, macro, verbose) {
-  return "Your swaying shaft crushes " + container.describe(verbose) + ". ";
+function defaultCockslap(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your swaying " + macro.describeDick + " cock crushes " + container.describe(verbose) + ". ";
+  else
+    return "You smack " + container.describe(verbose) + " with your " + macro.describeDick + " shaft.";
 }
 
-function defaultBallSmother(action, container, macro, verbose) {
-  return "Your weighty balls spread over " + container.describe(verbose) + ", smothering them in musk.";
+function defaultBallSmother(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your weighty balls spread over " + container.describe(verbose) + ", drowning them in musk.";
+  else
+    return "Your weighty balls spread over " + container.describe(verbose) + ".";
 }
 
-function defaultMaleOrgasm(action, container, macro, verbose) {
-  return "You're cumming! Your thick cock spurts out $VOLUME of seed, splooging " + container.describe(verbose) + ".";
+function defaultMaleOrgasm(container, macro, verbose) {
+  if (isFatal(macro))
+    return "You're cumming! Your " + macro.describeDick + " cock spurts out $VOLUME of seed, obliterating " + container.describe(verbose) + " in a torrent of cum.";
+  else
+    return "You're cumming! Your " + macro.describeDick + " shaft spurts out $VOLUME of seed, splooging " + container.describe(verbose) + ".";
 }
 
-function defaultFemaleOrgasm(action, container, macro, verbose) {
-  return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
+function defaultFemaleOrgasm(container, macro, verbose) {
+  if (isFatal(macro))
+    return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in a torrent of femcum.";
+  else
+    return "You're cumming! Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
 }
 
-function defaultGrind(action, container, macro, verbose) {
-  var end = (macro.arousalEnabled ? ", smashing them to fuel your lust." : ", smashing them to bits.");
+function defaultGrind(container, macro, verbose) {
+  var mid = isFatal(macro) ? ", smashing them apart" : ", using them as a toy";
+  var end = macro.arousalEnabled ? " to fuel your lust." : ".";
   if (macro.maleParts && macro.femaleParts) {
-    return "You grind your " + macro.describeDick + " cock and " + macro.describeVagina + " slit against " + container.describe(verbose) + end;
+    return "You grind your " + macro.describeDick + " cock and " + macro.describeVagina + " slit against " + container.describe(verbose) + mid + end;
   } else if (macro.maleParts && !macro.femaleParts) {
-    return "You grind your " + macro.describeDick + " shaft against " + container.describe(verbose) + end;
+    return "You grind your " + macro.describeDick + " shaft against " + container.describe(verbose) + mid + end;
   } else if (!macro.maleParts && macro.femaleParts) {
-    return "You grind your " + macro.describeVagina + " slit against " + container.describe(verbose) + end;
+    return "You grind your " + macro.describeVagina + " slit against " + container.describe(verbose) + mid + end;
   } else {
-    return "You grind your hips against " + container.describe(verbose) + end;
+    return "You grind your hips against " + container.describe(verbose) + mid + end;
   }
 }
 
-function defaultStomach(action, container, macro, verbose) {
-  return "Your stomach gurgles as it digests " + container.describe(false);
+function defaultStomach(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your stomach gurgles as it digests " + container.describe(false);
+  else
+    return "Your stomach groans as it absorbs " + container.describe(false);
 }
 
-function defaultBowels(action, container, macro, verbose) {
-  return "Your bowels churn as they absorb " + container.describe(false);
+function defaultBowels(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your bowels churn as they melt down " + container.describe(false) + " and absorb them into your body";
+  else
+    return "Your bowels churn as they absorb " + container.describe(false);
 }
 
-function defaultWomb(action, container, macro, verbose) {
-  return "Your womb squeezes as it dissolves " + container.describe(false);
+function defaultWomb(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your womb squeezes and dissolves " + container.describe(false) + ", turning them into slick femcum.";
+  else
+    return "Your womb squeezes as it absorbs " + container.describe(false);
 }
 
-function defaultBalls(action, container, macro, verbose) {
-  return "Your balls slosh as they transform " + container.describe(false) + " into cum";
+function defaultBalls(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your balls slosh as they digest " + container.describe(false) + " into cum";
+  else
+    return "Your balls slosh as they absorb " + container.describe(false);
 }
 
 // EATING
