@@ -610,8 +610,16 @@ function initVictims()
 // lists out total people
 function summarize(sum, fatal = true)
 {
+  var word;
   var count = get_living_prey(sum);
-  return "<b>(" + count + " " + (fatal ? (count > 1 ? "kills" : "kill") : (count > 1 ? "prey" : "prey")) + ")</b>";
+  if (fatal && macro.brutality > 0)
+    word = count > 1 ? "kills" : "kill";
+  else if (!fatal && macro.brutality > 0)
+    word = "prey";
+  else
+    word = count > 1 ? "victims" : "victim";
+
+  return "<b>(" + count + " " + word + ")</b>";
 }
 
 function getOnePrey(biome,area)

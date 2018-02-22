@@ -117,7 +117,7 @@ function describeDefault(action, container, macro, verbose=true) {
 
 // DEFAULTS
 
-function defaultEat(conatiner, macro, verbose) {
+function defaultEat(container, macro, verbose) {
   return "You scoop up " + container.describe(verbose) + " and swallow " + (container.count > 1 ? "them" : "it") + " whole.";
 }
 
