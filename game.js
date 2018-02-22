@@ -349,8 +349,10 @@ var macro =
         self.edge = Math.min(1,self.edge);
         self.edge = Math.max(0,self.edge - 0.002);
 
-        self.maleSpurt += ((self.arousal-100)/100 + Math.random()) / 25 * (self.edge);
-        self.femaleSpurt += ((self.arousal-100)/100 + Math.random()) / 25 * (self.edge);
+        if (self.maleParts)
+          self.maleSpurt += ((self.arousal-100)/100 + Math.random()) / 25 * (self.edge);
+        if (self.femaleParts)
+          self.femaleSpurt += ((self.arousal-100)/100 + Math.random()) / 25 * (self.edge);
 
         if (self.maleSpurt > 1) {
           male_spurt(macro.cumVolume * (0.1 + Math.random() / 10));
