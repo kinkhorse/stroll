@@ -37,6 +37,7 @@ var macro =
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
 
   "assScale": 1,
+  analVore: true,
 
   "hasTail": true,
   "tailType": "slinky",
@@ -1012,7 +1013,7 @@ function grind()
   update([sound,line,linesummary,newline]);
 }
 
-function anal_vore()
+function sit()
 {
   var area = macro.analVoreArea;
   var prey = getOnePrey(biome,area);
@@ -1020,27 +1021,34 @@ function anal_vore()
   area = macro.assArea;
   var crushed = getPrey(biome,area);
 
-  var line1 = describe("anal-vore", prey, macro, verbose);
-  var line1summary = summarize(prey.sum(), false);
+  if (macro.analVore) {
+    var line1 = describe("anal-vore", prey, macro, verbose);
+    var line1summary = summarize(prey.sum(), false);
+  }
 
   var line2 = describe("ass-crush", crushed, macro, verbose);
   var line2summary = summarize(crushed.sum(), true);
 
-  var people = get_living_prey(prey.sum());
-  var sound = "Shlp";
+  var people;
+  var sound;
 
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
+  if (macro.analVore) {
+    people = get_living_prey(prey.sum());
+    sound = "Shlp";
+
+    if (people < 3) {
+      sound = "Shlp.";
+    } else if (people < 10) {
+      sound = "Squelch.";
+    } else if (people < 50) {
+      sound = "Shlurrp.";
+    } else if (people < 500) {
+      sound = "SHLRP!";
+    } else if (people < 5000) {
+      sound = "SQLCH!!";
+    } else {
+      sound = "Oh the humanity!";
+    }
   }
 
   var people = get_living_prey(crushed.sum());
@@ -1060,19 +1068,29 @@ function anal_vore()
     sound2 = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  if (macro.analVore)
+    var preyMass = prey.sum_property("mass");
   var crushedMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+  if (macro.analVore)
+    macro.addGrowthPoints(preyMass);
   macro.addGrowthPoints(crushedMass);
 
-  macro.bowels.feed(prey);
+  if (macro.analVore)
+    macro.bowels.feed(prey);
 
-  macro.arouse(10);
+  if (macro.analVore)
+    macro.arouse(25);
+  else
+    macro.arouse(5);
 
-  updateVictims("bowels",prey);
+  if (macro.analVore)
+    updateVictims("bowels",prey);
   updateVictims("stomped",crushed);
-  update([sound,line1,line1summary,newline,sound2,line2,line2summary,newline]);
+  if (macro.analVore)
+    update([sound,line1,line1summary,newline,sound2,line2,line2summary,newline]);
+  else
+    update([sound2,line2,line2summary,newline]);
 }
 
 function breast_crush()
@@ -1192,7 +1210,7 @@ function milk_breasts(e,vol)
   macro.addGrowthPoints(preyMass);
 
   macro.arouse(20);
-  
+
   updateVictims("flooded",prey);
   update([sound,line,linesummary,newline]);
 }
@@ -1593,7 +1611,7 @@ function pick_move()
   var choice = Math.random();
 
   if (choice < 0.2) {
-    anal_vore();
+    sit();
   } else if (choice < 0.6) {
     stomp();
   } else {
@@ -1864,7 +1882,11 @@ function startGame(e) {
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
-  victimTypes = ["stomped","digested","stomach","bowels","ground"];
+  victimTypes = ["stomped","digested","stomach","ground"];
+
+  if (macro.analVore) {
+    victimTypes = victimTypes.concat(["bowels"]);
+  }
 
   if (macro.tailCount > 0) {
     victimTypes = victimTypes.concat(["tailslapped"]);
@@ -2007,7 +2029,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-feed").addEventListener("click",feed);
   document.getElementById("button-chew").addEventListener("click",chew);
   document.getElementById("button-stomp").addEventListener("click",stomp);
-  document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
+  document.getElementById("button-sit").addEventListener("click",sit);
   document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
   document.getElementById("button-tail_vore").addEventListener("click",tail_vore);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
