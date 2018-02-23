@@ -27,7 +27,7 @@ body {
 }
 
 #log {
-  height: 600px;
+  height: 900px;
   overflow: auto;
   background-color: #fff;
 }
@@ -90,8 +90,8 @@ body {
 
 .action-button {
   font-size: 24px;
-  width: 120px;
-  height: 60px;
+  width: 150px;
+  height: 75px;
 }
 
 #victim-table {

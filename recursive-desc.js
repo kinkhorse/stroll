@@ -1,6 +1,7 @@
 rules = {};
 
 rules["eat"] = [];
+rules["chew"] = [];
 rules["stomp"] = [];
 rules["kick"] = [];
 rules["anal-vore"] = [];
@@ -112,6 +113,7 @@ function describe(action, container, macro, verbose=true) {
 function describeDefault(action, container, macro, verbose=true) {
   switch(action) {
     case "eat": return defaultEat(container, macro, verbose);
+    case "chew": return defaultChew(container, macro, verbose);
     case "stomp": return defaultStomp(container, macro, verbose);
     case "kick": return defaultKick(container, macro, verbose);
     case "anal-vore": return defaultAnalVore(container, macro, verbose);
@@ -140,6 +142,10 @@ function describeDefault(action, container, macro, verbose=true) {
 
 function defaultEat(container, macro, verbose) {
   return "You scoop up " + container.describe(verbose) + " and swallow " + (container.count > 1 ? "them" : "it") + " whole.";
+}
+
+function defaultChew(container, macro, verbose) {
+  return "You scoop up " + container.describe(verbose) + " and crunch " + (container.count > 1 ? "them" : "it") + " in your powerful jaws, then swallow them down.";
 }
 
 function defaultStomp(container, macro, verbose) {

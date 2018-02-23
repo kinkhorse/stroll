@@ -873,6 +873,42 @@ function feed()
   update([sound,line,linesummary,newline]);
 }
 
+function chew()
+{
+  var area = macro.handArea;
+  var prey = getPrey(biome, area);
+
+  var line = describe("chew", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+  var sound = "";
+  if (people == 0) {
+    sound = "";
+  } else if (people < 3) {
+    sound = "Snap.";
+  } else if (people < 10) {
+    sound = "Crunch.";
+  } else if (people < 50) {
+    sound = "Crack!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRRUNCH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse(10);
+
+  updateVictims("digested",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function stomp()
 {
   var area = macro.pawArea;
@@ -1812,6 +1848,9 @@ function startGame(e) {
     victimTypes.push("splooged");
   }
 
+  if (macro.brutality < 1) {
+    document.getElementById("button-chew").style.display = 'none';
+  }
   var table = document.getElementById("victim-table");
 
   var tr = document.createElement('tr');
@@ -1887,6 +1926,7 @@ window.addEventListener('load', function(event) {
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-feed").addEventListener("click",feed);
+  document.getElementById("button-chew").addEventListener("click",chew);
   document.getElementById("button-stomp").addEventListener("click",stomp);
   document.getElementById("button-anal_vore").addEventListener("click",anal_vore);
   document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
