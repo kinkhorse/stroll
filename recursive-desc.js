@@ -9,6 +9,7 @@ rules["tail-slap"] = [];
 rules["tail-vore"] = [];
 rules["ass-crush"] = [];
 rules["breast-crush"] = [];
+rules["breast-vore"] = [];
 rules["breast-milk"] = [];
 rules["unbirth"] = [];
 rules["cock-vore"] = [];
@@ -24,6 +25,7 @@ rules["stomach"] = [];
 rules["balls"] = [];
 rules["womb"] = [];
 rules["bowels"] = [];
+rules["breasts"] = [];
 
 function isNonFatal(macro) {
   return macro.brutality == 0;
@@ -121,6 +123,7 @@ function describeDefault(action, container, macro, verbose=true) {
     case "tail-slap": return defaultTailSlap(container, macro, verbose);
     case "tail-vore": return defaultTailVore(container, macro, verbose);
     case "breast-crush": return defaultBreastCrush(container, macro, verbose);
+    case "breast-vore": return defaultBreastVore(container, macro, verbose);
     case "breast-milk": return defaultBreastMilk(container, macro, verbose);
     case "unbirth": return defaultUnbirth(container, macro, verbose);
     case "cock-vore": return defaultCockVore(container, macro, verbose);
@@ -135,6 +138,7 @@ function describeDefault(action, container, macro, verbose=true) {
     case "bowels": return defaultBowels(container, macro, verbose);
     case "womb": return defaultWomb(container, macro, verbose);
     case "balls": return defaultBalls(container, macro, verbose);
+    case "breasts": return defaultBreasts(container, macro, verbose);
   }
 }
 
@@ -196,6 +200,11 @@ function defaultBreastCrush(container, macro, verbose) {
   else
     return "You smoosh " + container.describe(verbose) + " with your breasts.";
 }
+
+function defaultBreastVore(container, macro, verbose) {
+  return "Your nipples envelop " + container.describe(verbose) + ", pulling them into your breasts. ";
+}
+
 
 function defaultBreastMilk(container, macro, verbose) {
   if (isFatal(macro))
@@ -294,6 +303,13 @@ function defaultBalls(container, macro, verbose) {
     return "Your balls slosh as they digest " + container.describe(false) + " into cum";
   else
     return "Your balls slosh as they absorb " + container.describe(false);
+}
+
+function defaultBreasts(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your breasts grrgle as they digest " + container.describe(false) + " into milk";
+  else
+    return "Your breasts slosh as they absorb " + container.describe(false);
 }
 
 // EATING

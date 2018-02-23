@@ -274,11 +274,34 @@ var macro =
     "maxDigest" : 1
   },
 
+  "breasts": {
+    "name" : "breasts",
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      if (self.contents.length == 0)
+        setTimeout(function() { owner.digest(owner,self) }, 1500);
+      this.contents.push(prey);
+    },
+    "describeDigestion": function(container) {
+      return describe("breasts",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+      if (macro.lactationEnabled) {
+        owner.milkStorage.amount += container.sum_property("mass") / 1e3;
+      }
+    },
+    "contents" : [],
+    "maxDigest" : 1
+  },
+
   "init": function() {
     this.stomach.owner = this;
     this.bowels.owner = this;
     this.womb.owner = this;
     this.balls.owner = this;
+    this.breasts.owner = this;
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
@@ -314,9 +337,14 @@ var macro =
   },
 
   "fillBreasts": function(self) {
+    if (self.milkStorage.amount > self.milkStorage.limit) {
+      milk_breasts(null, self.milkStorage.amount - self.milkStorage.limit);
+    }
     self.milkStorage.amount += self.lactationScale * self.milkStorage.limit / 1200;
-    if (self.milkStorage.amount > self.milkStorage.limit)
+
+    if (self.milkStorage.amount > self.milkStorage.limit) {
       self.milkStorage.amount = self.milkStorage.limit;
+    }
     setTimeout(function () { self.fillBreasts(self) }, 100);
     update();
   },
@@ -1086,6 +1114,48 @@ function breast_crush()
   }
 }
 
+function breast_vore()
+{
+  // todo nipple areas?
+  var area = macro.breastArea/2;
+  var prey = getPrey(biome, area);
+  var line = describe("breast-vore", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Slurp.";
+  } else if (people < 50) {
+    sound = "Shlrrrrp!";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SHLLLLURP!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.breasts.feed(prey);
+
+  macro.arouse(10);
+
+  updateVictims("breastvored",prey);
+  update([sound,line,linesummary,newline]);
+
+  if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
+    var amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
+    milk_breasts(null, amount);
+  }
+}
+
 function milk_breasts(e,vol)
 {
   if (vol == undefined) {
@@ -1121,6 +1191,8 @@ function milk_breasts(e,vol)
 
   macro.addGrowthPoints(preyMass);
 
+  macro.arouse(20);
+  
   updateVictims("flooded",prey);
   update([sound,line,linesummary,newline]);
 }
@@ -1836,7 +1908,13 @@ function startGame(e) {
       document.getElementById("milk").style.display = 'none';
       document.getElementById("milkPercent").style.display = 'none';
     }
+    if (macro.breastVore) {
+      victimTypes = victimTypes.concat(["breastvored"]);
+    } else {
+      document.getElementById("button-breast_vore").style.display = 'none';
+    }
   } else {
+    document.getElementById("button-breast_vore").style.display = 'none';
     document.getElementById("button-breast_milk").style.display = 'none';
     document.getElementById("milk").style.display = 'none';
     document.getElementById("milkPercent").style.display = 'none';
@@ -1916,6 +1994,7 @@ window.addEventListener('load', function(event) {
   victims["digested"] = initVictims();
   victims["stomach"] = initVictims();
   victims["breasts"] = initVictims();
+  victims["breastvored"] = initVictims();
   victims["flooded"] = initVictims();
   victims["womb"] = initVictims();
   victims["cock"] = initVictims();
@@ -1932,6 +2011,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
   document.getElementById("button-tail_vore").addEventListener("click",tail_vore);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
+  document.getElementById("button-breast_vore").addEventListener("click",breast_vore);
   document.getElementById("button-breast_milk").addEventListener("click",milk_breasts);
   document.getElementById("button-unbirth").addEventListener("click",unbirth);
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
