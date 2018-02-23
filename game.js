@@ -15,6 +15,8 @@ var newline = "&nbsp;";
 
 victims = {};
 
+var humanMode = true;
+
 var macro =
 {
   "scaling": function(value, scale, factor) { return value * Math.pow(scale,factor); },
@@ -1716,7 +1718,10 @@ function startGame(e) {
       else if (form[i].type == "number")
         macro[form[i].name] = parseFloat(form[i].value);
       else if (form[i].type == "checkbox") {
-        macro[form[i].name] = form[i].checked;
+        if (form[i].name == "humanMode")
+          humanMode = form[i].checked;
+        else
+          macro[form[i].name] = form[i].checked;
       } else if (form[i].type == "radio") {
         if (form[i].checked) {
           switch(form[i].id) {

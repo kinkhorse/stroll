@@ -389,7 +389,10 @@ function Person(count = 1) {
   this.describeOne = function (verbose=true) {
     body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
     sex = random_desc(["male", "female"], (verbose ? 1 : 0));
-    species = random_desc(["wolf","cat","dog","squirrel","horse","hyena","fox","jackal","crux","sergal"]);
+    if (!humanMode)
+      species = random_desc(["wolf","cat","dog","squirrel","horse","hyena","fox","jackal","crux","sergal"]);
+    else
+      species = random_desc(["jogger","police officer","road worker","pastor","dog-walker","clerk","accountant","CEO","millionaire","mailman"]);
     return "a " + merge_desc([body,sex,species]);
   }
 
