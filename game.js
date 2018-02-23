@@ -376,6 +376,9 @@ var macro =
         if (this.femaleParts) {
           this.femaleOrgasm(this);
         }
+        if (!this.maleParts && !this.femaleParts) {
+          this.nullOrgasm(this);
+        }
       }
     }
   },
@@ -453,6 +456,16 @@ var macro =
       this.femcumStorage.amount -= amount;
       female_orgasm(amount);
       setTimeout(function() { self.femaleOrgasm(self) }, 2000);
+    }
+  },
+
+  "nullOrgasm": function(self) {
+    if (!this.arousalEnabled)
+      return;
+
+    if (this.orgasm) {
+      this.quench(10);
+      setTimeout(function() { self.nullOrgasm(self) }, 2000);
     }
   },
 
