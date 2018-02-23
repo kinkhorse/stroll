@@ -145,7 +145,10 @@ function defaultEat(container, macro, verbose) {
 }
 
 function defaultChew(container, macro, verbose) {
-  return "You scoop up " + container.describe(verbose) + " and crunch " + (container.count > 1 ? "them" : "it") + " in your powerful jaws, then swallow them down.";
+  if (isNonFatal(macro))
+    return defaultEat(container, macro, verbose);
+  else
+    return "You scoop up " + container.describe(verbose) + " and crunch " + (container.count > 1 ? "them" : "it") + " in your powerful jaws, then swallow them down.";
 }
 
 function defaultStomp(container, macro, verbose) {
@@ -364,6 +367,47 @@ rules["eat"].push({
     " + describe_all(container.contents, verbose, ["Small Skyscraper"]) + " that were unfortunate enough to be caught up by your slimy tongue.";
   }
 });
+
+// CHEWING
+
+rules["chew"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 1)
+    && isGory(macro)
+    && macro.height < 5;
+  }, "desc": function(container, macro, verbose) {
+    return "You tackle a " + container.describe(verbose) + " and dig into your meal, powerful jaws ripping them to shreds in seconds. You wolf down great mouthfuls \
+    of meat, consuming them in a terrifying frenzy that ends with naught but bones lying on the ground.";
+  }
+})
+
+rules["chew"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 1)
+    && isGory(macro)
+    && macro.height >= 5;
+  }, "desc": function(container, macro, verbose) {
+    return "You snatch up a " + container.describe(verbose) + ", then stuff their lower body into the guillotine that is your ravenous maw - slicing off their legs with \
+    a single disgusting <i>crunch</i>, then finishing them off with another ravenous bite that obliterates their torso. Their bleeding head falls from your lips, only to be \
+    caught between two fingers and popped back in to be crunched between molars and swallowed.";
+  }
+})
+
+rules["chew"].push({
+  "test": function(container, macro) {
+    return hasOnly(container, ["Person"])
+    && hasExactly(container, "Person", 2)
+    && isGory(macro)
+  }, "desc": function(container, macro, verbose) {
+    var prey1 = new Person(1).describe(verbose);
+    var prey2 = new Person(1).describe(verbose);
+    return "Powerful jaws obliterate " + prey1  +"'s body. You toss your head back and swallow their gory remains, your free hand slowly crushing " + prey2 + " like a nut \
+    in a vice. A heartbeat later, their face is jammed into your bloody throat. A squeeze of your jaws snaps their spine with ease, and their limp body plunges down into \
+    your churning depths to be destroyed.";
+  }
+})
 
 // STOMPING
 
