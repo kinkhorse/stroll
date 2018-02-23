@@ -283,18 +283,18 @@ var macro =
   "femaleParts": true,
 
   "fillCum": function(self) {
-    self.cumStorage.amount += self.cumScale * self.ballVolume / 120;
+    self.cumStorage.amount += self.cumScale * self.ballVolume / 1200;
     if (self.cumStorage.amount > self.cumStorage.limit)
-      self.arouse(10 * (self.cumStorage.amount / self.cumStorage.limit - 1));
-    setTimeout(function () { self.fillCum(self) }, 1000);
+      self.arouse(1 * (self.cumStorage.amount / self.cumStorage.limit - 1));
+    setTimeout(function () { self.fillCum(self) }, 100);
     update();
   },
 
   "fillFemcum": function(self) {
-    self.femcumStorage.amount += self.femcumScale * self.vaginaVolume / 120;
+    self.femcumStorage.amount += self.femcumScale * self.vaginaVolume / 1200;
     if (self.femcumStorage.amount > self.femcumStorage.limit)
-      self.arouse(10 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
-    setTimeout(function () { self.fillFemcum(self) }, 1000);
+      self.arouse(1 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
+    setTimeout(function () { self.fillFemcum(self) }, 100);
     update();
   },
 
@@ -634,6 +634,9 @@ function toggle_arousal()
     document.getElementById("arousal").style.display = "none";
     document.getElementById("edge").style.display = "none";
   }
+
+  macro.orgasm = false;
+  macro.afterglow = false;
 
 }
 
