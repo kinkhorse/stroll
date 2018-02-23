@@ -88,10 +88,20 @@ body {
   height: 100px;
 }
 
-.action-button {
-  font-size: 24px;
-  width: 150px;
-  height: 75px;
+@media (max-aspect-ratio: 16/9){
+  .action-button {
+    font-size: 18px;
+    width: 100px;
+    height: 75px;
+  }
+}
+
+@media (min-aspect-ratio: 16/9){
+  .action-button {
+    font-size: 24px;
+    width: 150px;
+    height: 75px;
+  }
 }
 
 #victim-table {
