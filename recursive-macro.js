@@ -868,6 +868,8 @@ function Town(count = 1) {
 
   this.addContent("Car",250,3750,count);
 
+  this.addContent("Bus",50,150,count);
+
   this.addContent("Train",5,10,count);
 
   this.addContent("Small Skyscraper",2,10,count);
@@ -897,6 +899,8 @@ function City(count = 1) {
   this.addContent("Empty Car",2500,37500,count);
 
   this.addContent("Car",2500,37500,count);
+
+  this.addContent("Bus",150,500,count);
 
   this.addContent("Train",50,100,count);
 

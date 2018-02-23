@@ -653,7 +653,7 @@ function toggle_verbose()
 {
   verbose = !verbose;
 
-  document.getElementById("button-verbose").innerHTML = "Descriptions: " + (verbose ? "Verbose" : "Simple");
+  document.getElementById("button-verbose").innerHTML = (verbose ? "Verbose" : "Simple");
 }
 
 function toggle_arousal()
