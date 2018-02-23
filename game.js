@@ -1896,6 +1896,7 @@ function startGame(e) {
       document.getElementById("button-tail_vore").style.display = 'none';
     }
   } else {
+    document.getElementById("action-part-tails").style.display = 'none';
     document.getElementById("button-tail_slap").style.display = 'none';
     document.getElementById("button-tail_vore").style.display = 'none';
   }
@@ -1903,6 +1904,7 @@ function startGame(e) {
   if (macro.maleParts) {
     victimTypes = victimTypes.concat(["cock","balls"]);
   } else {
+    document.getElementById("action-part-dick").style.display = 'none';
     document.getElementById("button-cockslap").style.display = 'none';
     document.getElementById("button-cock_vore").style.display = 'none';
     document.getElementById("button-ball_smother").style.display = 'none';
@@ -1915,6 +1917,7 @@ function startGame(e) {
   if (macro.femaleParts) {
     victimTypes = victimTypes.concat(["womb"]);
   } else {
+    document.getElementById("action-part-vagina").style.display = 'none';
     document.getElementById("button-unbirth").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
     document.getElementById("femcumPercent").style.display = 'none';
@@ -1936,6 +1939,7 @@ function startGame(e) {
       document.getElementById("button-breast_vore").style.display = 'none';
     }
   } else {
+    document.getElementById("action-part-breasts").style.display = 'none';
     document.getElementById("button-breast_vore").style.display = 'none';
     document.getElementById("button-breast_milk").style.display = 'none';
     document.getElementById("milk").style.display = 'none';
@@ -2004,7 +2008,24 @@ function startGame(e) {
 
   update();
 
+  document.getElementById("actions-body").style.display = 'flex';
   document.getElementById("stat-container").style.display = 'flex';
+}
+
+function actionTab(e) {
+  var name = e.target.id;
+
+  var target = "actions-" + name.replace(/action-part-/,"");
+
+  document.querySelectorAll(".action-part-button.active").forEach(function (element) {
+    element.classList.remove("active");
+  })
+  document.querySelectorAll(".action-tab").forEach(function (element) {
+    element.style.display = "none";
+  });
+
+  e.target.classList.add("active")
+  document.getElementById(target).style.display = "flex";
 }
 
 window.addEventListener('load', function(event) {
@@ -2024,6 +2045,10 @@ window.addEventListener('load', function(event) {
   victims["smothered"] = initVictims();
   victims["splooged"] = initVictims();
   victims["ground"] = initVictims();
+
+  document.querySelectorAll(".action-part-button").forEach(function (element) {
+    element.addEventListener("click",actionTab);
+  });
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-feed").addEventListener("click",feed);
