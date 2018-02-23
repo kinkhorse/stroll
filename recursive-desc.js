@@ -487,11 +487,10 @@ rules["anal-vore"].push({
 
 rules["anal-vore"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Bus", 1)
-    && hasOnly(container, ["Bus"]);
+    return hasExactly(container, "Train", 1)
+    && hasOnly(container, ["Train"]);
   }, "desc": function(container, macro, verbose) {
-    return "A speeding bus slams on its brakes as you abruptly sit - but it's too late to stop. A gasp flies from your lips as it penetrates your greedy ass, sinking halfway in and coming to a halt. \
-    You grunt and squeeze, causing its frame to creak and groan. Two fingers to the back are enough to get it moving again, and it slowly works inside. You shiver and moan, taking it in all the way. \
-    Your ass claims " + container.describe(verbose) + ".";
+    var cars = container.contents["Train"].contents["Train Car"].count;
+    return "Your massive fingers wrap around a train, yanking it from the rails with a tremendous screech of metal-on-metal. You squat down low, eyes rolling back in anticipation as you thrust the locomotive towards your massive ass - and then it hits home. A moan of pleasure shakes the earth, your ravenous pucker spread around the engine and sucking it in with a <i>squelch</i>. Powerful muscles squeeze and grab...and " + container.describe(verbose) + " swiftly vanishes into your bowels, every one of the " + cars + " cars a fresh shock of pleasure as they glide into your musky depths.";
   }
 });

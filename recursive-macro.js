@@ -659,15 +659,7 @@ function TrainCar(count = 1) {
 
   this.describe = function(verbose = true) {
     if (verbose) {
-      if (this.count <= 3) {
-        list = [];
-        for (var i = 0; i < this.count; i++) {
-          list.push(this.describeOne(this.count < 2));
-        }
-        return merge_things(list) + " with " + describe_all(this.contents) + " inside";
-      } else {
-        return this.count + " train cars with " + describe_all(this.contents) + " inside";
-      }
+      return (this.count > 1 ? this.count + " train cars" : "a train car") + " with " + describe_all(this.contents) + " inside";
     } else {
       return (this.count > 1 ? this.count + " train cars" : "a train car");
     }
