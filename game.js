@@ -287,9 +287,9 @@ var macro =
       this.fillCum(this);
     if (this.femaleParts)
       this.fillFemcum(this);
-    if (this.hasBreasts)
+    if (this.lactationEnabled)
       this.fillBreasts(this);
-    if (this.maleParts || this.femaleParts) {
+    if (this.arousalEnabled) {
       this.quenchExcess(this);
     }
   },
@@ -369,6 +369,7 @@ var macro =
 
       if (!this.orgasm) {
         this.orgasm = true;
+        update(["You shudder as ecstasy races up your spine",newline]);
         if (this.maleParts) {
           this.maleOrgasm(this);
         }
@@ -1763,6 +1764,7 @@ function startGame(e) {
     document.getElementById("button-cock_vore").style.display = 'none';
     document.getElementById("button-ball_smother").style.display = 'none';
     document.getElementById("cum").style.display = 'none';
+    document.getElementById("cumPercent").style.display = 'none';
     document.querySelector("#part-balls+label").style.display = 'none';
     document.querySelector("#part-dick+label").style.display = 'none';
   }
@@ -1772,6 +1774,7 @@ function startGame(e) {
   } else {
     document.getElementById("button-unbirth").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
+    document.getElementById("femcumPercent").style.display = 'none';
     document.querySelector("#part-vagina+label").style.display = 'none';
   }
 
@@ -1781,9 +1784,13 @@ function startGame(e) {
       victimTypes = victimTypes.concat(["flooded"]);
     } else {
       document.getElementById("button-breast_milk").style.display = 'none';
+      document.getElementById("milk").style.display = 'none';
+      document.getElementById("milkPercent").style.display = 'none';
     }
   } else {
     document.getElementById("button-breast_milk").style.display = 'none';
+    document.getElementById("milk").style.display = 'none';
+    document.getElementById("milkPercent").style.display = 'none';
     document.getElementById("button-breast_crush").style.display = 'none';
     document.querySelector("#part-breasts+label").style.display = 'none';
   }
