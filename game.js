@@ -134,6 +134,15 @@ var macro =
     return this.vaginaArea * this.baseFemcumRatio * this.femcumScale * (1 + this.edge) + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
   },
 
+  hasBreasts: true,
+  lactationEnabled: true,
+  lactationScale: 1,
+  lactationFactor: 0.25,
+
+  get lactationVolume() {
+    return this.milkStorage.limit * this.lactationFactor;
+  },
+
   "baseBreastDiameter": 0.1,
   "breastScale": 1,
   "breastDensity": 1000,
@@ -270,10 +279,14 @@ var macro =
     this.balls.owner = this;
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
+    this.milkStorage.owner = this;
+
     if (this.maleParts)
-      this.fillCum(this)
+      this.fillCum(this);
     if (this.femaleParts)
-      this.fillFemcum(this)
+      this.fillFemcum(this);
+    if (this.hasBreasts)
+      this.fillBreasts(this);
     if (this.maleParts || this.femaleParts) {
       this.quenchExcess(this);
     }
@@ -298,6 +311,14 @@ var macro =
     update();
   },
 
+  "fillBreasts": function(self) {
+    self.milkStorage.amount += self.lactationScale * self.milkStorage.limit / 1200;
+    if (self.milkStorage.amount > self.milkStorage.limit)
+      self.milkStorage.amount = self.milkStorage.limit;
+    setTimeout(function () { self.fillBreasts(self) }, 100);
+    update();
+  },
+
   "cumStorage": {
     "amount": 0,
     get limit() {
@@ -311,6 +332,14 @@ var macro =
       return this.owner.vaginaVolume;
     }
   },
+
+  "milkStorage": {
+    "amount": 0,
+    get limit() {
+      return this.owner.breastVolume * 2;
+    }
+  },
+
   "orgasm": false,
   "afterglow": false,
 
@@ -461,6 +490,8 @@ var macro =
 
       line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs."
       result.push(line);
+    }
+    if (this.hasBreasts) {
       line = "You have two " + length(macro.breastDiameter, unit, true) + "-wide breasts that weigh " + mass(macro.breastMass, unit) + " apiece.";
       result.push(line);
     }
@@ -996,6 +1027,50 @@ function breast_crush()
 
   updateVictims("breasts",prey);
   update([sound,line,linesummary,newline]);
+
+  if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
+    var amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
+    milk_breasts(null, amount);
+  }
+}
+
+function milk_breasts(e,vol)
+{
+  if (vol == undefined) {
+    var vol = Math.min(macro.lactationVolume, macro.milkStorage.amount);
+  }
+
+  macro.milkStorage.amount -= vol;
+
+  var area = Math.pow(vol, 2/3);
+
+  var prey = getPrey(biome, area);
+  var line = describe("breast-milk", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Dribble.";
+
+  if (people < 3) {
+    sound = "Dribble.";
+  } else if (people < 10) {
+    sound = "Splash.";
+  } else if (people < 50) {
+    sound = "Splash!";
+  } else if (people < 500) {
+    sound = "SPLOOSH!";
+  } else if (people < 5000) {
+    sound = "SPLOOOOOOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("flooded",prey);
+  update([sound,line,linesummary,newline]);
 }
 
 function unbirth()
@@ -1370,7 +1445,8 @@ function update(lines = [])
   document.getElementById("cumPercent").innerHTML = Math.round(macro.cumStorage.amount / macro.cumStorage.limit * 100) + "%";
   document.getElementById("femcum").innerHTML = "Femcum: " + transformNumbers(volume(macro.femcumStorage.amount,unit,false));
   document.getElementById("femcumPercent").innerHTML = Math.round(macro.femcumStorage.amount / macro.femcumStorage.limit * 100) + "%";
-
+  document.getElementById("milk").innerHTML = "Milk: " + transformNumbers(volume(macro.milkStorage.amount,unit,false));
+  document.getElementById("milkPercent").innerHTML = Math.round(macro.milkStorage.amount / macro.milkStorage.limit * 100) + "%";
 
   for (var type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -1687,13 +1763,24 @@ function startGame(e) {
   }
 
   if (macro.femaleParts) {
-    victimTypes = victimTypes.concat(["breasts"],["womb"]);
+    victimTypes = victimTypes.concat(["womb"]);
   } else {
-    document.getElementById("button-breast_crush").style.display = 'none';
     document.getElementById("button-unbirth").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
-    document.querySelector("#part-breasts+label").style.display = 'none';
     document.querySelector("#part-vagina+label").style.display = 'none';
+  }
+
+  if (macro.hasBreasts) {
+    victimTypes = victimTypes.concat(["breasts"]);
+    if (macro.lactationEnabled) {
+      victimTypes = victimTypes.concat(["flooded"]);
+    } else {
+      document.getElementById("button-breast_milk").style.display = 'none';
+    }
+  } else {
+    document.getElementById("button-breast_milk").style.display = 'none';
+    document.getElementById("button-breast_crush").style.display = 'none';
+    document.querySelector("#part-breasts+label").style.display = 'none';
   }
 
   if (macro.maleParts || macro.femaleParts) {
@@ -1765,6 +1852,7 @@ window.addEventListener('load', function(event) {
   victims["digested"] = initVictims();
   victims["stomach"] = initVictims();
   victims["breasts"] = initVictims();
+  victims["flooded"] = initVictims();
   victims["womb"] = initVictims();
   victims["cock"] = initVictims();
   victims["balls"] = initVictims();
@@ -1779,6 +1867,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
   document.getElementById("button-tail_vore").addEventListener("click",tail_vore);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
+  document.getElementById("button-breast_milk").addEventListener("click",milk_breasts);
   document.getElementById("button-unbirth").addEventListener("click",unbirth);
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
   document.getElementById("button-cock_vore").addEventListener("click",cock_vore);

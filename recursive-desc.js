@@ -8,6 +8,7 @@ rules["tail-slap"] = [];
 rules["tail-vore"] = [];
 rules["ass-crush"] = [];
 rules["breast-crush"] = [];
+rules["breast-milk"] = [];
 rules["unbirth"] = [];
 rules["cock-vore"] = [];
 rules["cockslap"] = [];
@@ -118,6 +119,7 @@ function describeDefault(action, container, macro, verbose=true) {
     case "tail-slap": return defaultTailSlap(container, macro, verbose);
     case "tail-vore": return defaultTailVore(container, macro, verbose);
     case "breast-crush": return defaultBreastCrush(container, macro, verbose);
+    case "breast-milk": return defaultBreastMilk(container, macro, verbose);
     case "unbirth": return defaultUnbirth(container, macro, verbose);
     case "cock-vore": return defaultCockVore(container, macro, verbose);
     case "cockslap": return defaultCockslap(container, macro, verbose);
@@ -184,6 +186,13 @@ function defaultBreastCrush(container, macro, verbose) {
     return "Your heavy breasts obliterate " + container.describe(verbose) + ". ";
   else
     return "You smoosh " + container.describe(verbose) + " with your breasts.";
+}
+
+function defaultBreastMilk(container, macro, verbose) {
+  if (isFatal(macro))
+    return "You squeeze your breasts, coaxing out $VOLUME of warm, creamy milk that floods " + container.describe(verbose) + " in an unstoppable wave of white.";
+  else
+    return "You squeeze your breasts, coaxing out $VOLUME of warm, creamy milk that floods " + container.describe(verbose) + ".";
 }
 
 function defaultUnbirth(container, macro, verbose) {
