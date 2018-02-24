@@ -2,6 +2,27 @@
 
 /*jshint browser: true*/
 
+// do da dark mode
+
+let dark = false;
+
+function toggleDarkMode(e) {
+  dark = !dark;
+  setDarkMode(dark);
+}
+
+function setDarkMode(darkMode) {
+  dark = darkMode;
+  window.localStorage.setItem("dark-mode",dark);
+  if (dark) {
+    document.querySelector("body").classList.remove("light");
+    document.querySelector("body").classList.add("dark");
+  } else {
+    document.querySelector("body").classList.remove("dark");
+    document.querySelector("body").classList.add("light");
+  }
+}
+
 let started = false;
 
 let strolling = false;
@@ -2434,6 +2455,14 @@ function actionTab(e) {
 
 window.addEventListener('load', function(event) {
 
+  (function() {
+    let storage = window.localStorage;
+
+    if (storage.getItem("dark-mode") != null) {
+      setDarkMode(storage.getItem("dark-mode") === "true");
+    }
+  }());
+
   victims["stomped"] = initVictims();
   victims["tailslapped"] = initVictims();
   victims["tailmaw'd"] = initVictims();
@@ -2493,6 +2522,9 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-arousal").addEventListener("click",toggle_arousal);
   document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
+
+  document.getElementById("button-dark-mode-options").addEventListener("click",toggleDarkMode);
+  document.getElementById("button-dark-mode-game").addEventListener("click",toggleDarkMode);
 
   document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
   document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });

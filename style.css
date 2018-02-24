@@ -1,7 +1,29 @@
 
-body {
+.light {
+  color: #000;
   background: #eee;
   font-family: Arial;
+}
+
+.dark {
+  color: #eee;
+  background: #111;
+  font-family: Arial;
+}
+
+
+body.dark > div > div > div > form input {
+  color: #eee;
+  background: #444;
+}
+
+body.dark button {
+  color: #eee;
+  background: #111;
+}
+
+body.dark div {
+  background: #111;
 }
 
 .game-area {
@@ -26,10 +48,18 @@ body {
   display:none;
 }
 
-#log {
+body.light #log {
   height: 900px;
   overflow: auto;
+  color: #000;
   background-color: #fff;
+}
+
+body.dark #log {
+  height: 900px;
+  overflow: auto;
+  color: #eee;
+  background-color: #111;
 }
 
 .stat-header-self {

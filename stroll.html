@@ -9,7 +9,7 @@
     <script src="recursive-desc.js"></script>
     <script src="game.js"></script>
   </head>
-  <body>
+  <body class="light">
     <div class="game-area">
       <div class="sidebar" id="stat-container">
         <div class="stat-header-self" id="stats-self">
@@ -68,11 +68,12 @@
           <button class="stat-button" id="button-units">Units: Metric</button>
           <button class="stat-button" id="button-verbose">Verbose</button>
           <button class="stat-button" id="button-grow-lots">SUPER BIG</button>
+          <button class="stat-button" id="button-dark-mode-game">Toggle Dark Mode</button>
         </div>
       </div>
       <div id="log-area">
         <div id="log">
-          <div>Welcome to Stroll 0.5.1</div>
+          <div>Welcome to Stroll 0.5.2</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div>It's a nice day for a walk</div>
@@ -128,11 +129,12 @@
 
 
       <div class="option-container" id="option-panel">
-        <p>Welcome to Stroll 0.5.1</p>
+        <p>Welcome to Stroll 0.5.2</p>
         <p><b>This game features 18+ content</b></p>
         <a href="https://chemicalcrux.org/stroll">Changelog</a>
         <br>
         <div id="custom-species">
+        <button class="stat-button" id="button-dark-mode-options">Toggle Dark Mode</button>
           <p>Build your Character (leave blank for defaults)</p>
           <form id="custom-species-form" name="custom-species-form">
             <ul class="flex-outer">
@@ -292,20 +294,22 @@
                     <label for="baseBreastDiameter">Breast diameter</label>
                     <input type="number" name="baseBreastDiameter" placeholder="0.1"/><br>
                   </li>
-                  <ul class="flex-outer">
-                    Lactation:
-                    <input type="checkbox" checked="true" name="lactationEnabled"/><br>
-                    <div class="reveal-if-active">
-                      <li>
-                        <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
-                        <input type="number" name="lactationFactor" placeholder="0.25"/><br>
-                      </li>
-                      <li>
-                        <label for="lactationScale">Milk production factor</label>
-                        <input type="number" name="lactationScale" placeholder="1"/><br>
-                      </li>
-                    </div>
-                  </ul>
+                  <div>
+                    <ul class="flex-outer">
+                      Lactation:
+                      <input type="checkbox" checked="true" name="lactationEnabled"/><br>
+                      <div class="reveal-if-active">
+                        <li>
+                          <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
+                          <input type="number" name="lactationFactor" placeholder="0.25"/><br>
+                        </li>
+                        <li>
+                          <label for="lactationScale">Milk production factor</label>
+                          <input type="number" name="lactationScale" placeholder="1"/><br>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
                   <li>
                     <label for="breastVore">Breast vore</label>
                     <input type="checkbox" checked="true" name="breastVore"/><br>
