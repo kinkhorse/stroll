@@ -20,6 +20,8 @@ rules["male-orgasm"] = [];
 rules["female-spurt"] = [];
 rules["female-orgasm"] = [];
 rules["grind"] = [];
+rules["pouch-stuff"] = [];
+rules["pouch-eat"] = [];
 
 rules["stomach"] = [];
 rules["balls"] = [];
@@ -134,7 +136,8 @@ function describeDefault(action, container, macro, verbose=true) {
     case "female-spurt": return defaultFemaleSpurt(container, macro, verbose);
     case "female-orgasm": return defaultFemaleOrgasm(container, macro, verbose);
     case "grind": return defaultGrind(container, macro, verbose);
-    case "stomach": return defaultStomach(container, macro, verbose);
+    case "pouch-stuff": return defaultPouchStuff(container, macro, verbose);
+    case "pouch-eat": return defaultPouchEat(container, macro, verbose);
     case "bowels": return defaultBowels(container, macro, verbose);
     case "womb": return defaultWomb(container, macro, verbose);
     case "balls": return defaultBalls(container, macro, verbose);
@@ -275,6 +278,14 @@ function defaultGrind(container, macro, verbose) {
   } else {
     return "You grind your hips against " + container.describe(verbose) + mid + end;
   }
+}
+
+function defaultPouchStuff(container, macro, verbose) {
+  return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your pouch.";
+}
+
+function defaultPouchEat(container, macro, verbose) {
+  return "You snatch " + container.describe(verbose) + " from your pouch and shove " + (container.count > 1 ? "them" : "it") + " down your gullet!";
 }
 
 function defaultStomach(container, macro, verbose) {

@@ -356,7 +356,10 @@ function Container(contents = []) {
 
   copy_defaults(this,new DefaultEntity());
 
-  this.count = 0;
+  if (Number.isInteger(contents))
+    this.count = contents;
+  else
+    this.count = 0;
 
   this.contents = {}
 

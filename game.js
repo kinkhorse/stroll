@@ -297,6 +297,23 @@ var macro =
     "maxDigest" : 1
   },
 
+  // holding spots
+
+  hasPouch: true,
+  "pouch": {
+    "name": "pouch",
+    "container": new Container(),
+    get description() {
+      if (this.container.count == 0)
+        return "Your pouch is empty";
+      else
+        return "Your pouch contains " + this.container.describe(false);
+    },
+    "add": function(victims) {
+      this.container = this.container.merge(victims);
+    }
+  },
+
   "init": function() {
     this.stomach.owner = this;
     this.bowels.owner = this;
@@ -1055,7 +1072,7 @@ function sit()
 {
   if (macro.analVore)
     anal_vore();
-    
+
   var area = macro.assArea;
   var crushed = getPrey(biome,area);
 
@@ -1088,7 +1105,6 @@ function sit()
   updateVictims("stomped",crushed);
 
   update([sound,line,linesummary,newline]);
-
 }
 
 function breast_crush()
@@ -1558,6 +1574,76 @@ function tail_vore()
   update([sound,line,linesummary,newline]);
 }
 
+function pouch_stuff()
+{
+  var area = macro.handArea;
+  var prey = getPrey(biome, area);
+  var line = describe("pouch-stuff", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Slp.";
+  } else if (people < 10) {
+    sound = "Squeeze.";
+  } else if (people < 50) {
+    sound = "Thump!";
+  } else if (people < 500) {
+    sound = "THOOOMP!";
+  } else if (people < 5000) {
+    sound = "THOOOOOOOMP!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  macro.arouse(5);
+
+  macro.pouch.add(prey);
+
+  updateVictims("pouched",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function pouch_eat()
+{
+  var prey = macro.pouch.container;
+
+  var line = describe("pouch-eat", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+  var sound = "";
+  if (people == 0) {
+    sound = "";
+  } else if (people < 3) {
+    sound = "Ulp.";
+  } else if (people < 10) {
+    sound = "Gulp.";
+  } else if (people < 50) {
+    sound = "Glrrp.";
+  } else if (people < 500) {
+    sound = "Glrrrpkh!";
+  } else if (people < 5000) {
+    sound = "GLRRKPKH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.stomach.feed(prey);
+
+  macro.arouse(5);
+
+  updateVictims("stomach",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -1950,6 +2036,14 @@ function startGame(e) {
     victimTypes.push("splooged");
   }
 
+  if (macro.hasPouch) {
+    victimTypes.push("pouched");
+  } else {
+    document.getElementById("action-part-misc").style.display = 'none';
+    document.getElementById("button-pouch_stuff").style.display = 'none';
+    document.getElementById("button-pouch_eat").style.display = 'none';
+  }
+
   if (macro.brutality < 1) {
     document.getElementById("button-chew").style.display = 'none';
   }
@@ -2043,6 +2137,7 @@ window.addEventListener('load', function(event) {
   victims["smothered"] = initVictims();
   victims["splooged"] = initVictims();
   victims["ground"] = initVictims();
+  victims["pouched"] = initVictims();
 
   document.querySelectorAll(".action-part-button").forEach(function (element) {
     element.addEventListener("click",actionTab);
@@ -2063,6 +2158,8 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
   document.getElementById("button-ball_smother").addEventListener("click",ball_smother);
   document.getElementById("button-grind").addEventListener("click",grind);
+  document.getElementById("button-pouch_stuff").addEventListener("click",pouch_stuff);
+  document.getElementById("button-pouch_eat").addEventListener("click",pouch_eat);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);
