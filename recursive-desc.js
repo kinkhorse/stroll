@@ -1,4 +1,6 @@
-rules = {};
+'use strict';
+
+var rules = {};
 
 rules["eat"] = [];
 rules["chew"] = [];
@@ -105,7 +107,7 @@ function nothingLarger(container, thing) {
 }
 
 function describe(action, container, macro, verbose=true) {
-  options = [];
+  var options = [];
 
   for (var i = 0; i < rules[action].length; i++) {
     if(rules[action][i].test(container,macro)) {

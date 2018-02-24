@@ -1,3 +1,7 @@
+"use strict";
+
+var started = false;
+
 var strolling = false;
 
 var maxStomachDigest = 10;
@@ -13,7 +17,7 @@ var biome = "suburb";
 
 var newline = "&nbsp;";
 
-victims = {};
+var victims = {};
 
 var humanMode = true;
 
@@ -72,7 +76,7 @@ var macro =
   "dickDensity": 1000,
   "dickScale": 1,
   get dickLength() {
-    factor = 1;
+    var factor = 1;
     if (!this.arousalEnabled || this.arousal < 25) {
       factor = 0.5;
     } else if (this.arousal < 75) {
@@ -82,7 +86,7 @@ var macro =
     return this.scaling(this.baseDickLength * this.dickScale * factor, this.scale, 1);
   },
   get dickDiameter() {
-    factor = 1;
+    var factor = 1;
     if (!this.arousalEnabled || this.arousal < 25) {
       factor = 0.5;
     } else if (this.arousal < 75) {
@@ -107,7 +111,7 @@ var macro =
   "ballDensity": 1000,
   "ballScale": 1,
   get ballDiameter() { return this.scaling(this.baseBallDiameter * this.ballScale, this.scale, 1); },
-  get ballArea() { return 2 * Math.PI * Math.pow(this.ballDiameter/2, 2) },
+  get ballArea() { return 2 * Math.PI * Math.pow(this.ballDiameter/2, 2); },
   get ballVolume() {
     var radius = this.ballDiameter / 2;
     return 4/3 * Math.PI * Math.pow(radius,3);
@@ -129,8 +133,8 @@ var macro =
 
   get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
-  get vaginaArea() { return this.vaginaLength * this.vaginaWidth },
-  get vaginaVolume() { return this.vaginaArea * this.vaginaWidth },
+  get vaginaArea() { return this.vaginaLength * this.vaginaWidth; },
+  get vaginaVolume() { return this.vaginaArea * this.vaginaWidth; },
   "baseFemcumRatio": 1,
   "femcumScale": 1,
   get femcumVolume() {
@@ -202,7 +206,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self); }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
@@ -615,7 +619,7 @@ var macro =
 
 
   get describeDick() {
-    state = "";
+    var state = "";
     if (!this.arousalEnabled) {
       state = "limp";
     } else if (this.orgasm) {
@@ -637,7 +641,7 @@ var macro =
   },
 
   get describeVagina() {
-    state = "";
+    var state = "";
     if (!this.arousalEnabled) {
       state = "unassuming";
     } else if (this.orgasm) {
@@ -850,7 +854,7 @@ function getOnePrey(biome,area)
   });
 
   for (var i=0; i<potAreas.length; i++) {
-    x = potAreas[i];
+    var x = potAreas[i];
     if (x[1] < area) {
       return new Container([new things[x[0]](1)]);
     }
@@ -1087,8 +1091,8 @@ function anal_vore()
   var line = describe("anal-vore", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
-  people = get_living_prey(prey.sum());
-  sound = "Shlp";
+  var people = get_living_prey(prey.sum());
+  var sound = "Shlp";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1375,7 +1379,7 @@ function breast_vore()
 function milk_breasts(e,vol)
 {
   if (vol == undefined) {
-    var vol = Math.min(macro.lactationVolume, macro.milkStorage.amount);
+    vol = Math.min(macro.lactationVolume, macro.milkStorage.amount);
   }
 
   macro.milkStorage.amount -= vol;
@@ -1383,7 +1387,7 @@ function milk_breasts(e,vol)
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
-  var line = describe("breast-milk", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var line = describe("breast-milk", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1417,7 +1421,7 @@ function unbirth()
 {
   var area = macro.vaginaArea;
   var prey = getPrey(biome, area);
-  var line = describe("unbirth", prey, macro, verbose)
+  var line = describe("unbirth", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -1454,7 +1458,7 @@ function sheath_stuff()
 {
   var area = Math.min(macro.handArea, macro.dickGirth*3);
   var prey = getPrey(biome, area);
-  var line = describe("sheath-stuff", prey, macro, verbose)
+  var line = describe("sheath-stuff", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -1486,7 +1490,7 @@ function sheath_stuff()
 function sheath_squeeze()
 {
   var prey = macro.sheath.container;
-  var line = describe("sheath-squeeze", prey, macro, verbose)
+  var line = describe("sheath-squeeze", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -1516,7 +1520,7 @@ function sheath_crush()
 {
   var prey = macro.sheath.container;
   macro.sheath.container = new Container();
-  var line = describe("sheath-crush", prey, macro, verbose)
+  var line = describe("sheath-crush", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1546,7 +1550,7 @@ function sheath_absorb()
 {
   var prey = macro.sheath.container;
   macro.sheath.container = new Container();
-  var line = describe("sheath-absorb", prey, macro, verbose)
+  var line = describe("sheath-absorb", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1577,7 +1581,7 @@ function cockslap()
 {
   var area = macro.dickArea;
   var prey = getPrey(biome, area);
-  var line = describe("cockslap", prey, macro, verbose)
+  var line = describe("cockslap", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1612,7 +1616,7 @@ function cock_vore()
 {
   var area = macro.dickGirth;
   var prey = getPrey(biome, area);
-  var line = describe("cock-vore", prey, macro, verbose)
+  var line = describe("cock-vore", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -1648,7 +1652,7 @@ function ball_smother()
 {
   var area = macro.ballArea * 2;
   var prey = getPrey(biome, area);
-  var line = describe("ball-smother", prey, macro, verbose)
+  var line = describe("ball-smother", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1683,7 +1687,7 @@ function male_spurt(vol)
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
-  var line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1716,7 +1720,7 @@ function male_orgasm(vol)
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
-  var line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1749,7 +1753,7 @@ function female_spurt(vol)
   var area = Math.pow(vol, 2/3);
 
   var prey = getPrey(biome, area);
-  var line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false))
+  var line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1814,7 +1818,7 @@ function tail_slap()
 {
   var area = macro.tailArea * macro.tailCount;
   var prey = getPrey(biome, area);
-  var line = describe("tail-slap", prey, macro, verbose)
+  var line = describe("tail-slap", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
   var people = get_living_prey(prey.sum());
@@ -1848,7 +1852,7 @@ function tail_vore()
 {
   var area = macro.tailGirth * macro.tailCount;
   var prey = getPrey(biome, area);
-  var line = describe("tail-vore", prey, macro, verbose)
+  var line = describe("tail-vore", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -1919,7 +1923,7 @@ function pouch_eat()
   var prey = macro.pouch.container;
   macro.pouch.container = new Container();
 
-  var line = describe("pouch-eat", prey, macro, verbose)
+  var line = describe("pouch-eat", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), false);
 
   var people = get_living_prey(prey.sum());
@@ -2013,22 +2017,22 @@ function pick_move()
 }
 
 function grow_pick(times) {
-  if (document.getElementById("part-body").checked == true) {
+  if (document.getElementById("part-body").checked === true) {
     grow(times);
   }
-  else if (document.getElementById("part-ass").checked == true) {
+  else if (document.getElementById("part-ass").checked === true) {
     grow_ass(times);
   }
-  else if (document.getElementById("part-dick").checked == true) {
+  else if (document.getElementById("part-dick").checked === true) {
     grow_dick(times);
   }
-  else if (document.getElementById("part-balls").checked == true) {
+  else if (document.getElementById("part-balls").checked === true) {
     grow_balls(times);
   }
-  else if (document.getElementById("part-breasts").checked == true) {
+  else if (document.getElementById("part-breasts").checked === true) {
     grow_breasts(times);
   }
-  else if (document.getElementById("part-vagina").checked == true) {
+  else if (document.getElementById("part-vagina").checked === true) {
     grow_vagina(times);
   }
 }
@@ -2189,11 +2193,9 @@ function preset(name) {
 }
 
 function saveSettings() {
-  storage = window.localStorage;
-
-  settings = {};
-
-  form = document.forms.namedItem("custom-species-form");
+  var storage = window.localStorage;
+  var settings = {};
+  var form = document.forms.namedItem("custom-species-form");
 
   for (var i=0; i<form.length; i++) {
     if (form[i].value != "") {
@@ -2218,10 +2220,10 @@ function loadSettings() {
   if (window.localStorage.getItem('settings') == null)
     return;
 
-  storage = window.localStorage;
+  var storage = window.localStorage;
 
-  settings = JSON.parse(storage.getItem('settings'));
-  form = document.forms.namedItem("custom-species-form");
+  var settings = JSON.parse(storage.getItem('settings'));
+  var form = document.forms.namedItem("custom-species-form");
 
   for (var i=0; i<form.length; i++) {
     if (settings[form[i].name] != undefined) {
@@ -2240,8 +2242,12 @@ function loadSettings() {
 }
 
 function startGame(e) {
+  if (started)
+    return;
 
-  form = document.forms.namedItem("custom-species-form");
+  started = true;
+  
+  var form = document.forms.namedItem("custom-species-form");
 
   for (var i=0; i<form.length; i++) {
     if (form[i].value != "") {
@@ -2274,7 +2280,7 @@ function startGame(e) {
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
-  victimTypes = ["stomped","digested","stomach","ground"];
+  var victimTypes = ["stomped","digested","stomach","ground"];
 
   if (macro.analVore) {
     victimTypes = victimTypes.concat(["bowels"]);
