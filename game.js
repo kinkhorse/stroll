@@ -413,7 +413,7 @@ let macro =
 
   "fillBreasts": function(self) {
     if (self.milkStorage.amount > self.milkStorage.limit) {
-      milk_breasts(null, self.milkStorage.amount - self.milkStorage.limit);
+      breast_milk(null, self.milkStorage.amount - self.milkStorage.limit);
     }
     self.milkStorage.amount += self.lactationScale * self.milkStorage.limit / 1200;
 
@@ -1354,7 +1354,7 @@ function breast_crush()
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
     let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
-    milk_breasts(null, amount);
+    breast_milk(null, amount);
   }
 }
 
@@ -1396,11 +1396,11 @@ function breast_vore()
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
     let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
-    milk_breasts(null, amount);
+    breast_milk(null, amount);
   }
 }
 
-function milk_breasts(e,vol)
+function breast_milk(e,vol)
 {
   if (vol == undefined) {
     vol = Math.min(macro.lactationVolume, macro.milkStorage.amount);
@@ -2453,6 +2453,16 @@ function actionTab(e) {
   document.getElementById(target).style.display = "flex";
 }
 
+function registerActions() {
+  let buttons = document.querySelectorAll("[id^='button-action']");
+
+  buttons.forEach( function(button) {
+    let name = button.id;
+    name = name.replace(/button-action-/,"");
+    button.addEventListener("click", window[name]);
+  });
+}
+
 window.addEventListener('load', function(event) {
 
   (function() {
@@ -2491,30 +2501,9 @@ window.addEventListener('load', function(event) {
     element.addEventListener("click",actionTab);
   });
 
-  document.getElementById("button-look").addEventListener("click",look);
-  document.getElementById("button-feed").addEventListener("click",feed);
-  document.getElementById("button-chew").addEventListener("click",chew);
-  document.getElementById("button-stomp").addEventListener("click",stomp);
-  document.getElementById("button-sit").addEventListener("click",sit);
-  document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
-  document.getElementById("button-tail_vore").addEventListener("click",tail_vore);
-  document.getElementById("button-cleavage_stuff").addEventListener("click",cleavage_stuff);
-  document.getElementById("button-cleavage_crush").addEventListener("click",cleavage_crush);
-  document.getElementById("button-cleavage_drop").addEventListener("click",cleavage_drop);
-  document.getElementById("button-cleavage_absorb").addEventListener("click",cleavage_absorb);
-  document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
-  document.getElementById("button-breast_vore").addEventListener("click",breast_vore);
-  document.getElementById("button-breast_milk").addEventListener("click",milk_breasts);
-  document.getElementById("button-unbirth").addEventListener("click",unbirth);
-  document.getElementById("button-sheath_stuff").addEventListener("click",sheath_stuff);
-  document.getElementById("button-sheath_squeeze").addEventListener("click",sheath_squeeze);
-  document.getElementById("button-sheath_absorb").addEventListener("click",sheath_absorb);
-  document.getElementById("button-cockslap").addEventListener("click",cockslap);
-  document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
-  document.getElementById("button-ball_smother").addEventListener("click",ball_smother);
-  document.getElementById("button-grind").addEventListener("click",grind);
-  document.getElementById("button-pouch_stuff").addEventListener("click",pouch_stuff);
-  document.getElementById("button-pouch_eat").addEventListener("click",pouch_eat);
+  registerActions();
+
+  document.getElementById("button-stroll").addEventListener("look",look);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);

@@ -1,8 +1,22 @@
 'use strict';
 
-var rules = {};
+/*jshint browser: true*/
 
-var actions = ["eat","chew","stomp","kick","anal-vore","tail-slap","tail-vore","ass-crush",
+var rules = {};
+var defaults= {};
+
+function getDefault(name) {
+  let tokens = name.split("-");
+  for (let i=0; i<tokens.length; i++) {
+    tokens[i] = tokens[i].charAt(0).toUpperCase() + tokens[i].slice(1);
+  }
+
+  let funcName = "default" + tokens.join("");
+
+  return window[funcName];
+}
+
+var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","tail-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
@@ -93,46 +107,7 @@ function describe(action, container, macro, verbose=true) {
     return options[choice](container, macro, verbose);
   }
   else {
-    return describeDefault(action, container, macro, verbose);
-  }
-}
-
-function describeDefault(action, container, macro, verbose=true) {
-  switch(action) {
-    case "eat": return defaultEat(container, macro, verbose);
-    case "chew": return defaultChew(container, macro, verbose);
-    case "stomp": return defaultStomp(container, macro, verbose);
-    case "kick": return defaultKick(container, macro, verbose);
-    case "anal-vore": return defaultAnalVore(container, macro, verbose);
-    case "ass-crush": return defaultAssCrush(container, macro, verbose);
-    case "tail-slap": return defaultTailSlap(container, macro, verbose);
-    case "tail-vore": return defaultTailVore(container, macro, verbose);
-    case "cleavage-stuff": return defaultCleavageStuff(container, macro, verbose);
-    case "cleavage-crush": return defaultCleavageCrush(container, macro, verbose);
-    case "cleavage-drop": return defaultCleavageDrop(container, macro, verbose);
-    case "cleavage-absorb": return defaultCleavageAbsorb(container, macro, verbose);
-    case "breast-crush": return defaultBreastCrush(container, macro, verbose);
-    case "breast-vore": return defaultBreastVore(container, macro, verbose);
-    case "breast-milk": return defaultBreastMilk(container, macro, verbose);
-    case "unbirth": return defaultUnbirth(container, macro, verbose);
-    case "sheath-stuff": return defaultSheathStuff(container, macro, verbose);
-    case "sheath-squeeze": return defaultSheathSqueeze(container, macro, verbose);
-    case "sheath-crush": return defaultSheathCrush(container, macro, verbose);
-    case "sheath-absorb": return defaultSheathAbsorb(container, macro, verbose);
-    case "cock-vore": return defaultCockVore(container, macro, verbose);
-    case "cockslap": return defaultCockslap(container, macro, verbose);
-    case "ball-smother": return defaultBallSmother(container, macro, verbose);
-    case "male-spurt": return defaultMaleSpurt(container, macro, verbose);
-    case "male-orgasm": return defaultMaleOrgasm(container, macro, verbose);
-    case "female-spurt": return defaultFemaleSpurt(container, macro, verbose);
-    case "female-orgasm": return defaultFemaleOrgasm(container, macro, verbose);
-    case "grind": return defaultGrind(container, macro, verbose);
-    case "pouch-stuff": return defaultPouchStuff(container, macro, verbose);
-    case "pouch-eat": return defaultPouchEat(container, macro, verbose);
-    case "bowels": return defaultBowels(container, macro, verbose);
-    case "womb": return defaultWomb(container, macro, verbose);
-    case "balls": return defaultBalls(container, macro, verbose);
-    case "breasts": return defaultBreasts(container, macro, verbose);
+    return getDefault(action)(container, macro, verbose);
   }
 }
 
@@ -203,13 +178,6 @@ function defaultCleavageCrush(container, macro, verbose) {
     return "You grasp your breasts and squish them together, smooshing " + container.describe(false) + ".";
 }
 
-function defaultCleavageAbsorb(container, macro, verbose) {
-  if (container.count == 0)
-    return defaultCleavageCrush(container, macro, verbose);
-  else
-    return "Your squeeze your breasts together, swiftly absorbing " + container.describe(false) + " into your chest.";
-}
-
 function defaultCleavageDrop(container, macro, verbose) {
   if (container.count == 0)
     return "You pull your breasts apart and give them a shake.";
@@ -217,6 +185,13 @@ function defaultCleavageDrop(container, macro, verbose) {
     return "You pull your breasts apart far enough for the " + container.describe(false) + " trapped within to fall out, tumbling to the ground and smashing to bits.";
   else
     return "You pull your breasts apart far enough for the " + container.describe(false) + " trapped within to fall out.";
+}
+
+function defaultCleavageAbsorb(container, macro, verbose) {
+  if (container.count == 0)
+    return defaultCleavageCrush(container, macro, verbose);
+  else
+    return "Your squeeze your breasts together, swiftly absorbing " + container.describe(false) + " into your chest.";
 }
 
 function defaultBreastCrush(container, macro, verbose) {
