@@ -314,6 +314,36 @@ var macro =
     }
   },
 
+  hasSheath: true,
+  "sheath": {
+    "name": "sheath",
+    "container": new Container(),
+    get description() {
+      if (this.container.count == 0)
+        return "Your sheath is empty";
+      else
+        return "Your sheath contains " + this.container.describe(false);
+    },
+    "add": function(victims) {
+      this.container = this.container.merge(victims);
+    }
+  },
+
+  hasCleavage: true,
+  "cleavage": {
+    "name": "cleavage",
+    "container": new Container(),
+    get description() {
+      if (this.container.count == 0)
+        return "Your breasts don't have anyone stuck in them";
+      else
+        return "Your cleavage contains " + this.container.describe(false);
+    },
+    "add": function(victims) {
+      this.container = this.container.merge(victims);
+    }
+  },
+
   "init": function() {
     this.stomach.owner = this;
     this.bowels.owner = this;
@@ -418,6 +448,8 @@ var macro =
         update(["You shudder as ecstasy races up your spine",newline]);
         if (this.maleParts) {
           this.maleOrgasm(this);
+          if (this.sheath.container.count > 0)
+            sheath_crush();
         }
         if (this.femaleParts) {
           this.femaleOrgasm(this);
@@ -1107,6 +1139,105 @@ function sit()
   update([sound,line,linesummary,newline]);
 }
 
+function cleavage_stuff()
+{
+  var area = macro.handArea;
+  var prey = getPrey(biome, area);
+  var line = describe("cleavage-stuff", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Smish!";
+  } else if (people < 500) {
+    sound = "SQUISH!";
+  } else if (people < 5000) {
+    sound = "SMISH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  macro.arouse(10);
+
+  macro.cleavage.add(prey);
+
+  updateVictims("cleavage",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function cleavage_crush()
+{
+  var prey = macro.cleavage.container;
+  var line = describe("cleavage-crush", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Smish!";
+  } else if (people < 500) {
+    sound = "SQUISH!";
+  } else if (people < 5000) {
+    sound = "SMISH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse((preyMass > 0 ? 20 : 10));
+
+  updateVictims("cleavagecrushed",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function cleavage_drop()
+{
+  var prey = macro.cleavage.container;
+  macro.cleavage.container = new Container();
+  var line = describe("cleavage-drop", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump.";
+  } else if (people < 10) {
+    sound = "Splat.";
+  } else if (people < 50) {
+    sound = "Thump!";
+  } else if (people < 500) {
+    sound = "THUMP!";
+  } else if (people < 5000) {
+    sound = "SPLAT!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse((preyMass > 0 ? 15 : 5));
+
+  updateVictims("cleavagedropped",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function breast_crush()
 {
   var area = macro.breastArea;
@@ -1263,6 +1394,98 @@ function unbirth()
   macro.arouse(20);
 
   updateVictims("womb",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function sheath_stuff()
+{
+  var area = Math.min(macro.handArea, macro.dickGirth*3);
+  var prey = getPrey(biome, area);
+  var line = describe("sheath-stuff", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  macro.sheath.add(prey);
+
+  macro.arouse(15);
+
+  updateVictims("sheath",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function sheath_squeeze()
+{
+  var prey = macro.sheath.container;
+  var line = describe("sheath-squeeze", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), false);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  macro.arouse(15);
+
+  update([sound,line,linesummary,newline]);
+}
+
+function sheath_crush()
+{
+  var prey = macro.sheath.container;
+  macro.sheath.container = new Container();
+  var line = describe("sheath-crush", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  macro.arouse(45);
+
   update([sound,line,linesummary,newline]);
 }
 
@@ -1610,6 +1833,7 @@ function pouch_stuff()
 function pouch_eat()
 {
   var prey = macro.pouch.container;
+  macro.pouch.container = new Container();
 
   var line = describe("pouch-eat", prey, macro, verbose)
   var linesummary = summarize(prey.sum(), false);
@@ -1986,7 +2210,7 @@ function startGame(e) {
   }
 
   if (macro.maleParts) {
-    victimTypes = victimTypes.concat(["cock","balls"]);
+    victimTypes = victimTypes.concat(["cock","balls","sheath"]);
   } else {
     document.getElementById("action-part-dick").style.display = 'none';
     document.getElementById("button-cockslap").style.display = 'none';
@@ -2009,7 +2233,7 @@ function startGame(e) {
   }
 
   if (macro.hasBreasts) {
-    victimTypes = victimTypes.concat(["breasts"]);
+    victimTypes = victimTypes.concat(["breasts","cleavage","cleavagecrushed","cleavagedropped"]);
     if (macro.lactationEnabled) {
       victimTypes = victimTypes.concat(["flooded"]);
     } else {
@@ -2128,10 +2352,15 @@ window.addEventListener('load', function(event) {
   victims["bowels"] = initVictims();
   victims["digested"] = initVictims();
   victims["stomach"] = initVictims();
+  victims["cleavage"] = initVictims();
+  victims["cleavagecrushed"] = initVictims();
+  victims["cleavagedropped"] = initVictims();
   victims["breasts"] = initVictims();
   victims["breastvored"] = initVictims();
   victims["flooded"] = initVictims();
   victims["womb"] = initVictims();
+  victims["sheath"] = initVictims();
+  victims["sheathcrushed"] = initVictims();
   victims["cock"] = initVictims();
   victims["balls"] = initVictims();
   victims["smothered"] = initVictims();
@@ -2150,10 +2379,15 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-sit").addEventListener("click",sit);
   document.getElementById("button-tail_slap").addEventListener("click",tail_slap);
   document.getElementById("button-tail_vore").addEventListener("click",tail_vore);
+  document.getElementById("button-cleavage_stuff").addEventListener("click",cleavage_stuff);
+  document.getElementById("button-cleavage_crush").addEventListener("click",cleavage_crush);
+  document.getElementById("button-cleavage_drop").addEventListener("click",cleavage_drop);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
   document.getElementById("button-breast_vore").addEventListener("click",breast_vore);
   document.getElementById("button-breast_milk").addEventListener("click",milk_breasts);
   document.getElementById("button-unbirth").addEventListener("click",unbirth);
+  document.getElementById("button-sheath_stuff").addEventListener("click",sheath_stuff);
+  document.getElementById("button-sheath_squeeze").addEventListener("click",sheath_squeeze);
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
   document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
   document.getElementById("button-ball_smother").addEventListener("click",ball_smother);

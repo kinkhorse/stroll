@@ -8,10 +8,16 @@ rules["anal-vore"] = [];
 rules["tail-slap"] = [];
 rules["tail-vore"] = [];
 rules["ass-crush"] = [];
+rules["cleavage-stuff"] = [];
+rules["cleavage-crush"] = [];
+rules["cleavage-drop"] = [];
 rules["breast-crush"] = [];
 rules["breast-vore"] = [];
 rules["breast-milk"] = [];
 rules["unbirth"] = [];
+rules["sheath-stuff"] = [];
+rules["sheath-squeeze"] = [];
+rules["sheath-crush"] = [];
 rules["cock-vore"] = [];
 rules["cockslap"] = [];
 rules["ball-smother"] = [];
@@ -124,10 +130,16 @@ function describeDefault(action, container, macro, verbose=true) {
     case "ass-crush": return defaultAssCrush(container, macro, verbose);
     case "tail-slap": return defaultTailSlap(container, macro, verbose);
     case "tail-vore": return defaultTailVore(container, macro, verbose);
+    case "cleavage-stuff": return defaultCleavageStuff(container, macro, verbose);
+    case "cleavage-crush": return defaultCleavageCrush(container, macro, verbose);
+    case "cleavage-drop": return defaultCleavageDrop(container, macro, verbose);
     case "breast-crush": return defaultBreastCrush(container, macro, verbose);
     case "breast-vore": return defaultBreastVore(container, macro, verbose);
     case "breast-milk": return defaultBreastMilk(container, macro, verbose);
     case "unbirth": return defaultUnbirth(container, macro, verbose);
+    case "sheath-stuff": return defaultSheathStuff(container, macro, verbose);
+    case "sheath-squeeze": return defaultSheathSqueeze(container, macro, verbose);
+    case "sheath-crush": return defaultSheathCrush(container, macro, verbose);
     case "cock-vore": return defaultCockVore(container, macro, verbose);
     case "cockslap": return defaultCockslap(container, macro, verbose);
     case "ball-smother": return defaultBallSmother(container, macro, verbose);
@@ -197,6 +209,26 @@ function defaultTailVore(container, macro, verbose) {
     + ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully and pulling everything into your belly.";
 }
 
+function defaultCleavageStuff(container, macro, verbose) {
+  return "You snatch up " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your cleavage.";
+}
+
+function defaultCleavageCrush(container, macro, verbose) {
+  if (isGory(macro))
+    return "You grasp your breasts and forcefully shove them together, crushing the life from " + container.describe(verbose) + ".";
+  else if (isFatal(macro))
+    return "You grasp your breasts and forcefully shove them together, crushing " + container.describe(verbose) + ".";
+  else
+    return "You grasp your breasts and squish them together, smooshing " + container.describe(verbose) + ".";
+}
+
+function defaultCleavageDrop(container, macro, verbose) {
+  if (isFatal(macro))
+    return "You pull your breasts apart far enough for the " + container.describe(verbose) + " trapped within to fall out, tumbling to the ground and smashing to bits.";
+  else
+    return "You pull your breasts apart far enough for the " + container.describe(verbose) + " trapped within to fall out.";
+}
+
 function defaultBreastCrush(container, macro, verbose) {
   if (isFatal(macro))
     return "Your heavy breasts obliterate " + container.describe(verbose) + ". ";
@@ -218,6 +250,33 @@ function defaultBreastMilk(container, macro, verbose) {
 
 function defaultUnbirth(container, macro, verbose) {
   return "You gasp as you slide " + container.describe(verbose) + " up your slit. ";
+}
+
+function defaultSheathStuff(container, macro, verbose) {
+  return "You pluck " + container.describe(verbose) + " from the ground and slip them into your musky sheath.";
+}
+
+function defaultSheathSqueeze(container, macro, verbose) {
+  if (macro.orgasm) {
+    return "You stroke your spurting cock, then reach down to give your sheath a firm <i>squeeze</i>. Anything within has been ground away to nothingness by the force of your orgasm.";
+  } else if (macro.arousal < 25) {
+    return "You grip your soft sheath and give it a squeeze, feeling " + container.describe(false) + " within rub against your " + macro.describeDick + " cock.";
+  } else if (macro.arousal < 75) {
+    return "You grip your swelling sheath and squeeze, feeling " + container.describe(false) + " within grind against your " + macro.describeDick + " cock.";
+  } else if (macro.arousal < 150) {
+    return "You run your fingers down your " + macro.describeDick + " shaft and grip your sheath, squeezing it to feel " + container.describe(false) + " being smothered against the musky walls by your throbbing cock.";
+  } else {
+    return "Trembling with your impending orgasm, your fingers play over your sheath, feeling " + container.describe(false) + " within rub against your " + macro.describeDick + " cock.";
+  }
+}
+
+function defaultSheathCrush(container, macro, verbose) {
+  if (isGory(macro))
+    return "Your powerful orgasm causes your throbbing " + macro.describeDick + " cock to swell and crush the life from everything in your sheath, reducing " + container.describe(false) + " to a gory paste that slickens your spurting shaft.";
+  else if (isFatal(macro))
+    return "Your orgasm causes your " + macro.describeDick + " shaft to throb and swell, smashing " + container.describe(false) + " trapped in your musky sheath.";
+  else
+    return "Your orgasm causes your " + macro.describeDick + " cock to swell, squeezing " + container.describe(false) + " out from your sheath.";
 }
 
 function defaultCockVore(container, macro, verbose) {
