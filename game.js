@@ -554,7 +554,7 @@ var macro =
     result.push(line);
 
     if (this.hasTail) {
-      line = "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails sway as you walk," : "sways as you walk.");
+      line = "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails sway as you walk. " : " tail sways as you walk. ");
       if (this.tailMaw) {
         line += (macro.tailCount > 1 ? "Their maws are drooling" : "Its maw is drooling");
       }
@@ -577,17 +577,31 @@ var macro =
       }
     }
     if (this.maleParts) {
+      if (this.hasSheath && this.arousal < 75) {
+        line = "Your " + this.describeDick + " cock is hidden away in your bulging sheath, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
+      }
       line = "Your " + this.describeDick + " cock hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
       result.push(line);
     }
-    if (this.femaleParts) {
 
+    if (this.femaleParts) {
       line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs."
       result.push(line);
     }
+
     if (this.hasBreasts) {
-      line = "You have two " + length(macro.breastDiameter, unit, true) + "-wide breasts that weigh " + mass(macro.breastMass, unit) + " apiece.";
+      line = "You have two " + length(this.breastDiameter, unit, true) + "-wide breasts that weigh " + mass(macro.breastMass, unit) + " apiece.";
+
+      if (this.cleavage.container.count > 0)
+        line += " Between them are " + this.cleavage.container.describe(false) + ".";
       result.push(line);
+    }
+
+    if (this.hasPouch) {
+      if (this.pouch.container.count == 0)
+        result.push("Your belly pouch is flat and empty.");
+      else
+        result.push("Your belly pouch is bulging, holding " + this.pouch.container.describe(false) + ".");
     }
 
     return result;
@@ -1174,6 +1188,7 @@ function cleavage_stuff()
 function cleavage_crush()
 {
   var prey = macro.cleavage.container;
+  macro.cleavage.container = new Container();
   var line = describe("cleavage-crush", prey, macro, verbose);
   var linesummary = summarize(prey.sum(), true);
 
@@ -1235,6 +1250,41 @@ function cleavage_drop()
   macro.arouse((preyMass > 0 ? 15 : 5));
 
   updateVictims("cleavagedropped",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function cleavage_absorb()
+{
+  var prey = macro.cleavage.container;
+  macro.cleavage.container = new Container();
+  var line = describe("cleavage-absorb", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Slurp.";
+  } else if (people < 50) {
+    sound = "Shlrrrrp!";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SHLLLLURP!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  var preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse((preyMass > 0 ? 15 : 5));
+
+  updateVictims("cleavageabsorbed",prey);
   update([sound,line,linesummary,newline]);
 }
 
@@ -1488,6 +1538,37 @@ function sheath_crush()
 
   update([sound,line,linesummary,newline]);
 }
+
+function sheath_absorb()
+{
+  var prey = macro.sheath.container;
+  macro.sheath.container = new Container();
+  var line = describe("sheath-absorb", prey, macro, verbose)
+  var linesummary = summarize(prey.sum(), true);
+
+  var people = get_living_prey(prey.sum());
+
+  var sound = "";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  macro.arouse(45);
+
+  update([sound,line,linesummary,newline]);
+}
+
 
 function cockslap()
 {
@@ -2210,7 +2291,13 @@ function startGame(e) {
   }
 
   if (macro.maleParts) {
-    victimTypes = victimTypes.concat(["cock","balls","sheath"]);
+    victimTypes = victimTypes.concat(["cock","balls"]);
+    if (macro.hasSheath) {
+      victimTypes.push("sheath");
+    } else {
+      document.getElementById("button-sheath_stuff").style.display = 'none';
+      document.getElementById("button-sheath_squeeze").style.display = 'none';
+    }
   } else {
     document.getElementById("action-part-dick").style.display = 'none';
     document.getElementById("button-cockslap").style.display = 'none';
@@ -2220,6 +2307,9 @@ function startGame(e) {
     document.getElementById("cumPercent").style.display = 'none';
     document.querySelector("#part-balls+label").style.display = 'none';
     document.querySelector("#part-dick+label").style.display = 'none';
+    document.getElementById("button-sheath_stuff").style.display = 'none';
+    document.getElementById("button-sheath_squeeze").style.display = 'none';
+    document.getElementById("button-sheath_absorb").style.display = 'none';
   }
 
   if (macro.femaleParts) {
@@ -2233,7 +2323,7 @@ function startGame(e) {
   }
 
   if (macro.hasBreasts) {
-    victimTypes = victimTypes.concat(["breasts","cleavage","cleavagecrushed","cleavagedropped"]);
+    victimTypes = victimTypes.concat(["breasts","cleavage","cleavagecrushed","cleavagedropped","cleavageabsorbed"]);
     if (macro.lactationEnabled) {
       victimTypes = victimTypes.concat(["flooded"]);
     } else {
@@ -2248,6 +2338,10 @@ function startGame(e) {
     }
   } else {
     document.getElementById("action-part-breasts").style.display = 'none';
+    document.getElementById("button-cleavage_stuff").style.display = 'none';
+    document.getElementById("button-cleavage_crush").style.display = 'none';
+    document.getElementById("button-cleavage_drop").style.display = 'none';
+    document.getElementById("button-cleavage_absorb").style.display = 'none';
     document.getElementById("button-breast_vore").style.display = 'none';
     document.getElementById("button-breast_milk").style.display = 'none';
     document.getElementById("milk").style.display = 'none';
@@ -2355,12 +2449,14 @@ window.addEventListener('load', function(event) {
   victims["cleavage"] = initVictims();
   victims["cleavagecrushed"] = initVictims();
   victims["cleavagedropped"] = initVictims();
+  victims["cleavageabsorbed"] = initVictims();
   victims["breasts"] = initVictims();
   victims["breastvored"] = initVictims();
   victims["flooded"] = initVictims();
   victims["womb"] = initVictims();
   victims["sheath"] = initVictims();
   victims["sheathcrushed"] = initVictims();
+  victims["sheathabsorbed"] = initVictims();
   victims["cock"] = initVictims();
   victims["balls"] = initVictims();
   victims["smothered"] = initVictims();
@@ -2382,12 +2478,14 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-cleavage_stuff").addEventListener("click",cleavage_stuff);
   document.getElementById("button-cleavage_crush").addEventListener("click",cleavage_crush);
   document.getElementById("button-cleavage_drop").addEventListener("click",cleavage_drop);
+  document.getElementById("button-cleavage_absorb").addEventListener("click",cleavage_absorb);
   document.getElementById("button-breast_crush").addEventListener("click",breast_crush);
   document.getElementById("button-breast_vore").addEventListener("click",breast_vore);
   document.getElementById("button-breast_milk").addEventListener("click",milk_breasts);
   document.getElementById("button-unbirth").addEventListener("click",unbirth);
   document.getElementById("button-sheath_stuff").addEventListener("click",sheath_stuff);
   document.getElementById("button-sheath_squeeze").addEventListener("click",sheath_squeeze);
+  document.getElementById("button-sheath_absorb").addEventListener("click",sheath_absorb);
   document.getElementById("button-cockslap").addEventListener("click",cockslap);
   document.getElementById("button-cock_vore").addEventListener("click",cock_vore);
   document.getElementById("button-ball_smother").addEventListener("click",ball_smother);

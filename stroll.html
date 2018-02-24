@@ -104,6 +104,7 @@
           <button class=action-button id=button-cleavage_stuff>Stuff Cleavage</button>
           <button class=action-button id=button-cleavage_crush>Crush Cleavage</button>
           <button class=action-button id=button-cleavage_drop>Drop Cleavage</button>
+          <button class=action-button id=button-cleavage_absorb>Absorb Cleavage</button>
           <button class=action-button id=button-breast_crush>Breast Crush</button>
           <button class=action-button id=button-breast_vore>Breast Vore</button>
           <button class=action-button id=button-breast_milk>Milk Breasts</button>
@@ -114,6 +115,7 @@
         <div class=action-tab id=actions-dick>
           <button class=action-button id=button-sheath_stuff>Stuff Sheath</button>
           <button class=action-button id=button-sheath_squeeze>Squeeze Sheath</button>
+          <button class=action-button id=button-sheath_absorb>Absorb Sheath</button>
           <button class=action-button id=button-cockslap>Cockslap</button>
           <button class=action-button id=button-cock_vore>Cock Vore</button>
           <button class=action-button id=button-ball_smother>Ball Smother</button>
@@ -242,10 +244,19 @@
                 </div>
               </div>
               <br>
+              <li>
+                <label for="hasPouch">Pouch</label>
+                <input type="checkbox" name="hasPouch" checked=true /><br>
+              </li>
+              <br>
               <div>
                 Male genitals:<br>
                 <input type="checkbox" checked=true name="maleParts"/><br>
                 <div class=reveal-if-active>
+                  <li>
+                    <label for="hasSheath">Sheath</label>
+                    <input type="checkbox" name="hasSheath" checked=true /><br>
+                  </li>
                   <li>
                     <label for="dickType">Cock type</label>
                     <input type="text" name="dickType" placeholder="canine"/><br>
