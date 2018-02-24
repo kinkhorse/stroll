@@ -918,13 +918,14 @@ function getPrey(region, area)
 
 function updateVictims(type,prey)
 {
+  /*
   var sums = prey.sum();
 
   for (var key in sums) {
     if (sums.hasOwnProperty(key)) {
       victims[type][key] += sums[key];
     }
-  }
+  }*/
 }
 
 function feed()
