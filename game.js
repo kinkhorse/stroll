@@ -1013,84 +1013,82 @@ function grind()
   update([sound,line,linesummary,newline]);
 }
 
-function sit()
+function anal_vore()
 {
   var area = macro.analVoreArea;
   var prey = getOnePrey(biome,area);
 
-  area = macro.assArea;
-  var crushed = getPrey(biome,area);
+  var line = describe("anal-vore", prey, macro, verbose);
+  var linesummary = summarize(prey.sum(), false);
 
-  if (macro.analVore) {
-    var line1 = describe("anal-vore", prey, macro, verbose);
-    var line1summary = summarize(prey.sum(), false);
-  }
-
-  var line2 = describe("ass-crush", crushed, macro, verbose);
-  var line2summary = summarize(crushed.sum(), true);
-
-  var people;
-  var sound;
-
-  if (macro.analVore) {
-    people = get_living_prey(prey.sum());
-    sound = "Shlp";
-
-    if (people < 3) {
-      sound = "Shlp.";
-    } else if (people < 10) {
-      sound = "Squelch.";
-    } else if (people < 50) {
-      sound = "Shlurrp.";
-    } else if (people < 500) {
-      sound = "SHLRP!";
-    } else if (people < 5000) {
-      sound = "SQLCH!!";
-    } else {
-      sound = "Oh the humanity!";
-    }
-  }
-
-  var people = get_living_prey(crushed.sum());
-  var sound2 = "Thump";
+  people = get_living_prey(prey.sum());
+  sound = "Shlp";
 
   if (people < 3) {
-    sound2 = "Thump!";
+    sound = "Shlp.";
   } else if (people < 10) {
-    sound2 = "Squish!";
+    sound = "Squelch.";
   } else if (people < 50) {
-    sound2 = "Crunch!";
+    sound = "Shlurrp.";
   } else if (people < 500) {
-    sound2 = "CRUNCH!";
+    sound = "SHLRP!";
   } else if (people < 5000) {
-    sound2 = "CRRUUUNCH!!";
+    sound = "SQLCH!!";
   } else {
-    sound2 = "Oh the humanity!";
+    sound = "Oh the humanity!";
   }
 
-  if (macro.analVore)
-    var preyMass = prey.sum_property("mass");
-  var crushedMass = prey.sum_property("mass");
+  var preyMass = prey.sum_property("mass");
 
+  macro.addGrowthPoints(preyMass);
+
+  macro.bowels.feed(prey);
+
+  macro.arouse(20);
+
+  updateVictims("bowels",prey);
+  update([sound,line,linesummary,newline]);
+
+}
+
+function sit()
+{
   if (macro.analVore)
-    macro.addGrowthPoints(preyMass);
+    anal_vore();
+    
+  var area = macro.assArea;
+  var crushed = getPrey(biome,area);
+
+  var line = describe("ass-crush", crushed, macro, verbose);
+  var linesummary = summarize(crushed.sum(), true);
+
+  var people = get_living_prey(crushed.sum());
+  var sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  var crushedMass = crushed.sum_property("mass");
+
   macro.addGrowthPoints(crushedMass);
 
-  if (macro.analVore)
-    macro.bowels.feed(prey);
+  macro.arouse(5);
 
-  if (macro.analVore)
-    macro.arouse(25);
-  else
-    macro.arouse(5);
-
-  if (macro.analVore)
-    updateVictims("bowels",prey);
   updateVictims("stomped",crushed);
-  if (macro.analVore)
-    update([sound,line1,line1summary,newline,sound2,line2,line2summary,newline]);
-  else
-    update([sound2,line2,line2summary,newline]);
+
+  update([sound,line,linesummary,newline]);
+
 }
 
 function breast_crush()
