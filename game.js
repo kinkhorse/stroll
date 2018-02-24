@@ -2503,7 +2503,7 @@ window.addEventListener('load', function(event) {
 
   registerActions();
 
-  document.getElementById("button-stroll").addEventListener("look",look);
+  document.getElementById("button-look").addEventListener("look",look);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);
