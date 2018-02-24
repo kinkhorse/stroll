@@ -549,8 +549,10 @@ var macro =
 
 
   get description() {
-    result = [];
-    line = "You are " + (macro.name == "" ? "" : macro.name + ", ") + "a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
+    var result = [];
+
+    var line = "You are " + (macro.name == "" ? "" : macro.name + ", ") + "a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
+
     result.push(line);
 
     if (this.hasTail) {
@@ -597,12 +599,12 @@ var macro =
       result.push(line);
     }
 
+
     if (this.hasPouch) {
-      if (this.pouch.container.count == 0)
-        result.push("Your belly pouch is flat and empty.");
-      else
-        result.push("Your belly pouch is bulging, holding " + this.pouch.container.describe(false) + ".");
+      line = this.pouch.description;
+      result.push(line);
     }
+
 
     return result;
   },
