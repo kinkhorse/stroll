@@ -2,42 +2,15 @@
 
 var rules = {};
 
-rules["eat"] = [];
-rules["chew"] = [];
-rules["stomp"] = [];
-rules["kick"] = [];
-rules["anal-vore"] = [];
-rules["tail-slap"] = [];
-rules["tail-vore"] = [];
-rules["ass-crush"] = [];
-rules["cleavage-stuff"] = [];
-rules["cleavage-crush"] = [];
-rules["cleavage-drop"] = [];
-rules["cleavage-absorb"] = [];
-rules["breast-crush"] = [];
-rules["breast-vore"] = [];
-rules["breast-milk"] = [];
-rules["unbirth"] = [];
-rules["sheath-stuff"] = [];
-rules["sheath-squeeze"] = [];
-rules["sheath-crush"] = [];
-rules["sheath-absorb"] = [];
-rules["cock-vore"] = [];
-rules["cockslap"] = [];
-rules["ball-smother"] = [];
-rules["male-spurt"] = [];
-rules["male-orgasm"] = [];
-rules["female-spurt"] = [];
-rules["female-orgasm"] = [];
-rules["grind"] = [];
-rules["pouch-stuff"] = [];
-rules["pouch-eat"] = [];
+var actions = ["eat","chew","stomp","kick","anal-vore","tail-slap","tail-vore","ass-crush",
+"cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
+"breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
+"sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
+"female-orgasm","grind","pouch-stuff","pouch-eat","stomach","womb","balls","bowels","breasts"];
 
-rules["stomach"] = [];
-rules["balls"] = [];
-rules["womb"] = [];
-rules["bowels"] = [];
-rules["breasts"] = [];
+for (let i=0; i<actions.length; i++) {
+  rules[actions[i]] = [];
+}
 
 function isNonFatal(macro) {
   return macro.brutality == 0;
@@ -200,19 +173,19 @@ function defaultAssCrush(container, macro, verbose) {
 
 function defaultTailSlap(container, macro, verbose) {
   if (isFatal(macro))
-    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails swing" : " tail swings") + " into " + container.describe(verbose) + ", smashing everything in "
-    + (macro.tailCount > 1 ? "their" : "its") + " path.";
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails swing" : " tail swings") + " into " + container.describe(verbose) + ", smashing everything in " +
+    (macro.tailCount > 1 ? "their" : "its") + " path.";
   else
     return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails slap" : " tail slaps") + " against " + container.describe(verbose) + ", bowling them over.";
 }
 
 function defaultTailVore(container, macro, verbose) {
   if (isFatal(macro))
-    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose)
-    + ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully to drag your prey into your sloppy guts.";
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose) +
+     ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully to drag your prey into your sloppy guts.";
   else
-    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose)
-    + ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully and pulling everything into your belly.";
+    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose) +
+     ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully and pulling everything into your belly.";
 }
 
 function defaultCleavageStuff(container, macro, verbose) {
@@ -433,9 +406,9 @@ rules["eat"].push({
 
 rules["eat"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasLessThan(container, "Person", 6)
-    && macro.height >= 10;
+    return hasOnly(container, ["Person"]) &&
+     hasLessThan(container, "Person", 6) &&
+     macro.height >= 10;
   },
   "desc": function(container, macro, verbose) {
     return "You pluck up the " + container.describe() + " and stuff them into your mouth, swallowing lightly to drag them down to your bubbling guts.";
@@ -444,9 +417,9 @@ rules["eat"].push({
 
 rules["eat"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 1)
-    && macro.height < 10;
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 1) &&
+     macro.height < 10;
   },
   "desc": function(container, macro, verbose) {
     return "You grasp " + container.describe() + " and greedily wolf them down, swallowing forcefully to cram them into your bulging stomach. A crass belch escapes your lips as they curl up in your slimy gut.";
@@ -455,9 +428,9 @@ rules["eat"].push({
 
 rules["eat"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person","Car"])
-    && hasExactly(container, "Car", 1)
-    && hasLessThan(container, "Person", 5);
+    return hasOnly(container, ["Person","Car"]) &&
+     hasExactly(container, "Car", 1) &&
+     hasLessThan(container, "Person", 5);
   },
   "desc": function(container, macro, verbose) {
     return "You crush the " + container.contents["Car"].describe() + " with your tight throat, washing it down with " + container.contents["Person"].describe();
@@ -466,9 +439,9 @@ rules["eat"].push({
 
 rules["eat"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Small Skyscraper", 1)
-    && nothingLarger(container, "Small Skyscraper")
-    && macro.height < 500;
+    return hasExactly(container, "Small Skyscraper", 1) &&
+     nothingLarger(container, "Small Skyscraper") &&
+     macro.height < 500;
   },
   "desc": function(container, macro, verbose) {
     return "You drop onto your hands and knees, jaws opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
@@ -479,9 +452,9 @@ rules["eat"].push({
 
 rules["eat"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Small Skyscraper", 2)
-    && nothingLarger(container, "Small Skyscraper")
-    && macro.height < 750;
+    return hasExactly(container, "Small Skyscraper", 2) &&
+     nothingLarger(container, "Small Skyscraper") &&
+     macro.height < 750;
   },
   "desc": function(container, macro, verbose) {
     return "You drop onto your hands and knees, jaws opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
@@ -496,34 +469,34 @@ rules["eat"].push({
 
 rules["chew"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 1)
-    && isGory(macro)
-    && macro.height < 5;
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 1) &&
+     isGory(macro) &&
+     macro.height < 5;
   }, "desc": function(container, macro, verbose) {
     return "You tackle a " + container.describe(verbose) + " and dig into your meal, powerful jaws ripping them to shreds in seconds. You wolf down great mouthfuls \
     of meat, consuming them in a terrifying frenzy that ends with naught but bones lying on the ground.";
   }
-})
+});
 
 rules["chew"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 1)
-    && isGory(macro)
-    && macro.height >= 5;
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 1) &&
+     isGory(macro) &&
+     macro.height >= 5;
   }, "desc": function(container, macro, verbose) {
     return "You snatch up a " + container.describe(verbose) + ", then stuff their lower body into the guillotine that is your ravenous maw - slicing off their legs with \
     a single disgusting <i>crunch</i>, then finishing them off with another ravenous bite that obliterates their torso. Their bleeding head falls from your lips, only to be \
     caught between two fingers and popped back in to be crunched between molars and swallowed.";
   }
-})
+});
 
 rules["chew"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 2)
-    && isGory(macro)
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 2) &&
+     isGory(macro);
   }, "desc": function(container, macro, verbose) {
     var prey1 = new Person(1).describe(verbose);
     var prey2 = new Person(1).describe(verbose);
@@ -531,15 +504,15 @@ rules["chew"].push({
     in a vice. A heartbeat later, their face is jammed into your bloody throat. A squeeze of your jaws snaps their spine with ease, and their limp body plunges down into \
     your churning depths to be destroyed.";
   }
-})
+});
 
 // STOMPING
 
 rules["stomp"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 1)
-    && isFatal(macro);
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 1) &&
+     isFatal(macro);
   }, "desc": function(container, macro, verbose) {
     return "Your heavy paw slams down on " + container.describe(verbose) + ", smashing the poor thing like an insect.";
   }
@@ -547,9 +520,9 @@ rules["stomp"].push({
 
 rules["stomp"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 1)
-    && isGory(macro);
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 1) &&
+     isGory(macro);
   }, "desc": function(container, macro, verbose) {
     return "Your paw thumps " + container.describe(verbose) + ", shoving your victim to the ground and cracking them open like an egg.";
   }
@@ -557,9 +530,9 @@ rules["stomp"].push({
 
 rules["stomp"].push({
   "test": function(container, macro) {
-    return hasOnly(container, ["Person"])
-    && hasExactly(container, "Person", 1)
-    && isGory(macro);
+    return hasOnly(container, ["Person"]) &&
+     hasExactly(container, "Person", 1) &&
+     isGory(macro);
   }, "desc": function(container, macro, verbose) {
     return "Your shadow falls over " + container.describe(verbose) + ", and your paw follows, crushing their soft body and reducing them to a heap of broken gore.";
   }
@@ -567,8 +540,8 @@ rules["stomp"].push({
 
 rules["stomp"].push({
   "test": function(container, macro) {
-    return hasNothingElse(container, ["Person","Cow","Car"])
-    && isNonFatal(macro);
+    return hasNothingElse(container, ["Person","Cow","Car"]) &&
+     isNonFatal(macro);
   }, "desc": function(container, macro, verbose) {
     return "Your soft paws smoosh over " + container.describe(verbose) + ". They stick to your toes, carried along for the ride as you take another few steps before finally\
     falling off.";
@@ -579,19 +552,19 @@ rules["stomp"].push({
 
 rules["anal-vore"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Person", 1)
-    && hasOnly(container, ["Person"]);
+    return hasExactly(container, "Person", 1) &&
+     hasOnly(container, ["Person"]);
   }, "desc": function(container, macro, verbose) {
     let adjective = ["musky","winding","churning"][Math.floor(Math.random()*3)];
-    return "Your weighty rump slams against the ground. A shock of pleasure runs up your spine as a " + container.describe(verbose) + " slides up your ass,"
-    + (macro.maleParts ? " grinding against your prostate" : "") + ". A powerful clench drags them deeper into your bowels, sealing them away in your " + adjective + " depths.";
+    return "Your weighty rump slams against the ground. A shock of pleasure runs up your spine as a " + container.describe(verbose) + " slides up your ass," +
+    (macro.maleParts ? " grinding against your prostate" : "") + ". A powerful clench drags them deeper into your bowels, sealing them away in your " + adjective + " depths.";
   }
 });
 
 rules["anal-vore"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Car", 1)
-    && hasOnly(container, ["Car"]);
+    return hasExactly(container, "Car", 1) &&
+     hasOnly(container, ["Car"]);
   }, "desc": function(container, macro, verbose) {
     return "You ram " + container.describe(verbose) + " up your ass, biting your lip as it" + (macro.maleParts ? " rubs along your prostate" : " slides into velvety depths") + ".\
     You moan and clench hard, yanking it in with a wet <i>shlrrp</i> and abruplty silencing its blaring horn.";
@@ -600,8 +573,8 @@ rules["anal-vore"].push({
 
 rules["anal-vore"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Bus", 1)
-    && hasOnly(container, ["Bus"]);
+    return hasExactly(container, "Bus", 1) &&
+     hasOnly(container, ["Bus"]);
   }, "desc": function(container, macro, verbose) {
     return "A speeding bus slams on its brakes as you abruptly sit - but it's too late to stop. A gasp flies from your lips as it penetrates your greedy ass, sinking halfway in and coming to a halt. \
     You grunt and squeeze, causing its frame to creak and groan. Two fingers to the back are enough to get it moving again, and it slowly works inside. You shiver and moan, taking it in all the way. \
@@ -611,8 +584,8 @@ rules["anal-vore"].push({
 
 rules["anal-vore"].push({
   "test": function(container, macro) {
-    return hasExactly(container, "Train", 1)
-    && hasOnly(container, ["Train"]);
+    return hasExactly(container, "Train", 1) &&
+     hasOnly(container, ["Train"]);
   }, "desc": function(container, macro, verbose) {
     var cars = container.contents["Train"].contents["Train Car"].count;
     return "Your massive fingers wrap around a train, yanking it from the rails with a tremendous screech of metal-on-metal. You squat down low, eyes rolling back in anticipation as you thrust the locomotive towards your massive ass - and then it hits home. A moan of pleasure shakes the earth, your ravenous pucker spread around the engine and sucking it in with a <i>squelch</i>. Powerful muscles squeeze and grab...and " + container.describe(verbose) + " swiftly vanishes into your bowels, every one of the " + cars + " cars a fresh shock of pleasure as they glide into your musky depths.";

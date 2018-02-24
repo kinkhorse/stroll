@@ -1,0 +1,20 @@
+{
+  "esversion": 6,
+  "node": true,
+  "sub": true,
+  "globals": {
+    "Container": true,
+    "Person": true,
+    "things": true,
+    "areas": true,
+    "fill_area": true,
+    "length": true,
+    "mass": true,
+    "volume": true,
+    "round": true,
+    "number": true,
+    "describe": true,
+    "humanMode": true,
+    "describe_all": true
+  }
+}

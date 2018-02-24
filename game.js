@@ -1,27 +1,29 @@
 "use strict";
 
-var started = false;
+/*jshint browser: true*/
 
-var strolling = false;
+let started = false;
 
-var maxStomachDigest = 10;
-var maxBowelsDigest = 10;
+let strolling = false;
 
-var unit = "metric";
+let maxStomachDigest = 10;
+let maxBowelsDigest = 10;
 
-var numbers = "full";
+let unit = "metric";
 
-var verbose = true;
+let numbers = "full";
 
-var biome = "suburb";
+let verbose = true;
 
-var newline = "&nbsp;";
+let biome = "suburb";
 
-var victims = {};
+let newline = "&nbsp;";
 
-var humanMode = true;
+let victims = {};
 
-var macro =
+let humanMode = true;
+
+let macro =
 {
   "scaling": function(value, scale, factor) { return value * Math.pow(scale,factor); },
   "name": "",
@@ -76,7 +78,7 @@ var macro =
   "dickDensity": 1000,
   "dickScale": 1,
   get dickLength() {
-    var factor = 1;
+    let factor = 1;
     if (!this.arousalEnabled || this.arousal < 25) {
       factor = 0.5;
     } else if (this.arousal < 75) {
@@ -86,7 +88,7 @@ var macro =
     return this.scaling(this.baseDickLength * this.dickScale * factor, this.scale, 1);
   },
   get dickDiameter() {
-    var factor = 1;
+    let factor = 1;
     if (!this.arousalEnabled || this.arousal < 25) {
       factor = 0.5;
     } else if (this.arousal < 75) {
@@ -113,11 +115,11 @@ var macro =
   get ballDiameter() { return this.scaling(this.baseBallDiameter * this.ballScale, this.scale, 1); },
   get ballArea() { return 2 * Math.PI * Math.pow(this.ballDiameter/2, 2); },
   get ballVolume() {
-    var radius = this.ballDiameter / 2;
+    let radius = this.ballDiameter / 2;
     return 4/3 * Math.PI * Math.pow(radius,3);
   },
   get ballMass() {
-    var volume = this.ballVolume;
+    let volume = this.ballVolume;
     return volume * this.ballDensity;
   },
 
@@ -158,42 +160,42 @@ var macro =
     return 2 * Math.PI * Math.pow(this.breastDiameter/2,2);
   },
   get breastVolume() {
-    var radius = this.breastDiameter / 2;
+    let radius = this.breastDiameter / 2;
     return 4/3 * Math.PI * Math.pow(radius,3);
   },
   get breastMass() {
-    var volume = this.breastVolume;
+    let volume = this.breastVolume;
     return volume * this.breastDensity;
   },
 
   "digest": function(owner,organ) {
-    var count = Math.min(organ.contents.length, organ.maxDigest);
+    let count = Math.min(organ.contents.length, organ.maxDigest);
 
-    var container = new Container();
+    let container = new Container();
 
     while (count > 0) {
-      var victim = organ.contents.shift();
+      let victim = organ.contents.shift();
       if (victim.name != "Container")
         victim = new Container([victim]);
       container = container.merge(victim);
       --count;
     }
 
-    var digested = container.sum();
+    let digested = container.sum();
 
-    for (var key in victims[organ.name]) {
+    for (let key in victims[organ.name]) {
       if (victims[organ.name].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
         victims["digested"][key] += digested[key];
         victims[organ.name][key] -= digested[key];
       }
     }
 
-    var line = organ.describeDigestion(container);
+    let line = organ.describeDigestion(container);
     organ.fill(this,container);
-    var summary = summarize(container.sum());
+    let summary = summarize(container.sum());
 
     if (organ.contents.length > 0) {
-      setTimeout(function() { owner.digest(owner,organ) }, 15000);
+      setTimeout(function() { owner.digest(owner,organ); }, 15000);
     }
 
     update([line,summary,newline]);
@@ -226,7 +228,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self); }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
@@ -246,7 +248,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self); }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion" : function(container) {
@@ -266,7 +268,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self) }, 15000);
+        setTimeout(function() { owner.digest(owner,self); }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
@@ -286,7 +288,7 @@ var macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self) }, 1500);
+        setTimeout(function() { owner.digest(owner,self); }, 1500);
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
@@ -376,7 +378,7 @@ var macro =
     self.cumStorage.amount += self.cumScale * self.ballVolume / 1200;
     if (self.cumStorage.amount > self.cumStorage.limit)
       self.arouse(1 * (self.cumStorage.amount / self.cumStorage.limit - 1));
-    setTimeout(function () { self.fillCum(self) }, 100);
+    setTimeout(function () { self.fillCum(self); }, 100);
     update();
   },
 
@@ -384,7 +386,7 @@ var macro =
     self.femcumStorage.amount += self.femcumScale * self.vaginaVolume / 1200;
     if (self.femcumStorage.amount > self.femcumStorage.limit)
       self.arouse(1 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
-    setTimeout(function () { self.fillFemcum(self) }, 100);
+    setTimeout(function () { self.fillFemcum(self); }, 100);
     update();
   },
 
@@ -397,7 +399,7 @@ var macro =
     if (self.milkStorage.amount > self.milkStorage.limit) {
       self.milkStorage.amount = self.milkStorage.limit;
     }
-    setTimeout(function () { self.fillBreasts(self) }, 100);
+    setTimeout(function () { self.fillBreasts(self); }, 100);
     update();
   },
 
@@ -521,10 +523,10 @@ var macro =
 
     if (self.orgasm) {
       self.quench(10);
-      var amount = Math.min(this.cumVolume, this.cumStorage.amount);
+      let amount = Math.min(this.cumVolume, this.cumStorage.amount);
       this.cumStorage.amount -= amount;
       male_orgasm(amount);
-      setTimeout(function() { self.maleOrgasm(self) }, 2000);
+      setTimeout(function() { self.maleOrgasm(self); }, 2000);
     }
   },
 
@@ -534,10 +536,10 @@ var macro =
 
     if (this.orgasm) {
       this.quench(10);
-      var amount = Math.min(this.femcumVolume, this.femcumStorage.amount);
+      let amount = Math.min(this.femcumVolume, this.femcumStorage.amount);
       this.femcumStorage.amount -= amount;
       female_orgasm(amount);
-      setTimeout(function() { self.femaleOrgasm(self) }, 2000);
+      setTimeout(function() { self.femaleOrgasm(self); }, 2000);
     }
   },
 
@@ -547,15 +549,15 @@ var macro =
 
     if (this.orgasm) {
       this.quench(10);
-      setTimeout(function() { self.nullOrgasm(self) }, 2000);
+      setTimeout(function() { self.nullOrgasm(self); }, 2000);
     }
   },
 
 
   get description() {
-    var result = [];
+    let result = [];
 
-    var line = "You are " + (macro.name == "" ? "" : macro.name + ", ") + "a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
+    let line = "You are " + (macro.name == "" ? "" : macro.name + ", ") + "a " + length(macro.height, unit, true) + " tall " + macro.species + ". You weigh " + mass(macro.mass, unit) + ".";
 
     result.push(line);
 
@@ -591,7 +593,7 @@ var macro =
     }
 
     if (this.femaleParts) {
-      line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs."
+      line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs.";
       result.push(line);
     }
 
@@ -619,7 +621,7 @@ var macro =
 
 
   get describeDick() {
-    var state = "";
+    let state = "";
     if (!this.arousalEnabled) {
       state = "limp";
     } else if (this.orgasm) {
@@ -641,7 +643,7 @@ var macro =
   },
 
   get describeVagina() {
-    var state = "";
+    let state = "";
     if (!this.arousalEnabled) {
       state = "unassuming";
     } else if (this.orgasm) {
@@ -660,7 +662,7 @@ var macro =
       }
     }
 
-    return length(this.vaginaLength, unit, true) + " long " + state
+    return length(this.vaginaLength, unit, true) + " long " + state;
   },
 
   "growthPoints": 0,
@@ -676,13 +678,13 @@ var macro =
   "brutality": 1,
 
   "scale": 1,
-}
+};
 
 function look()
 {
-  var desc = macro.description;
+  let desc = macro.description;
 
-  var line2 = ""
+  let line2 = "";
 
   if (macro.height > 1e12)
     line2 = "You're pretty much everywhere at once.";
@@ -701,8 +703,8 @@ function look()
 }
 
 function get_living_prey(sum) {
-  var total = 0;
-  for (var key in sum) {
+  let total = 0;
+  for (let key in sum) {
     if (sum.hasOwnProperty(key)) {
       if (key == "Person" || key == "Cow")
         total += sum[key];
@@ -810,13 +812,13 @@ function initVictims()
     "Solar System": 0,
     "Galaxy": 0
   };
-};
+}
 
 // lists out total people
 function summarize(sum, fatal = true)
 {
-  var word;
-  var count = get_living_prey(sum);
+  let word;
+  let count = get_living_prey(sum);
   if (fatal && macro.brutality > 0)
     word = count > 1 ? "kills" : "kill";
   else if (!fatal && macro.brutality > 0)
@@ -829,7 +831,7 @@ function summarize(sum, fatal = true)
 
 function getOnePrey(biome,area)
 {
-  var potential = ["Person"];
+  let potential = ["Person"];
 
   if (macro.height > 1e12)
     potential = ["Planet","Star","Solar System","Galaxy"];
@@ -843,7 +845,7 @@ function getOnePrey(biome,area)
       case "rural": potential = ["Person", "Barn", "House", "Cow"]; break;
     }
 
-  var potAreas = []
+  let potAreas = [];
 
   potential.forEach(function (x) {
     potAreas.push([x,areas[x]]);
@@ -853,18 +855,18 @@ function getOnePrey(biome,area)
     return y[1] - x[1];
   });
 
-  for (var i=0; i<potAreas.length; i++) {
-    var x = potAreas[i];
+  for (let i=0; i<potAreas.length; i++) {
+    let x = potAreas[i];
     if (x[1] < area) {
       return new Container([new things[x[0]](1)]);
     }
-  };
+  }
 
   return new Container([new Person(1)]);
 }
 function getPrey(region, area)
 {
-  var weights = {"Person": 1};
+  let weights = {"Person": 1};
 
   if (macro.height > 1e12) {
     weights = {
@@ -872,7 +874,7 @@ function getPrey(region, area)
       "Star": 1.7713746e-12,
       "Solar System": 4e-10,
       "Galaxy": 0.1,
-    }
+    };
   }
   else if (macro.height > 1e6) {
     weights = {
@@ -880,7 +882,7 @@ function getPrey(region, area)
       "City": 0.05,
       "Continent": 0.005,
       "Planet": 0.0001
-    }
+    };
   }
   else {
     switch(region)
@@ -925,9 +927,9 @@ function getPrey(region, area)
 function updateVictims(type,prey)
 {
   /*
-  var sums = prey.sum();
+  let sums = prey.sum();
 
-  for (var key in sums) {
+  for (let key in sums) {
     if (sums.hasOwnProperty(key)) {
       victims[type][key] += sums[key];
     }
@@ -936,14 +938,14 @@ function updateVictims(type,prey)
 
 function feed()
 {
-  var area = macro.handArea;
-  var prey = getPrey(biome, area);
+  let area = macro.handArea;
+  let prey = getPrey(biome, area);
 
-  var line = describe("eat", prey, macro, verbose)
-  var linesummary = summarize(prey.sum(), false);
+  let line = describe("eat", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
-  var sound = "";
+  let people = get_living_prey(prey.sum());
+  let sound = "";
   if (people == 0) {
     sound = "";
   } else if (people < 3) {
@@ -960,7 +962,7 @@ function feed()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -974,14 +976,15 @@ function feed()
 
 function chew()
 {
-  var area = macro.handArea;
-  var prey = getPrey(biome, area);
+  let area = macro.handArea;
+  let prey = getPrey(biome, area);
 
-  var line = describe("chew", prey, macro, verbose)
-  var linesummary = summarize(prey.sum(), false);
+  let line = describe("chew", prey, macro, verbose);
 
-  var people = get_living_prey(prey.sum());
-  var sound = "";
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+  let sound = "";
   if (people == 0) {
     sound = "";
   } else if (people < 3) {
@@ -998,7 +1001,7 @@ function chew()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1010,14 +1013,14 @@ function chew()
 
 function stomp()
 {
-  var area = macro.pawArea;
-  var prey = getPrey(biome, area);
-  var line = describe("stomp", prey, macro, verbose)
-  var linesummary = summarize(prey.sum(), true);
+  let area = macro.pawArea;
+  let prey = getPrey(biome, area);
+  let line = describe("stomp", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1032,7 +1035,7 @@ function stomp()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1044,20 +1047,20 @@ function stomp()
 
 function grind()
 {
-  var area = macro.assArea / 2;
+  let area = macro.assArea / 2;
 
   if (macro.maleParts)
-    area += macro.dickArea
+    area += macro.dickArea;
   if (macro.femalePartS)
     area += macro.vaginaArea;
 
-  var prey = getPrey(biome,area);
+  let prey = getPrey(biome,area);
 
-  var line = describe("grind", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let line = describe("grind", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
-  var sound = "";
+  let people = get_living_prey(prey.sum());
+  let sound = "";
 
   if (people < 3) {
     sound = "Thump.";
@@ -1073,7 +1076,7 @@ function grind()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1085,14 +1088,14 @@ function grind()
 
 function anal_vore()
 {
-  var area = macro.analVoreArea;
-  var prey = getOnePrey(biome,area);
+  let area = macro.analVoreArea;
+  let prey = getOnePrey(biome,area);
 
-  var line = describe("anal-vore", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let line = describe("anal-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
-  var sound = "Shlp";
+  let people = get_living_prey(prey.sum());
+  let sound = "Shlp";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1108,7 +1111,7 @@ function anal_vore()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1126,14 +1129,14 @@ function sit()
   if (macro.analVore)
     anal_vore();
 
-  var area = macro.assArea;
-  var crushed = getPrey(biome,area);
+  let area = macro.assArea;
+  let crushed = getPrey(biome,area);
 
-  var line = describe("ass-crush", crushed, macro, verbose);
-  var linesummary = summarize(crushed.sum(), true);
+  let line = describe("ass-crush", crushed, macro, verbose);
+  let linesummary = summarize(crushed.sum(), true);
 
-  var people = get_living_prey(crushed.sum());
-  var sound = "Thump";
+  let people = get_living_prey(crushed.sum());
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1149,7 +1152,7 @@ function sit()
     sound = "Oh the humanity!";
   }
 
-  var crushedMass = crushed.sum_property("mass");
+  let crushedMass = crushed.sum_property("mass");
 
   macro.addGrowthPoints(crushedMass);
 
@@ -1162,14 +1165,14 @@ function sit()
 
 function cleavage_stuff()
 {
-  var area = macro.handArea;
-  var prey = getPrey(biome, area);
-  var line = describe("cleavage-stuff", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = macro.handArea;
+  let prey = getPrey(biome, area);
+  let line = describe("cleavage-stuff", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1194,14 +1197,14 @@ function cleavage_stuff()
 
 function cleavage_crush()
 {
-  var prey = macro.cleavage.container;
+  let prey = macro.cleavage.container;
   macro.cleavage.container = new Container();
-  var line = describe("cleavage-crush", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let line = describe("cleavage-crush", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1216,7 +1219,7 @@ function cleavage_crush()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1228,14 +1231,14 @@ function cleavage_crush()
 
 function cleavage_drop()
 {
-  var prey = macro.cleavage.container;
+  let prey = macro.cleavage.container;
   macro.cleavage.container = new Container();
-  var line = describe("cleavage-drop", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let line = describe("cleavage-drop", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump.";
@@ -1250,7 +1253,7 @@ function cleavage_drop()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1262,14 +1265,14 @@ function cleavage_drop()
 
 function cleavage_absorb()
 {
-  var prey = macro.cleavage.container;
+  let prey = macro.cleavage.container;
   macro.cleavage.container = new Container();
-  var line = describe("cleavage-absorb", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let line = describe("cleavage-absorb", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1285,7 +1288,7 @@ function cleavage_absorb()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1297,14 +1300,14 @@ function cleavage_absorb()
 
 function breast_crush()
 {
-  var area = macro.breastArea;
-  var prey = getPrey(biome, area);
-  var line = describe("breast-crush", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let area = macro.breastArea;
+  let prey = getPrey(biome, area);
+  let line = describe("breast-crush", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1319,7 +1322,7 @@ function breast_crush()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1329,7 +1332,7 @@ function breast_crush()
   update([sound,line,linesummary,newline]);
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
-    var amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
+    let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
     milk_breasts(null, amount);
   }
 }
@@ -1337,14 +1340,14 @@ function breast_crush()
 function breast_vore()
 {
   // todo nipple areas?
-  var area = macro.breastArea/2;
-  var prey = getPrey(biome, area);
-  var line = describe("breast-vore", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = macro.breastArea/2;
+  let prey = getPrey(biome, area);
+  let line = describe("breast-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1359,7 +1362,7 @@ function breast_vore()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1371,7 +1374,7 @@ function breast_vore()
   update([sound,line,linesummary,newline]);
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
-    var amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
+    let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
     milk_breasts(null, amount);
   }
 }
@@ -1384,15 +1387,15 @@ function milk_breasts(e,vol)
 
   macro.milkStorage.amount -= vol;
 
-  var area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol, 2/3);
 
-  var prey = getPrey(biome, area);
-  var line = describe("breast-milk", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
-  var linesummary = summarize(prey.sum(), true);
+  let prey = getPrey(biome, area);
+  let line = describe("breast-milk", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Dribble.";
+  let sound = "Dribble.";
 
   if (people < 3) {
     sound = "Dribble.";
@@ -1407,7 +1410,7 @@ function milk_breasts(e,vol)
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1419,14 +1422,14 @@ function milk_breasts(e,vol)
 
 function unbirth()
 {
-  var area = macro.vaginaArea;
-  var prey = getPrey(biome, area);
-  var line = describe("unbirth", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = macro.vaginaArea;
+  let prey = getPrey(biome, area);
+  let line = describe("unbirth", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1442,7 +1445,7 @@ function unbirth()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1456,14 +1459,14 @@ function unbirth()
 
 function sheath_stuff()
 {
-  var area = Math.min(macro.handArea, macro.dickGirth*3);
-  var prey = getPrey(biome, area);
-  var line = describe("sheath-stuff", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = Math.min(macro.handArea, macro.dickGirth*3);
+  let prey = getPrey(biome, area);
+  let line = describe("sheath-stuff", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1489,13 +1492,13 @@ function sheath_stuff()
 
 function sheath_squeeze()
 {
-  var prey = macro.sheath.container;
-  var line = describe("sheath-squeeze", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let prey = macro.sheath.container;
+  let line = describe("sheath-squeeze", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1518,14 +1521,14 @@ function sheath_squeeze()
 
 function sheath_crush()
 {
-  var prey = macro.sheath.container;
+  let prey = macro.sheath.container;
   macro.sheath.container = new Container();
-  var line = describe("sheath-crush", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let line = describe("sheath-crush", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1548,14 +1551,14 @@ function sheath_crush()
 
 function sheath_absorb()
 {
-  var prey = macro.sheath.container;
+  let prey = macro.sheath.container;
   macro.sheath.container = new Container();
-  var line = describe("sheath-absorb", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let line = describe("sheath-absorb", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1579,14 +1582,14 @@ function sheath_absorb()
 
 function cockslap()
 {
-  var area = macro.dickArea;
-  var prey = getPrey(biome, area);
-  var line = describe("cockslap", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let area = macro.dickArea;
+  let prey = getPrey(biome, area);
+  let line = describe("cockslap", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1602,7 +1605,7 @@ function cockslap()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1614,14 +1617,14 @@ function cockslap()
 
 function cock_vore()
 {
-  var area = macro.dickGirth;
-  var prey = getPrey(biome, area);
-  var line = describe("cock-vore", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = macro.dickGirth;
+  let prey = getPrey(biome, area);
+  let line = describe("cock-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "lp";
+  let sound = "lp";
 
   if (people < 3) {
     sound = "Shlp.";
@@ -1636,7 +1639,7 @@ function cock_vore()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1650,14 +1653,14 @@ function cock_vore()
 
 function ball_smother()
 {
-  var area = macro.ballArea * 2;
-  var prey = getPrey(biome, area);
-  var line = describe("ball-smother", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let area = macro.ballArea * 2;
+  let prey = getPrey(biome, area);
+  let line = describe("ball-smother", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1672,7 +1675,7 @@ function ball_smother()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1684,15 +1687,15 @@ function ball_smother()
 
 function male_spurt(vol)
 {
-  var area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol, 2/3);
 
-  var prey = getPrey(biome, area);
-  var line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
-  var linesummary = summarize(prey.sum(), true);
+  let prey = getPrey(biome, area);
+  let line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Spurt!";
+  let sound = "Spurt!";
 
   if (people < 3) {
     sound = "Spurt!";
@@ -1707,7 +1710,7 @@ function male_spurt(vol)
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1717,15 +1720,15 @@ function male_spurt(vol)
 
 function male_orgasm(vol)
 {
-  var area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol, 2/3);
 
-  var prey = getPrey(biome, area);
-  var line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
-  var linesummary = summarize(prey.sum(), true);
+  let prey = getPrey(biome, area);
+  let line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Spurt!";
+  let sound = "Spurt!";
 
   if (people < 3) {
     sound = "Spurt!";
@@ -1740,7 +1743,7 @@ function male_orgasm(vol)
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1750,15 +1753,15 @@ function male_orgasm(vol)
 
 function female_spurt(vol)
 {
-  var area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol, 2/3);
 
-  var prey = getPrey(biome, area);
-  var line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
-  var linesummary = summarize(prey.sum(), true);
+  let prey = getPrey(biome, area);
+  let line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Spurt!";
+  let sound = "Spurt!";
 
   if (people < 3) {
     sound = "Spurt!";
@@ -1773,7 +1776,7 @@ function female_spurt(vol)
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1783,15 +1786,15 @@ function female_spurt(vol)
 
 function female_orgasm(vol)
 {
-  var area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol, 2/3);
 
-  var prey = getPrey(biome, area);
-  var line = describe("female-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
-  var linesummary = summarize(prey.sum(), true);
+  let prey = getPrey(biome, area);
+  let line = describe("female-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Spurt!";
+  let sound = "Spurt!";
 
   if (people < 3) {
     sound = "Spurt!";
@@ -1806,7 +1809,7 @@ function female_orgasm(vol)
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1816,14 +1819,14 @@ function female_orgasm(vol)
 
 function tail_slap()
 {
-  var area = macro.tailArea * macro.tailCount;
-  var prey = getPrey(biome, area);
-  var line = describe("tail-slap", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), true);
+  let area = macro.tailArea * macro.tailCount;
+  let prey = getPrey(biome, area);
+  let line = describe("tail-slap", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Thump!";
@@ -1838,7 +1841,7 @@ function tail_slap()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1850,14 +1853,14 @@ function tail_slap()
 
 function tail_vore()
 {
-  var area = macro.tailGirth * macro.tailCount;
-  var prey = getPrey(biome, area);
-  var line = describe("tail-vore", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = macro.tailGirth * macro.tailCount;
+  let prey = getPrey(biome, area);
+  let line = describe("tail-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "";
+  let sound = "";
   if (people == 0) {
     sound = "";
   } else if (people < 3) {
@@ -1873,7 +1876,7 @@ function tail_vore()
   } else {
     sound = "Oh the humanity!";
   }
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1887,14 +1890,14 @@ function tail_vore()
 
 function pouch_stuff()
 {
-  var area = macro.handArea;
-  var prey = getPrey(biome, area);
-  var line = describe("pouch-stuff", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let area = macro.handArea;
+  let prey = getPrey(biome, area);
+  let line = describe("pouch-stuff", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
+  let people = get_living_prey(prey.sum());
 
-  var sound = "Thump";
+  let sound = "Thump";
 
   if (people < 3) {
     sound = "Slp.";
@@ -1920,14 +1923,14 @@ function pouch_stuff()
 
 function pouch_eat()
 {
-  var prey = macro.pouch.container;
+  let prey = macro.pouch.container;
   macro.pouch.container = new Container();
 
-  var line = describe("pouch-eat", prey, macro, verbose);
-  var linesummary = summarize(prey.sum(), false);
+  let line = describe("pouch-eat", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
 
-  var people = get_living_prey(prey.sum());
-  var sound = "";
+  let people = get_living_prey(prey.sum());
+  let sound = "";
   if (people == 0) {
     sound = "";
   } else if (people < 3) {
@@ -1944,7 +1947,7 @@ function pouch_eat()
     sound = "Oh the humanity!";
   }
 
-  var preyMass = prey.sum_property("mass");
+  let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
@@ -1963,10 +1966,10 @@ function transformNumbers(line)
 
 function update(lines = [])
 {
-  var log = document.getElementById("log");
+  let log = document.getElementById("log");
 
   lines.forEach(function (x) {
-    var line = document.createElement('div');
+    let line = document.createElement('div');
     line.innerHTML = transformNumbers(x);
     log.appendChild(line);
   });
@@ -1979,16 +1982,16 @@ function update(lines = [])
   document.getElementById("growth-points").innerHTML = "Growth Points:" + macro.growthPoints;
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
   document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
-  document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false))
+  document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false));
   document.getElementById("cumPercent").innerHTML = Math.round(macro.cumStorage.amount / macro.cumStorage.limit * 100) + "%";
   document.getElementById("femcum").innerHTML = "Femcum: " + transformNumbers(volume(macro.femcumStorage.amount,unit,false));
   document.getElementById("femcumPercent").innerHTML = Math.round(macro.femcumStorage.amount / macro.femcumStorage.limit * 100) + "%";
   document.getElementById("milk").innerHTML = "Milk: " + transformNumbers(volume(macro.milkStorage.amount,unit,false));
   document.getElementById("milkPercent").innerHTML = Math.round(macro.milkStorage.amount / macro.milkStorage.limit * 100) + "%";
 
-  for (var type in victims) {
+  for (let type in victims) {
     if (victims.hasOwnProperty(type)) {
-      for (var key in victims[type]){
+      for (let key in victims[type]){
         if (victims[type].hasOwnProperty(key) && victims[type][key] > 0) {
           document.getElementById("stat-" + key).style.display = "table-row";
           document.getElementById("stat-" + type + "-" + key).innerHTML = number(victims[type][key],numbers);
@@ -2004,7 +2007,7 @@ function pick_move()
     setTimeout(pick_move, 1500 * Math.sqrt(macro.scale));
     return;
   }
-  var choice = Math.random();
+  let choice = Math.random();
 
   if (choice < 0.2) {
     sit();
@@ -2046,19 +2049,19 @@ function grow(times=1)
 
   macro.growthPoints -= 100 * times;
 
-  var oldHeight = macro.height;
-  var oldMass = macro.mass;
+  let oldHeight = macro.height;
+  let oldMass = macro.mass;
 
   macro.scale *= Math.pow(1.02,times);
 
-  var newHeight = macro.height;
-  var newMass = macro.mass;
+  let newHeight = macro.height;
+  let newMass = macro.mass;
 
-  var heightDelta = newHeight - oldHeight;
-  var massDelta = newMass - oldMass;
+  let heightDelta = newHeight - oldHeight;
+  let massDelta = newMass - oldMass;
 
-  var heightStr = length(heightDelta, unit);
-  var massStr = mass(massDelta, unit);
+  let heightStr = length(heightDelta, unit);
+  let massStr = mass(massDelta, unit);
 
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
@@ -2072,13 +2075,13 @@ function grow_dick(times=1)
 
   macro.growthPoints -= 10 * times;
 
-  var oldLength = macro.dickLength;
-  var oldMass = macro.dickMass;
+  let oldLength = macro.dickLength;
+  let oldMass = macro.dickMass;
 
   macro.dickScale = Math.pow(macro.dickScale * macro.dickScale + 1.02*times, 1/2) ;
 
-  var lengthDelta = macro.dickLength - oldLength;
-  var massDelta = macro.dickMass - oldMass;
+  let lengthDelta = macro.dickLength - oldLength;
+  let massDelta = macro.dickMass - oldMass;
   update(["Power surges through you as your " + macro.dickType + " cock grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
 }
 
@@ -2091,13 +2094,13 @@ function grow_balls(times=1)
 
   macro.growthPoints -= 10 * times;
 
-  var oldDiameter = macro.ballDiameter;
-  var oldMass = macro.ballMass;
+  let oldDiameter = macro.ballDiameter;
+  let oldMass = macro.ballMass;
 
   macro.ballScale = Math.pow(macro.ballScale * macro.ballScale + 1.02*times, 1/2) ;
 
-  var diameterDelta = macro.ballDiameter - oldDiameter;
-  var massDelta = macro.ballMass - oldMass;
+  let diameterDelta = macro.ballDiameter - oldDiameter;
+  let massDelta = macro.ballMass - oldMass;
   update(["Power surges through you as your balls swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
 }
 
@@ -2110,13 +2113,13 @@ function grow_breasts(times=1)
 
   macro.growthPoints -= 10 * times;
 
-  var oldDiameter = macro.breastDiameter;
-  var oldMass = macro.breastMass;
+  let oldDiameter = macro.breastDiameter;
+  let oldMass = macro.breastMass;
 
   macro.breastScale = Math.pow(macro.breastScale * macro.breastScale + 1.02*times, 1/2) ;
 
-  var diameterDelta = macro.breastDiameter - oldDiameter;
-  var massDelta = macro.breastMass - oldMass;
+  let diameterDelta = macro.breastDiameter - oldDiameter;
+  let massDelta = macro.breastMass - oldMass;
   update(["Power surges through you as your breasts swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
 }
 
@@ -2129,11 +2132,11 @@ function grow_vagina(times=1)
 
   macro.growthPoints -= 10 * times;
 
-  var oldLength = macro.vaginaLength;
+  let oldLength = macro.vaginaLength;
 
   macro.vaginaScale = Math.pow(macro.vaginaScale * macro.vaginaScale + 1.02*times, 1/2) ;
 
-  var lengthDelta = macro.vaginaLength - oldLength;
+  let lengthDelta = macro.vaginaLength - oldLength;
 
   update(["Power surges through you as your moist slit expands by by " + length(lengthDelta, unit, false),newline]);
 }
@@ -2147,57 +2150,39 @@ function grow_ass(times=1)
 
   macro.growthPoints -= 10 * times;
 
-  var oldDiameter = Math.pow(macro.assArea,1/2);
+  let oldDiameter = Math.pow(macro.assArea,1/2);
 
   macro.assScale = Math.pow(macro.assScale * macro.assScale + 1.02*times, 1/2) ;
 
-  var diameterDelta = Math.pow(macro.assArea,1/2) - oldDiameter;
+  let diameterDelta = Math.pow(macro.assArea,1/2) - oldDiameter;
   update(["Power surges through you as your ass swells by " + length(diameterDelta, unit, false),newline]);
 }
 
 function grow_lots()
 {
-  var oldHeight = macro.height;
-  var oldMass = macro.mass;
+  let oldHeight = macro.height;
+  let oldMass = macro.mass;
 
   macro.scale *= 100;
 
-  var newHeight = macro.height;
-  var newMass = macro.mass;
+  let newHeight = macro.height;
+  let newMass = macro.mass;
 
-  var heightDelta = newHeight - oldHeight;
-  var massDelta = newMass - oldMass;
+  let heightDelta = newHeight - oldHeight;
+  let massDelta = newMass - oldMass;
 
-  var heightStr = length(heightDelta, unit);
-  var massStr = mass(massDelta, unit);
+  let heightStr = length(heightDelta, unit);
+  let massStr = mass(massDelta, unit);
 
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
-function preset(name) {
-  switch(name){
-    case "Fen":
-      macro.species = "crux";
-      macro.baseHeight = 2.2606;
-      macro.baseMass = 124.738;
-      break;
-    case "Renard":
-      macro.species = "fox";
-      macro.baseHeight = 1.549;
-      macro.baseMass = 83.9;
-    case "Vulpes":
-      macro.species = "fox";
-      macro.baseHeight = 20000;
-      macro.baseMass = 180591661866272;
-  }
-}
-
 function saveSettings() {
-  var storage = window.localStorage;
-  var settings = {};
-  var form = document.forms.namedItem("custom-species-form");
+  let storage = window.localStorage;
+  let settings = {};
+  let form = document.forms.namedItem("custom-species-form");
 
-  for (var i=0; i<form.length; i++) {
+  for (let i=0; i<form.length; i++) {
     if (form[i].value != "") {
       if (form[i].type == "text")
         settings[form[i].name] = form[i].value;
@@ -2208,7 +2193,7 @@ function saveSettings() {
       } else if (form[i].type == "radio") {
         let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
         if (form[i].checked)
-          settings[name] = form[i].id
+          settings[name] = form[i].id;
       }
     }
   }
@@ -2220,12 +2205,12 @@ function loadSettings() {
   if (window.localStorage.getItem('settings') == null)
     return;
 
-  var storage = window.localStorage;
+  let storage = window.localStorage;
 
-  var settings = JSON.parse(storage.getItem('settings'));
-  var form = document.forms.namedItem("custom-species-form");
+  let settings = JSON.parse(storage.getItem('settings'));
+  let form = document.forms.namedItem("custom-species-form");
 
-  for (var i=0; i<form.length; i++) {
+  for (let i=0; i<form.length; i++) {
     if (settings[form[i].name] != undefined) {
       if (form[i].type == "text")
         form[i].value = settings[form[i].name];
@@ -2246,10 +2231,10 @@ function startGame(e) {
     return;
 
   started = true;
-  
-  var form = document.forms.namedItem("custom-species-form");
 
-  for (var i=0; i<form.length; i++) {
+  let form = document.forms.namedItem("custom-species-form");
+
+  for (let i=0; i<form.length; i++) {
     if (form[i].value != "") {
       if (form[i].type == "text")
         macro[form[i].name] = form[i].value;
@@ -2280,7 +2265,7 @@ function startGame(e) {
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
-  var victimTypes = ["stomped","digested","stomach","ground"];
+  let victimTypes = ["stomped","digested","stomach","ground"];
 
   if (macro.analVore) {
     victimTypes = victimTypes.concat(["bowels"]);
@@ -2374,32 +2359,32 @@ function startGame(e) {
   if (macro.brutality < 1) {
     document.getElementById("button-chew").style.display = 'none';
   }
-  var table = document.getElementById("victim-table");
+  let table = document.getElementById("victim-table");
 
-  var tr = document.createElement('tr');
-  var th = document.createElement('th');
+  let tr = document.createElement('tr');
+  let th = document.createElement('th');
 
   th.innerHTML = "Method";
   tr.appendChild(th);
-  for (var i = 0; i < victimTypes.length; i++) {
-    var th = document.createElement('th');
+  for (let i = 0; i < victimTypes.length; i++) {
+    let th = document.createElement('th');
     th.classList.add("victim-table-cell");
     th.innerHTML = victimTypes[i].charAt(0).toUpperCase() + victimTypes[i].slice(1);
     tr.appendChild(th);
   }
 
   table.appendChild(tr);
-  for (var key in things) {
+  for (let key in things) {
     if (things.hasOwnProperty(key) && key != "Container") {
-      var tr = document.createElement('tr');
+      let tr = document.createElement('tr');
       tr.id = "stat-" + key;
       tr.style.display = "none";
-      var th = document.createElement('th');
+      let th = document.createElement('th');
       th.innerHTML = key;
       tr.appendChild(th);
 
-      for (var i = 0; i < victimTypes.length; i++) {
-        var th = document.createElement('th');
+      for (let i = 0; i < victimTypes.length; i++) {
+        let th = document.createElement('th');
         th.innerHTML = 0;
         th.id = "stat-" + victimTypes[i] + "-" + key;
         tr.appendChild(th);
@@ -2415,8 +2400,8 @@ function startGame(e) {
   }
 
 
-  //var species = document.getElementById("option-species").value;
-  //var re = /^[a-zA-Z\- ]+$/;
+  //let species = document.getElementById("option-species").value;
+  //let re = /^[a-zA-Z\- ]+$/;
 
   // tricksy tricksy players
   //if (re.test(species)) {
@@ -2432,18 +2417,18 @@ function startGame(e) {
 }
 
 function actionTab(e) {
-  var name = e.target.id;
+  let name = e.target.id;
 
-  var target = "actions-" + name.replace(/action-part-/,"");
+  let target = "actions-" + name.replace(/action-part-/,"");
 
   document.querySelectorAll(".action-part-button.active").forEach(function (element) {
     element.classList.remove("active");
-  })
+  });
   document.querySelectorAll(".action-tab").forEach(function (element) {
     element.style.display = "none";
   });
 
-  e.target.classList.add("active")
+  e.target.classList.add("active");
   document.getElementById(target).style.display = "flex";
 }
 
