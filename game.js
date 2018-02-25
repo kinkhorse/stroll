@@ -202,6 +202,9 @@ let macro =
       --count;
     }
 
+    if (container.count == 0)
+      return;
+
     let digested = container.sum();
 
     for (let key in victims[organ.name]) {
@@ -213,13 +216,26 @@ let macro =
 
     let line = organ.describeDigestion(container);
     organ.fill(this,container);
-    let summary = summarize(container.sum());
+    let lethal = macro.brutality != 0 && (!macro.soulVoreEnabled || organ.name === "souls");
+    let summary = summarize(container.sum(),lethal);
 
     if (organ.contents.length > 0) {
       setTimeout(function() { owner.digest(owner,organ); }, 15000);
     }
 
-    update([line,summary,newline]);
+    if (macro.soulVoreEnabled && organ.name != "souls") {
+      owner.souls.feed(container);
+      let soulCount = container.sum()["Person"];
+      let soulLine = "";
+      if (soulCount > 0)
+        soulLine = "Their " + (soulCount == 1 ? "soul is" : "souls are") + " trapped in your depths!";
+      else
+        soulLine = "No souls, though...";
+      update([line,summary,soulLine,newline]);
+    } else {
+      update([line,summary,newline]);
+    }
+
   },
 
   "stomach": {
@@ -309,7 +325,7 @@ let macro =
     },
     "feedFunc": function(prey,self,owner) {
       if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 1500);
+        setTimeout(function() { owner.digest(owner,self); }, 15000);
       this.contents.push(prey);
     },
     "describeDigestion": function(container) {
@@ -322,6 +338,28 @@ let macro =
     },
     "contents" : [],
     "maxDigest" : 1
+  },
+
+  soulVoreEnabled: true,
+
+  "souls": {
+    "name" : "souls",
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      if (self.contents.length == 0)
+        setTimeout(function() { owner.digest(owner,self); }, 15000);
+      this.contents.push(prey);
+    },
+    "describeDigestion": function(container) {
+      return describe("soul-digest",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+      //no-op
+    },
+    "contents" : [],
+    "maxDigest" : 5
   },
 
   // holding spots
@@ -377,6 +415,7 @@ let macro =
     this.womb.owner = this;
     this.balls.owner = this;
     this.breasts.owner = this;
+    this.souls.owner = this;
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
@@ -899,9 +938,9 @@ function getPrey(region, area)
   }
   else if (macro.height > 1e6) {
     weights = {
-      "Town": 0.1,
-      "City": 0.05,
-      "Continent": 0.005,
+      "Town": 0.00001,
+      "City": 0.00005,
+      "Continent": 0.0005,
       "Planet": 0.0001
     };
   }
@@ -1980,6 +2019,78 @@ function pouch_eat()
   update([sound,line,linesummary,newline]);
 }
 
+function soul_vore()
+{
+  let area = macro.height * macro.height;
+  let prey = getPrey(biome,area);
+
+  let line = describe("soul-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+  let sound = "";
+  if (people == 0) {
+    sound = "";
+  } else if (people < 3) {
+    sound = "Ulp.";
+  } else if (people < 10) {
+    sound = "Gulp.";
+  } else if (people < 50) {
+    sound = "Glrrp.";
+  } else if (people < 500) {
+    sound = "Glrrrpkh!";
+  } else if (people < 5000) {
+    sound = "GLRRKPKH!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.souls.feed(prey);
+
+  macro.arouse(15);
+
+  updateVictims("soulvore",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function soul_absorb_paw()
+{
+  let prey = getPrey(biome,macro.pawArea);
+
+  let line = describe("soul-absorb-paw", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+  let sound = "";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.arouse(25);
+
+  updateVictims("soulpaw",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -2297,12 +2408,12 @@ function startGame(e) {
     if (macro.tailMaw) {
       victimTypes = victimTypes.concat(["tailmaw'd"]);
     } else {
-      document.getElementById("button-tail_vore").style.display = 'none';
+      document.getElementById("button-action-tail_vore").style.display = 'none';
     }
   } else {
     document.getElementById("action-part-tails").style.display = 'none';
-    document.getElementById("button-tail_slap").style.display = 'none';
-    document.getElementById("button-tail_vore").style.display = 'none';
+    document.getElementById("button-action-tail_slap").style.display = 'none';
+    document.getElementById("button-action-tail_vore").style.display = 'none';
   }
 
   if (macro.maleParts) {
@@ -2310,28 +2421,28 @@ function startGame(e) {
     if (macro.hasSheath) {
       victimTypes.push("sheath");
     } else {
-      document.getElementById("button-sheath_stuff").style.display = 'none';
-      document.getElementById("button-sheath_squeeze").style.display = 'none';
+      document.getElementById("button-action-sheath_stuff").style.display = 'none';
+      document.getElementById("button-action-sheath_squeeze").style.display = 'none';
     }
   } else {
     document.getElementById("action-part-dick").style.display = 'none';
-    document.getElementById("button-cockslap").style.display = 'none';
-    document.getElementById("button-cock_vore").style.display = 'none';
-    document.getElementById("button-ball_smother").style.display = 'none';
+    document.getElementById("button-action-cockslap").style.display = 'none';
+    document.getElementById("button-action-cock_vore").style.display = 'none';
+    document.getElementById("button-action-ball_smother").style.display = 'none';
     document.getElementById("cum").style.display = 'none';
     document.getElementById("cumPercent").style.display = 'none';
     document.querySelector("#part-balls+label").style.display = 'none';
     document.querySelector("#part-dick+label").style.display = 'none';
-    document.getElementById("button-sheath_stuff").style.display = 'none';
-    document.getElementById("button-sheath_squeeze").style.display = 'none';
-    document.getElementById("button-sheath_absorb").style.display = 'none';
+    document.getElementById("button-action-sheath_stuff").style.display = 'none';
+    document.getElementById("button-action-sheath_squeeze").style.display = 'none';
+    document.getElementById("button-action-sheath_absorb").style.display = 'none';
   }
 
   if (macro.femaleParts) {
     victimTypes = victimTypes.concat(["womb"]);
   } else {
     document.getElementById("action-part-vagina").style.display = 'none';
-    document.getElementById("button-unbirth").style.display = 'none';
+    document.getElementById("button-action-unbirth").style.display = 'none';
     document.getElementById("femcum").style.display = 'none';
     document.getElementById("femcumPercent").style.display = 'none';
     document.querySelector("#part-vagina+label").style.display = 'none';
@@ -2342,26 +2453,26 @@ function startGame(e) {
     if (macro.lactationEnabled) {
       victimTypes = victimTypes.concat(["flooded"]);
     } else {
-      document.getElementById("button-breast_milk").style.display = 'none';
+      document.getElementById("button-action-breast_milk").style.display = 'none';
       document.getElementById("milk").style.display = 'none';
       document.getElementById("milkPercent").style.display = 'none';
     }
     if (macro.breastVore) {
       victimTypes = victimTypes.concat(["breastvored"]);
     } else {
-      document.getElementById("button-breast_vore").style.display = 'none';
+      document.getElementById("button-action-breast_vore").style.display = 'none';
     }
   } else {
     document.getElementById("action-part-breasts").style.display = 'none';
-    document.getElementById("button-cleavage_stuff").style.display = 'none';
-    document.getElementById("button-cleavage_crush").style.display = 'none';
-    document.getElementById("button-cleavage_drop").style.display = 'none';
-    document.getElementById("button-cleavage_absorb").style.display = 'none';
-    document.getElementById("button-breast_vore").style.display = 'none';
-    document.getElementById("button-breast_milk").style.display = 'none';
+    document.getElementById("button-action-cleavage_stuff").style.display = 'none';
+    document.getElementById("button-action-cleavage_crush").style.display = 'none';
+    document.getElementById("button-action-cleavage_drop").style.display = 'none';
+    document.getElementById("button-action-cleavage_absorb").style.display = 'none';
+    document.getElementById("button-action-breast_vore").style.display = 'none';
+    document.getElementById("button-action-breast_milk").style.display = 'none';
     document.getElementById("milk").style.display = 'none';
     document.getElementById("milkPercent").style.display = 'none';
-    document.getElementById("button-breast_crush").style.display = 'none';
+    document.getElementById("button-action-breast_crush").style.display = 'none';
     document.querySelector("#part-breasts+label").style.display = 'none';
   }
 
@@ -2373,12 +2484,21 @@ function startGame(e) {
     victimTypes.push("pouched");
   } else {
     document.getElementById("action-part-misc").style.display = 'none';
-    document.getElementById("button-pouch_stuff").style.display = 'none';
-    document.getElementById("button-pouch_eat").style.display = 'none';
+    document.getElementById("button-action-pouch_stuff").style.display = 'none';
+    document.getElementById("button-action-pouch_eat").style.display = 'none';
+  }
+
+  if (macro.soulVoreEnabled) {
+    victimTypes.push("soulvore");
+    victimTypes.push("soulpaws");
+  } else {
+    document.getElementById("action-part-souls").style.display = 'none';
+    document.getElementById("button-action-soul_vore").style.display = 'none';
+    document.getElementById("button-action-soul_absorb_paw").style.display = 'none';
   }
 
   if (macro.brutality < 1) {
-    document.getElementById("button-chew").style.display = 'none';
+    document.getElementById("button-action-chew").style.display = 'none';
   }
   let table = document.getElementById("victim-table");
 
@@ -2496,6 +2616,8 @@ window.addEventListener('load', function(event) {
   victims["splooged"] = initVictims();
   victims["ground"] = initVictims();
   victims["pouched"] = initVictims();
+  victims["soulvore"] = initVictims();
+  victims["soulpaw"] = initVictims();
 
   document.querySelectorAll(".action-part-button").forEach(function (element) {
     element.addEventListener("click",actionTab);
@@ -2503,7 +2625,7 @@ window.addEventListener('load', function(event) {
 
   registerActions();
 
-  document.getElementById("button-look").addEventListener("look",look);
+  document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
   document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);

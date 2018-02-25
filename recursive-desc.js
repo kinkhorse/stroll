@@ -20,7 +20,7 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
-"female-orgasm","grind","pouch-stuff","pouch-eat","stomach","womb","balls","bowels","breasts"];
+"female-orgasm","grind","pouch-stuff","soul-vore","soul-absorb-paw","pouch-eat","stomach","womb","balls","bowels","breasts","soul-digest"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -333,6 +333,15 @@ function defaultPouchEat(container, macro, verbose) {
   return "You snatch " + container.describe(verbose) + " from your pouch and shove " + (container.count > 1 ? "them" : "it") + " down your gullet!";
 }
 
+function defaultSoulVore(container, macro, verbose) {
+  return "You open your jaws and inhale, ripping the souls from " + container.describe(verbose) + " and dragging them down deep inside.";
+}
+
+function defaultSoulAbsorbPaw(container, macro, verbose) {
+  let sum = container.sum()["Person"];
+  return "Your paw slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
+}
+
 function defaultStomach(container, macro, verbose) {
   if (isFatal(macro))
     return "Your stomach gurgles as it digests " + container.describe(false);
@@ -366,6 +375,16 @@ function defaultBreasts(container, macro, verbose) {
     return "Your breasts grrgle as they digest " + container.describe(false) + " into milk";
   else
     return "Your breasts slosh as they absorb " + container.describe(false);
+}
+
+function defaultSoulDigest(container, macro, verbose) {
+  let sum = container.sum()["Person"];
+  if (isGory(macro))
+    return "Your depths churn as they annihilate " + (sum == 1 ? "a soul" : sum + " souls") + " forever.";
+  else if (isFatal(macro))
+    return "Your depths churn as they claim " + (sum == 1 ? "a soul" : sum + " souls");
+  else
+    return "Your depths absorb " + (sum == 1 ? "a soul" : sum + " souls");
 }
 
 // EATING
