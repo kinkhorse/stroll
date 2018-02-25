@@ -948,33 +948,32 @@ function getPrey(region, area)
     switch(region)
     {
       case "rural": weights = {
-        "Person": 0.05,
-        "House": 0.01,
-        "Barn": 0.01,
-        "Cow": 0.2
+        "Person": 0.005,
+        "House": 0.001,
+        "Barn": 0.001,
+        "Cow": 0.02
       }; break;
       case "suburb": weights = {
-        "Person": 0.5,
-        "House": 0.5,
-        "Car": 0.2,
-        "Train": 0.1,
-        "Bus": 0.1
+        "Person": 0.03,
+        "House": 0.15,
+        "Car": 0.05,
+        "Bus": 0.02,
+        "Train": 0.02,
       }; break;
       case "city": weights = {
-        "Person": 0.5,
-        "House": 0.2,
-        "Car": 0.2,
-        "Train": 0.1,
-        "Bus": 0.1,
-        "Tram": 0.1,
-        "Parking Garage": 0.02
+        "Person": 0.05,
+        "House": 0.1,
+        "Car": 0.07,
+        "Bus": 0.02,
+        "Parking Garage": 0.003,
+        "Small Skyscraper": 0.05,
       }; break;
       case "downtown": weights = {
-        "Person": 0.5,
-        "Car": 0.3,
-        "Bus": 0.15,
-        "Tram": 0.1,
-        "Parking Garage": 0.02,
+        "Person": 0.1,
+        "Car": 0.1,
+        "Bus": 0.05,
+        "Tram": 0.01,
+        "Parking Garage": 0.005,
         "Small Skyscraper": 0.4,
         "Large Skyscraper": 0.1
       }; break;
