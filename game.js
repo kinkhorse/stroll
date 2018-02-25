@@ -951,7 +951,7 @@ function getPrey(region, area)
         "Person": 0.005,
         "House": 0.001,
         "Barn": 0.001,
-        "Cow": 0.02
+        "Cow": 0.02,
       }; break;
       case "suburb": weights = {
         "Person": 0.03,
@@ -959,6 +959,10 @@ function getPrey(region, area)
         "Car": 0.05,
         "Bus": 0.02,
         "Train": 0.02,
+        "Town": 0.00001,
+        "City": 0.00005,
+        "Continent": 0.0005,
+        "Planet": 0.0001
       }; break;
       case "city": weights = {
         "Person": 0.05,
@@ -967,6 +971,10 @@ function getPrey(region, area)
         "Bus": 0.02,
         "Parking Garage": 0.003,
         "Small Skyscraper": 0.05,
+        "Town": 0.00001,
+        "City": 0.00005,
+        "Continent": 0.0005,
+        "Planet": 0.0001
       }; break;
       case "downtown": weights = {
         "Person": 0.1,
@@ -975,7 +983,11 @@ function getPrey(region, area)
         "Tram": 0.01,
         "Parking Garage": 0.005,
         "Small Skyscraper": 0.4,
-        "Large Skyscraper": 0.1
+        "Large Skyscraper": 0.1,
+        "Town": 0.00001,
+        "City": 0.00005,
+        "Continent": 0.0005,
+        "Planet": 0.0001
       }; break;
     }
   }
