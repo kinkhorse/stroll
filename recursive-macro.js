@@ -9,7 +9,6 @@ var things =
   "Car": Car,
   "Bus": Bus,
   "Tram": Tram,
-  "Motorcycle": Motorcycle,
   "House": House,
   "Barn": Barn,
   "Small Skyscraper": SmallSkyscraper,
@@ -17,7 +16,6 @@ var things =
   "Train": Train,
   "Train Car": TrainCar,
   "Parking Garage": ParkingGarage,
-  "Overpass": Overpass,
   "Town": Town,
   "City": City,
   "Continent": Continent,
@@ -35,15 +33,13 @@ var areas =
   "Car": 4,
   "Bus": 12,
   "Tram": 20,
-  "Motorcycle": 2,
-  "House": 1000,
-  "Barn": 750,
-  "Small Skyscraper": 2500,
-  "Large Skyscraper": 5000,
-  "Train": 500,
-  "TrainCar": 500,
-  "Parking Garage": 10000,
-  "Overpass": 10000,
+  "House": 150,
+  "Barn": 300,
+  "Small Skyscraper": 1000,
+  "Large Skyscraper": 2000,
+  "Train": 40,
+  "TrainCar": 20,
+  "Parking Garage": 750,
   "Town": 1e7,
   "City": 1e9,
   "Continent": 1.5e13,
@@ -61,7 +57,6 @@ var masses =
   "Car": 1000,
   "Bus": 5000,
   "Tram": 10000,
-  "Motorcycle": 200,
   "House": 10000,
   "Barn": 5000,
   "Small Skyscraper": 10000000,
@@ -69,7 +64,6 @@ var masses =
   "Train": 50000,
   "Train Car": 7500,
   "Parking Garage": 10000000,
-  "Overpass": 1000000,
   "Town": 1,
   "City": 1,
   "Continent": 1e21,
@@ -87,7 +81,6 @@ var clusters =
   "Car": 3,
   "Bus": 1,
   "Tram": 1,
-  "Motorcycle": 1,
   "House": 5,
   "Barn": 1,
   "Small Skyscraper": 2,
@@ -95,7 +88,6 @@ var clusters =
   "Train": 2,
   "Train Car": 1,
   "Parking Garage": 1,
-  "Overpass": 1,
   "Town": 1,
   "City": 1,
   "Continent": 5,
@@ -497,7 +489,7 @@ function Car(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person", 2, 5, count);
+  this.addContent("Person", 1, 4, count);
 
   this.describeOne = function(verbose=true) {
     var color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"], (verbose ? 1 : 0));
@@ -531,7 +523,7 @@ function Bus(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",10,35,count);
+  this.addContent("Person",2,30,count);
 
   this.describeOne = function(verbose=true) {
     var adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
@@ -565,7 +557,7 @@ function Tram(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",40,60,count);
+  this.addContent("Person",10,50,count);
 
   this.describeOne = function(verbose=true) {
     var adjective = random_desc(["rusty","weathered"], (verbose ? 0.3 : 0));
@@ -594,16 +586,6 @@ function Tram(count = 1) {
   this.anal_vore = function() {
     return "You slide " + this.describe() + " up your tight ass";
   };
-}
-
-function Motorcycle(count = 1) {
-  this.name = "Motorcycle";
-
-  copy_defaults(this,new DefaultEntity());
-  this.count = count;
-  this.contents = {};
-
-  this.addContent("Person",1,2,count);
 }
 
 function Train(count = 1) {
@@ -814,7 +796,7 @@ function ParkingGarage(count = 1) {
 
   this.addContent("Person",10,200,count);
 
-  this.addContent("Empty Car",30,100,count);
+  this.addContent("Empty Car",100,300,count);
 
   this.addContent("Car",5,30,count);
 
@@ -831,18 +813,6 @@ function ParkingGarage(count = 1) {
     }
   };
 }
-
-function Overpass(count = 1) {
-  this.name = "Overpass";
-  copy_defaults(this,new DefaultEntity());
-  this.count = count;
-  this.contents = {};
-
-  this.addContent("Person",0,20,count);
-
-  this.addContent("Car",25,100,count);
-}
-
 function Town(count = 1) {
   this.name = "Town";
 
@@ -856,9 +826,9 @@ function Town(count = 1) {
 
   this.addContent("Empty Car",200,800,count);
 
-  this.addContent("Car",200,500,count);
+  this.addContent("Car",50,100,count);
 
-  this.addContent("Bus",10,50,count);
+  this.addContent("Bus",5,25,count);
 
   this.addContent("Train",5,25,count);
 
@@ -922,9 +892,9 @@ function Continent(count = 1) {
 
   this.addContent("Train",50,100,count);
 
-  this.addContent("Town",100,250,count);
+  this.addContent("Town",100,200,count);
 
-  this.addContent("City",25,75,count);
+  this.addContent("City",5,10,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
