@@ -20,7 +20,8 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
-"female-orgasm","grind","pouch-stuff","soul-vore","soul-absorb-paw","pouch-eat","stomach","womb","balls","bowels","breasts","soul-digest"];
+"female-orgasm","grind","pouch-stuff","soul-vore","soul-absorb-paw","pouch-eat","stomach","womb",
+"balls","bowels","breasts","soul-digest"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -114,40 +115,57 @@ function describe(action, container, macro, verbose=true) {
 // DEFAULTS
 
 function defaultEat(container, macro, verbose) {
-  return "You scoop up " + container.describe(verbose) + " and swallow " + (container.count > 1 ? "them" : "it") + " whole.";
+  if (container.count == 0)
+    return "You reach down for a delicious treat and grab - oh, nothing.";
+  else
+    return "You scoop up " + container.describe(verbose) + " and swallow " + (container.count > 1 ? "them" : "it") + " whole.";
 }
 
 function defaultChew(container, macro, verbose) {
-  if (isNonFatal(macro))
+  if (container.count == 0)
+    return "You reach down for a delicious treat and grab - oh, nothing.";
+  else if (isNonFatal(macro))
     return defaultEat(container, macro, verbose);
   else
     return "You scoop up " + container.describe(verbose) + " and crunch " + (container.count > 1 ? "them" : "it") + " in your powerful jaws, then swallow them down.";
 }
 
 function defaultStomp(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your paw thumps the ground.";
+  else if (isFatal(macro))
     return "You crush " + container.describe(verbose) + " underfoot.";
   else
     return "You step on " + container.describe(verbose) + ".";
 }
 
 function defaultKick(container, macro, verbose) {
-  return "You punt " + container.describe(verbose) + ", destroying " + (container.count > 1 ? "them" : "it") + ".";
+  if (container.count == 0)
+    return "You swing your mighty paw..and hit nothing.";
+  else
+    return "You punt " + container.describe(verbose) + ", destroying " + (container.count > 1 ? "them" : "it") + ".";
 }
 
 function defaultAnalVore(container, macro, verbose) {
-  return "You sit yourself down on " + container.describe(verbose) + ". " + (container.count > 1 ? "They slide" : "It slides") + " inside with ease.";
+  if (container.count == 0)
+    return "You're pretty sure you just sat on a rock.";
+  else
+    return "You sit yourself down on " + container.describe(verbose) + ". " + (container.count > 1 ? "They slide" : "It slides") + " inside with ease.";
 }
 
 function defaultAssCrush(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "You take a seat. It's good to have a break!";
+  else if (isFatal(macro))
     return "Your heavy ass obliterates " + container.describe(verbose) + ". ";
   else
     return "You sit on " + container.describe(verbose);
 }
 
 function defaultTailSlap(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your " + (macro.tailCount > 1 ? "tails swing" : "tail swings") + " to and fro";
+  else if (isFatal(macro))
     return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails swing" : " tail swings") + " into " + container.describe(verbose) + ", smashing everything in " +
     (macro.tailCount > 1 ? "their" : "its") + " path.";
   else
@@ -155,7 +173,9 @@ function defaultTailSlap(container, macro, verbose) {
 }
 
 function defaultTailVore(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your " + (macro.tailCount > 1 ? "drooling tails swing" : "drooling tail swings") + " to and fro";
+  else if (isFatal(macro))
     return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose) +
      ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully to drag your prey into your sloppy guts.";
   else
@@ -164,7 +184,10 @@ function defaultTailVore(container, macro, verbose) {
 }
 
 function defaultCleavageStuff(container, macro, verbose) {
-  return "You snatch up " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your cleavage.";
+  if (container.count == 0)
+    return "You can't fit anything into your cleavage right now.";
+  else
+    return "You snatch up " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your cleavage.";
 }
 
 function defaultCleavageCrush(container, macro, verbose) {
@@ -195,30 +218,43 @@ function defaultCleavageAbsorb(container, macro, verbose) {
 }
 
 function defaultBreastCrush(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your thump your breasts against the ground.";
+  else if (isFatal(macro))
     return "Your heavy breasts obliterate " + container.describe(verbose) + ". ";
   else
     return "You smoosh " + container.describe(verbose) + " with your breasts.";
 }
 
 function defaultBreastVore(container, macro, verbose) {
-  return "Your nipples envelop " + container.describe(verbose) + ", pulling them into your breasts. ";
+  if (container.count == 0)
+    return "It'd be pretty hot to stick someone in your breasts. Shame you can't right now.";
+  else
+    return "Your nipples envelop " + container.describe(verbose) + ", pulling them into your breasts. ";
 }
 
 
 function defaultBreastMilk(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "You squeeze your breasts, coaxing out $VOLUME of warm, creamy milk that splatters on the ground.";
+  else if (isFatal(macro))
     return "You squeeze your breasts, coaxing out $VOLUME of warm, creamy milk that floods " + container.describe(verbose) + " in an unstoppable wave of white.";
   else
     return "You squeeze your breasts, coaxing out $VOLUME of warm, creamy milk that floods " + container.describe(verbose) + ".";
 }
 
 function defaultUnbirth(container, macro, verbose) {
-  return "You gasp as you slide " + container.describe(verbose) + " up your slit. ";
+  if (container.count == 0)
+    return "You grab " + new Person(1).describe(verbose) + " and grind them against your slit...but they won't fit.";
+  else
+    return "You gasp as you slide " + container.describe(verbose) + " up your slit. ";
 }
 
 function defaultSheathStuff(container, macro, verbose) {
-  return "You pluck " + container.describe(verbose) + " from the ground and slip them into your musky sheath.";
+  if (container.count == 0)
+    return "You grab a " + new Person(1).describe(verbose) + " and grind them against your sheath-slit...but they won't fit.";
+  else
+    return "You pluck " + container.describe(verbose) + " from the ground and slip them into your musky sheath.";
 }
 
 function defaultSheathSqueeze(container, macro, verbose) {
@@ -250,7 +286,9 @@ function defaultSheathSqueeze(container, macro, verbose) {
 }
 
 function defaultSheathCrush(container, macro, verbose) {
-  if (isGory(macro))
+  if (container.count == 0)
+    return "Your orgasm causes your " + macro.describeDick + " cock to swell and surge.";
+  else if (isGory(macro))
     return "Your powerful orgasm causes your throbbing " + macro.describeDick + " cock to swell and crush the life from everything in your sheath, reducing " + container.describe(false) + " to a gory paste that slickens your spurting shaft.";
   else if (isFatal(macro))
     return "Your orgasm causes your " + macro.describeDick + " shaft to throb and swell, smashing " + container.describe(false) + " trapped in your musky sheath.";
@@ -266,46 +304,61 @@ function defaultSheathAbsorb(container, macro, verbose) {
 }
 
 function defaultCockVore(container, macro, verbose) {
-  return "You stuff " + container.describe(verbose) + " into your throbbing shaft, forcing them down to your heavy balls.";
+  if (container.count == 0)
+    return "You grab " + new Person(1).describe(verbose) + " and grind them against your cock...but they won't fit.";
+  else
+    return "You stuff " + container.describe(verbose) + " into your throbbing shaft, forcing them down to your heavy balls.";
 }
 
 function defaultCockslap(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your " + macro.describeDick + " swings through the air. Lewd!";
+  else if (isFatal(macro))
     return "Your swaying " + macro.describeDick + " cock crushes " + container.describe(verbose) + ". ";
   else
     return "You smack " + container.describe(verbose) + " with your " + macro.describeDick + " shaft.";
 }
 
 function defaultBallSmother(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "You rest your heavy balls on the ground.";
+  else if (isFatal(macro))
     return "Your weighty balls spread over " + container.describe(verbose) + ", drowning them in musk.";
   else
     return "Your weighty balls spread over " + container.describe(verbose) + ".";
 }
 
 function defaultMaleSpurt(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your " + macro.describeDick + " cock spurts out $VOLUME of bitter precum.";
+  else if (isFatal(macro))
     return "Your " + macro.describeDick + " cock spurts out $VOLUME of bitter precum, drowning " + container.describe(verbose) + " in a deluge of musk.";
   else
     return "Your " + macro.describeDick + " shaft spurts out $VOLUME of precum, splooging " + container.describe(verbose) + ".";
 }
 
 function defaultMaleOrgasm(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your " + macro.describeDick + " cock spurts out $VOLUME of seed.";
+  else if (isFatal(macro))
     return "You're cumming! Your " + macro.describeDick + " cock gushes $VOLUME of seed, obliterating " + container.describe(verbose) + " in a torrent of cum.";
   else
     return "You're cumming! Your " + macro.describeDick + " shaft gushes $VOLUME of seed, splooging " + container.describe(verbose) + ".";
 }
 
 function defaultFemaleSpurt(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your moist slit splatters $VOLUME of slick juices.";
+  else if (isFatal(macro))
     return "Your moist slit splatters $VOLUME of slick juices, drowning " + container.describe(verbose) + " in your building lust.";
   else
     return "Your moist slit splatters $VOLUME of slick juices, splooging " + container.describe(verbose) + ".";
 }
 
 function defaultFemaleOrgasm(container, macro, verbose) {
-  if (isFatal(macro))
+  if (container.count == 0)
+    return "Your moist slit splatters $VOLUME of slick femcum.";
+  else if (isFatal(macro))
     return "Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in a torrent of femcum.";
   else
     return "Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
@@ -314,32 +367,47 @@ function defaultFemaleOrgasm(container, macro, verbose) {
 function defaultGrind(container, macro, verbose) {
   var mid = isFatal(macro) ? ", smashing them apart" : ", using them as a toy";
   var end = macro.arousalEnabled ? " to fuel your lust." : ".";
+  var desc = container.counter > 0 ? container.describe(verbose) + mid + end : "the ground.";
   if (macro.maleParts && macro.femaleParts) {
-    return "You grind your " + macro.describeDick + " cock and " + macro.describeVagina + " slit against " + container.describe(verbose) + mid + end;
+    return "You grind your " + macro.describeDick + " cock and " + macro.describeVagina + " slit against " + desc;
   } else if (macro.maleParts && !macro.femaleParts) {
-    return "You grind your " + macro.describeDick + " shaft against " + container.describe(verbose) + mid + end;
+    return "You grind your " + macro.describeDick + " shaft against " + desc;
   } else if (!macro.maleParts && macro.femaleParts) {
-    return "You grind your " + macro.describeVagina + " slit against " + container.describe(verbose) + mid + end;
+    return "You grind your " + macro.describeVagina + " slit against " + desc;
   } else {
-    return "You grind your hips against " + container.describe(verbose) + mid + end;
+    return "You grind your hips against " + desc;
   }
 }
 
 function defaultPouchStuff(container, macro, verbose) {
-  return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your pouch.";
+  if (container.count == 0)
+    return "You grab " + new Person(1).describe(verbose) + " and stuff them against your pouch...but they won't fit!";
+  else
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your pouch.";
 }
 
 function defaultPouchEat(container, macro, verbose) {
-  return "You snatch " + container.describe(verbose) + " from your pouch and shove " + (container.count > 1 ? "them" : "it") + " down your gullet!";
+  if (container.count == 0)
+    return "There's nothing in your pouch!";
+  else
+    return "You snatch " + container.describe(verbose) + " from your pouch and shove " + (container.count > 1 ? "them" : "it") + " down your gullet!";
 }
 
 function defaultSoulVore(container, macro, verbose) {
-  return "You open your jaws and inhale, ripping the souls from " + container.describe(verbose) + " and dragging them down deep inside.";
+  if (container.count == 0)
+    return "No souls here.";
+  else
+    return "You open your jaws and inhale, ripping the souls from " + container.describe(verbose) + " and dragging them down deep inside.";
 }
 
 function defaultSoulAbsorbPaw(container, macro, verbose) {
   let sum = container.sum()["Person"];
-  return "Your paw slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
+  if (container.count == 0)
+    return "Your paw thumps against the ground";
+  else if (sum == 0)
+    return "Your paw slams down on " + container.describe(verb0se) + "...but there aren't any souls within!";
+  else
+    return "Your paw slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
 }
 
 function defaultStomach(container, macro, verbose) {

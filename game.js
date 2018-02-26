@@ -63,8 +63,11 @@ let macro =
   "baseHandArea": 0.1,
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
 
+  "sameSizeVore": true,
+  "sameSizeStomp": true,
+
   "assScale": 1,
-  analVore: true,
+  "analVore": true,
 
   "hasTail": true,
   "tailType": "slinky",
@@ -889,7 +892,7 @@ function summarize(sum, fatal = true)
   return "<b>(" + count + " " + word + ")</b>";
 }
 
-function getOnePrey(biome,area)
+function getOnePrey(biome, area, sameSize = true)
 {
   let potential = ["Person"];
 
@@ -922,9 +925,13 @@ function getOnePrey(biome,area)
     }
   }
 
-  return new Container([new Person(1)]);
+  if (sameSize)
+    return new Container([new Person(1)]);
+  else
+    return new Container();
 }
-function getPrey(region, area)
+
+function getPrey(region, area, sameSize = false)
 {
   let weights = {"Person": 1};
 
@@ -991,7 +998,11 @@ function getPrey(region, area)
       }; break;
     }
   }
-  return fill_area(area,weights);
+  var prey = fill_area(area,weights);
+
+  if (prey.count == 0 && sameSize)
+    return getOnePrey(biome, area);
+  return prey;
 }
 
 
@@ -1010,7 +1021,7 @@ function updateVictims(type,prey)
 function feed()
 {
   let area = macro.handArea;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
 
   let line = describe("eat", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -1048,7 +1059,7 @@ function feed()
 function chew()
 {
   let area = macro.handArea;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
 
   let line = describe("chew", prey, macro, verbose);
 
@@ -1085,7 +1096,7 @@ function chew()
 function stomp()
 {
   let area = macro.pawArea;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeStomp);
   let line = describe("stomp", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), true);
 
@@ -1125,7 +1136,7 @@ function grind()
   if (macro.femalePartS)
     area += macro.vaginaArea;
 
-  let prey = getPrey(biome,area);
+  let prey = getPrey(biome, area);
 
   let line = describe("grind", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), true);
@@ -1160,7 +1171,7 @@ function grind()
 function anal_vore()
 {
   let area = macro.analVoreArea;
-  let prey = getOnePrey(biome,area);
+  let prey = getOnePrey(biome, macro.sameSizeVore);
 
   let line = describe("anal-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -1201,7 +1212,7 @@ function sit()
     anal_vore();
 
   let area = macro.assArea;
-  let crushed = getPrey(biome,area);
+  let crushed = getPrey(biome, area, macro.sameSizeStomp);
 
   let line = describe("ass-crush", crushed, macro, verbose);
   let linesummary = summarize(crushed.sum(), true);
@@ -1372,7 +1383,7 @@ function cleavage_absorb()
 function breast_crush()
 {
   let area = macro.breastArea;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeStomp);
   let line = describe("breast-crush", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), true);
 
@@ -1412,7 +1423,7 @@ function breast_vore()
 {
   // todo nipple areas?
   let area = macro.breastArea/2;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("breast-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
@@ -1494,7 +1505,7 @@ function breast_milk(e,vol)
 function unbirth()
 {
   let area = macro.vaginaArea;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("unbirth", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
@@ -1530,7 +1541,7 @@ function unbirth()
 
 function sheath_stuff()
 {
-  let area = Math.min(macro.handArea, macro.dickGirth*3);
+  let area = Math.min(macro.handArea, macro.dickArea);
   let prey = getPrey(biome, area);
   let line = describe("sheath-stuff", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -1689,7 +1700,7 @@ function cockslap()
 function cock_vore()
 {
   let area = macro.dickGirth;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("cock-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
@@ -1925,7 +1936,7 @@ function tail_slap()
 function tail_vore()
 {
   let area = macro.tailGirth * macro.tailCount;
-  let prey = getPrey(biome, area);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("tail-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
@@ -2033,7 +2044,7 @@ function pouch_eat()
 function soul_vore()
 {
   let area = macro.height * macro.height;
-  let prey = getPrey(biome,area);
+  let prey = getPrey(biome, area);
 
   let line = describe("soul-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -2070,7 +2081,7 @@ function soul_vore()
 
 function soul_absorb_paw()
 {
-  let prey = getPrey(biome,macro.pawArea);
+  let prey = getPrey(biome, macro.pawArea, macro.sameSizeStomp);
 
   let line = describe("soul-absorb-paw", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), true);

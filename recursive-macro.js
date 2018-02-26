@@ -147,10 +147,7 @@ function fill_area(area, weights, variance=0.15)
       result.push(new things[candidate.name](count));
   }
 
-  if (result.length > 0)
-    return new Container(result);
-  else
-    return new Container([new Person(1)]);
+  return new Container(result);
 }
 // describes everything in the container
 
