@@ -1001,7 +1001,7 @@ function getPrey(region, area, sameSize = false)
   var prey = fill_area(area,weights);
 
   if (prey.count == 0 && sameSize)
-    return getOnePrey(biome, area);
+    return getOnePrey(biome, area, true);
   return prey;
 }
 
@@ -1171,7 +1171,7 @@ function grind()
 function anal_vore()
 {
   let area = macro.analVoreArea;
-  let prey = getOnePrey(biome, macro.sameSizeVore);
+  let prey = getOnePrey(biome, area, macro.sameSizeVore);
 
   let line = describe("anal-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
