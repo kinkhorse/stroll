@@ -134,6 +134,7 @@ body.dark #log {
   font-size: 18px;
   width: 50%;
   height: 75px;
+  display: none;
 }
 
 #victim-table {
@@ -211,6 +212,10 @@ th {
   display: none;
 }
 
+.growth-option+label {
+  display: none;
+}
+
 .growth-label {
   font-size: 20pt;
 }
@@ -239,6 +244,7 @@ ul {
   font-size: 30px;
   width: 50%;
   height: 100px;
+  display: none;
 }
 
 .action-part-button.active {

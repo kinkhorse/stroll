@@ -2369,6 +2369,31 @@ function loadSettings() {
   }
 }
 
+function enable_button(name) {
+  document.getElementById("button-action-" + name).style.display = "inline";
+}
+
+function enable_panel(name) {
+  document.getElementById("action-part-" + name).style.display = "inline";
+}
+
+function enable_stat(name) {
+  document.getElementById(name).style.display = 'none';
+  document.getElementById(name + "Percent").style.display = 'none';
+}
+
+function enable_growth_part(name) {
+  document.querySelector("#part-" + name + "+label").style.display = 'inline';
+}
+
+function disable_button(name) {
+  document.getElementById("button-action-" + name).style.display = "none";
+}
+
+function disable_panel(name) {
+  document.getElementById("action-part-" + name).style.display = "none";
+}
+
 function startGame(e) {
   if (started)
     return;
@@ -2404,87 +2429,101 @@ function startGame(e) {
     macro.tailCount = 0;
   }
 
+  let victimTypes = ["stomped","digested","stomach","ground"];
+
   document.getElementById("log-area").style.display = 'inline';
   document.getElementById("option-panel").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
-  let victimTypes = ["stomped","digested","stomach","ground"];
+  enable_panel("body");
+  enable_button("feed");
+  enable_button("stomp");
+  enable_button("sit");
+  enable_button("grind");
+
+  enable_growth_part("body");
+  enable_growth_part("ass");
+
+  if (macro.brutality > 0) {
+    enable_button("chew");
+  }
 
   if (macro.analVore) {
-    victimTypes = victimTypes.concat(["bowels"]);
+    victimTypes.push("bowels");
   }
 
   if (macro.tailCount > 0) {
-    victimTypes = victimTypes.concat(["tailslapped"]);
+    enable_panel("tails");
+    victimTypes.push("tailslapped");
+    enable_button("tail_slap");
+
     if (macro.tailMaw) {
-      victimTypes = victimTypes.concat(["tailmaw'd"]);
-    } else {
-      document.getElementById("button-action-tail_vore").style.display = 'none';
+      victimTypes.push("tailmaw'd");
+      enable_button("tail_vore");
     }
-  } else {
-    document.getElementById("action-part-tails").style.display = 'none';
-    document.getElementById("button-action-tail_slap").style.display = 'none';
-    document.getElementById("button-action-tail_vore").style.display = 'none';
   }
 
   if (macro.maleParts) {
-    victimTypes = victimTypes.concat(["cock","balls"]);
+    enable_panel("dick");
+
+    victimTypes.push("cock");
+    victimTypes.push("balls");
+
+    enable_button("cockslap");
+    enable_button("cock_vore");
+    enable_button("ball_smother");
+
+    enable_stat("cum");
+
+    enable_growth_part("dick");
+    enable_growth_part("balls");
+
     if (macro.hasSheath) {
       victimTypes.push("sheath");
-    } else {
-      document.getElementById("button-action-sheath_stuff").style.display = 'none';
-      document.getElementById("button-action-sheath_squeeze").style.display = 'none';
+
+      enable_button("sheath_stuff");
+      enable_button("sheath_squeeze");
+      enable_button("sheath_absorb");
     }
-  } else {
-    document.getElementById("action-part-dick").style.display = 'none';
-    document.getElementById("button-action-cockslap").style.display = 'none';
-    document.getElementById("button-action-cock_vore").style.display = 'none';
-    document.getElementById("button-action-ball_smother").style.display = 'none';
-    document.getElementById("cum").style.display = 'none';
-    document.getElementById("cumPercent").style.display = 'none';
-    document.querySelector("#part-balls+label").style.display = 'none';
-    document.querySelector("#part-dick+label").style.display = 'none';
-    document.getElementById("button-action-sheath_stuff").style.display = 'none';
-    document.getElementById("button-action-sheath_squeeze").style.display = 'none';
-    document.getElementById("button-action-sheath_absorb").style.display = 'none';
   }
 
   if (macro.femaleParts) {
-    victimTypes = victimTypes.concat(["womb"]);
-  } else {
-    document.getElementById("action-part-vagina").style.display = 'none';
-    document.getElementById("button-action-unbirth").style.display = 'none';
-    document.getElementById("femcum").style.display = 'none';
-    document.getElementById("femcumPercent").style.display = 'none';
-    document.querySelector("#part-vagina+label").style.display = 'none';
+    victimTypes.push("womb");
+
+    enable_panel("vagina");
+
+    enable_button("unbirth");
+
+    enable_stat("femcum");
+
+    enable_growth_part("vagina");
   }
 
   if (macro.hasBreasts) {
     victimTypes = victimTypes.concat(["breasts","cleavage","cleavagecrushed","cleavagedropped","cleavageabsorbed"]);
+
+    enable_panel("breasts");
+
+    enable_button("breast_crush");
+    enable_button("cleavage_stuff");
+    enable_button("cleavage_crush");
+    enable_button("cleavage_drop");
+    enable_button("cleavage_absorb");
+
+    enable_growth_part("breasts");
+
     if (macro.lactationEnabled) {
-      victimTypes = victimTypes.concat(["flooded"]);
-    } else {
-      document.getElementById("button-action-breast_milk").style.display = 'none';
-      document.getElementById("milk").style.display = 'none';
-      document.getElementById("milkPercent").style.display = 'none';
+      victimTypes.push("flooded");
+
+      enable_button("breast_milk");
+      enable_stat("milk");
     }
+
     if (macro.breastVore) {
-      victimTypes = victimTypes.concat(["breastvored"]);
-    } else {
-      document.getElementById("button-action-breast_vore").style.display = 'none';
+      victimTypes.push("breastvored");
+
+      enable_button("breast_vore");
     }
-  } else {
-    document.getElementById("action-part-breasts").style.display = 'none';
-    document.getElementById("button-action-cleavage_stuff").style.display = 'none';
-    document.getElementById("button-action-cleavage_crush").style.display = 'none';
-    document.getElementById("button-action-cleavage_drop").style.display = 'none';
-    document.getElementById("button-action-cleavage_absorb").style.display = 'none';
-    document.getElementById("button-action-breast_vore").style.display = 'none';
-    document.getElementById("button-action-breast_milk").style.display = 'none';
-    document.getElementById("milk").style.display = 'none';
-    document.getElementById("milkPercent").style.display = 'none';
-    document.getElementById("button-action-breast_crush").style.display = 'none';
-    document.querySelector("#part-breasts+label").style.display = 'none';
   }
 
   if (macro.maleParts || macro.femaleParts) {
@@ -2493,24 +2532,29 @@ function startGame(e) {
 
   if (macro.hasPouch) {
     victimTypes.push("pouched");
-  } else {
-    document.getElementById("action-part-misc").style.display = 'none';
-    document.getElementById("button-action-pouch_stuff").style.display = 'none';
-    document.getElementById("button-action-pouch_eat").style.display = 'none';
+
+    enable_panel("misc");
+
+    enable_button("pouch_stuff");
+    enable_button("pouch_eat");
+
   }
 
   if (macro.soulVoreEnabled) {
     victimTypes.push("soulvore");
     victimTypes.push("soulpaws");
-  } else {
-    document.getElementById("action-part-souls").style.display = 'none';
-    document.getElementById("button-action-soul_vore").style.display = 'none';
-    document.getElementById("button-action-soul_absorb_paw").style.display = 'none';
+
+    enable_panel("souls");
+
+    enable_button("soul_vore");
+    enable_button("soul_absorb_paw");
+
   }
 
-  if (macro.brutality < 1) {
-    document.getElementById("button-action-chew").style.display = 'none';
+  if (macro.brutality > 0) {
+    enable_button("chew");
   }
+
   let table = document.getElementById("victim-table");
 
   let tr = document.createElement('tr');
