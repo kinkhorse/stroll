@@ -2,9 +2,16 @@
 
 /*jshint browser: true*/
 
+let errored = false;
+
 window.onerror = function(msg, source, lineno, colno, error) {
-  let line = "in: " + source + " at line: " + lineno + ", col: " + colno;
-  alert("Error! " + msg + error);
+  if (!errored) {
+    errored = true;
+
+    alert("An error occurred! Please press F12 to open the dev tools, then click the 'Console' tab and send any errors shown there to chemicalcrux\n\nScreenshotting the text and line number of the error would be great.\n\nAlso include the browser information that gets logged below it.");
+
+    console.log(navigator.userAgent);
+  }
 }
 
 // do da dark mode
