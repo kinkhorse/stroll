@@ -1776,12 +1776,12 @@ function ball_smother()
   macro.arouse(10);
 }
 
-function male_spurt(vol,times)
+function male_spurt(vol)
 {
-  let area = Math.pow(vol*times, 2/3);
+  let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("male-spurt", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
+  let line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
@@ -1842,12 +1842,12 @@ function male_orgasm(vol,times)
   update([sound,line,linesummary,newline]);
 }
 
-function female_spurt(vol,times)
+function female_spurt(vol)
 {
-  let area = Math.pow(vol*times, 2/3);
+  let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("female-spurt", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
+  let line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
