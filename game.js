@@ -2,6 +2,11 @@
 
 /*jshint browser: true*/
 
+window.onerror = function(msg, source, lineno, colno, error) {
+  let line = "in: " + source + " at line: " + lineno + ", col: " + colno;
+  alert("Error! " + msg + error);
+}
+
 // do da dark mode
 
 let dark = false;
