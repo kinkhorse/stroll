@@ -330,20 +330,20 @@ function defaultBallSmother(container, macro, verbose) {
 
 function defaultMaleSpurt(container, macro, verbose) {
   if (container.count == 0)
-    return "Your " + macro.describeDick + " cock spurts out $VOLUME of bitter precum.";
+    return "Your " + macro.describeDick + " cock spews $VOLUME of bitter precum.";
   else if (isFatal(macro))
-    return "Your " + macro.describeDick + " cock spurts out $VOLUME of bitter precum, drowning " + container.describe(verbose) + " in a deluge of musk.";
+    return "Your " + macro.describeDick + " cock spurts out bitter precum, drowning " + container.describe(verbose) + " in $VOLUME of slick musky fluid.";
   else
-    return "Your " + macro.describeDick + " shaft spurts out $VOLUME of precum, splooging " + container.describe(verbose) + ".";
+    return "Your " + macro.describeDick + " shaft spurts precum, splooging " + container.describe(verbose) + " in $VOLUME of slick musky fluid.";
 }
 
 function defaultMaleOrgasm(container, macro, verbose) {
   if (container.count == 0)
-    return "Your " + macro.describeDick + " cock spurts out $VOLUME of seed.";
+    return "Your " + macro.describeDick + " cock spurts $TIMES times, gushing $VOLUME of seed.";
   else if (isFatal(macro))
-    return "You're cumming! Your " + macro.describeDick + " cock gushes $VOLUME of seed, obliterating " + container.describe(verbose) + " in a torrent of cum.";
+    return "You're cumming! Your " + macro.describeDick + " cock erupts with $TIMES ropes of seed, obliterating " + container.describe(verbose) + " in a $VOLUME-torrent of cum.";
   else
-    return "You're cumming! Your " + macro.describeDick + " shaft gushes $VOLUME of seed, splooging " + container.describe(verbose) + ".";
+    return "You're cumming! Your " + macro.describeDick + " shaft erupts with $TIMES ropes of seed, splooging " + container.describe(verbose) + " in a $VOLUME-torrent of cum.";
 }
 
 function defaultFemaleSpurt(container, macro, verbose) {
@@ -357,11 +357,11 @@ function defaultFemaleSpurt(container, macro, verbose) {
 
 function defaultFemaleOrgasm(container, macro, verbose) {
   if (container.count == 0)
-    return "Your moist slit splatters $VOLUME of slick femcum.";
+    return "Your moist slit sprays $TIMES times, gushing out $VOLUME of slick femcum.";
   else if (isFatal(macro))
-    return "Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in a torrent of femcum.";
+    return "Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in $TIMES consecutive bursts of lust.";
   else
-    return "Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + ".";
+    return "Your moist slit sprays $VOLUME of slick femcum, splooging " + container.describe(verbose) + " with $TIMES orgasmic spurts.";
 }
 
 function defaultGrind(container, macro, verbose) {

@@ -526,6 +526,7 @@ let macro =
         if (!this.maleParts && !this.femaleParts) {
           this.nullOrgasm(this);
         }
+        this.quench(100);
       }
     }
   },
@@ -585,10 +586,14 @@ let macro =
       return;
 
     if (self.orgasm) {
-      self.quench(10);
-      let amount = Math.min(this.cumVolume, this.cumStorage.amount);
-      this.cumStorage.amount -= amount;
-      male_orgasm(amount);
+      let amount = 0;
+      let times = Math.round(Math.random()*3+3);
+      for (let i=0; i<5; i++) {
+        let spurt = Math.min(this.cumVolume, this.cumStorage.amount);
+        amount += spurt;
+        this.cumStorage.amount -= spurt;
+      }
+      male_orgasm(amount,5);
       setTimeout(function() { self.maleOrgasm(self); }, 2000);
     }
   },
@@ -598,10 +603,14 @@ let macro =
       return;
 
     if (this.orgasm) {
-      this.quench(10);
-      let amount = Math.min(this.femcumVolume, this.femcumStorage.amount);
-      this.femcumStorage.amount -= amount;
-      female_orgasm(amount);
+      let amount = 0;
+      let times = Math.round(Math.random()*3+3);
+      for (let i=0; i<5; i++) {
+        let spurt = Math.min(this.femcumVolume, this.femcumStorage.amount);
+        amount += spurt;
+        this.femcumStorage.amount -= spurt;
+      }
+      female_orgasm(amount,5);
       setTimeout(function() { self.femaleOrgasm(self); }, 2000);
     }
   },
@@ -1050,10 +1059,10 @@ function feed()
 
   macro.stomach.feed(prey);
 
-  macro.arouse(5);
-
   updateVictims("stomach",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function chew()
@@ -1087,10 +1096,10 @@ function chew()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(10);
-
   updateVictims("digested",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(10);
 }
 
 function stomp()
@@ -1121,10 +1130,10 @@ function stomp()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(5);
-
   updateVictims("stomped",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function grind()
@@ -1162,10 +1171,10 @@ function grind()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(20);
-
   updateVictims("ground",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(20);
 }
 
 function anal_vore()
@@ -1199,11 +1208,10 @@ function anal_vore()
 
   macro.bowels.feed(prey);
 
-  macro.arouse(20);
-
   updateVictims("bowels",prey);
   update([sound,line,linesummary,newline]);
 
+  macro.arouse(20);
 }
 
 function sit()
@@ -1238,11 +1246,11 @@ function sit()
 
   macro.addGrowthPoints(crushedMass);
 
-  macro.arouse(5);
-
   updateVictims("stomped",crushed);
 
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function cleavage_stuff()
@@ -1269,12 +1277,13 @@ function cleavage_stuff()
   } else {
     sound = "Oh the humanity!";
   }
-  macro.arouse(10);
 
   macro.cleavage.add(prey);
 
   updateVictims("cleavage",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(10);
 }
 
 function cleavage_crush()
@@ -1305,10 +1314,10 @@ function cleavage_crush()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse((preyMass > 0 ? 20 : 10));
-
   updateVictims("cleavagecrushed",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse((preyMass > 0 ? 20 : 10));
 }
 
 function cleavage_drop()
@@ -1339,10 +1348,10 @@ function cleavage_drop()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse((preyMass > 0 ? 15 : 5));
-
   updateVictims("cleavagedropped",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse((preyMass > 0 ? 15 : 5));
 }
 
 function cleavage_absorb()
@@ -1374,10 +1383,10 @@ function cleavage_absorb()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse((preyMass > 0 ? 15 : 5));
-
   updateVictims("cleavageabsorbed",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse((preyMass > 0 ? 15 : 5));
 }
 
 function breast_crush()
@@ -1408,8 +1417,6 @@ function breast_crush()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(10);
-
   updateVictims("breasts",prey);
   update([sound,line,linesummary,newline]);
 
@@ -1417,6 +1424,8 @@ function breast_crush()
     let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
     breast_milk(null, amount);
   }
+
+  macro.arouse(10);
 }
 
 function breast_vore()
@@ -1450,8 +1459,6 @@ function breast_vore()
 
   macro.breasts.feed(prey);
 
-  macro.arouse(10);
-
   updateVictims("breastvored",prey);
   update([sound,line,linesummary,newline]);
 
@@ -1459,6 +1466,8 @@ function breast_vore()
     let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
     breast_milk(null, amount);
   }
+
+  macro.arouse(10);
 }
 
 function breast_milk(e,vol)
@@ -1496,10 +1505,10 @@ function breast_milk(e,vol)
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(20);
-
   updateVictims("flooded",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(20);
 }
 
 function unbirth()
@@ -1533,10 +1542,10 @@ function unbirth()
 
   macro.womb.feed(prey);
 
-  macro.arouse(20);
-
   updateVictims("womb",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(20);
 }
 
 function sheath_stuff()
@@ -1566,10 +1575,10 @@ function sheath_stuff()
 
   macro.sheath.add(prey);
 
-  macro.arouse(15);
-
   updateVictims("sheath",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(15);
 }
 
 function sheath_squeeze()
@@ -1596,9 +1605,9 @@ function sheath_squeeze()
     sound = "Oh the humanity!";
   }
 
-  macro.arouse(15);
-
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(15);
 }
 
 function sheath_crush()
@@ -1626,9 +1635,9 @@ function sheath_crush()
     sound = "Oh the humanity!";
   }
 
-  macro.arouse(45);
-
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(45);
 }
 
 function sheath_absorb()
@@ -1656,9 +1665,9 @@ function sheath_absorb()
     sound = "Oh the humanity!";
   }
 
-  macro.arouse(45);
-
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(45);
 }
 
 
@@ -1691,10 +1700,10 @@ function cockslap()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(15);
-
   updateVictims("cock",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(15);
 }
 
 function cock_vore()
@@ -1727,10 +1736,10 @@ function cock_vore()
 
   macro.balls.feed(prey);
 
-  macro.arouse(20);
-
   updateVictims("balls",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(20);
 }
 
 function ball_smother()
@@ -1761,18 +1770,18 @@ function ball_smother()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(10);
-
   updateVictims("balls",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(10);
 }
 
-function male_spurt(vol)
+function male_spurt(vol,times)
 {
-  let area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol*times, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("male-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let line = describe("male-spurt", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
@@ -1800,12 +1809,12 @@ function male_spurt(vol)
   update([sound,line,linesummary,newline]);
 }
 
-function male_orgasm(vol)
+function male_orgasm(vol,times)
 {
-  let area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol*times, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("male-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let line = describe("male-orgasm", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
@@ -1833,12 +1842,12 @@ function male_orgasm(vol)
   update([sound,line,linesummary,newline]);
 }
 
-function female_spurt(vol)
+function female_spurt(vol,times)
 {
-  let area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol*times, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("female-spurt", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let line = describe("female-spurt", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
@@ -1866,12 +1875,12 @@ function female_spurt(vol)
   update([sound,line,linesummary,newline]);
 }
 
-function female_orgasm(vol)
+function female_orgasm(vol,times)
 {
-  let area = Math.pow(vol, 2/3);
+  let area = Math.pow(vol*times, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("female-orgasm", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let line = describe("female-orgasm", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
@@ -1927,10 +1936,10 @@ function tail_slap()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(5);
-
   updateVictims("tailslapped",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function tail_vore()
@@ -1962,12 +1971,12 @@ function tail_vore()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(5);
-
   macro.stomach.feed(prey);
 
   updateVictims("tailmaw'd",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function pouch_stuff()
@@ -1995,12 +2004,12 @@ function pouch_stuff()
     sound = "Oh the humanity!";
   }
 
-  macro.arouse(5);
-
   macro.pouch.add(prey);
 
   updateVictims("pouched",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function pouch_eat()
@@ -2035,10 +2044,10 @@ function pouch_eat()
 
   macro.stomach.feed(prey);
 
-  macro.arouse(5);
-
   updateVictims("stomach",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function soul_vore()
@@ -2073,10 +2082,10 @@ function soul_vore()
 
   macro.souls.feed(prey);
 
-  macro.arouse(15);
-
   updateVictims("soulvore",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(15);
 }
 
 function soul_absorb_paw()
@@ -2107,10 +2116,10 @@ function soul_absorb_paw()
 
   macro.addGrowthPoints(preyMass);
 
-  macro.arouse(25);
-
   updateVictims("soulpaw",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(25);
 }
 
 function transformNumbers(line)
@@ -2389,8 +2398,8 @@ function enable_panel(name) {
 }
 
 function enable_stat(name) {
-  document.getElementById(name).style.display = 'none';
-  document.getElementById(name + "Percent").style.display = 'none';
+  document.getElementById(name).style.display = 'block';
+  document.getElementById(name + "Percent").style.display = 'block';
 }
 
 function enable_growth_part(name) {
