@@ -194,10 +194,42 @@ input.sub[type="checkbox"]:checked ~ .reveal-if-active-2 {
   flex: 1 0 220px;
 }
 
-.has-tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
+body.light .has-tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+body.dark .has-tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted white;
+}
+
+body.light a {
+  color: #0000FF;
+  text-decoration: none;
+}
+
+body.light a:visited {
+  color: #0000AA;
+}
+
+body.light a:hover {
+  color: #0000EE;
+}
+
+body.dark a {
+  color: #0000FF;
+  text-decoration: none;
+}
+
+body.dark a:visited {
+  color: #0000DD;
+}
+
+body.dark a:hover {
+  color: #0000EE;
 }
 
 #grow-panel {
