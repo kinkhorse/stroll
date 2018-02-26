@@ -125,13 +125,13 @@ let macro =
     return Math.pow((this.dickDiameter/ 2),2) * Math.PI;
   },
   get dickArea() {
-    return this.dickLength* this.dickDiameter* Math.PI / 2;
+    return this.dickLength * this.dickDiameter* Math.PI / 2;
   },
   get dickVolume() {
-    return this.dickLength* Math.pow(this.dickDiameter2,2) * Math.PI;
+    return this.dickLength * Math.pow(this.dickDiameter,2) * Math.PI;
   },
   get dickMass() {
-    return this.dickVolume* this.dickDensity;
+    return this.dickVolume * this.dickDensity;
   },
   "baseBallDiameter": 0.05,
   "ballDensity": 1000,
