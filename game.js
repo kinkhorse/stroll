@@ -850,7 +850,7 @@ function toggle_verbose()
 {
   verbose = !verbose;
 
-  document.getElementById("button-verbose").innerHTML = (verbose ? "Verbose" : "Simple");
+  document.getElementById("button-verbose").innerHTML = (verbose ? "Verbose Text" : "Simple Text");
 }
 
 function toggle_arousal()
@@ -2352,24 +2352,27 @@ function grow_lots()
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
+function resetSettings() {
+  document.forms.namedItem("custom-species-form").reset();
+}
+
 function saveSettings() {
   let storage = window.localStorage;
   let settings = {};
   let form = document.forms.namedItem("custom-species-form");
 
   for (let i=0; i<form.length; i++) {
-    if (form[i].value != "") {
-      if (form[i].type == "text")
-        settings[form[i].name] = form[i].value;
-      else if (form[i].type == "number")
-        settings[form[i].name] = parseFloat(form[i].value);
-      else if (form[i].type == "checkbox") {
-        settings[form[i].name] = form[i].checked;
-      } else if (form[i].type == "radio") {
-        let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
-        if (form[i].checked)
-          settings[name] = form[i].id;
-      }
+    let value = form[i].value == "" ? form[i].placeholder : form[i].value
+    if (form[i].type == "text")
+      settings[form[i].name] = value;
+    else if (form[i].type == "number")
+      settings[form[i].name] = parseFloat(value);
+    else if (form[i].type == "checkbox") {
+      settings[form[i].name] = form[i].checked;
+    } else if (form[i].type == "radio") {
+      let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
+      if (form[i].checked)
+        settings[name] = form[i].id;
     }
   }
 
@@ -2731,6 +2734,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
   document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
 
+  document.getElementById("button-reset-custom").addEventListener("click",resetSettings);
   document.getElementById("button-load-custom").addEventListener("click",loadSettings);
   document.getElementById("button-save-custom").addEventListener("click",saveSettings);
   document.getElementById("button-start").addEventListener("click",startGame);
