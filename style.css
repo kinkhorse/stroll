@@ -79,6 +79,12 @@ body.dark #log {
   font-size: 12pt;
 }
 
+.stat-line-hidden {
+  font-weight: normal;
+  font-size: 12pt;
+  display: none;
+}
+
 .sidebar {
   display: none;
   flex-wrap: wrap;
