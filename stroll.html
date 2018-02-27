@@ -134,23 +134,22 @@
       </div>
     </div>
     <div class="character-build">
+      <p>Welcome to Stroll 0.5.7</p>
+      <p><b>This game features 18+ content</b></p>
+      <p><a href="https://chemicalcrux.org/stroll">Changelog</a></p>
+      <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
 
-      <div class="option-container" id="option-panel">
-        <p>Welcome to Stroll 0.5.7</p>
-        <p><b>This game features 18+ content</b></p>
-        <p><a href="https://chemicalcrux.org/stroll">Changelog</a></p>
-        <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
-        <br>
-        <div id="custom-species">
-        <button class="stat-button" id="button-dark-mode-options">Toggle Dark Mode</button>
-          <p>Build your Character (leave blank for defaults)</p>
-          <form id="custom-species-form" name="custom-species-form">
-            <ul class="flex-outer">
-              <div class="custom-category">
-                <div class="custom-header">Basics</div>
+      <div id="custom-species">
+      <button class="stat-button" id="button-dark-mode-options">Toggle Dark Mode</button>
+        <p>Build your Character (leave blank for defaults)</p>
+        <form id="custom-species-form" name="custom-species-form">
+          <ul class="flex-outer">
+            <div class="custom-category">
+              <div class="custom-header">Basics</div>
+              <div>
                 <li>
-                  <label for="species">Name</label>
-                  <input type="text" name="name" />
+                  <label for="name">Name</label>
+                  <input type="text" name="name"/>
                 </li>
                 <li>
                   <label for="species">Species</label>
@@ -168,218 +167,218 @@
                   <label for="baseMass">Weight</label>
                   <input type="number" name="baseMass" placeholder="135">
                 </li>
-                <br>
                 <li>
                   <label for="basePawArea">Paw area</label>
-                  <input type="number" name="basePawArea" placeholder="0.1"><br>
+                  <input type="number" name="basePawArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="baseHandArea">Hand area</label>
-                  <input type="number" name="baseHandArea" placeholder="0.1"><br>
+                  <input type="number" name="baseHandArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="baseAnalVoreArea">Tailhole area</label>
-                  <input type="number" name="baseAnalVoreArea" placeholder="0.1"><br>
+                  <input type="number" name="baseAnalVoreArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="analVore">Anal vore</label>
-                  <input type="checkbox" checked="true" name="analVore"/><br>
+                  <input type="checkbox" checked="true" name="analVore"/>
                 </li>
                 <li>
                   <label for="baseAssArea">Ass area</label>
-                  <input type="number" name="baseAssArea" placeholder="0.4"><br>
+                  <input type="number" name="baseAssArea" placeholder="0.4">
                 </li>
-                <br>
+              </div>
+            </div>
+            <div class="custom-category">
+              <div class="custom-header">Brutality</div>
+              <div>
+              <ul>
                 <li>
-                  <input type="checkbox" name="humanMode" id="humanMode">
-                  <label for="humanMode">Human Mode (instead of furries)</label>
+                  <input type="radio" name="brutality" id="brutality-0">
+                  <label for="brutality-0">Non-fatal</label>
                 </li>
-              </div>
-              <br>
-              <div class="custom-category">
-                <div class="custom-header">Brutality</div>
-                <ul>
-                  <li>
-                    <input type="radio" name="brutality" id="brutality-0">
-                    <label for="brutality-0">Non-fatal</label>
-                  </li>
-                  <li>
-                    <input type="radio" name="brutality" checked="true" id="brutality-1">
-                    <label for="brutality-1">Fatal, no gore</label>
-                  </li>
-                  <li>
-                    <input type="radio" name="brutality" id="brutality-2">
-                    <label for="brutality-2">Gory</label>
-                  </li>
-                  <li>
-                    <input type="radio" name="brutality" id="brutality-3" disabled="disableD">
-                    <label for="brutality-3">Sadistic (not implemented)</label>
-                  </li>
-                </ul>
-              </div>
-              <br>
-              <div class="custom-category">
-                <div class="custom-header">Misc</div>
+                <li>
+                  <input type="radio" name="brutality" checked="true" id="brutality-1">
+                  <label for="brutality-1">Fatal, no gore</label>
+                </li>
+                <li>
+                  <input type="radio" name="brutality" id="brutality-2">
+                  <label for="brutality-2">Gory</label>
+                </li>
+                <li>
+                  <input type="radio" name="brutality" id="brutality-3" disabled="disableD">
+                  <label for="brutality-3">Sadistic (not implemented)</label>
+                </li>
+              </ul>
+            </div>
+            </div>
+            <div class="custom-category">
+              <div class="custom-header">Misc</div>
+              <div>
+                <li>
+                  <label for="humanMode">Human victims</label>
+                  <input type="checkbox" name="humanMode" id="humanMode">
+                </li>
                 <li>
                   <label class="has-tooltip" for="sameSizeVore" title="Can you eat people your own size?">Same-size predator</label>
-                  <input type="checkbox" checked="true" name="sameSizeVore"/><br>
+                  <input type="checkbox" checked="true" name="sameSizeVore"/>
                 </li>
                 <li>
                   <label class="has-tooltip" for="sameSizeStomp" title="Can you stomp and sit on people your own size?">Same-size stomper</label>
-                  <input type="checkbox" checked="true" name="sameSizeStomp"/><br>
+                  <input type="checkbox" checked="true" name="sameSizeStomp"/>
                 </li>
                 <li>
                   <label for="soulVoreEnabled">Soul vore</label>
-                  <input type="checkbox" checked="true" name="soulVoreEnabled"/><br>
+                  <input type="checkbox" checked="true" name="soulVoreEnabled"/>
                 </li>
               </div>
-              <div class="custom-category">
-                <input class="custom-header-checkbox" type="checkbox" checked="true" id="arousalEnabled" name="arousalEnabled"/>
-                <label class="custom-header" for="arousalEnabled">Arousal</label>
-                <div class="reveal-if-active">
+            </div>
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" checked="true" id="arousalEnabled" name="arousalEnabled"/>
+              <label class="custom-header" for="arousalEnabled">Arousal</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label class="has-tooltip" for="arousalFactor" title="Multiplies arousal gain by this much">Arousal multiplier</label>
+                  <input type="number" name="arousalFactor" placeholder="1"/>
+                </li>
                   <li>
-                    <label class="has-tooltip" for="arousalFactor" title="Multiplies arousal gain by this much">Arousal multiplier</label>
-                    <input type="number" name="arousalFactor" placeholder="1"/><br>
+                    <label class="has-tooltip" for="edgeFactor" title="Multiplies edge gain by this much">Edge multiplier</label>
+                    <input type="number" name="arousalFactor" placeholder="1"/>
                   </li>
-                    <li>
-                      <label class="has-tooltip" for="edgeFactor" title="Multiplies edge gain by this much">Edge multiplier</label>
-                      <input type="number" name="arousalFactor" placeholder="1"/><br>
-                    </li>
-                </div>
               </div>
-              <br>
-              <div class="custom-category">
-                <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasTail" name="hasTail"/>
-                <label class="custom-header" for="hasTail">Tails</label>
-                <div class="reveal-if-active">
-                  <li>
-                    <label for="tailCount">Tail count</label>
-                    <input type="number" name="tailCount" placeholder="1"/><br>
-                  </li>
-                  <li>
-                    <label for="tailType">Tail type</label>
-                    <input type="text" name="tailType" placeholder="slinky"/><br>
-                  </li>
-                  <li>
-                    <label for="baseTailLength">Tail length</label>
-                    <input type="number" name="baseTailLength" placeholder="1"/><br>
-                  </li>
-                  <li>
-                    <label for="baseTailDiameter">Tail diameter</label>
-                    <input type="number" name="baseTailDiameter" placeholder="0.3"/><br>
-                  </li>
-                  <li>
-                    <label for="tailMaw">Tail maw(s)</label>
-                    <input type="checkbox" checked="true" name="tailMaw"/><br>
-                  </li>
-                </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasTail" name="hasTail"/>
+              <label class="custom-header" for="hasTail">Tails</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label for="tailCount">Tail count</label>
+                  <input type="number" name="tailCount" placeholder="1"/>
+                </li>
+                <li>
+                  <label for="tailType">Tail type</label>
+                  <input type="text" name="tailType" placeholder="slinky"/>
+                </li>
+                <li>
+                  <label for="baseTailLength">Tail length</label>
+                  <input type="number" name="baseTailLength" placeholder="1"/>
+                </li>
+                <li>
+                  <label for="baseTailDiameter">Tail diameter</label>
+                  <input type="number" name="baseTailDiameter" placeholder="0.3"/>
+                </li>
+                <li>
+                  <label for="tailMaw">Tail maw(s)</label>
+                  <input type="checkbox" checked="true" name="tailMaw"/>
+                </li>
               </div>
-              <br>
-              <div class="custom-category">
-                <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasPouch" name="hasPouch"/>
-                <label class="custom-header" for="hasPouch">Pouch</label>
-                <div class="reveal-if-active">
-                  <li>
-                    It's on :D
-                  </li>
-                </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasPouch" name="hasPouch"/>
+              <label class="custom-header" for="hasPouch">Pouch</label>
+              <div class="reveal-if-active">
+                <li>
+                  It's on :D
+                </li>
               </div>
-              <div class="custom-category">
-                <input class="custom-header-checkbox" type="checkbox" checked="true" id="maleParts" name="maleParts"/>
-                <label class="custom-header" for="maleParts">Male genitals</label>
-                <div class="reveal-if-active">
-                  <li>
-                    <label for="hasSheath">Sheath</label>
-                    <input type="checkbox" name="hasSheath" checked="true" /><br>
-                  </li>
-                  <li>
-                    <label for="dickType">Cock type</label>
-                    <input type="text" name="dickType" placeholder="canine"/><br>
-                  </li>
-                  <li>
-                    <label for="baseDickLength">Cock length</label>
-                    <input type="number" name="baseDickLength" placeholder="0.3"/><br>
-                  </li>
-                  <li>
-                    <label for="baseDickDiameter">Cock diameter</label>
-                    <input type="number" name="baseDickDiameter" placeholder="0.08"/><br>
-                  </li>
-                  <li>
-                    <label for="baseBallDiameter">Ball diameter</label>
-                    <input type="number" name="baseBallDiameter" placeholder="0.05"/><br>
-                  </li>
-                  <li>
-                    <label for="baseCumRatio" class="has-tooltip" title="scales how much cum is released with each shot">Orgasm cum ratio</label>
-                    <input type="number" name="baseCumRatio" placeholder="1"/><br>
-                  </li>
-                  <li>
-                    <label for="baseMass">Cum production factor</label>
-                    <input type="number" name="cumScale" placeholder="1"/><br>
-                  </li>
-                </div>
+            </div>
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" checked="true" id="maleParts" name="maleParts"/>
+              <label class="custom-header" for="maleParts">Male genitals</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label for="hasSheath">Sheath</label>
+                  <input type="checkbox" name="hasSheath" checked="true" />
+                </li>
+                <li>
+                  <label for="dickType">Cock type</label>
+                  <input type="text" name="dickType" placeholder="canine"/>
+                </li>
+                <li>
+                  <label for="baseDickLength">Cock length</label>
+                  <input type="number" name="baseDickLength" placeholder="0.3"/>
+                </li>
+                <li>
+                  <label for="baseDickDiameter">Cock diameter</label>
+                  <input type="number" name="baseDickDiameter" placeholder="0.08"/>
+                </li>
+                <li>
+                  <label for="baseBallDiameter">Ball diameter</label>
+                  <input type="number" name="baseBallDiameter" placeholder="0.05"/>
+                </li>
+                <li>
+                  <label for="baseCumRatio" class="has-tooltip" title="scales how much cum is released with each shot">Orgasm cum ratio</label>
+                  <input type="number" name="baseCumRatio" placeholder="1"/>
+                </li>
+                <li>
+                  <label for="baseMass">Cum production factor</label>
+                  <input type="number" name="cumScale" placeholder="1"/>
+                </li>
               </div>
-              <br>
-              <div class="custom-category">
-                <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasBreasts" name="hasBreasts"/>
-                <label class="custom-header" for="hasBreasts">Breasts</label>
-                <div class="reveal-if-active">
-                  <li>
-                    <label for="baseBreastDiameter">Breast diameter</label>
-                    <input type="number" name="baseBreastDiameter" placeholder="0.1"/><br>
-                  </li>
-                  <div>
-                    <ul class="flex-outer">
-                      Lactation:
-                      <input type="checkbox" checked="true" name="lactationEnabled"/><br>
-                      <div class="reveal-if-active">
-                        <li>
-                          <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
-                          <input type="number" name="lactationFactor" placeholder="0.25"/><br>
-                        </li>
-                        <li>
-                          <label for="lactationScale">Milk production factor</label>
-                          <input type="number" name="lactationScale" placeholder="1"/><br>
-                        </li>
-                      </div>
-                    </ul>
-                  </div>
-                  <li>
-                    <label for="breastVore">Breast vore</label>
-                    <input type="checkbox" checked="true" name="breastVore"/><br>
-                  </li>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasBreasts" name="hasBreasts"/>
+              <label class="custom-header" for="hasBreasts">Breasts</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label for="baseBreastDiameter">Breast diameter</label>
+                  <input type="number" name="baseBreastDiameter" placeholder="0.1"/>
+                </li>
+                <div>
+                  <ul class="flex-outer">
+                    Lactation:
+                    <input type="checkbox" checked="true" name="lactationEnabled"/>
+                    <div class="reveal-if-active">
+                      <li>
+                        <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
+                        <input type="number" name="lactationFactor" placeholder="0.25"/>
+                      </li>
+                      <li>
+                        <label for="lactationScale">Milk production factor</label>
+                        <input type="number" name="lactationScale" placeholder="1"/>
+                      </li>
+                    </div>
+                  </ul>
                 </div>
+                <li>
+                  <label for="breastVore">Breast vore</label>
+                  <input type="checkbox" checked="true" name="breastVore"/>
+                </li>
               </div>
-              <br>
-              <div class="custom-category">
-                <input class="custom-header-checkbox" type="checkbox" checked="true" id="femaleParts" name="femaleParts"/>
-                <label class="custom-header" for="femaleParts">Female genitals</label>
-                <div class="reveal-if-active">
-                  <li>
-                    <label for="baseVaginaLength">Slit length</label>
-                    <input type="number" name="baseVaginaLength" placeholder="0.1"/><br>
-                  </li>
-                  <li>
-                    <label for="baseVaginaWidth">Slit width</label>
-                    <input type="number" name="baseVaginaWidth" placeholder="0.05"/><br>
-                  </li>
-                  <li>
-                    <label for="baseFemcumRatio" class="has-tooltip" title="scales how much femcum is released with each shot">Orgasm femcum ratio</label>
-                    <input type="number" name="baseFemcumRatio" placeholder="1"/><br>
-                  </li>
-                  <li>
-                    <label for="femcumScale">Femcum production factor</label>
-                    <input type="number" name="femcumScale" placeholder="1"/><br>
-                  </li>
-                </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" checked="true" id="femaleParts" name="femaleParts"/>
+              <label class="custom-header" for="femaleParts">Female genitals</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label for="baseVaginaLength">Slit length</label>
+                  <input type="number" name="baseVaginaLength" placeholder="0.1"/>
+                </li>
+                <li>
+                  <label for="baseVaginaWidth">Slit width</label>
+                  <input type="number" name="baseVaginaWidth" placeholder="0.05"/>
+                </li>
+                <li>
+                  <label for="baseFemcumRatio" class="has-tooltip" title="scales how much femcum is released with each shot">Orgasm femcum ratio</label>
+                  <input type="number" name="baseFemcumRatio" placeholder="1"/>
+                </li>
+                <li>
+                  <label for="femcumScale">Femcum production factor</label>
+                  <input type="number" name="femcumScale" placeholder="1"/>
+                </li>
               </div>
-            </ul>
-          </form>
-          <div>
-            <button class="option-button" id="button-reset-custom">Reset Custom Character</button>
-            <button class="option-button" id="button-load-custom">Load Custom Character</button>
-            <button class="option-button" id="button-save-custom">Save Custom Character</button>
-            <button class="option-button" id="button-start">Start Stroll Game</button>
-          </div>
+            </div>
+          </ul>
+        </form>
+        <div>
+          <button class="option-button" id="button-reset-custom">Reset Custom Character</button>
+          <button class="option-button" id="button-load-custom">Load Custom Character</button>
+          <button class="option-button" id="button-save-custom">Save Custom Character</button>
+          <button class="option-button" id="button-start">Start Stroll Game</button>
         </div>
       </div>
     </div>

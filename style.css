@@ -11,7 +11,6 @@
   font-family: Arial;
 }
 
-
 body.dark > div > div > div > form input {
   color: #eee;
   background: #444;
@@ -171,21 +170,8 @@ body.dark #log {
   overflow: hidden;
 }
 
-.reveal-if-active-2 {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-}
-
 input[type="radio"]:checked ~ .reveal-if-active,
 input[type="checkbox"]:checked ~ .reveal-if-active {
-  opacity: 1;
-  max-height: 200px; /* little bit of a magic number :( */
-  overflow: visible;
-}
-
-input.sub[type="radio"]:checked ~ .reveal-if-active-2,
-input.sub[type="checkbox"]:checked ~ .reveal-if-active-2 {
   opacity: 1;
   max-height: 200px; /* little bit of a magic number :( */
   overflow: visible;
@@ -203,6 +189,7 @@ input.sub[type="checkbox"]:checked ~ .reveal-if-active-2 {
 .custom-category {
   text-align: center;
   margin: 10px;
+  width: 500px;
 }
 
 body.light .custom-category {
@@ -306,9 +293,11 @@ body.dark a:hover {
 }
 
 .character-build {
+  margin: 50px;
   width: 90%;
   text-align: center;
 }
+
 #grow-panel {
   width: 100%;
 }

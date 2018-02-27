@@ -2467,7 +2467,7 @@ function startGame(e) {
   let victimTypes = ["stomped","digested","stomach","ground"];
 
   document.getElementById("log-area").style.display = 'inline';
-  document.getElementById("option-panel").style.display = 'none';
+  document.getElementById("custom-species").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
   enable_panel("body");
