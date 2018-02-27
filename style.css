@@ -203,7 +203,6 @@ input.sub[type="checkbox"]:checked ~ .reveal-if-active-2 {
 .custom-category {
   text-align: center;
   margin: 10px;
-  width: 25%;
 }
 
 body.light .custom-category {
@@ -307,7 +306,7 @@ body.dark a:hover {
 }
 
 .character-build {
-  width: 100%;
+  width: 90%;
   text-align: center;
 }
 #grow-panel {
