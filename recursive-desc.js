@@ -132,7 +132,7 @@ function defaultChew(container, macro, verbose) {
 
 function defaultStomp(container, macro, verbose) {
   if (container.count == 0)
-    return "Your paw thumps the ground.";
+    return "Your " + macro.footDesc() + " thumps the ground.";
   else if (isFatal(macro))
     return "You crush " + container.describe(verbose) + " underfoot.";
   else
@@ -141,7 +141,7 @@ function defaultStomp(container, macro, verbose) {
 
 function defaultKick(container, macro, verbose) {
   if (container.count == 0)
-    return "You swing your mighty paw..and hit nothing.";
+    return "You swing your mighty " + macro.footDesc() + "..and hit nothing.";
   else
     return "You punt " + container.describe(verbose) + ", destroying " + (container.count > 1 ? "them" : "it") + ".";
 }
@@ -417,11 +417,11 @@ function defaultSoulVore(container, macro, verbose) {
 function defaultSoulAbsorbPaw(container, macro, verbose) {
   let sum = container.sum()["Person"];
   if (container.count == 0)
-    return "Your paw thumps against the ground";
+    return "Your " + macro.footDesc() + " thumps against the ground";
   else if (sum == 0)
-    return "Your paw slams down on " + container.describe(verb0se) + "...but there aren't any souls within!";
+    return "Your " + macro.footDesc() + " slams down on " + container.describe(verb0se) + "...but there aren't any souls within!";
   else
-    return "Your paw slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
+    return "Your " + macro.footDesc() + " slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
 }
 
 function defaultStomach(container, macro, verbose) {
@@ -590,7 +590,7 @@ rules["stomp"].push({
      hasExactly(container, "Person", 1) &&
      isFatal(macro);
   }, "desc": function(container, macro, verbose) {
-    return "Your heavy paw slams down on " + container.describe(verbose) + ", smashing the poor thing like an insect.";
+    return "Your heavy " + macro.footDesc() + " slams down on " + container.describe(verbose) + ", smashing the poor thing like an insect.";
   }
 });
 
@@ -600,7 +600,7 @@ rules["stomp"].push({
      hasExactly(container, "Person", 1) &&
      isGory(macro);
   }, "desc": function(container, macro, verbose) {
-    return "Your paw thumps " + container.describe(verbose) + ", shoving your victim to the ground and cracking them open like an egg.";
+    return "Your " + macro.footDesc() + " thumps " + container.describe(verbose) + ", shoving your victim to the ground and cracking them open like an egg.";
   }
 });
 
@@ -610,16 +610,17 @@ rules["stomp"].push({
      hasExactly(container, "Person", 1) &&
      isGory(macro);
   }, "desc": function(container, macro, verbose) {
-    return "Your shadow falls over " + container.describe(verbose) + ", and your paw follows, crushing their soft body and reducing them to a heap of broken gore.";
+    return "Your shadow falls over " + container.describe(verbose) + ", and your " + macro.footDesc() + " follows, crushing their soft body and reducing them to a heap of broken gore.";
   }
 });
 
 rules["stomp"].push({
   "test": function(container, macro) {
     return hasNothingElse(container, ["Person","Cow","Car"]) &&
-     isNonFatal(macro);
+      isNonFatal(macro) &&
+      macro.footType == "paw";
   }, "desc": function(container, macro, verbose) {
-    return "Your soft paws smoosh over " + container.describe(verbose) + ". They stick to your toes, carried along for the ride as you take another few steps before finally\
+    return "Your paw smooshes over " + container.describe(verbose) + ". They stick to your toes, carried along for the ride as you take another few steps before finally\
     falling off.";
   }
 });

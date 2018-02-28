@@ -81,6 +81,47 @@ let macro =
   "assScale": 1,
   "analVore": true,
 
+  // part types
+
+  "footType": "paw",
+
+  "footDesc": function(plural=false,capital=false) {
+    let result = "";
+    switch(this.footType) {
+      case "paw":
+        result = plural ? "paws" : "paw";
+        break;
+      case "hoof":
+        result = plural ? "hooves" : "hoof";
+        break;
+      case "feet":
+      case "avian":
+        result = plural ? "feet" : "foot";
+        break;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "toeDesc": function(plural=false,capital=false) {
+    let result = "";
+    switch(this.footType) {
+      case "paw":
+        result = plural ? "toes" : "toe";
+        break;
+      case "hoof":
+        result = plural ? "hooves" : "hoof";
+        break;
+      case "feet":
+        result = plural ? "toes" : "toe";
+        break;
+      case "avian":
+        result = plural ? "talons" : "talon";
+        breka;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+  "jawType": "jaws",
+
   "hasTail": true,
   "tailType": "slinky",
   "tailCount": 1,
@@ -1802,7 +1843,6 @@ function sheath_absorb()
   macro.arouse(45);
 }
 
-
 function cockslap()
 {
   let area = macro.dickArea;
@@ -2540,6 +2580,8 @@ function saveSettings() {
       let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
       if (form[i].checked)
         settings[name] = form[i].id;
+    } else if (form[i].type == "select-one") {
+      settings[form[i].name] = form[i][form[i].selectedIndex].value;
     }
   }
 
@@ -2566,6 +2608,13 @@ function loadSettings() {
       } else if (form[i].type == "radio") {
         let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
         form[i].checked = (settings[name] == form[i].id);
+      } else if (form[i].type == "select-one") {
+        for (let j=0; j<form[i].length; j++) {
+          if (form[i][j].value == settings[form[i].name]) {
+            form[i].selectedIndex = j;
+            break;
+          }
+        }
       }
     }
   }
