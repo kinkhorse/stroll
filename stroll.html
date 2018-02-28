@@ -144,6 +144,20 @@
       <button class="stat-button" id="button-dark-mode-options">Toggle Dark Mode</button>
         <p>Build your Character (leave blank for defaults)</p>
         <p>Lengths in meters, areas in square meters, masses in kilograms</p>
+        <p>You can load a preset character here...</p>
+        <div>
+          <select id="character-presets">
+          </select>
+          <button class="option-button" id="button-load-preset">Load Preset Character</button>
+        </div>
+
+        <p>Or, load/save your own character here!</p>
+        <div>
+          <button class="option-button" id="button-reset-custom">Reset Custom Character</button>
+          <button class="option-button" id="button-load-custom">Load Custom Character</button>
+          <button class="option-button" id="button-save-custom">Save Custom Character</button>
+          <button class="option-button" id="button-start">Start Stroll Game</button>
+        </div>
         <form id="custom-species-form" name="custom-species-form">
           <ul class="flex-outer">
             <div class="custom-category">
@@ -413,12 +427,6 @@
             </div>
           </ul>
         </form>
-        <div>
-          <button class="option-button" id="button-reset-custom">Reset Custom Character</button>
-          <button class="option-button" id="button-load-custom">Load Custom Character</button>
-          <button class="option-button" id="button-save-custom">Save Custom Character</button>
-          <button class="option-button" id="button-start">Start Stroll Game</button>
-        </div>
       </div>
     </div>
     <table id="victim-table">

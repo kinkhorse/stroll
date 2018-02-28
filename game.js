@@ -3,6 +3,9 @@
 /*jshint browser: true*/
 /*jshint devel: true*/
 
+let presets = [{"name":"Fen","species":"crux","scale":"1","baseHeight":2.26,"baseMass":135,"basePawArea":0.1,"baseHandArea":0.1,"baseAnalVoreArea":0.1,"baseAssArea":0.4,"brutality":"brutality-1","victimsMilitary":false,"victimsMacros":false,"victimsMicros":false,"humanMode":false,"sameSizeVore":true,"sameSizeStomp":true,"soulVoreEnabled":true,"footType":"paw","analVore":true,"analVoreToStomach":false,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":1,"tailType":"slinky","baseTailLength":1,"baseTailDiameter":0.3,"tailMaw":true,"hasPouch":true,"maleParts":true,"hasSheath":true,"dickType":"canine","baseDickLength":0.3,"baseDickDiameter":0.08,"baseBallDiameter":0.05,"baseCumRatio":1,"cumScale":1,"hasBreasts":true,"baseBreastDiameter":0.1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":true,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"baseFemcumRatio":1,"femcumScale":1}];
+
+
 let errored = false;
 
 window.onerror = function(msg, source, lineno, colno, error) {
@@ -2547,6 +2550,12 @@ function resetSettings() {
   document.forms.namedItem("custom-species-form").reset();
 }
 
+function loadPreset() {
+  let select = document.getElementById("character-presets");
+
+  loadSettings(presets[select.selectedIndex]);
+}
+
 function saveSettings() {
   let storage = window.localStorage;
   let settings = {};
@@ -2572,13 +2581,16 @@ function saveSettings() {
   storage.setItem('settings',JSON.stringify(settings));
 }
 
-function loadSettings() {
-  if (window.localStorage.getItem('settings') == null)
-    return;
+function loadSettings(settings = null) {
 
-  let storage = window.localStorage;
+  if (settings == null) {
+    if (window.localStorage.getItem('settings') == null)
+      return;
 
-  let settings = JSON.parse(storage.getItem('settings'));
+    let storage = window.localStorage;
+
+    settings = JSON.parse(storage.getItem('settings'));
+  }
   let form = document.forms.namedItem("custom-species-form");
 
   for (let i=0; i<form.length; i++) {
@@ -2885,6 +2897,15 @@ window.addEventListener('load', function(event) {
     }
   }());
 
+  let list = document.getElementById("character-presets");
+
+  for (let i=0; i < presets.length; i++) {
+    let opt = document.createElement("option");
+    opt.innerHTML = presets[i]["name"];
+    opt.value = i;
+    list.appendChild(opt);
+  }
+
   victims["stomped"] = initVictims();
   victims["tailslapped"] = initVictims();
   victims["tailmaw'd"] = initVictims();
@@ -2935,8 +2956,10 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
   document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
 
+  document.getElementById("button-load-preset").addEventListener("click",loadPreset);
+
   document.getElementById("button-reset-custom").addEventListener("click",resetSettings);
-  document.getElementById("button-load-custom").addEventListener("click",loadSettings);
+  document.getElementById("button-load-custom").addEventListener("click",function() { loadSettings() });
   document.getElementById("button-save-custom").addEventListener("click",saveSettings);
   document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);

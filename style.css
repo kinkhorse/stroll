@@ -11,12 +11,16 @@
   font-family: Arial;
 }
 
-body.dark form input {
+#character-presets {
+  font-size: 24px;
+}
+
+body.dark input {
   color: #eee;
   background: #444;
 }
 
-body.dark form select {
+body.dark select {
   color: #eee;
   background: #444;
 }
