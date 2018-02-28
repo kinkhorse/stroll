@@ -205,17 +205,12 @@ let macro =
   },
 
   "digest": function(owner,organ) {
+    setTimeout(function() { owner.digest(owner,organ); }, 5000);
+
     let count = Math.min(organ.contents.length, organ.maxDigest);
 
-    let container = new Container();
-
-    while (count > 0) {
-      let victim = organ.contents.shift();
-      if (victim.name != "Container")
-        victim = new Container([victim]);
-      container = container.merge(victim);
-      --count;
-    }
+    let container = organ.contents.pop();
+    organ.contents.unshift(new Container());
 
     if (container.count == 0)
       return;
@@ -234,10 +229,6 @@ let macro =
     let lethal = macro.brutality != 0 && (!macro.soulVoreEnabled || organ.name === "souls");
     let summary = summarize(container.sum(),lethal);
 
-    if (organ.contents.length > 0) {
-      setTimeout(function() { owner.digest(owner,organ); }, 15000);
-    }
-
     if (macro.soulVoreEnabled && organ.name != "souls") {
       owner.souls.feed(container);
       let soulCount = container.sum()["Person"];
@@ -255,13 +246,17 @@ let macro =
 
   "stomach": {
     "name": "stomach",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 15000);
-      this.contents.push(prey);
+      this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion": function(container) {
       return describe("stomach",container,this.owner,verbose);
@@ -269,19 +264,39 @@ let macro =
     "fill": function(owner,container) {
       //no-op
     },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your belly is flat, growling and gurgling for want of prey.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your belly churns and bubbles as it works to melt " + prey.describe(false) + " down to chyme.";
+        } else {
+          return "Your belly sloshes with the weight of " + prey.describe(false) + " trapped within.";
+        }
+      }
+    },
     "contents": [],
-    "maxDigest": 5
+    "stages": 3
   },
 
   "bowels": {
     "name" : "bowels",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 15000);
-      this.contents.push(prey);
+      this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion" : function(container) {
       return describe("bowels",container,this.owner,verbose);
@@ -289,19 +304,39 @@ let macro =
     "fill": function(owner,container) {
       //no-op
     },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your bowels are empty.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your bowels groan ominously as they clench around " + prey.describe(false) + ", slowly absorbing them into your musky depths.";
+        } else {
+          return "Your bowels bulge with " + prey.describe(false) + ".";
+        }
+      }
+    },
     "contents" : [],
-    "maxDigest" : 3
+    "stages" : 3
   },
 
   "womb": {
     "name" : "womb",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 15000);
-      this.contents.push(prey);
+      this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion" : function(container) {
       return describe("womb",container,this.owner,verbose);
@@ -309,19 +344,39 @@ let macro =
     "fill": function(owner,container) {
       owner.femcumStorage.amount += container.sum_property("mass") / 1e3;
     },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your lower belly is flat.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your womb tingles as its rhythmically grinds down on " + prey.describe(false) + ", turning them soft and wet as they start to dissolve into femcum.";
+        } else {
+          return "Your womb clenches around " + prey.describe(false) + ".";
+        }
+      }
+    },
     "contents" : [],
-    "maxDigest" : 1
+    "stages" : 2
   },
 
   "balls": {
     "name" : "balls",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 15000);
-      this.contents.push(prey);
+      this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion": function(container) {
       return describe("balls",container,this.owner,verbose);
@@ -329,19 +384,39 @@ let macro =
     "fill": function(owner,container) {
       owner.cumStorage.amount += container.sum_property("mass") / 1e3;
     },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your balls are smooth.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your balls slosh and bulge as they work to convert " + prey.describe(false) + " into hot cum.";
+        } else {
+          return "Your balls slosh about, loaded down with " + prey.describe(false) + ".";
+        }
+      }
+    },
     "contents" : [],
-    "maxDigest" : 1
+    "stages" : 2
   },
 
   "breasts": {
     "name" : "breasts",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 15000);
-      this.contents.push(prey);
+      this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion": function(container) {
       return describe("breasts",container,this.owner,verbose);
@@ -351,21 +426,41 @@ let macro =
         owner.milkStorage.amount += container.sum_property("mass") / 1e3;
       }
     },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your breasts are smooth.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your breasts slosh from side to side, " + prey.describe(false) + " slowly digesting into creamy milk.";
+        } else {
+          return "Your breasts bulge with " + prey.describe(false) + ".";
+        }
+      }
+    },
     "contents" : [],
-    "maxDigest" : 1
+    "stages" : 2
   },
 
   soulVoreEnabled: true,
 
   "souls": {
     "name" : "souls",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      if (self.contents.length == 0)
-        setTimeout(function() { owner.digest(owner,self); }, 15000);
-      this.contents.push(prey);
+      this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion": function(container) {
       return describe("soul-digest",container,this.owner,verbose);
@@ -373,8 +468,24 @@ let macro =
     "fill": function(owner,container) {
       //no-op
     },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your depths hold no souls.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your depths bubble and boil with energy, slowly digesting the " + (prey.count > 1 ? "souls of " : "soul of ") + prey.describe(false);
+        } else {
+          return "You feel " + (prey.count > 1 ? prey.count + " souls " : "a soul ") + "trapped in your depths.";
+        }
+      }
+    },
     "contents" : [],
-    "maxDigest" : 5
+    "stages" : 2
   },
 
   // holding spots
@@ -415,7 +526,7 @@ let macro =
     "container": new Container(),
     get description() {
       if (this.container.count == 0)
-        return "Your breasts don't have anyone stuck in them";
+        return "Your breasts don't have anyone stuck between them";
       else
         return "Your cleavage contains " + this.container.describe(false);
     },
@@ -425,12 +536,12 @@ let macro =
   },
 
   "init": function() {
-    this.stomach.owner = this;
-    this.bowels.owner = this;
-    this.womb.owner = this;
-    this.balls.owner = this;
-    this.breasts.owner = this;
-    this.souls.owner = this;
+    this.stomach.setup(this);
+    this.bowels.setup(this);
+    this.womb.setup(this);
+    this.balls.setup(this);
+    this.breasts.setup(this);
+    this.souls.setup(this);
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
@@ -645,6 +756,9 @@ let macro =
 
     result.push(line);
 
+    result.push(macro.stomach.description);
+    result.push(macro.bowels.description);
+
     if (this.hasTail) {
       line = "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails sway as you walk. " : " tail sways as you walk. ");
       if (this.tailMaw) {
@@ -674,11 +788,13 @@ let macro =
       }
       line = "Your " + this.describeDick + " cock hangs from your hips, with two " + mass(macro.ballMass, unit, true) + ", " + length(macro.ballDiameter, unit, true) + "-wide balls hanging beneath.";
       result.push(line);
+      result.push(macro.balls.description);
     }
 
     if (this.femaleParts) {
       line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs.";
       result.push(line);
+      result.push(macro.womb.description);
     }
 
     if (this.hasBreasts) {
@@ -687,8 +803,12 @@ let macro =
       if (this.cleavage.container.count > 0)
         line += " Between them are " + this.cleavage.container.describe(false) + ".";
       result.push(line);
+      result.push(macro.breasts.description);
     }
 
+    if (this.soulVoreEnabled) {
+      result.push(macro.souls.description);
+    }
 
     if (this.hasPouch) {
       line = this.pouch.description;
