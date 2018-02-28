@@ -189,6 +189,7 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
   flex-wrap: wrap;
   text-align: center;
   justify-content: center;
+  padding: 0px;
 }
 
 .custom-category {
