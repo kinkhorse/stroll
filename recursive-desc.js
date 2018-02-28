@@ -20,7 +20,7 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
-"female-orgasm","grind","pouch-stuff","soul-vore","soul-absorb-paw","pouch-eat","stomach","womb",
+"female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw","stomach","womb",
 "balls","bowels","breasts","soul-digest"];
 
 for (let i=0; i<actions.length; i++) {
@@ -386,11 +386,25 @@ function defaultPouchStuff(container, macro, verbose) {
     return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your pouch.";
 }
 
+function defaultPouchRub(container, macro, verbose) {
+  if (container.count == 0)
+    return "You rub your empty pouch.";
+  else
+    return "You rub your bulging pouch, feeling at " + container.describe(false) + " trapped within.";
+}
+
 function defaultPouchEat(container, macro, verbose) {
   if (container.count == 0)
     return "There's nothing in your pouch!";
   else
     return "You snatch " + container.describe(verbose) + " from your pouch and shove " + (container.count > 1 ? "them" : "it") + " down your gullet!";
+}
+
+function defaultPouchAbsorb(container, macro, verbose) {
+  if (container.count == 0)
+    return "There's nothing in your pouch!";
+  else
+    return "Your pouch flattens as it absorbs " + container.describe(false);
 }
 
 function defaultSoulVore(container, macro, verbose) {

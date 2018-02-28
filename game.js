@@ -2144,6 +2144,15 @@ function pouch_stuff()
   macro.arouse(5);
 }
 
+function pouch_rub()
+{
+  let prey = macro.pouch.container;
+
+  let line = describe("pouch-rub", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+  update([line,linesummary,newline])
+}
+
 function pouch_eat()
 {
   let prey = macro.pouch.container;
@@ -2180,6 +2189,44 @@ function pouch_eat()
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
+}
+
+function pouch_absorb()
+{
+  let prey = macro.pouch.container;
+  macro.pouch.container = new Container();
+
+  let line = describe("pouch-absorb", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+  let sound = "";
+  if (people == 0) {
+    sound = "";
+  } else if (people < 3) {
+    sound = "Slp.";
+  } else if (people < 10) {
+    sound = "Shlp.";
+  } else if (people < 50) {
+    sound = "Shlorp.";
+  } else if (people < 500) {
+    sound = "Shlrrrrp!";
+  } else if (people < 5000) {
+    sound = "SHLRP!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.stomach.feed(prey);
+
+  updateVictims("stomach",prey);
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(25);
 }
 
 function soul_vore()
@@ -2691,7 +2738,9 @@ function startGame(e) {
     enable_panel("misc");
 
     enable_button("pouch_stuff");
+    enable_button("pouch_rub");
     enable_button("pouch_eat");
+    enable_button("pouch_absorb");
 
   }
 
