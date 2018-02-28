@@ -257,8 +257,15 @@ let macro =
     if (container.count == 0)
       return;
 
-    let digested = container.sum();
+    if (organ.moves != undefined) {
+      organ.moves.feed(container);
+      let line = organ.describeMove(container);
+      let summary = summarize(container.sum(),false);
+      update([line, summary, newline]);
+      return;
+    }
 
+    let digested = container.sum();
     for (let key in victims[organ.name]) {
       if (victims[organ.name].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
         victims["digested"][key] += digested[key];
@@ -339,6 +346,9 @@ let macro =
     },
     "feedFunc": function(prey,self,owner) {
       this.contents[0] = this.contents[0].merge(prey);
+    },
+    "describeMove" : function(container) {
+      return describe("bowels-to-stomach",container,this.owner,verbose);
     },
     "describeDigestion" : function(container) {
       return describe("bowels",container,this.owner,verbose);
@@ -588,6 +598,9 @@ let macro =
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
 
+    if (this.analVoreToStomach) {
+      this.bowels.moves = this.stomach;
+    }
     if (this.maleParts)
       this.fillCum(this);
     if (this.femaleParts)

@@ -21,7 +21,7 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw","stomach","womb",
-"balls","bowels","breasts","soul-digest"];
+"balls","bowels","bowels-to-stomach","breasts","soul-digest"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -436,6 +436,13 @@ function defaultBowels(container, macro, verbose) {
     return "Your bowels churn as they melt down " + container.describe(false) + " and absorb them into your body";
   else
     return "Your bowels churn as they absorb " + container.describe(false);
+}
+
+function defaultBowelsToStomach(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your bowels clench, forcing " + container.describe(false) + " into your roiling, caustic stomach.";
+  else
+    return "Your bowels clench, squeezing " + container.describe(false) + " into your belly.";
 }
 
 function defaultWomb(container, macro, verbose) {
