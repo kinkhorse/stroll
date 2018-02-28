@@ -952,7 +952,7 @@ function get_living_prey(sum) {
   let total = 0;
   for (let key in sum) {
     if (sum.hasOwnProperty(key)) {
-      if (key == "Person" || key == "Cow")
+      if (key == "Micro" || key == "Macro" || key == "Person" || key == "Cow")
         total += sum[key];
     }
   }
@@ -1123,50 +1123,32 @@ function getPrey(region, area, sameSize = false)
     };
   }
   else {
-    switch(region)
-    {
-      case "rural": weights = {
-        "Person": 0.005,
-        "House": 0.001,
-        "Barn": 0.001,
-        "Cow": 0.02,
-      }; break;
-      case "suburb": weights = {
-        "Person": 0.03,
-        "House": 0.15,
-        "Car": 0.05,
-        "Bus": 0.02,
-        "Train": 0.02,
-        "Town": 0.00001,
-        "City": 0.00005,
-        "Continent": 0.0005,
-        "Planet": 0.0001
-      }; break;
-      case "city": weights = {
-        "Person": 0.05,
-        "House": 0.1,
-        "Car": 0.07,
-        "Bus": 0.02,
-        "Parking Garage": 0.003,
-        "Small Skyscraper": 0.05,
-        "Town": 0.00001,
-        "City": 0.00005,
-        "Continent": 0.0005,
-        "Planet": 0.0001
-      }; break;
-      case "downtown": weights = {
-        "Person": 0.1,
-        "Car": 0.1,
-        "Bus": 0.05,
-        "Tram": 0.01,
-        "Parking Garage": 0.005,
-        "Small Skyscraper": 0.4,
-        "Large Skyscraper": 0.1,
-        "Town": 0.00001,
-        "City": 0.00005,
-        "Continent": 0.0005,
-        "Planet": 0.0001
-      }; break;
+    weights = {
+      "Person": 0.05,
+      "House": 0.1,
+      "Car": 0.07,
+      "Bus": 0.02,
+      "Parking Garage": 0.003,
+      "Small Skyscraper": 0.05,
+      "Town": 0.00001,
+      "City": 0.00005,
+      "Continent": 0.0005,
+      "Planet": 0.0001
+    };
+
+    if (macro.victimsMilitary) {
+      weights["Soldier"] = 0.01;
+      weights["Tank"] = 0.0005;
+      weights["Artillery"] = 0.0001;
+      weights["Helicopter"] = 0.00005;
+    }
+
+    if (macro.victimsMicros) {
+      weights["Micro"] = 1;
+    }
+
+    if (macro.victimsMacros) {
+      weights["Macro"] = 0.0001;
     }
   }
   var prey = fill_area(area,weights);

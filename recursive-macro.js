@@ -22,7 +22,13 @@ var things =
   "Planet": Planet,
   "Star": Star,
   "Solar System": SolarSystem,
-  "Galaxy": Galaxy
+  "Galaxy": Galaxy,
+  "Soldier": Soldier,
+  "Tank": Tank,
+  "Artillery": Artillery,
+  "Helicopter": Helicopter,
+  "Micro": Micro,
+  "Macro": Macro,
 };
 
 var areas =
@@ -47,6 +53,12 @@ var areas =
   "Star": 3e18,
   "Solar System": 3e21,
   "Galaxy": 2e42,
+  "Soldier": 1,
+  "Tank": 10,
+  "Artillery": 12,
+  "Helicopter": 8,
+  "Micro": 0.05,
+  "Macro": 100,
 };
 
 var masses =
@@ -70,7 +82,13 @@ var masses =
   "Planet": 5.972e24,
   "Star": 1e40,
   "Solar System": 1,
-  "Galaxy": 1
+  "Galaxy": 1,
+  "Soldier": 80,
+  "Tank": 5000,
+  "Artillery": 7000,
+  "Helicopter": 1500,
+  "Micro": 0.01,
+  "Macro": 80000,
 };
 
 var clusters =
@@ -94,7 +112,13 @@ var clusters =
   "Planet": 1,
   "Star": 1,
   "Solar System": 1,
-  "Galaxy": 1
+  "Galaxy": 1,
+  "Soldier": 0,
+  "Tank": 0,
+  "Artillery": 0,
+  "Helicopter": 0,
+  "Micro": 10,
+  "Macro": 0,
 };
 
 // general logic: each step fills in a fraction of the remaining space
@@ -969,5 +993,95 @@ function Galaxy(count = 1) {
     } else {
       return (this.count == 1 ? "a galaxy" : this.count + " galaxies");
     }
+  };
+}
+
+function Soldier(count = 1) {
+  this.name = "Soldier";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.describe = function(verbose = true) {
+      return (this.count == 1 ? "a soldier" : this.count + " soldiers");
+  };
+}
+
+function Tank(count = 1) {
+  this.name = "Tank";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.addContent("Soldier",3,5,count);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a tank" : this.count + " tanks") + " with " + describe_all(this.contents, verbose) + " trapped inside.";
+    } else {
+      return (this.count == 1 ? "a tank" : this.count + " tanks");
+    }
+  };
+}
+
+function Artillery(count = 1) {
+  this.name = "Artillery";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.addContent("Soldier",4,6,count);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "an artillery unit" : this.count + " artillery units") + " with " + describe_all(this.contents, verbose) + " trapped inside.";
+    } else {
+      return (this.count == 1 ? "an artillery unit" : this.count + " artillery units");
+    }
+  };
+}
+
+function Helicopter(count = 1) {
+  this.name = "Helicopter";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.addContent("Soldier",4,16,count);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a helicopter" : this.count + " helicopters") + " with " + describe_all(this.contents, verbose) + " riding inside.";
+    } else {
+      return (this.count == 1 ? "a helicopter" : this.count + " helicopters");
+    }
+  };
+}
+
+function Micro(count = 1) {
+  this.name = "Micro";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.describe = function(verbose = true) {
+    return (this.count == 1 ? "a micro" : this.count + " micros");
+  };
+}
+
+function Macro(count = 1) {
+  this.name = "Macro";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = {};
+
+  this.describe = function(verbose = true) {
+    return (this.count == 1 ? "a smaller macro" : this.count + " smaller macros");
   };
 }
