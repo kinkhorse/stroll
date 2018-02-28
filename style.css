@@ -11,7 +11,12 @@
   font-family: Arial;
 }
 
-body.dark > div > div > div > form input {
+body.dark form input {
+  color: #eee;
+  background: #444;
+}
+
+body.dark form select {
   color: #eee;
   background: #444;
 }
@@ -192,6 +197,12 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
   width: 500px;
 }
 
+.custom-category-sub {
+  text-align: center;
+  margin: 10px;
+  width: 400px;
+}
+
 body.light .custom-category {
   background: #ddd;
 }
@@ -200,33 +211,52 @@ body.dark .custom-category {
   background: #222;
 }
 
+.custom-header-static {
+  font-size: 200%;
+  margin: 10px;
+  display: inline-block;
+}
+
+body.light .custom-header-static {
+  background: #ddd;
+}
+
+body.dark .custom-header-static {
+  background: #555;
+}
 
 .custom-header {
   font-size: 200%;
   margin: 10px;
   display: inline-block;
-  border-style: solid;
+  border-style: dotted;
   border-width: 1px;
+  border-length: 5px;
 }
 
 body.light .custom-header {
+  color: #aaa;
   background: #ddd;
 }
 
 body.dark .custom-header {
-  background: #555;
+  color: #555;
+  background: #222;
 }
 
 body.light input[type="checkbox"]:checked+
 .custom-header {
+  color: #000;
+  border-style: solid;
   margin: 10px;
   background: #bbb;
 }
 
 body.dark input[type="checkbox"]:checked+
 .custom-header {
+  color: #fff;
   margin: 10px;
-  background: #000;
+  background: #444;
 }
 
 .custom-header-checkbox {

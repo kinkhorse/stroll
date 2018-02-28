@@ -146,48 +146,48 @@
         <form id="custom-species-form" name="custom-species-form">
           <ul class="flex-outer">
             <div class="custom-category">
-              <div class="custom-header">Basics</div>
+              <div class="custom-header-static">Basics</div>
               <div>
                 <li>
                   <label for="name">Name</label>
-                  <input type="text" name="name"/>
+                  <input type="text" id="name" name="name"/>
                 </li>
                 <li>
                   <label for="species">Species</label>
-                  <input type="text" name="species" placeholder="crux"/>
+                  <input type="text" id="species" name="species" placeholder="crux"/>
                 </li>
                 <li>
                   <label for="scale" class="has-tooltip" title="Multiply your base height by this much">Scale (?)</label>
-                  <input type="text" name="scale" placeholder="1"/>
+                  <input type="text" id="scale" name="scale" placeholder="1"/>
                 </li>
                 <li>
                   <label for="baseHeight">Height</label>
-                  <input type="number" name="baseHeight" placeholder="2.26"/>
+                  <input type="number" id="baseHeight" name="baseHeight" placeholder="2.26"/>
                 </li>
                 <li>
                   <label for="baseMass">Weight</label>
-                  <input type="number" name="baseMass" placeholder="135">
+                  <input type="number" id="baseMass" name="baseMass" placeholder="135">
                 </li>
                 <li>
                   <label for="basePawArea">Paw area</label>
-                  <input type="number" name="basePawArea" placeholder="0.1">
+                  <input type="number" id="basePawArea" name="basePawArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="baseHandArea">Hand area</label>
-                  <input type="number" name="baseHandArea" placeholder="0.1">
+                  <input type="number" id="baseHandArea" name="baseHandArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="baseAnalVoreArea">Tailhole area</label>
-                  <input type="number" name="baseAnalVoreArea" placeholder="0.1">
+                  <input type="number" id="baseAnalVoreArea" name="baseAnalVoreArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="baseAssArea">Ass area</label>
-                  <input type="number" name="baseAssArea" placeholder="0.4">
+                  <input type="number" id="baseAssArea" name="baseAssArea" placeholder="0.4">
                 </li>
               </div>
             </div>
             <div class="custom-category">
-              <div class="custom-header">Brutality</div>
+              <div class="custom-header-static">Brutality</div>
               <div>
                 <ul>
                   <li>
@@ -210,7 +210,7 @@
               </div>
             </div>
             <div class="custom-category">
-              <div class="custom-header">Victims</div>
+              <div class="custom-header-static">Victims</div>
               <div>
                 <li>
                   <label for="military">Military</label>
@@ -227,7 +227,7 @@
               </div>
             </div>
             <div class="custom-category">
-              <div class="custom-header">Misc</div>
+              <div class="custom-header-static">Misc</div>
               <div>
                 <li>
                   <label for="humanMode">Human victims</label>
@@ -256,6 +256,7 @@
                 </li>
               </div>
             </div>
+
             <div class="custom-category">
               <input class="custom-header-checkbox" type="checkbox" checked="true" id="analVore" name="analVore"/>
               <label class="custom-header" for="analVore">Anal Vore</label>
@@ -318,37 +319,38 @@
                 </li>
               </div>
             </div>
+
             <div class="custom-category">
               <input class="custom-header-checkbox" type="checkbox" checked="true" id="maleParts" name="maleParts"/>
               <label class="custom-header" for="maleParts">Male genitals</label>
               <div class="reveal-if-active">
                 <li>
                   <label for="hasSheath">Sheath</label>
-                  <input type="checkbox" name="hasSheath" checked="true" />
+                  <input type="checkbox" id="hasSheath" name="hasSheath" checked="true" />
                 </li>
                 <li>
                   <label for="dickType">Cock type</label>
-                  <input type="text" name="dickType" placeholder="canine"/>
+                  <input type="text" id="dickType" name="dickType" placeholder="canine"/>
                 </li>
                 <li>
                   <label for="baseDickLength">Cock length</label>
-                  <input type="number" name="baseDickLength" placeholder="0.3"/>
+                  <input type="number" id="baseDickLength" name="baseDickLength" placeholder="0.3"/>
                 </li>
                 <li>
                   <label for="baseDickDiameter">Cock diameter</label>
-                  <input type="number" name="baseDickDiameter" placeholder="0.08"/>
+                  <input type="number" id="baseDickDiameter" name="baseDickDiameter" placeholder="0.08"/>
                 </li>
                 <li>
                   <label for="baseBallDiameter">Ball diameter</label>
-                  <input type="number" name="baseBallDiameter" placeholder="0.05"/>
+                  <input type="number" id="baseBallDiameter" name="baseBallDiameter" placeholder="0.05"/>
                 </li>
                 <li>
                   <label for="baseCumRatio" class="has-tooltip" title="scales how much cum is released with each shot">Orgasm cum ratio</label>
-                  <input type="number" name="baseCumRatio" placeholder="1"/>
+                  <input type="number" id="baseCumRatio" name="baseCumRatio" placeholder="1"/>
                 </li>
                 <li>
                   <label for="baseMass">Cum production factor</label>
-                  <input type="number" name="cumScale" placeholder="1"/>
+                  <input type="number" id="cumScale" name="cumScale" placeholder="1"/>
                 </li>
               </div>
             </div>
@@ -359,27 +361,29 @@
               <div class="reveal-if-active">
                 <li>
                   <label for="baseBreastDiameter">Breast diameter</label>
-                  <input type="number" name="baseBreastDiameter" placeholder="0.1"/>
+                  <input type="number" id="baseBreastDiameter" name="baseBreastDiameter" placeholder="0.1"/>
                 </li>
-                <div>
-                  <ul class="flex-outer">
-                    Lactation:
-                    <input type="checkbox" checked="true" name="lactationEnabled"/>
-                    <div class="reveal-if-active">
-                      <li>
-                        <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
-                        <input type="number" name="lactationFactor" placeholder="0.25"/>
-                      </li>
-                      <li>
-                        <label for="lactationScale">Milk production factor</label>
-                        <input type="number" name="lactationScale" placeholder="1"/>
-                      </li>
-                    </div>
-                  </ul>
-                </div>
+                <li>
+                  <div class="custom-category-sub">
+                    <ul class="flex-outer">
+                      <input class="custom-header-checkbox" type="checkbox" checked="true" id="lactationEnabled" name="lactationEnabled"/>
+                      <label class="custom-header" for="lactationEnabled">Lactation</label>
+                      <div class="reveal-if-active">
+                        <li>
+                          <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
+                          <input type="number" id="lactationFactor" name="lactationFactor" placeholder="0.25"/>
+                        </li>
+                        <li>
+                          <label for="lactationScale">Milk production factor</label>
+                          <input type="number" id="lactationScale" name="lactationScale" placeholder="1"/>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
+                </li>
                 <li>
                   <label for="breastVore">Breast vore</label>
-                  <input type="checkbox" checked="true" name="breastVore"/>
+                  <input type="checkbox" checked="true" id="breastVore" name="breastVore"/>
                 </li>
               </div>
             </div>
@@ -390,19 +394,19 @@
               <div class="reveal-if-active">
                 <li>
                   <label for="baseVaginaLength">Slit length</label>
-                  <input type="number" name="baseVaginaLength" placeholder="0.1"/>
+                  <input type="number" id="baseVaginaLength" name="baseVaginaLength" placeholder="0.1"/>
                 </li>
                 <li>
                   <label for="baseVaginaWidth">Slit width</label>
-                  <input type="number" name="baseVaginaWidth" placeholder="0.05"/>
+                  <input type="number" id="baseVaginaWidth" name="baseVaginaWidth" placeholder="0.05"/>
                 </li>
                 <li>
                   <label for="baseFemcumRatio" class="has-tooltip" title="scales how much femcum is released with each shot">Orgasm femcum ratio</label>
-                  <input type="number" name="baseFemcumRatio" placeholder="1"/>
+                  <input type="number" id="baseFemcumRatio" name="baseFemcumRatio" placeholder="1"/>
                 </li>
                 <li>
                   <label for="femcumScale">Femcum production factor</label>
-                  <input type="number" name="femcumScale" placeholder="1"/>
+                  <input type="number" id="femcumScale" name="femcumScale" placeholder="1"/>
                 </li>
               </div>
             </div>
