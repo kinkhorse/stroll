@@ -1,6 +1,7 @@
 "use strict";
 
 /*jshint browser: true*/
+/*jshint devel: true*/
 
 let errored = false;
 
@@ -12,7 +13,7 @@ window.onerror = function(msg, source, lineno, colno, error) {
 
     console.log(navigator.userAgent);
   }
-}
+};
 
 // do da dark mode
 
@@ -48,7 +49,7 @@ let numbers = "full";
 
 let verbose = true;
 
-let biome = "suburb";
+let biome = "city";
 
 let newline = "&nbsp;";
 
@@ -116,7 +117,7 @@ let macro =
         break;
       case "avian":
         result = plural ? "talons" : "talon";
-        breka;
+        break;
     }
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
@@ -967,18 +968,6 @@ function toggle_auto()
     update(["You start walking.",newline]);
   else
     update(["You stop walking.",newline]);
-}
-
-function change_location()
-{
-  switch(biome) {
-    case "suburb": biome = "city"; break;
-    case "city": biome = "downtown"; break;
-    case "downtown": biome = "rural"; break;
-    case "rural": biome = "suburb"; break;
-  }
-
-  document.getElementById("button-location").innerHTML = "Location: " + biome.charAt(0).toUpperCase() + biome.slice(1);
 }
 
 function toggle_units()
@@ -2190,7 +2179,7 @@ function pouch_rub()
 
   let line = describe("pouch-rub", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
-  update([line,linesummary,newline])
+  update([line,linesummary,newline]);
 }
 
 function pouch_eat()
@@ -2569,7 +2558,7 @@ function saveSettings() {
   let form = document.forms.namedItem("custom-species-form");
 
   for (let i=0; i<form.length; i++) {
-    let value = form[i].value == "" ? form[i].placeholder : form[i].value
+    let value = form[i].value == "" ? form[i].placeholder : form[i].value;
     if (form[i].type == "text")
       settings[form[i].name] = value;
     else if (form[i].type == "number")
@@ -2935,7 +2924,6 @@ window.addEventListener('load', function(event) {
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
-  document.getElementById("button-location").addEventListener("click",change_location);
   document.getElementById("button-numbers").addEventListener("click",toggle_numbers);
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);

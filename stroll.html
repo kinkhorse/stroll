@@ -194,32 +194,49 @@
             <div class="custom-category">
               <div class="custom-header">Brutality</div>
               <div>
-              <ul>
-                <li>
-                  <input type="radio" name="brutality" id="brutality-0">
-                  <label for="brutality-0">Non-fatal</label>
-                </li>
-                <li>
-                  <input type="radio" name="brutality" checked="true" id="brutality-1">
-                  <label for="brutality-1">Fatal, no gore</label>
-                </li>
-                <li>
-                  <input type="radio" name="brutality" id="brutality-2">
-                  <label for="brutality-2">Gory</label>
-                </li>
-                <li>
-                  <input type="radio" name="brutality" id="brutality-3" disabled="disableD">
-                  <label for="brutality-3">Sadistic (not implemented)</label>
-                </li>
-              </ul>
+                <ul>
+                  <li>
+                    <input type="radio" name="brutality" id="brutality-0">
+                    <label for="brutality-0">Non-fatal</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="brutality" checked="true" id="brutality-1">
+                    <label for="brutality-1">Fatal, no gore</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="brutality" id="brutality-2">
+                    <label for="brutality-2">Gory</label>
+                  </li>
+                  <li>
+                    <input type="radio" name="brutality" id="brutality-3" disabled="disableD">
+                    <label for="brutality-3">Sadistic (not implemented)</label>
+                  </li>
+                </ul>
+              </div>
             </div>
+            <div class="custom-category">
+              <div class="custom-header">Victims</div>
+              <div>
+                <li>
+                  <label for="military">Military</label>
+                  <input type="checkbox" name="victimsMilitary" id="victimsMilitary"/>
+                </li>
+                <li>
+                  <label for="macros">Smaller macros</label>
+                  <input type="checkbox" name="victimsMacros" id="victimsMacros"/>
+                </li>
+                <li>
+                  <label for="micros">Micros</label>
+                  <input type="checkbox" name="victimsMicros" id="victimsMicros"/>
+                </li>
+              </div>
             </div>
             <div class="custom-category">
               <div class="custom-header">Misc</div>
               <div>
                 <li>
                   <label for="humanMode">Human victims</label>
-                  <input type="checkbox" name="humanMode" id="humanMode">
+                  <input type="checkbox" name="humanMode" id="humanMode"/>
                 </li>
                 <li>
                   <label class="has-tooltip" for="sameSizeVore" title="Can you eat people your own size?">Same-size predator</label>
@@ -241,6 +258,7 @@
                     <option value="foot">Human</option>
                     <option value="avian">Avian</option>
                   </select>
+                </li>
               </div>
             </div>
             <div class="custom-category">
