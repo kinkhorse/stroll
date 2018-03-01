@@ -132,6 +132,7 @@ let macro =
   "baseTailLength": 1,
   "baseTailDiameter": 0.1,
   "tailDensity": 250,
+  "tailStretchiness": 2,
   "tailScale": 1,
   "tailMaw": false,
 
@@ -141,8 +142,14 @@ let macro =
   get tailDiameter() {
     return this.scaling(this.baseTailDiameter * this.tailScale, this.scale, 1);
   },
+  get tailStretchDiameter() {
+    return this.scaling(this.tailStretchiness * this.baseTailDiameter * this.tailScale, this.scale, 1);
+  },
   get tailGirth() {
     return Math.pow(this.tailDiameter/2,2) * Math.PI;
+  },
+  get tailStretchGirth() {
+    return Math.pow(this.tailStretchDiameter/2,2) * Math.PI;
   },
   get tailArea() {
     return this.tailLength * this.tailDiameter;
@@ -157,6 +164,7 @@ let macro =
   "baseDickLength": 0.3,
   "baseDickDiameter": 0.08,
   "dickDensity": 1000,
+  "dickStretchiness": 2,
   "dickScale": 1,
   get dickLength() {
     let factor = 1;
@@ -180,6 +188,9 @@ let macro =
   },
   get dickGirth() {
     return Math.pow((this.dickDiameter/ 2),2) * Math.PI;
+  },
+  get dickStretchGreath() {
+    return this.dickGirth * this.dickStretchiness * this.dickStretchiness;
   },
   get dickArea() {
     return this.dickLength * this.dickDiameter* Math.PI / 2;
@@ -212,11 +223,13 @@ let macro =
 
   "baseVaginaLength": 0.1,
   "baseVaginaWidth": 0.05,
+  "vaginaStretchiness": 2,
   "vaginaScale": 1,
 
   get vaginaLength() { return this.scaling(this.baseVaginaLength * this.vaginaScale, this.scale, 1); },
   get vaginaWidth() { return this.scaling(this.baseVaginaWidth * this.vaginaScale, this.scale, 1); },
   get vaginaArea() { return this.vaginaLength * this.vaginaWidth; },
+  get vaginaStretchArea() { return this.vaginaStretchiness * this.vaginaStretchiness * this.vaginaLength * this.vaginaWidth; },
   get vaginaVolume() { return this.vaginaArea * this.vaginaWidth; },
   "baseFemcumRatio": 1,
   "femcumScale": 1,
@@ -235,10 +248,15 @@ let macro =
 
   "baseBreastDiameter": 0.1,
   "breastScale": 1,
+  "breastStretchiness": 2,
   "breastDensity": 1000,
   get breastDiameter() { return this.scaling(this.baseBreastDiameter * this.breastScale, this.scale, 1); },
+  get breastStretchDiameter() { return this.scaling(this.breastStretchiness * this.baseBreastDiameter * this.breastScale, this.scale, 1); },
   get breastArea() {
     return 2 * Math.PI * Math.pow(this.breastDiameter/2,2);
+  },
+  get breastStretchArea() {
+    return 2 * Math.PI * Math.pow(this.breastStretchDiameter/2,2);
   },
   get breastVolume() {
     let radius = this.breastDiameter / 2;
@@ -1673,7 +1691,7 @@ function breast_milk(e,vol)
 
 function unbirth()
 {
-  let area = macro.vaginaArea;
+  let area = macro.vaginaStretchArea;
   let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("unbirth", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -1867,7 +1885,7 @@ function cockslap()
 
 function cock_vore()
 {
-  let area = macro.dickGirth;
+  let area = macro.dickStretchGirth;
   let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("cock-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -2103,7 +2121,7 @@ function tail_slap()
 
 function tail_vore()
 {
-  let area = macro.tailGirth * macro.tailCount;
+  let area = macro.tailStretchGirth * macro.tailCount;
   let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("tail-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
