@@ -72,7 +72,7 @@
       </div>
       <div id="log-area">
         <div id="log">
-          <div>Welcome to Stroll 0.5.9</div>
+          <div>Welcome to Stroll 0.5.10</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></div>
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div class="character-build">
-      <p>Welcome to Stroll 0.5.9</p>
+      <p>Welcome to Stroll 0.5.10</p>
       <p><b>This game features 18+ content</b></p>
       <p><a href="https://chemicalcrux.org/stroll">Changelog</a></p>
       <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
@@ -151,13 +151,25 @@
           <button class="option-button" id="button-load-preset">Load Preset Character</button>
         </div>
 
-        <p>Or, load/save your own character here!</p>
+        <p>Or export/import your character to text here. Copy and paste to share!</p>
+
+        <button class="option-button" id="button-export-clear">Clear Space</button>
+        <button class="option-button" id="button-export-preset">Export Your Character</button>
+        <button class="option-button" id="button-import-preset">Import Your Character</button>
+
+        <p><input type="text" id="export-area"></p>
+
+        <p>Or, load/save your own character internally here! It'll be saved in your browser, so you can come back to it later.</p>
         <div>
           <button class="option-button" id="button-reset-custom">Reset Custom Character</button>
           <button class="option-button" id="button-load-custom">Load Custom Character</button>
           <button class="option-button" id="button-save-custom">Save Custom Character</button>
-          <button class="option-button" id="button-start">Start Stroll Game</button>
         </div>
+
+        <div>
+          <button class="option-button" id="button-start">Start Game</button>
+        </div>
+
         <form id="custom-species-form" name="custom-species-form">
           <ul class="flex-outer">
             <div class="custom-category">

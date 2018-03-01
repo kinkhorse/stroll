@@ -2373,7 +2373,7 @@ function update(lines = [])
 function pick_move()
 {
   if (!strolling) {
-    setTimeout(pick_move, 1500 * Math.sqrt(macro.scale));
+    setTimeout(pick_move, 1500 * Math.log10(macro.scale));
     return;
   }
   let choice = Math.random();
@@ -2556,11 +2556,9 @@ function loadPreset() {
   loadSettings(presets[select.selectedIndex]);
 }
 
-function saveSettings() {
-  let storage = window.localStorage;
-  let settings = {};
+function generateSettings() {
   let form = document.forms.namedItem("custom-species-form");
-
+  let settings = {};
   for (let i=0; i<form.length; i++) {
     let value = form[i].value == "" ? form[i].placeholder : form[i].value;
     if (form[i].type == "text")
@@ -2577,6 +2575,30 @@ function saveSettings() {
       settings[form[i].name] = form[i][form[i].selectedIndex].value;
     }
   }
+
+  return settings;
+}
+
+function clearExport() {
+  document.getElementById("export-area").value = "";
+}
+
+function exportSettings() {
+  let settings = generateSettings();
+
+  document.getElementById("export-area").value = JSON.stringify(settings);
+}
+
+function importSettings() {
+  let settings = JSON.parse(document.getElementById("export-area").value);
+
+  loadSettings(settings);
+}
+
+function saveSettings() {
+  let storage = window.localStorage;
+
+  let settings = generateSettings();
 
   storage.setItem('settings',JSON.stringify(settings));
 }
@@ -2958,8 +2980,12 @@ window.addEventListener('load', function(event) {
 
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
+  document.getElementById("button-export-clear").addEventListener("click",clearExport);
+  document.getElementById("button-export-preset").addEventListener("click",exportSettings);
+  document.getElementById("button-import-preset").addEventListener("click",importSettings);
+
   document.getElementById("button-reset-custom").addEventListener("click",resetSettings);
-  document.getElementById("button-load-custom").addEventListener("click",function() { loadSettings() });
+  document.getElementById("button-load-custom").addEventListener("click",function() { loadSettings(); });
   document.getElementById("button-save-custom").addEventListener("click",saveSettings);
   document.getElementById("button-start").addEventListener("click",startGame);
   setTimeout(pick_move, 2000);

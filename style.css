@@ -15,6 +15,11 @@
   font-size: 24px;
 }
 
+#export-area {
+  max-width: 80%;
+  width: 80%;
+}
+
 body.dark input {
   color: #eee;
   background: #444;
