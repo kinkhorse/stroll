@@ -189,7 +189,7 @@ let macro =
   get dickGirth() {
     return Math.pow((this.dickDiameter/ 2),2) * Math.PI;
   },
-  get dickStretchGreath() {
+  get dickStretchGirth() {
     return this.dickGirth * this.dickStretchiness * this.dickStretchiness;
   },
   get dickArea() {
@@ -1609,7 +1609,7 @@ function breast_crush()
 function breast_vore()
 {
   // todo nipple areas?
-  let area = macro.breastArea/2;
+  let area = macro.breastStretchArea/4;
   let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("breast-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -2121,12 +2121,21 @@ function tail_slap()
 
 function tail_vore()
 {
-  let area = macro.tailStretchGirth * macro.tailCount;
-  let prey = getPrey(biome, area, macro.sameSizeVore);
-  let line = describe("tail-vore", prey, macro, verbose);
-  let linesummary = summarize(prey.sum(), false);
+  let lines = [];
+  let totalPrey = new Container();
+  for (let i=0; i<macro.tailCount; i++) {
+    let area = macro.tailStretchGirth;
+    let prey = getPrey(biome, area, macro.sameSizeVore);
+    totalPrey = totalPrey.merge(prey);
+    let line = describe("tail-vore", prey, macro, verbose);
+    lines.push(line);
+  }
 
-  let people = get_living_prey(prey.sum());
+  let linesummary = summarize(totalPrey.sum(), false);
+
+  lines.push(linesummary);
+
+  let people = get_living_prey(totalPrey.sum());
 
   let sound = "";
   if (people == 0) {
@@ -2144,14 +2153,14 @@ function tail_vore()
   } else {
     sound = "Oh the humanity!";
   }
-  let preyMass = prey.sum_property("mass");
+  let preyMass = totalPrey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
 
-  macro.stomach.feed(prey);
+  macro.stomach.feed(totalPrey);
 
-  updateVictims("tailmaw'd",prey);
-  update([sound,line,linesummary,newline]);
+  updateVictims("tailmaw'd",totalPrey);
+  update([sound].concat(lines));
 
   macro.arouse(5);
 }

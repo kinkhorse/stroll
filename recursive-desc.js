@@ -174,13 +174,13 @@ function defaultTailSlap(container, macro, verbose) {
 
 function defaultTailVore(container, macro, verbose) {
   if (container.count == 0)
-    return "Your " + (macro.tailCount > 1 ? "drooling tails swing" : "drooling tail swings") + " to and fro";
+    return "Your drooling tail swings to and fro";
   else if (isFatal(macro))
-    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose) +
-     ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully to drag your prey into your sloppy guts.";
+    return "Your tail lunges, maw agape, at " + container.describe(verbose) +
+     ". It scarfs down everything in seconds, gulping forcefully to drag your prey into your sloppy guts.";
   else
-    return "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails lunge, maws agape, " : " tail lunges, maw agape, ") + "at " + container.describe(verbose) +
-     ". " + (macro.tailCount > 1 ? "They" : "It") + " scarf down everything in a second, gulping forcefully and pulling everything into your belly.";
+    return "Your tail lunges, maw agape, at " + container.describe(verbose) +
+     ". It scarfs down everything in a second, gulping forcefully and pulling everything into your belly.";
 }
 
 function defaultCleavageStuff(container, macro, verbose) {
