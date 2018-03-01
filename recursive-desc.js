@@ -126,8 +126,10 @@ function defaultChew(container, macro, verbose) {
     return "You reach down for a delicious treat and grab - oh, nothing.";
   else if (isNonFatal(macro))
     return defaultEat(container, macro, verbose);
-  else
-    return "You scoop up " + container.describe(verbose) + " and crunch " + (container.count > 1 ? "them" : "it") + " in your powerful jaws, then swallow them down.";
+  else {
+    let pronoun = (container.count > 1 ? "them" : "it");
+    return "You scoop up " + container.describe(verbose) + " and " + macro.biteDesc() + " " + pronoun + " with your " + macro.jawDesc(true) + ", then swallow them down.";
+  }
 }
 
 function defaultStomp(container, macro, verbose) {
@@ -411,7 +413,7 @@ function defaultSoulVore(container, macro, verbose) {
   if (container.count == 0)
     return "No souls here.";
   else
-    return "You open your jaws and inhale, ripping the souls from " + container.describe(verbose) + " and dragging them down deep inside.";
+    return "You open your " + macro.jawDesc(true) + " and inhale, ripping the souls from " + container.describe(verbose) + " and dragging them down deep inside.";
 }
 
 function defaultSoulAbsorbPaw(container, macro, verbose) {
@@ -527,7 +529,7 @@ rules["eat"].push({
      macro.height < 500;
   },
   "desc": function(container, macro, verbose) {
-    return "You drop onto your hands and knees, jaws opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
+    return "You drop onto your hands and knees, " + macro.jawDesc(true) + " opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
     and you suckle on it for a long moment before twisting your head to snap it loose. The entire building and the " + describe_all(container.contents["Small Skyscraper"].contents, verbose) + "\
     within plunge into your roiling guts, along with some delicious treats you slurped up along with it - " + describe_all(container.contents, verbose, ["Small Skyscraper"]) + ".";
   }
@@ -540,7 +542,7 @@ rules["eat"].push({
      macro.height < 750;
   },
   "desc": function(container, macro, verbose) {
-    return "You drop onto your hands and knees, jaws opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
+    return "You drop onto your hands and knees, " + macro.jawDesc(true) + "  opening wide to envelop the skyscraper. It glides into your throat as your snout touches the ground,\
     and you suckle on it for a long moment before twisting your head to snap it loose. Without missing a beat, you rise back up, sloppy tongue slathering over the side \
     of the remaining tower, sucking on its tip and roughly shoving it into your maw. It breaks from its foundation, vanishing past your lips as you use two fingers to shove it \
     down your sultry throat. Your gut bubbles as " + describe_all(container.contents["Small Skyscraper"].contents, verbose) + " are crunched and crushed within, along with the \
@@ -557,7 +559,7 @@ rules["chew"].push({
      isGory(macro) &&
      macro.height < 5;
   }, "desc": function(container, macro, verbose) {
-    return "You tackle a " + container.describe(verbose) + " and dig into your meal, powerful jaws ripping them to shreds in seconds. You wolf down great mouthfuls \
+    return "You tackle a " + container.describe(verbose) + " and dig into your meal, powerful " + macro.jawDesc(true) + "  ripping them to shreds in seconds. You wolf down great mouthfuls \
     of meat, consuming them in a terrifying frenzy that ends with naught but bones lying on the ground.";
   }
 });
@@ -583,8 +585,8 @@ rules["chew"].push({
   }, "desc": function(container, macro, verbose) {
     var prey1 = new Person(1).describe(verbose);
     var prey2 = new Person(1).describe(verbose);
-    return "Powerful jaws obliterate " + prey1  +"'s body. You toss your head back and swallow their gory remains, your free hand slowly crushing " + prey2 + " like a nut \
-    in a vice. A heartbeat later, their face is jammed into your bloody throat. A squeeze of your jaws snaps their spine with ease, and their limp body plunges down into \
+    return "Powerful " + macro.jawDesc(true) + "  obliterate " + prey1  +"'s body. You toss your head back and swallow their gory remains, your free hand slowly crushing " + prey2 + " like a nut \
+    in a vice. A heartbeat later, their face is jammed into your bloody throat. A squeeze of your " + macro.jawDesc(true) + " snaps their spine with ease, and their limp body plunges down into \
     your churning depths to be destroyed.";
   }
 });

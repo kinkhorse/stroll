@@ -126,7 +126,33 @@ let macro =
     }
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
-  "jawType": "jaws",
+  "jawType": "jaw",
+
+  "jawDesc": function(plural=false,capital=false) {
+    let result = "";
+    switch(this.jawType) {
+      case "jaw":
+        result = plural ? "jaws" : "jaw";
+        break;
+      case "beak":
+        result = "beak";
+        break;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "biteDesc": function(plural=false,capital=false) {
+    let result = "";
+    switch(this.jawType) {
+      case "jaw":
+        result = plural ? "crushes" : "crush";
+        break;
+      case "beak":
+        result = plural ? "slices" : "slice";
+        break;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
 
   "hasTail": true,
   "tailType": "slinky",
@@ -1990,7 +2016,7 @@ function male_spurt(vol)
 
 function male_orgasm(vol,times)
 {
-  let area = Math.pow(vol*times, 2/3);
+  let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
   let line = describe("male-orgasm", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
@@ -2056,7 +2082,7 @@ function female_spurt(vol)
 
 function female_orgasm(vol,times)
 {
-  let area = Math.pow(vol*times, 2/3);
+  let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
   let line = describe("female-orgasm", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
