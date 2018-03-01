@@ -148,6 +148,12 @@ body.dark #log {
   height: 75px;
 }
 
+#button-start {
+  width:200px;
+  height:100px;
+  font-size: 32px;
+}
+
 .stat-button {
   font-size: 20px;
   width: 120px;
@@ -265,6 +271,7 @@ body.light input[type="checkbox"]:checked+
 body.dark input[type="checkbox"]:checked+
 .custom-header {
   color: #fff;
+  border-style: solid;
   margin: 10px;
   background: #444;
 }

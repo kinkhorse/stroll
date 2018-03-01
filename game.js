@@ -2372,8 +2372,8 @@ function update(lines = [])
 
 function pick_move()
 {
+  setTimeout(pick_move, 1500 * (1 + Math.log10(macro.scale)));
   if (!strolling) {
-    setTimeout(pick_move, 1500 * Math.log10(macro.scale));
     return;
   }
   let choice = Math.random();
@@ -2385,7 +2385,6 @@ function pick_move()
   } else {
     feed();
   }
-  setTimeout(pick_move, 1500 * Math.sqrt(macro.scale));
 }
 
 function grow_pick(times) {
