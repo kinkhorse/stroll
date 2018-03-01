@@ -516,7 +516,7 @@ rules["eat"].push({
      hasLessThan(container, "Person", 5);
   },
   "desc": function(container, macro, verbose) {
-    return "You crush the " + container.contents["Car"].describe() + " with your tight throat, washing it down with " + container.contents["Person"].describe();
+    return "You crush " + container.contents["Car"].describe() + " with your tight throat, washing it down with " + container.contents["Person"].describe();
   }
 });
 
