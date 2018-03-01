@@ -2119,11 +2119,31 @@ function tail_slap()
   macro.arouse(5);
 }
 
-function tail_vore()
+function tail_vore_only()
+{
+  tail_vore(1);
+}
+
+function tail_vore_one()
+{
+  tail_vore(1);
+}
+
+function tail_vore_some()
+{
+  tail_vore(Math.floor(Math.random() * macro.tailCount) + 1);
+}
+
+function tail_vore_all()
+{
+  tail_vore(macro.tailCount);
+}
+
+function tail_vore(count)
 {
   let lines = [];
   let totalPrey = new Container();
-  for (let i=0; i<macro.tailCount; i++) {
+  for (let i=0; i<count; i++) {
     let area = macro.tailStretchGirth;
     let prey = getPrey(biome, area, macro.sameSizeVore);
     totalPrey = totalPrey.merge(prey);
@@ -2756,7 +2776,14 @@ function startGame(e) {
 
     if (macro.tailMaw) {
       victimTypes.push("tailmaw'd");
-      enable_button("tail_vore");
+
+      if (macro.tailCount > 1) {
+        enable_button("tail_vore_one");
+        enable_button("tail_vore_some");
+        enable_button("tail_vore_all");
+      } else {
+        enable_button("tail_vore_only");
+      }
     }
   }
 
