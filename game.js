@@ -2973,6 +2973,7 @@ function startGame(e) {
   }
 
   if (macro.analVore) {
+    enable_button("anal_vore");
     victimTypes.push("bowels");
   }
 
