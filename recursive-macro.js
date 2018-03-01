@@ -244,12 +244,13 @@ function distribution(min, max, samples) {
   var limit = Math.min(100,samples);
 
   if (limit < samples) {
-
+    let dist = 0;
     for (let i = 0; i < limit; i++) {
-      result += (i/10 + 1) * Math.floor(Math.random() * (max - min + 1) + min);
+      dist += Math.random();
     }
+    dist /= 100;
 
-    result = Math.round((result / 595) * samples * (max - min) + min);
+    return Math.floor(dist * samples * (max - min + 1) + samples * min);
   } else {
     for (let i = 0; i < limit; i++) {
       result += Math.floor(Math.random() * (max - min + 1) + min);
