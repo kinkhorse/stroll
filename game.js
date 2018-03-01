@@ -2716,6 +2716,8 @@ function startGame(e) {
             case "brutality-2": macro.brutality = 2; break;
           }
         }
+      } else if (form[i].type == "select-one") {
+        macro[form[i].name] = form[i][form[i].selectedIndex].value;
       }
     }
   }
