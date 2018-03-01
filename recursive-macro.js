@@ -749,7 +749,7 @@ function SmallSkyscraper(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",50,500,count);
+  this.addContent("Person",150,750,count);
 
   this.addContent("Empty Car",10,50,count);
 
@@ -783,7 +783,7 @@ function LargeSkyscraper(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",150,1500,count);
+  this.addContent("Person",500,1500,count);
 
   this.addContent("Empty Car",20,100,count);
 
@@ -842,13 +842,13 @@ function Town(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",500,1000,count);
+  this.addContent("Person",10000,100000,count);
 
-  this.addContent("House",200,400,count);
+  this.addContent("House",5000,50000,count);
 
   this.addContent("Empty Car",200,800,count);
 
-  this.addContent("Car",50,100,count);
+  this.addContent("Car",500,80000,count);
 
   this.addContent("Bus",5,25,count);
 
@@ -870,23 +870,23 @@ function City(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",1000,15000,count);
+  this.addContent("Person",100000,1500000,count);
 
-  this.addContent("House",500,1000,count);
+  this.addContent("House",20000,200000,count);
 
-  this.addContent("Empty Car",2500,3750,count);
+  this.addContent("Empty Car",10000,100000,count);
 
-  this.addContent("Car",500,1000,count);
+  this.addContent("Car",7500,125000,count);
 
-  this.addContent("Bus",50,100,count);
+  this.addContent("Bus",200,400,count);
 
   this.addContent("Train",10,50,count);
 
-  this.addContent("Tram",5,25,count);
+  this.addContent("Tram",25,100,count);
 
-  this.addContent("Small Skyscraper",10,50,count);
+  this.addContent("Small Skyscraper",50,300,count);
 
-  this.addContent("Large Skyscraper",5,20,count);
+  this.addContent("Large Skyscraper",10,75,count);
 
   this.addContent("Parking Garage",5,10,count);
 
@@ -906,17 +906,17 @@ function Continent(count = 1) {
   this.count = count;
   this.contents = {};
 
-  this.addContent("Person",100000,1500000,count);
+  this.addContent("Person",1000000,15000000,count);
 
-  this.addContent("House",500,10000,count);
+  this.addContent("House",2500,10000,count);
 
-  this.addContent("Car",2500,37500,count);
+  this.addContent("Car",25000,375000,count);
 
-  this.addContent("Train",50,100,count);
+  this.addContent("Train",50,500,count);
 
-  this.addContent("Town",100,200,count);
+  this.addContent("Town",500,1000,count);
 
-  this.addContent("City",5,10,count);
+  this.addContent("City",50,250,count);
 
   this.describe = function(verbose = true) {
     if (verbose) {
