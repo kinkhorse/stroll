@@ -216,9 +216,9 @@ input[type="checkbox"]:checked ~ .reveal-if-active {
 .custom-category-sub {
   text-align: center;
   margin: 10px;
-  width: 500px;
+  width: 400px;
   padding: 0px;
-  margin: 0px;
+  margin: 0px 50px;
 }
 
 body.light .custom-category {
@@ -311,7 +311,7 @@ body.dark input[type="checkbox"]:checked+
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  width: 500px;
+  width: 400px;
 }
 
 .flex-outer-sub label,
