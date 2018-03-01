@@ -419,7 +419,7 @@ function defaultSoulAbsorbPaw(container, macro, verbose) {
   if (container.count == 0)
     return "Your " + macro.footDesc() + " thumps against the ground";
   else if (sum == 0)
-    return "Your " + macro.footDesc() + " slams down on " + container.describe(verb0se) + "...but there aren't any souls within!";
+    return "Your " + macro.footDesc() + " slams down on " + container.describe(verbose) + "...but there aren't any souls within!";
   else
     return "Your " + macro.footDesc() + " slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
 }
