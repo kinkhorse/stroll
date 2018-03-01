@@ -72,7 +72,7 @@
       </div>
       <div id="log-area">
         <div id="log">
-          <div>Welcome to Stroll 0.5.12</div>
+          <div>Welcome to Stroll 0.5.13</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></div>
@@ -138,7 +138,7 @@
       </div>
     </div>
     <div class="character-build">
-      <p>Welcome to Stroll 0.5.12</p>
+      <p>Welcome to Stroll 0.5.13</p>
       <p><b>This game features 18+ content</b></p>
       <p><a href="https://chemicalcrux.org/stroll">Changelog</a></p>
       <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
@@ -212,10 +212,6 @@
                 <li>
                   <label for="baseHandArea">Hand area</label>
                   <input type="number" id="baseHandArea" name="baseHandArea" placeholder="0.1">
-                </li>
-                <li>
-                  <label for="baseAnalVoreArea">Tailhole area</label>
-                  <input type="number" id="baseAnalVoreArea" name="baseAnalVoreArea" placeholder="0.1">
                 </li>
                 <li>
                   <label for="baseAssArea">Ass area</label>
@@ -306,6 +302,10 @@
               <label class="custom-header" for="analVore">Anal Vore</label>
               <div class="reveal-if-active">
                 <li>
+                  <label for="baseAnalVoreArea">Tailhole area</label>
+                  <input type="number" id="baseAnalVoreArea" name="baseAnalVoreArea" placeholder="0.1">
+                </li>
+                <li>
                   <label class="has-tooltip" for="analVoreToStomach" title="Otherwise, bowels absorb/digest">Anal vore goes to stomach</label>
                   <input type="checkbox" name="analVoreToStomach" id="analVoreToStomach"/>
                 </li>
@@ -348,12 +348,18 @@
                   <input type="number" name="baseTailDiameter" placeholder="0.3"/>
                 </li>
                 <li>
-                  <label for="tailMaw">Tail maw(s)</label>
-                  <input type="checkbox" checked="true" name="tailMaw"/>
-                </li>
-                <li>
-                  <label for="tailStretchiness">Tail stretchiness</label>
-                  <input type="number" name="tailStretchiness" placeholder="1"/>
+                  <div class="custom-category-sub">
+                    <ul class="flex-outer-sub">
+                      <input class="custom-header-checkbox" type="checkbox" checked="true" id="tailMaw" name="tailMaw"/>
+                      <label class="custom-header" for="tailMaw">Tail Vore</label>
+                      <div class="reveal-if-active">
+                        <li>
+                          <label for="tailStretchiness">Tail stretchiness</label>
+                          <input type="number" name="tailStretchiness" placeholder="1"/>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
                 </li>
               </div>
             </div>

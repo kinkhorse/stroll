@@ -230,7 +230,7 @@ body.dark .custom-category {
 }
 
 .custom-header-static {
-  font-size: 200%;
+  font-size: 250%;
   margin: 10px;
   display: inline-block;
 }
@@ -244,12 +244,16 @@ body.dark .custom-header-static {
 }
 
 .custom-header {
-  font-size: 200%;
+  font-size: 250%;
   margin: 10px;
   display: inline-block;
   border-style: dotted;
   border-width: 1px;
   border-length: 5px;
+}
+
+.custom-category-sub .custom-header {
+  font-size: 200%;
 }
 
 body.light .custom-header {
