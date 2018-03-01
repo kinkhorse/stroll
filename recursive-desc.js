@@ -20,8 +20,8 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
-"female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw","stomach","womb",
-"balls","bowels","bowels-to-stomach","breasts","soul-digest"];
+"female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
+"paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","soul-digest"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -426,11 +426,49 @@ function defaultSoulAbsorbPaw(container, macro, verbose) {
     return "Your " + macro.footDesc() + " slams down on " + container.describe(verbose) + ", smashing them to pieces and absorbing " + sum + (sum == 1 ? " soul" : " souls") + " into your pads.";
 }
 
-function defaultStomach(container, macro, verbose) {
+function defaultPawStench(container, macro, verbose) {
+  let sum = container.sum()["Person"];
   if (isFatal(macro))
-    return "Your stomach gurgles as it digests " + container.describe(false);
+    return "Vile fumes waft from your " + macro.footDesc(true) + " , choking the life from " + (sum > 1 ? sum + " people." : "a person.");
   else
-    return "Your stomach groans as it absorbs " + container.describe(false);
+    return "Your stinky " + macro.footDesc(true) + " overwhelm" + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultAssStench(container, macro, verbose) {
+  let sum = container.sum()["Person"];
+  if (isFatal(macro))
+    return "Vile miasma from your bitter ass snuffs out " + (sum > 1 ? sum + " people" : "a person") + ", suffocating them in your stench.";
+  else
+    return "Your stinky ass sicens " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultBelch(container, macro, verbose) {
+  let sum = container.sum()["Person"];
+  if (container.count == 0)
+    return "An ominous groan precedes a crass belch.";
+  if (isFatal(macro))
+    return "A rancid belch flows from your " + macro.jawDesc(verbose) + ", corroding " + container.describe(verbose) + " with your vile fumes.";
+  else
+    return "You let out a loud burp, blowing over " + container.describe(verbose) + "!";
+}
+
+function defaultFart(container, macro, verbose) {
+  let sum = container.sum()["Person"];
+  if (container.count == 0)
+    return "An ominous groan precedes a loud, pungent fart.";
+  if (isFatal(macro))
+    return "An ominous groan precedes a loud, pungent fart, corroding " + container.describe(verbose) + " with truly vile vapors.";
+  else
+    return "You let out a crass fart, blowing over " + container.describe(verbose) + "!";
+}
+
+function defaultStomach(container, macro, verbose) {
+  if (isGory(macro))
+    return "Your caustic stomach grinds " + container.describe(false) + " to a gory pulp.";
+  else if (isFatal(macro))
+    return "Your stomach gurgles as it digests " + container.describe(false) + ".";
+  else
+    return "Your stomach groans and abosrbs " + container.describe(false) + ".";
 }
 
 function defaultBowels(container, macro, verbose) {

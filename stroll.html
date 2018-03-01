@@ -25,6 +25,8 @@
           <div class="stat-line-hidden" id="femcumPercent"></div>
           <div class="stat-line-hidden" id="milk"></div>
           <div class="stat-line-hidden" id="milkPercent"></div>
+          <div class="stat-line-hidden" id="gas"></div>
+          <div class="stat-line-hidden" id="gasPercent"></div>
         </div>
         <div class="stat-header-self">Growth</div>
         <table id="grow-panel">
@@ -72,7 +74,7 @@
       </div>
       <div id="log-area">
         <div id="log">
-          <div>Welcome to Stroll 0.5.13</div>
+          <div>Welcome to Stroll 0.5.14</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></div>
@@ -98,6 +100,7 @@
           <button class="action-button" id="button-action-sit">Sit</button>
           <button class="action-button" id="button-action-grind">Grind</button>
         </div>
+
         <div class="action-tab" id="actions-tails">
           <button class="action-button" id="button-action-tail_slap">Tail Slap</button>
           <button class="action-button" id="button-action-tail_vore_only">Tail Vore</button>
@@ -105,6 +108,7 @@
           <button class="action-button" id="button-action-tail_vore_some">Tail Vore (some)</button>
           <button class="action-button" id="button-action-tail_vore_all">Tail Vore (all!)</button>
         </div>
+
         <div class="action-tab" id="actions-breasts">
           <button class="action-button" id="button-action-cleavage_stuff">Stuff Cleavage</button>
           <button class="action-button" id="button-action-cleavage_crush">Crush Cleavage</button>
@@ -114,9 +118,11 @@
           <button class="action-button" id="button-action-breast_vore">Breast Vore</button>
           <button class="action-button" id="button-action-breast_milk">Milk Breasts</button>
         </div>
+
         <div class="action-tab" id="actions-vagina">
           <button class="action-button" id="button-action-unbirth">Unbirth</button>
         </div>
+
         <div class="action-tab" id="actions-dick">
           <button class="action-button" id="button-action-sheath_stuff">Stuff Sheath</button>
           <button class="action-button" id="button-action-sheath_squeeze">Squeeze Sheath</button>
@@ -125,10 +131,12 @@
           <button class="action-button" id="button-action-cock_vore">Cock Vore</button>
           <button class="action-button" id="button-action-ball_smother">Ball Smother</button>
         </div>
+
         <div class="action-tab" id="actions-souls">
           <button class="action-button" id="button-action-soul_vore">Soul Vore</button>
           <button class="action-button" id="button-action-soul_absorb_paw">Paws</button>
         </div>
+
         <div class="action-tab" id="actions-misc">
           <button class="action-button" id="button-action-pouch_stuff">Stuff Pouch</button>
           <button class="action-button" id="button-action-pouch_rub">Rub Pouch</button>
@@ -138,7 +146,7 @@
       </div>
     </div>
     <div class="character-build">
-      <p>Welcome to Stroll 0.5.13</p>
+      <p>Welcome to Stroll 0.5.14</p>
       <p><b>This game features 18+ content</b></p>
       <p><a href="https://chemicalcrux.org/stroll">Changelog</a></p>
       <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
@@ -276,7 +284,7 @@
                 </li>
                 <li>
                   <label for="soulVoreEnabled">Soul vore</label>
-                  <input type="checkbox" checked="true" name="soulVoreEnabled"/>
+                  <input type="checkbox" name="soulVoreEnabled"/>
                 </li>
                 <li>
                   <label for="footType">Foot type</label>
@@ -479,6 +487,48 @@
                 <li>
                   <label for="femcumScale">Femcum production factor</label>
                   <input type="number" id="femcumScale" name="femcumScale" placeholder="1"/>
+                </li>
+              </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" id="stenchEnabled" name="stenchEnabled"/>
+              <label class="custom-header" for="stenchEnabled">Stench</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label class="has-tooltip" for="basePawStenchArea" title="How many times your paw area should be covered in stench">Paw stench area</label>
+                  <input type="number" id="basePawStenchArea" name="basePawStenchArea" placeholder="1"/>
+                </li>
+                <li>
+                  <label class="has-tooltip" for="baseAssStenchArea" title="How many times your ass' area should be covered in stench">Paw stench area</label>
+                  <input type="number" id="baseAssStenchArea" name="baseAssStenchArea" placeholder="1"/>
+                </li>
+              </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" id="gasEnabled" name="gasEnabled"/>
+              <label class="custom-header" for="gasEnabled">Gas</label>
+              <div class="reveal-if-active">
+                <li>
+                  <label for="belchEnabled">Belching</label>
+                  <input type="checkbox" checked="true" name="belchEnabled"/>
+                </li>
+                <li>
+                  <label for="fartEnabled">Farting</label>
+                  <input type="checkbox" name="fartEnabled"/>
+                </li>
+                <li>
+                  <label for="gasScale">Gas production factor</label>
+                  <input type="number" id="gasScale" name="gasScale" placeholder="1"/>
+                </li>
+                <li>
+                  <label for="baseGasDigestFactor">Gas digestion factor</label>
+                  <input type="number" id="baseGasDigestFactor" name="baseGasDigestFactor" placeholder="1"/>
+                </li>
+                <li>
+                  <label class="has-tooltip" for="gasScaleWithSize" title="If checked, produces more gas from the same prey as you get larger">Scale gas with size</label>
+                  <input type="checkbox" id="gasScaleWithSize" name="gasScaleWithSize"/>
                 </li>
               </div>
             </div>

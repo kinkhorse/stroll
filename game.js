@@ -360,7 +360,7 @@ let macro =
       return describe("stomach",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      //no-op
+      owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e4;
     },
     get description() {
       let prey = new Container();
@@ -403,7 +403,7 @@ let macro =
       return describe("bowels",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      //no-op
+      owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
     },
     get description() {
       let prey = new Container();
@@ -646,10 +646,12 @@ let macro =
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
+    this.gasStorage.owner = this;
 
     if (this.analVoreToStomach) {
       this.bowels.moves = this.stomach;
     }
+
     if (this.maleParts)
       this.fillCum(this);
     if (this.femaleParts)
@@ -658,6 +660,9 @@ let macro =
       this.fillBreasts(this);
     if (this.arousalEnabled) {
       this.quenchExcess(this);
+    }
+    if (this.gasEnabled) {
+      this.fillGas(this);
     }
   },
 
@@ -693,6 +698,26 @@ let macro =
     update();
   },
 
+  "fillGas": function(self) {
+    self.gasStorage.amount += self.gasScale * self.gasStorage.limit / 3600;
+
+    let ratio = self.gasStorage.amount / self.gasStorage.limit;
+
+    if (ratio > 1 && Math.random()*100 < ratio || ratio > 2) {
+      let amount = self.gasStorage.amount - self.gasStorage.limit*3/4;
+      if (self.belchEnabled && self.fartEnabled) {
+        Math.random() < 0.5 ? belch(amount) : fart(amount);
+      } else if (self.belchEnabled) {
+        belch(amount);
+      } else if (self.fartEnabled) {
+        fart(amount);
+      }
+      self.gasStorage.amount = self.gasStorage.limit*3/4;
+    }
+    setTimeout(function () { self.fillGas(self); }, 100);
+    update();
+  },
+
   "cumStorage": {
     "amount": 0,
     get limit() {
@@ -713,6 +738,38 @@ let macro =
       return this.owner.breastVolume * 2;
     }
   },
+
+  "gasStorage": {
+    "amount": 0,
+    get limit() {
+      return Math.pow(this.owner.scale,3) / 1000;
+    }
+  },
+
+  "stenchEnabled": true,
+  "basePawStenchArea": 1,
+  get pawStenchArea() {
+    return this.pawArea * this.basePawStenchArea;
+  },
+  "baseAssStenchArea": 1,
+  get assStenchArea() {
+    return this.assArea * this.baseAssStenchArea;
+  },
+
+  "gasEnabled": true,
+  "gasScale": 1,
+  "gasFactor": 1,
+  "baseGasDigestFactor": 1,
+  "gasScaleWithSize": true,
+  get gasDigestFactor() {
+    if (this.gasScaleWithSize) {
+      return this.baseGasDigestFactor * this.scale;
+    } else {
+      return this.baseGasDigestFactor;
+    }
+  },
+  "belchEnabled": true,
+  "fartEnabled": true,
 
   "orgasm": false,
   "afterglow": false,
@@ -1340,6 +1397,32 @@ function stomp()
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
+
+  if (macro.stenchEnabled) {
+    paw_stench();
+  }
+}
+
+function paw_stench() {
+
+  let area = macro.pawStenchArea;
+  let prey = getPrey(biome, area);
+  let line = describe("paw-stench", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (prey.sum()["Person"] == undefined)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("stomped",prey);
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function grind()
@@ -1455,6 +1538,32 @@ function sit()
   updateVictims("stomped",crushed);
 
   update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
+
+  if (macro.stenchEnabled) {
+    ass_stench();
+  }
+}
+
+function ass_stench() {
+
+  let area = macro.assStenchArea;
+  let prey = getPrey(biome, area);
+  let line = describe("ass-stench", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (prey.sum()["Person"] == undefined)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("stomped",prey);
+  update([line,linesummary,newline]);
 
   macro.arouse(5);
 }
@@ -2403,6 +2512,74 @@ function soul_absorb_paw()
   macro.arouse(25);
 }
 
+function belch(vol)
+{
+  let area = Math.pow(vol, 2/3);
+
+  let prey = getPrey(biome, area);
+  let line = describe("belch", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let sound = "Urp.";
+
+  if (people < 3) {
+    sound = "Burp.";
+  } else if (people < 10) {
+    sound = "Urph.";
+  } else if (people < 50) {
+    sound = "Urrrrrph.";
+  } else if (people < 500) {
+    sound = "UUURRP!";
+  } else if (people < 5000) {
+    sound = "BUUUUURRRRRRRRRRPHHH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("splooged",prey);
+  update([sound,line,linesummary,newline]);
+}
+
+function fart(vol)
+{
+  let area = Math.pow(vol, 2/3);
+
+  let prey = getPrey(biome, area);
+  let line = describe("fart", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let sound = "Pft.";
+
+  if (people < 3) {
+    sound = "Pft.";
+  } else if (people < 10) {
+    sound = "Pffft.";
+  } else if (people < 50) {
+    sound = "Pfffbt.";
+  } else if (people < 500) {
+    sound = "Pffffffbt.";
+  } else if (people < 5000) {
+    sound = "PFFFBT.";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  updateVictims("splooged",prey);
+  update([sound,line,linesummary,newline]);
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -2432,6 +2609,8 @@ function update(lines = [])
   document.getElementById("femcumPercent").innerHTML = Math.round(macro.femcumStorage.amount / macro.femcumStorage.limit * 100) + "%";
   document.getElementById("milk").innerHTML = "Milk: " + transformNumbers(volume(macro.milkStorage.amount,unit,false));
   document.getElementById("milkPercent").innerHTML = Math.round(macro.milkStorage.amount / macro.milkStorage.limit * 100) + "%";
+  document.getElementById("gas").innerHTML = "Gas: " + transformNumbers(volume(macro.gasStorage.amount,unit,false));
+  document.getElementById("gasPercent").innerHTML = Math.round(macro.gasStorage.amount / macro.gasStorage.limit * 100) + "%";
 
   for (let type in victims) {
     if (victims.hasOwnProperty(type)) {
@@ -2905,6 +3084,9 @@ function startGame(e) {
 
   }
 
+  if (macro.gasEnabled) {
+    enable_stat("gas");
+  }
   if (macro.brutality > 0) {
     enable_button("chew");
   }
