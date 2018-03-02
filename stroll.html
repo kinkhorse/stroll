@@ -70,11 +70,12 @@
           <button class="stat-button" id="button-verbose">Verbose Text</button>
           <button class="stat-button" id="button-grow-lots">SUPER BIG</button>
           <button class="stat-button" id="button-dark-mode-game">Toggle Dark Mode</button>
+          <button class="stat-button" id="button-stats">Stats</button>
         </div>
       </div>
       <div id="log-area">
         <div id="log">
-          <div>Welcome to Stroll 0.5.14</div>
+          <div>Welcome to Stroll 0.5.15</div>
           <div><b>This game features 18+ content</b></div>
           <div><a href="https://chemicalcrux.org/stroll">Changelog</a></div>
           <div><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></div>
@@ -147,7 +148,7 @@
       </div>
     </div>
     <div class="character-build">
-      <p>Welcome to Stroll 0.5.14</p>
+      <p>Welcome to Stroll 0.5.15</p>
       <p><b>This game features 18+ content</b></p>
       <p><a href="https://chemicalcrux.org/stroll">Changelog</a></p>
       <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
@@ -284,10 +285,6 @@
                   <input type="checkbox" checked="true" name="sameSizeStomp"/>
                 </li>
                 <li>
-                  <label for="soulVoreEnabled">Soul vore</label>
-                  <input type="checkbox" name="soulVoreEnabled"/>
-                </li>
-                <li>
                   <label for="footType">Foot type</label>
                   <select name="footType">
                     <option value="paw">Paws</option>
@@ -379,6 +376,38 @@
               <div class="reveal-if-active">
                 <li>
                   It's on :D
+                </li>
+              </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" id="soulVoreEnabled" name="soulVoreEnabled"/>
+              <label class="custom-header" for="soulVoreEnabled">Soul Vore</label>
+              <div class="reveal-if-active">
+                <li>
+                  <ul>
+                    <label>Soul destination (this doesn't do anything yet)</label>
+                    <li>
+                      <input type="radio" name="soulvore" id="soulvore--1">
+                      <label class="has-tooltip" for="soulvore-0">Released</label>
+                    </li>
+                    <li>
+                      <input type="radio" name="soulvore" id="soulvore-0">
+                      <label class="has-tooltip" for="soulvore-0" title="A sort of afterlife or 'other plane' within the predator">Predscape</label>
+                    </li>
+                    <li>
+                      <input type="radio" name="soulvore" checked="true" id="soulvore-1">
+                      <label for="soulvore-1">Afterlife</label>
+                    </li>
+                    <li>
+                      <input type="radio" name="soulvore" id="soulvore-2">
+                      <label class="has-tooltip" for="soulvore-2" title="Trapped on the predator's body">Predator's body</label>
+                    </li>
+                    <li>
+                      <input type="radio" name="soulvore" id="soulvore-3">
+                      <label for="soulvore-3">Oblivion</label>
+                    </li>
+                  </ul>
                 </li>
               </div>
             </div>
@@ -537,7 +566,5 @@
         </form>
       </div>
     </div>
-    <table id="victim-table">
-    </table>
   </body>
 </html>

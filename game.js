@@ -567,7 +567,7 @@ let macro =
       return describe("soul-digest",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      //no-op
+      eople("soul-digest",prey);
     },
     get description() {
       let prey = new Container();
@@ -1140,33 +1140,6 @@ function toggle_arousal()
 
 }
 
-function initVictims()
-{
-  return {
-    "Person": 0,
-    "Cow": 0,
-    "Car": 0,
-    "Bus": 0,
-    "Tram": 0,
-    "Motorcycle": 0,
-    "House": 0,
-    "Barn": 0,
-    "Small Skyscraper": 0,
-    "Large Skyscraper": 0,
-    "Train": 0,
-    "Train Car": 0,
-    "Parking Garage": 0,
-    "Overpass": 0,
-    "Town": 0,
-    "City": 0,
-    "Continent": 0,
-    "Planet": 0,
-    "Star": 0,
-    "Solar System": 0,
-    "Galaxy": 0
-  };
-}
-
 // lists out total people
 function summarize(sum, fatal = true)
 {
@@ -1322,7 +1295,8 @@ function feed()
 
   macro.stomach.feed(prey);
 
-  updateVictims("stomach",prey);
+  add_victim_people("eaten",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
@@ -1359,7 +1333,8 @@ function chew()
 
   macro.addGrowthPoints(preyMass);
 
-  updateVictims("digested",prey);
+  add_victim_people("chew",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(10);
@@ -1393,7 +1368,9 @@ function stomp()
 
   macro.addGrowthPoints(preyMass);
 
-  updateVictims("stomped",prey);
+
+  add_victim_people("stomped",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
@@ -1419,7 +1396,8 @@ function paw_stench() {
 
   macro.addGrowthPoints(preyMass);
 
-  updateVictims("stomped",prey);
+  add_victim_people("paw-stench",prey);
+
   update([line,linesummary,newline]);
 
   macro.arouse(5);
@@ -1460,7 +1438,8 @@ function grind()
 
   macro.addGrowthPoints(preyMass);
 
-  updateVictims("ground",prey);
+  add_victim_people("humped",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(20);
@@ -1497,7 +1476,8 @@ function anal_vore()
 
   macro.bowels.feed(prey);
 
-  updateVictims("bowels",prey);
+  add_victim_people("anal-vore",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(20);
@@ -1535,9 +1515,11 @@ function sit()
 
   macro.addGrowthPoints(crushedMass);
 
-  updateVictims("stomped",crushed);
+
 
   update([sound,line,linesummary,newline]);
+
+  add_victim_people("ass-crush",crushed);
 
   macro.arouse(5);
 
@@ -1562,7 +1544,8 @@ function ass_stench() {
 
   macro.addGrowthPoints(preyMass);
 
-  updateVictims("stomped",prey);
+  add_victim_people("ass-stench",prey);
+
   update([line,linesummary,newline]);
 
   macro.arouse(5);
@@ -1595,7 +1578,7 @@ function cleavage_stuff()
 
   macro.cleavage.add(prey);
 
-  updateVictims("cleavage",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(10);
@@ -1628,8 +1611,8 @@ function cleavage_crush()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("cleavage-crush",prey);
 
-  updateVictims("cleavagecrushed",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse((preyMass > 0 ? 20 : 10));
@@ -1662,8 +1645,7 @@ function cleavage_drop()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
-
-  updateVictims("cleavagedropped",prey);
+  add_victim_people("cleavage-drop",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse((preyMass > 0 ? 15 : 5));
@@ -1697,8 +1679,7 @@ function cleavage_absorb()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
-
-  updateVictims("cleavageabsorbed",prey);
+  add_victim_people("cleavage-absorb",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse((preyMass > 0 ? 15 : 5));
@@ -1731,8 +1712,9 @@ function breast_crush()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("breast-crush",prey);
 
-  updateVictims("breasts",prey);
+
   update([sound,line,linesummary,newline]);
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
@@ -1771,10 +1753,10 @@ function breast_vore()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
-
+  add_victim_people("breast-vore",prey);
   macro.breasts.feed(prey);
 
-  updateVictims("breastvored",prey);
+
   update([sound,line,linesummary,newline]);
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
@@ -1819,8 +1801,7 @@ function breast_milk(e,vol)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
-
-  updateVictims("flooded",prey);
+  add_victim_people("milk-flood",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(20);
@@ -1856,8 +1837,7 @@ function unbirth()
   macro.addGrowthPoints(preyMass);
 
   macro.womb.feed(prey);
-
-  updateVictims("womb",prey);
+  add_victim_people("unbirth",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(20);
@@ -1889,8 +1869,6 @@ function sheath_stuff()
   }
 
   macro.sheath.add(prey);
-
-  updateVictims("sheath",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(15);
@@ -1921,7 +1899,6 @@ function sheath_squeeze()
   }
 
   update([sound,line,linesummary,newline]);
-
   macro.arouse(15);
 }
 
@@ -1950,8 +1927,8 @@ function sheath_crush()
     sound = "Oh the humanity!";
   }
 
+  add_victim_people("sheath-crush",prey);
   update([sound,line,linesummary,newline]);
-
   macro.arouse(45);
 }
 
@@ -1980,6 +1957,7 @@ function sheath_absorb()
     sound = "Oh the humanity!";
   }
 
+  add_victim_people("sheath-absorb",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(45);
@@ -2013,8 +1991,7 @@ function cockslap()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
-
-  updateVictims("cock",prey);
+  add_victim_people("cock-slap",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(15);
@@ -2050,7 +2027,8 @@ function cock_vore()
 
   macro.balls.feed(prey);
 
-  updateVictims("balls",prey);
+
+  add_victim_people("cock-vore",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(20);
@@ -2084,7 +2062,7 @@ function ball_smother()
 
   macro.addGrowthPoints(preyMass);
 
-  updateVictims("balls",prey);
+  add_victim_people("ball-smother",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(10);
@@ -2118,8 +2096,9 @@ function male_spurt(vol)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("cum-flood",prey);
 
-  updateVictims("splooged",prey);
+
   update([sound,line,linesummary,newline]);
 }
 
@@ -2151,8 +2130,8 @@ function male_orgasm(vol,times)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("cum-flood",prey);
 
-  updateVictims("splooged",prey);
   update([sound,line,linesummary,newline]);
 }
 
@@ -2184,8 +2163,9 @@ function female_spurt(vol)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("femcum-flood",prey);
 
-  updateVictims("splooged",prey);
+
   update([sound,line,linesummary,newline]);
 }
 
@@ -2217,8 +2197,9 @@ function female_orgasm(vol,times)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("femcum-flood",prey);
 
-  updateVictims("splooged",prey);
+
   update([sound,line,linesummary,newline]);
 }
 
@@ -2249,8 +2230,8 @@ function tail_slap()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("tail-slap",prey);
 
-  updateVictims("tailslapped",prey);
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
@@ -2315,8 +2296,9 @@ function tail_vore(count)
   macro.addGrowthPoints(preyMass);
 
   macro.stomach.feed(totalPrey);
+  add_victim_people("tail-vore",totalPrey);
 
-  updateVictims("tailmaw'd",totalPrey);
+
   update([sound].concat(lines));
 
   macro.arouse(5);
@@ -2349,7 +2331,7 @@ function pouch_stuff()
 
   macro.pouch.add(prey);
 
-  updateVictims("pouched",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
@@ -2393,10 +2375,10 @@ function pouch_eat()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
-
   macro.stomach.feed(prey);
+  add_victim_people("eaten",prey);
 
-  updateVictims("stomach",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(5);
@@ -2433,8 +2415,9 @@ function pouch_absorb()
   macro.addGrowthPoints(preyMass);
 
   macro.stomach.feed(prey);
+  add_victim_people("pouch-absorb",prey);
 
-  updateVictims("stomach",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(25);
@@ -2472,7 +2455,7 @@ function soul_vore()
 
   macro.souls.feed(prey);
 
-  updateVictims("soulvore",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(15);
@@ -2505,8 +2488,9 @@ function soul_absorb_paw()
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("soul-paw",prey);
 
-  updateVictims("soulpaw",prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(25);
@@ -2541,8 +2525,9 @@ function belch(vol)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("gas-belch",prey);
 
-  updateVictims("splooged",prey);
+
   update([sound,line,linesummary,newline]);
 }
 
@@ -2575,8 +2560,9 @@ function fart(vol)
   let preyMass = prey.sum_property("mass");
 
   macro.addGrowthPoints(preyMass);
+  add_victim_people("gas-fart",prey);
 
-  updateVictims("splooged",prey);
+
   update([sound,line,linesummary,newline]);
 }
 
@@ -2612,16 +2598,6 @@ function update(lines = [])
   document.getElementById("gas").innerHTML = "Gas: " + transformNumbers(volume(macro.gasStorage.amount,unit,false));
   document.getElementById("gasPercent").innerHTML = Math.round(macro.gasStorage.amount / macro.gasStorage.limit * 100) + "%";
 
-  for (let type in victims) {
-    if (victims.hasOwnProperty(type)) {
-      for (let key in victims[type]){
-        if (victims[type].hasOwnProperty(key) && victims[type][key] > 0) {
-          document.getElementById("stat-" + key).style.display = "table-row";
-          document.getElementById("stat-" + type + "-" + key).innerHTML = number(victims[type][key],numbers);
-        }
-      }
-    }
-  }
 }
 
 function pick_move()
@@ -2630,15 +2606,8 @@ function pick_move()
   if (!strolling) {
     return;
   }
-  let choice = Math.random();
 
-  if (choice < 0.2) {
-    sit();
-  } else if (choice < 0.6) {
-    stomp();
-  } else {
-    feed();
-  }
+  stomp();
 }
 
 function grow_pick(times) {
@@ -2891,6 +2860,17 @@ function loadSettings(settings = null) {
   }
 }
 
+function add_victim_people(category, prey) {
+  victims[category]["people"] += get_living_prey(prey.sum());
+  update();
+}
+
+function enable_victim(category, name) {
+  victims[category] = {};
+  victims[category]["people"] = 0;
+  victims[category]["name"] = name;
+}
+
 function enable_button(name) {
   document.getElementById("button-action-" + name).style.display = "inline";
 }
@@ -2953,7 +2933,10 @@ function startGame(e) {
     macro.tailCount = 0;
   }
 
-  let victimTypes = ["stomped","digested","stomach","ground"];
+  enable_victim("stomped","Stomped");
+  enable_victim("eaten","Devoured");
+  enable_victim("ass-crush","Sat on");
+  enable_victim("humped","Humped");
 
   document.getElementById("log-area").style.display = 'inline';
   document.getElementById("custom-species").style.display = 'none';
@@ -2970,21 +2953,21 @@ function startGame(e) {
 
   if (macro.brutality > 0) {
     enable_button("chew");
+    enable_victim("chew","Chewed");
   }
 
   if (macro.analVore) {
     enable_button("anal_vore");
-    victimTypes.push("bowels");
+    enable_victim("anal-vore","Anal vore");
   }
 
   if (macro.tailCount > 0) {
     enable_panel("tails");
-    victimTypes.push("tailslapped");
     enable_button("tail_slap");
+    enable_victim("tail-slap","Tail slapped");
 
     if (macro.tailMaw) {
-      victimTypes.push("tailmaw'd");
-
+      enable_victim("tail-vore","Tailmaw'd");
       if (macro.tailCount > 1) {
         enable_button("tail_vore_one");
         enable_button("tail_vore_some");
@@ -2998,8 +2981,9 @@ function startGame(e) {
   if (macro.maleParts) {
     enable_panel("dick");
 
-    victimTypes.push("cock");
-    victimTypes.push("balls");
+    enable_victim("cock-slap","Cockslapped");
+    enable_victim("cock-vore","Cock vore");
+    enable_victim("ball-smother","Smothered under balls");
 
     enable_button("cockslap");
     enable_button("cock_vore");
@@ -3011,16 +2995,21 @@ function startGame(e) {
     enable_growth_part("balls");
 
     if (macro.hasSheath) {
-      victimTypes.push("sheath");
+      enable_victim("sheath-crush","Crushed in sheath");
+      enable_victim("sheath-absorb","Absorbed by sheath");
 
       enable_button("sheath_stuff");
       enable_button("sheath_squeeze");
       enable_button("sheath_absorb");
     }
+
+    if (macro.arousalEnabled) {
+      enable_victim("cum-flood","Flooded by cum");
+    }
   }
 
   if (macro.femaleParts) {
-    victimTypes.push("womb");
+    enable_victim("unbirth","Unbirthed");
 
     enable_panel("vagina");
 
@@ -3029,10 +3018,17 @@ function startGame(e) {
     enable_stat("femcum");
 
     enable_growth_part("vagina");
+
+    if (macro.arousalEnabled) {
+      enable_victim("femcum-flood","Flooded by femcum");
+    }
   }
 
   if (macro.hasBreasts) {
-    victimTypes = victimTypes.concat(["breasts","cleavage","cleavagecrushed","cleavagedropped","cleavageabsorbed"]);
+    enable_victim("breast-crush","Crushed under breasts");
+    enable_victim("cleavage-crush","Crushed in cleavage");
+    enable_victim("cleavage-absorb","Absorbed by cleavage");
+    enable_victim("cleavage-drop","Dropped from cleavage");
 
     enable_panel("breasts");
 
@@ -3045,25 +3041,21 @@ function startGame(e) {
     enable_growth_part("breasts");
 
     if (macro.lactationEnabled) {
-      victimTypes.push("flooded");
+      enable_victim("milk-flood","Flooded by milk");
 
       enable_button("breast_milk");
       enable_stat("milk");
     }
 
     if (macro.breastVore) {
-      victimTypes.push("breastvored");
+      enable_victim("breast-vore","Stuffed into breasts");
 
       enable_button("breast_vore");
     }
   }
 
-  if (macro.maleParts || macro.femaleParts) {
-    victimTypes.push("splooged");
-  }
-
   if (macro.hasPouch) {
-    victimTypes.push("pouched");
+    enable_victim("pouch-absorb","Absorbed into pouch");
 
     enable_panel("misc");
 
@@ -3075,8 +3067,8 @@ function startGame(e) {
   }
 
   if (macro.soulVoreEnabled) {
-    victimTypes.push("soulvore");
-    victimTypes.push("soulpaws");
+    enable_victim("soul-digest","Souls digested");
+    enable_victim("soul-paw","Souls absorbed underfoot");
 
     enable_panel("souls");
 
@@ -3085,44 +3077,18 @@ function startGame(e) {
 
   }
 
+  if (macro.stenchEnabled) {
+    enable_victim("paw-stench","Smothered in paw stench");
+    enable_victim("ass-stench","Smothered in rump stench");
+  }
+
   if (macro.gasEnabled) {
     enable_stat("gas");
-  }
-  if (macro.brutality > 0) {
-    enable_button("chew");
-  }
-
-  let table = document.getElementById("victim-table");
-
-  let tr = document.createElement('tr');
-  let th = document.createElement('th');
-
-  th.innerHTML = "Method";
-  tr.appendChild(th);
-  for (let i = 0; i < victimTypes.length; i++) {
-    let th = document.createElement('th');
-    th.classList.add("victim-table-cell");
-    th.innerHTML = victimTypes[i].charAt(0).toUpperCase() + victimTypes[i].slice(1);
-    tr.appendChild(th);
-  }
-
-  table.appendChild(tr);
-  for (let key in things) {
-    if (things.hasOwnProperty(key) && key != "Container") {
-      let tr = document.createElement('tr');
-      tr.id = "stat-" + key;
-      tr.style.display = "none";
-      let th = document.createElement('th');
-      th.innerHTML = key;
-      tr.appendChild(th);
-
-      for (let i = 0; i < victimTypes.length; i++) {
-        let th = document.createElement('th');
-        th.innerHTML = 0;
-        th.id = "stat-" + victimTypes[i] + "-" + key;
-        tr.appendChild(th);
-      }
-      table.appendChild(tr);
+    if (macro.belchEnabled) {
+      enable_victim("gas-belch","Belched on");
+    }
+    if (macro.fartEnabled) {
+      enable_victim("gas-fart","Farted on");
     }
   }
 
@@ -3165,6 +3131,19 @@ function actionTab(e) {
   document.getElementById(target).style.display = "flex";
 }
 
+function showStats() {
+  let lines = [];
+  let total = 0;
+  for (var key in victims) {
+    if (victims.hasOwnProperty(key)) {
+      lines.push(victims[key]["name"] + ": " + victims[key]["people"]);
+      total += victims[key]["people"];
+    }
+  }
+  lines.push("Total: " + total);
+  update(lines);
+}
+
 function registerActions() {
   let buttons = document.querySelectorAll("[id^='button-action']");
 
@@ -3194,32 +3173,6 @@ window.addEventListener('load', function(event) {
     list.appendChild(opt);
   }
 
-  victims["stomped"] = initVictims();
-  victims["tailslapped"] = initVictims();
-  victims["tailmaw'd"] = initVictims();
-  victims["bowels"] = initVictims();
-  victims["digested"] = initVictims();
-  victims["stomach"] = initVictims();
-  victims["cleavage"] = initVictims();
-  victims["cleavagecrushed"] = initVictims();
-  victims["cleavagedropped"] = initVictims();
-  victims["cleavageabsorbed"] = initVictims();
-  victims["breasts"] = initVictims();
-  victims["breastvored"] = initVictims();
-  victims["flooded"] = initVictims();
-  victims["womb"] = initVictims();
-  victims["sheath"] = initVictims();
-  victims["sheathcrushed"] = initVictims();
-  victims["sheathabsorbed"] = initVictims();
-  victims["cock"] = initVictims();
-  victims["balls"] = initVictims();
-  victims["smothered"] = initVictims();
-  victims["splooged"] = initVictims();
-  victims["ground"] = initVictims();
-  victims["pouched"] = initVictims();
-  victims["soulvore"] = initVictims();
-  victims["soulpaw"] = initVictims();
-
   document.querySelectorAll(".action-part-button").forEach(function (element) {
     element.addEventListener("click",actionTab);
   });
@@ -3236,6 +3189,8 @@ window.addEventListener('load', function(event) {
 
   document.getElementById("button-dark-mode-options").addEventListener("click",toggleDarkMode);
   document.getElementById("button-dark-mode-game").addEventListener("click",toggleDarkMode);
+
+  document.getElementById("button-stats").addEventListener("click",showStats);
 
   document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
   document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });
