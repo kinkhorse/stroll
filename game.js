@@ -14,7 +14,7 @@ window.onerror = function(msg, source, lineno, colno, error) {
   if (!errored) {
     errored = true;
 
-    alert("An error occurred! Please press F12 to open the dev tools, then click the 'Console' tab and send any errors shown there to chemicalcrux\n\nScreenshotting the text and line number of the error would be great.\n\nAlso include the browser information that gets logged below it.");
+    alert("An error occurred! Please press F12 to open the dev tools, then click the 'Console' tab and send any errors shown there to chemicalcrux\n\nScreenshotting the text and line number of the error would be great.\n\nAlso include the browser information that gets logged below it.\n\nThe error might also show up here: " + msg + " at " + lineno + "," + colno);
 
     console.log(navigator.userAgent);
   }
