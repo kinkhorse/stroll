@@ -369,7 +369,7 @@ function defaultFemaleOrgasm(container, macro, verbose) {
 function defaultGrind(container, macro, verbose) {
   var mid = isFatal(macro) ? ", smashing them apart" : ", using them as a toy";
   var end = macro.arousalEnabled ? " to fuel your lust." : ".";
-  var desc = container.counter > 0 ? container.describe(verbose) + mid + end : "the ground.";
+  var desc = container.count > 0 ? container.describe(verbose) + mid + end : "the ground.";
   if (macro.maleParts && macro.femaleParts) {
     return "You grind your " + macro.describeDick + " cock and " + macro.describeVagina + " slit against " + desc;
   } else if (macro.maleParts && !macro.femaleParts) {
