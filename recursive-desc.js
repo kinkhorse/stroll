@@ -21,7 +21,8 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
-"paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","soul-digest"];
+"paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","soul-digest",
+"wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -521,6 +522,74 @@ function defaultSoulDigest(container, macro, verbose) {
       return "Energy washes through your depths as you annihilate " + (sum > 1 ? sum + " souls" : "a soul") + ", crushing " + (sum > 1 ? "them" : "it") + " into nothingness.";
   }
 }
+
+function defaultWearShoe(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You slip on your shoes.";
+  } else {
+    return "You slip on your shoes, " + macro.toeDesc(true) + " wriggling against " + container.describe(false) + " trapped within!";
+  }
+}
+
+function defaultRemoveShoe(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You pull off your shoes.";
+  } else {
+    return "You pull off your shoes, " + macro.toeDesc(true) + " rubbing against " + container.describe(false) + " on the way out.";
+  }
+}
+
+function defaultWearSock(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You slip on your socks.";
+  } else {
+    return "You slip on your socks, " + macro.toeDesc(true) + " grinding against " + container.describe(false) + " trapped in the cotton tube!";
+  }
+}
+
+function defaultRemoveSock(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You pull off your socks. Cool air washes over your " + macro.toeOnlyDesc(true);
+  } else {
+    return "You pull off your socks, leaving " + container.describe(false) + " trapped at the bottom.";
+  }
+}
+
+function defaultStuffShoe(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You don't have anything to stuff into your shoes.";
+  } else {
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your shoe!";
+  }
+}
+
+function defaultStuffSock(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You don't have anything to stuff into your socks.";
+  } else {
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your sock!";
+  }
+}
+
+function defaultDumpShoe(container, macro, verbose) {
+  if (container.count == 0) {
+    return "Your shoes are empty, silly.";
+  } else {
+    return "You shake out your shoes, dumping " + container.describe(false) + " onto the ground.";
+  }
+}
+
+function defaultDumpSock(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You don't have anything to stuff into your socks.";
+  } else {
+    return "You turn your socks inside-out, dumping " + container.describe(false) + " onto the ground.";
+  }
+}
+
+
+
+
 
 // EATING
 

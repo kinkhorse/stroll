@@ -2670,30 +2670,95 @@ function fart(vol)
 function wear_shoes() {
   macro.footShoeWorn = true;
 
+  let line = describe("wear-shoe",macro.shoe.container,macro,verbose);
+  let summary = summarize(macro.shoe.container.sum(),false);
+
   footwearUpdate();
+
+  update([line,summary,newline]);
 }
 
 function remove_shoes() {
   macro.footShoeWorn = false;
 
+  let line = describe("remove-shoe",macro.shoe.container,macro,verbose);
+  let summary = summarize(macro.shoe.container.sum(),false);
+
   footwearUpdate();
+
+  update([line,summary,newline]);
 }
 
 function wear_socks() {
   macro.footSockWorn = true;
 
+  let line = describe("wear-sock",macro.sock.container,macro,verbose);
+  let summary = summarize(macro.sock.container.sum(),false);
+
   footwearUpdate();
+
+  update([line,summary,newline]);
 }
 
 function remove_socks() {
   macro.footSockWorn = false;
 
+  let line = describe("remove-sock",macro.sock.container,macro,verbose);
+  let summary = summarize(macro.sock.container.sum(),false);
+
   footwearUpdate();
+
+  update([line,summary,newline]);
 }
+
+function stuff_shoes() {
+  let prey = getPrey(biome, macro.pawArea/5, false);
+
+  macro.shoe.add(prey);
+
+  let line = describe("stuff-shoe",prey,macro,verbose);
+  let summary = summarize(prey.sum(),false);
+
+  update([line,summary,newline]);
+}
+
+function stuff_socks() {
+  let prey = getPrey(biome, macro.pawArea/5, false);
+
+  macro.sock.add(prey);
+
+  let line = describe("stuff-sock",prey,macro,verbose);
+  let summary = summarize(prey.sum(),false);
+
+  update([line,summary,newline]);
+}
+
+function dump_shoes() {
+  let prey = macro.shoe.container;
+
+  macro.shoe.container = new Container();
+
+  let line = describe("dump-shoe",prey,macro,verbose);
+  let summary = summarize(prey.sum(),false);
+
+  update([line,summary,newline]);
+}
+
+function dump_socks() {
+  let prey = macro.sock.container;
+
+  macro.sock.container = new Container();
+
+  let line = describe("dump-sock",prey,macro,verbose);
+  let summary = summarize(prey.sum(),false);
+
+  update([line,summary,newline]);
+}
+
 
 function footwearUpdate() {
   disable_button("wear_shoes");
-  disable_button("remove_socks");
+  disable_button("remove_shoes");
   disable_button("wear_socks");
   disable_button("remove_socks");
   disable_button("stuff_shoes");
@@ -2701,21 +2766,31 @@ function footwearUpdate() {
   disable_button("stuff_socks");
   disable_button("dump_socks");
 
-  if (macro.footShoeWorn) {
-    enable_button("remove_shoes");
-  } else {
-    enable_button("wear_shoes");
-    enable_button("stuff_shoes");
-    enable_button("dump_shoes");
-
-    if (macro.footSockWorn) {
-      enable_button("remove_socks");
+  if (macro.footShoeEnabled) {
+    if (macro.footShoeWorn) {
+      enable_button("remove_shoes");
     } else {
-      enable_button("wear_socks");
-      enable_button("stuff_socks");
-      enable_button("dump_socks");
+      enable_button("stuff_shoes");
+      enable_button("dump_shoes");
+
+      if (!macro.footSockEnabled || macro.footSockWorn) {
+        enable_button("wear_shoes");
+      }
     }
   }
+
+  if (!macro.footShoeEnabled || !macro.footShoeWorn) {
+    if (macro.footSockEnabled) {
+      if (macro.footSockWorn) {
+        enable_button("remove_socks");
+      } else {
+        enable_button("wear_socks");
+        enable_button("stuff_socks");
+        enable_button("dump_socks");
+      }
+    }
+  }
+
 }
 
 function transformNumbers(line)
@@ -3229,8 +3304,11 @@ function startGame(e) {
     }
   }
 
-  if (macro.footShoeEnabled || macro.footSockEnabled) {
+  if (macro.footWear) {
     enable_panel("shoes");
+
+    macro.footShoeWorn = macro.footShoeEnabled;
+    macro.footSockWorn = macro.footSockEnabled;
 
     footwearUpdate();
   }
