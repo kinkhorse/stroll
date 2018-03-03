@@ -409,10 +409,7 @@ function Person(count = 1) {
     var body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
     var sex = random_desc(["male", "female"], (verbose ? 1 : 0));
     var species = "";
-    if (!humanMode)
-      species = random_desc(["wolf","cat","dog","squirrel","horse","hyena","fox","jackal","crux","sergal"]);
-    else
-      species = random_desc(["jogger","police officer","road worker","pastor","dog-walker","clerk","accountant","CEO","millionaire","mailman"]);
+    species = random_desc(["wolf","cat","dog","squirrel","horse","hyena","fox","jackal","crux","sergal"]);
     return "a " + merge_desc([body,sex,species]);
   };
 
