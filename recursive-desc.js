@@ -508,12 +508,18 @@ function defaultBreasts(container, macro, verbose) {
 
 function defaultSoulDigest(container, macro, verbose) {
   let sum = container.sum()["Person"];
-  if (isGory(macro))
-    return "Your depths churn as they annihilate " + (sum == 1 ? "a soul" : sum + " souls") + " forever.";
-  else if (isFatal(macro))
-    return "Your depths churn as they claim " + (sum == 1 ? "a soul" : sum + " souls");
-  else
-    return "Your depths absorb " + (sum == 1 ? "a soul" : sum + " souls");
+  switch(macro.soulVoreType) {
+    case "release":
+      return (sum > 1 ? sum + " souls escape" : "A soul escapes") + " your depths.";
+    case "predscape":
+      return "Your depths squeeze " + (sum > 1 ? sum + " souls" : "a soul") + " into your predscape.";
+    case "afterlife":
+      return "A tingle of energy washes through you as you sap the energy from " + (sum > 1 ? sum + " souls" : "a soul") + " and consign " + (sum > 1 ? "them" : "it") + " to the afterlife.";
+    case "body":
+      return "Your body claims " + (sum > 1 ? sum + " souls" : "a soul") + ", imprisoning " + (sum > 1 ? "them" : "it") + " in your body for good.";
+    case "oblivion":
+      return "Energy washes through your depths as you annihilate " + (sum > 1 ? sum + " souls" : "a soul") + ", crushing " + (sum > 1 ? "them" : "it") + " into nothingness.";
+  }
 }
 
 // EATING
