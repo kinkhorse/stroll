@@ -1274,6 +1274,7 @@ function toggle_arousal()
   macro.afterglow = false;
 
   enable_victim("cum-flood","Flooded by cum");
+  enable_victim("femcum-flood","Flooded by femcum");
 
 }
 
