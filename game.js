@@ -1273,6 +1273,8 @@ function toggle_arousal()
   macro.orgasm = false;
   macro.afterglow = false;
 
+  enable_victim("cum-flood","Flooded by cum");
+
 }
 
 // lists out total people
