@@ -670,10 +670,9 @@ rules["stomp"].push({
 rules["stomp"].push({
   "test": function(container, macro) {
     return hasNothingElse(container, ["Person","Cow","Car"]) &&
-      isNonFatal(macro) &&
-      macro.footType == "paw";
+      isNonFatal(macro);
   }, "desc": function(container, macro, verbose) {
-    return "Your paw smooshes over " + container.describe(verbose) + ". They stick to your toes, carried along for the ride as you take another few steps before finally\
+    return "Your " + macro.footDesc() + " smooshes over " + container.describe(verbose) + ". They stick to your " + macro.toeDesc(true) + ", carried along for the ride as you take another few steps before finally\
     falling off.";
   }
 });

@@ -89,9 +89,14 @@ let macro =
   // part types
 
   "footType": "paw",
+  "footSock": "none",
+  "footShoe": "none",
+  "footSockWorn": false,
+  "footShoeWorn": true,
 
-  "footDesc": function(plural=false,capital=false) {
+  "footOnlyDesc": function(plural=false,capital=false) {
     let result = "";
+
     switch(this.footType) {
       case "paw":
         result = plural ? "paws" : "paw";
@@ -103,18 +108,51 @@ let macro =
       case "avian":
         result = plural ? "feet" : "foot";
         break;
+      }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "footDesc": function(plural=false,capital=false,possessive=true) {
+    let result = "";
+    if (!this.footSockWorn && !this.footShoeWorn) {
+      return this.footOnlyDesc(plural,capital);
+    } else if (this.footShoeWorn) {
+      switch(this.footShoe) {
+        case "shoe":
+          result = plural ? "shoes" : "shoe";
+          break;
+        case "boot":
+          result = plural ? "boots" : "boot";
+          break;
+        case "trainer":
+          result = plural ? "trainers" : "trainer";
+          break;
+        case "sandal":
+          result = plural ? "sandals" : "sandal";
+          break;
+      }
+    } else if (this.footSockWorn) {
+      switch(this.footSock) {
+        case "sock":
+          result = "socked " + this.footOnlyDesc(plural,false);
+      }
+    }
+
+    if(possessive) {
+      result = " your " + result;
     }
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
 
-  "toeDesc": function(plural=false,capital=false) {
+  "toeOnlyDesc": function(plural=false,capital=false) {
     let result = "";
+
     switch(this.footType) {
       case "paw":
         result = plural ? "toes" : "toe";
         break;
       case "hoof":
-        result = plural ? "hooves" : "hoof";
+        result = plural ? "toes" : "toe";
         break;
       case "feet":
         result = plural ? "toes" : "toe";
@@ -122,9 +160,42 @@ let macro =
       case "avian":
         result = plural ? "talons" : "talon";
         break;
+      }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "toeDesc": function(plural=false,capital=false,possessive=false) {
+    let result = "";
+    if (!this.footSockWorn && !this.footShoeWorn) {
+      return this.toeOnlyDesc(plural,capital);
+    } else if (this.footShoeWorn) {
+      switch(this.footShoe) {
+        case "shoe":
+          result = plural ? "treads" : "tread";
+          break;
+        case "boot":
+          result = plural ? "treads" : "tread";
+          break;
+        case "trainer":
+          result = plural ? "treads" : "tread";
+          break;
+        case "sandal":
+          result = plural ? "treads" : "tread";
+          break;
+      }
+    } else if (this.footSockWorn) {
+      switch(this.footSock) {
+        case "sock":
+          result = "socked " + this.toeOnlyDesc(plural,false);
+      }
+    }
+
+    if(possessive) {
+      result = "your " + result;
     }
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
+
   "jawType": "jaw",
 
   "jawDesc": function(plural=false,capital=false) {
@@ -629,6 +700,34 @@ let macro =
         return "Your breasts don't have anyone stuck between them";
       else
         return "Your cleavage contains " + this.container.describe(false);
+    },
+    "add": function(victims) {
+      this.container = this.container.merge(victims);
+    }
+  },
+
+  "shoe": {
+    "name": "shoe",
+    "container": new Container(),
+    get description() {
+      if (this.container.count == 0)
+        return "Your shoes are empty.";
+      else
+        return "Your shoes contain " + this.container.describe(false);
+    },
+    "add": function(victims) {
+      this.container = this.container.merge(victims);
+    }
+  },
+
+  "sock": {
+    "name": "sock",
+    "container": new Container(),
+    get description() {
+      if (this.container.count == 0)
+        return "Your shoes are empty.";
+      else
+        return "Your shoes contain " + this.container.describe(false);
     },
     "add": function(victims) {
       this.container = this.container.merge(victims);
@@ -1158,9 +1257,9 @@ function getOnePrey(biome, area, sameSize = true)
 {
   let potential = ["Person"];
 
-  if (macro.height > 1e12)
+  if (area >= areas["Planet"])
     potential = ["Planet","Star","Solar System","Galaxy"];
-  else if (macro.height > 1e6)
+  else if (area >= areas["Town"])
     potential = ["Town","City","Continent","Planet"];
   else
     switch(biome) {
@@ -1197,7 +1296,7 @@ function getPrey(region, area, sameSize = false)
 {
   let weights = {"Person": 1};
 
-  if (macro.height > 1e12) {
+  if (area > areas["Planet"]) {
     weights = {
       "Planet": 1.47e-10,
       "Star": 1.7713746e-12,
@@ -1205,7 +1304,7 @@ function getPrey(region, area, sameSize = false)
       "Galaxy": 0.1,
     };
   }
-  else if (macro.height > 1e6) {
+  else if (area > areas["Town"]) {
     weights = {
       "Town": 0.00001,
       "City": 0.00005,

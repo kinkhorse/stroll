@@ -106,7 +106,7 @@ var clusters =
   "Train": 2,
   "Train Car": 1,
   "Parking Garage": 1,
-  "Town": 1,
+  "Town": 5,
   "City": 1,
   "Continent": 5,
   "Planet": 1,
@@ -154,8 +154,11 @@ function fill_area(area, weights, variance=0.15)
 
     // the first few ones get a much better shot
     while (loopvar > 0) {
-      if (loopvar <= clusters[candidate.name])
-        count += 1;
+      if (loopvar <= clusters[candidate.name]) {
+        if (Math.random() < candidate.weight ? 1 : 0 || Math.random() < 0.75) {
+          count += 1;
+        }
+      }
       else
         count += Math.random() < candidate.weight ? 1 : 0;
       --loopvar;
