@@ -139,6 +139,17 @@
           <button class="action-button" id="button-action-soul_absorb_paw">Paws</button>
         </div>
 
+        <div class="action-tab" id="actions-shoes">
+          <button class="action-button" id="button-action-wear_shoes">Put On Shoes</button>
+          <button class="action-button" id="button-action-remove_shoes">Take Off Shoes</button>
+          <button class="action-button" id="button-action-wear_socks">Put On Socks</button>
+          <button class="action-button" id="button-action-remove_socks">Take Off Socks</button>
+          <button class="action-button" id="button-action-stuff_shoes">Stuff Shoes</button>
+          <button class="action-button" id="button-action-stuff_socks">Stuff Socks</button>
+          <button class="action-button" id="button-action-dump_shoes">Dump Shoes</button>
+          <button class="action-button" id="button-action-dump_socks">Dump Socks</button>
+        </div>
+
         <div class="action-tab" id="actions-misc">
           <button class="action-button" id="button-action-pouch_stuff">Stuff Pouch</button>
           <button class="action-button" id="button-action-pouch_rub">Rub Pouch</button>
@@ -298,6 +309,46 @@
                     <option value="jaw">Jaws</option>
                     <option value="beak">Beak</option>
                   </select>
+                </li>
+              </div>
+            </div>
+
+            <div class="custom-category">
+              <input class="custom-header-checkbox" type="checkbox" id="footWear" name="footWear"/>
+              <label class="custom-header" for="footWear">Footwear</label>
+              <div class="reveal-if-active">
+                <li>
+                  <div class="custom-category-sub">
+                    <ul class="flex-outer-sub">
+                      <input class="custom-header-checkbox" type="checkbox" checked="true" id="footSockEnabled" name="footSockEnabled"/>
+                      <label class="custom-header" for="footSockEnabled">Socks</label>
+                      <div class="reveal-if-active">
+                        <li>
+                          <label for="footSock">Sock type</label>
+                          <select name="footSock">
+                            <option value="sock">Socks</option>
+                          </select>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
+                  <div class="custom-category-sub">
+                    <ul class="flex-outer-sub">
+                      <input class="custom-header-checkbox" type="checkbox" checked="true" id="footShoeEnabled" name="footShoeEnabled"/>
+                      <label class="custom-header" for="footShoeEnabled">Shoes</label>
+                      <div class="reveal-if-active">
+                        <li>
+                          <label for="footShoe">Shoe type</label>
+                          <select name="footShoe">
+                            <option value="shoe">Shoes</option>
+                            <option value="boot">Boots</option>
+                            <option value="trainer">Trainers</option>
+                            <option value="sandal">Sandals</option>
+                          </select>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
                 </li>
               </div>
             </div>

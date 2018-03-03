@@ -89,6 +89,8 @@ let macro =
   // part types
 
   "footType": "paw",
+  "footSockEnabled": false,
+  "footShoeEnabled": false,
   "footSock": "none",
   "footShoe": "none",
   "footSockWorn": false,
@@ -725,9 +727,9 @@ let macro =
     "container": new Container(),
     get description() {
       if (this.container.count == 0)
-        return "Your shoes are empty.";
+        return "Your socks are empty.";
       else
-        return "Your shoes contain " + this.container.describe(false);
+        return "Your socks contain " + this.container.describe(false);
     },
     "add": function(victims) {
       this.container = this.container.merge(victims);
@@ -756,12 +758,10 @@ let macro =
       this.fillFemcum(this);
     if (this.lactationEnabled)
       this.fillBreasts(this);
-    if (this.arousalEnabled) {
+    if (this.arousalEnabled)
       this.quenchExcess(this);
-    }
-    if (this.gasEnabled) {
+    if (this.gasEnabled)
       this.fillGas(this);
-    }
   },
 
   "maleParts": true,
@@ -804,7 +804,10 @@ let macro =
     if (ratio > 1 && Math.random()*100 < ratio || ratio > 2) {
       let amount = self.gasStorage.amount - self.gasStorage.limit*3/4;
       if (self.belchEnabled && self.fartEnabled) {
-        Math.random() < 0.5 ? belch(amount) : fart(amount);
+        if (Math.random() < 0.5)
+          belch(amount);
+        else
+          fart(amount);
       } else if (self.belchEnabled) {
         belch(amount);
       } else if (self.fartEnabled) {
@@ -2664,6 +2667,57 @@ function fart(vol)
   update([sound,line,linesummary,newline]);
 }
 
+function wear_shoes() {
+  macro.footShoeWorn = true;
+
+  footwearUpdate();
+}
+
+function remove_shoes() {
+  macro.footShoeWorn = false;
+
+  footwearUpdate();
+}
+
+function wear_socks() {
+  macro.footSockWorn = true;
+
+  footwearUpdate();
+}
+
+function remove_socks() {
+  macro.footSockWorn = false;
+
+  footwearUpdate();
+}
+
+function footwearUpdate() {
+  disable_button("wear_shoes");
+  disable_button("remove_socks");
+  disable_button("wear_socks");
+  disable_button("remove_socks");
+  disable_button("stuff_shoes");
+  disable_button("dump_shoes");
+  disable_button("stuff_socks");
+  disable_button("dump_socks");
+
+  if (macro.footShoeWorn) {
+    enable_button("remove_shoes");
+  } else {
+    enable_button("wear_shoes");
+    enable_button("stuff_shoes");
+    enable_button("dump_shoes");
+
+    if (macro.footSockWorn) {
+      enable_button("remove_socks");
+    } else {
+      enable_button("wear_socks");
+      enable_button("stuff_socks");
+      enable_button("dump_socks");
+    }
+  }
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -2948,7 +3002,7 @@ function loadSettings(settings = null) {
         form[i].checked = (settings[name] == form[i].value);
       } else if (form[i].type == "select-one") {
         for (let j=0; j<form[i].length; j++) {
-          if (form[i][j].value == settings[form[i].value]) {
+          if (form[i][j].value == settings[form[i].name]) {
             form[i].selectedIndex = j;
             break;
           }
@@ -2971,6 +3025,10 @@ function enable_victim(category, name) {
 
 function enable_button(name) {
   document.getElementById("button-action-" + name).style.display = "inline";
+}
+
+function disable_button(name) {
+  document.getElementById("button-action-" + name).style.display = "none";
 }
 
 function enable_panel(name) {
@@ -3169,6 +3227,12 @@ function startGame(e) {
     if (macro.fartEnabled) {
       enable_victim("gas-fart","Farted on");
     }
+  }
+
+  if (macro.footShoeEnabled || macro.footSockEnabled) {
+    enable_panel("shoes");
+
+    footwearUpdate();
   }
 
   document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");
