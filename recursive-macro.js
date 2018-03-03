@@ -34,7 +34,7 @@ var things =
 var areas =
 {
   "Container": 0,
-  "Person": 1,
+  "Person": 0.33,
   "Cow": 2,
   "Car": 4,
   "Bus": 12,
