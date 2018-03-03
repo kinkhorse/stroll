@@ -113,8 +113,11 @@ let macro =
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
 
-  "footDesc": function(plural=false,capital=false,possessive=true) {
+  "footDesc": function(plural=false,capital=false,possessive=false) {
     let result = "";
+    if (!this.footWear) {
+      return this.footOnlyDesc(plural,capital);
+    }
     if (!this.footSockWorn && !this.footShoeWorn) {
       return this.footOnlyDesc(plural,capital);
     } else if (this.footShoeWorn) {
@@ -167,6 +170,9 @@ let macro =
 
   "toeDesc": function(plural=false,capital=false,possessive=false) {
     let result = "";
+    if (!this.footWear) {
+      return this.toeOnlyDesc(plural,capital);
+    }
     if (!this.footSockWorn && !this.footShoeWorn) {
       return this.toeOnlyDesc(plural,capital);
     } else if (this.footShoeWorn) {
@@ -193,6 +199,35 @@ let macro =
 
     if(possessive) {
       result = "your " + result;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "shoeDesc": function(plural,capital) {
+    let result = "";
+    switch(this.footShoe) {
+      case "shoe":
+        result = plural ? "shoes" : "shoe";
+        break;
+      case "boot":
+        result = plural ? "boots" : "boot";
+        break;
+      case "trainer":
+        result = plural ? "trainers" : "trainer";
+        break;
+      case "sandal":
+        result = plural ? "sandals" : "sandal";
+        break;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "sockDesc": function(plural,capital) {
+    let result = "";
+    switch(this.footSock) {
+      case "sock":
+        result = plural ? "socks" : "sock";
+        break;
     }
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },

@@ -137,7 +137,7 @@ function defaultStomp(container, macro, verbose) {
   if (container.count == 0)
     return "Your " + macro.footDesc() + " thumps the ground.";
   else if (isFatal(macro))
-    return "You crush " + container.describe(verbose) + " under" + macro.footDesc() + ".";
+    return "You crush " + container.describe(verbose) + " under" + macro.footDesc(false,false,true) + ".";
   else
     return "You step on " + container.describe(verbose) + ".";
 }
@@ -525,65 +525,65 @@ function defaultSoulDigest(container, macro, verbose) {
 
 function defaultWearShoe(container, macro, verbose) {
   if (container.count == 0) {
-    return "You slip on your shoes.";
+    return "You slip on your " + macro.shoeDesc(true,false) + ".";
   } else {
-    return "You slip on your shoes, " + macro.toeDesc(true) + " wriggling against " + container.describe(false) + " trapped within!";
+    return "You slip on your " + macro.shoeDesc(true,false) + ", " + macro.toeDesc(true) + " wriggling against " + container.describe(false) + " trapped within!";
   }
 }
 
 function defaultRemoveShoe(container, macro, verbose) {
   if (container.count == 0) {
-    return "You pull off your shoes.";
+    return "You pull off your " + macro.shoeDesc(true,false) + ".";
   } else {
-    return "You pull off your shoes, " + macro.toeDesc(true) + " rubbing against " + container.describe(false) + " on the way out.";
+    return "You pull off your " + macro.shoeDesc(true,false) + ", " + macro.toeDesc(true) + " rubbing against " + container.describe(false) + " on the way out.";
   }
 }
 
 function defaultWearSock(container, macro, verbose) {
   if (container.count == 0) {
-    return "You slip on your socks.";
+    return "You slip on your " + macro.sockDesc(true,false) + ".";
   } else {
-    return "You slip on your socks, " + macro.toeDesc(true) + " grinding against " + container.describe(false) + " trapped in the cotton tube!";
+    return "You slip on your " + macro.sockDesc(true,false) + ", " + macro.toeDesc(true) + " grinding against " + container.describe(false) + " trapped in the cotton tube!";
   }
 }
 
 function defaultRemoveSock(container, macro, verbose) {
   if (container.count == 0) {
-    return "You pull off your socks. Cool air washes over your " + macro.toeOnlyDesc(true);
+    return "You pull off your " + macro.sockDesc(true,false) + ". Cool air washes over your " + macro.toeOnlyDesc(true);
   } else {
-    return "You pull off your socks, leaving " + container.describe(false) + " trapped at the bottom.";
+    return "You pull off your " + macro.sockDesc(true,false) + ", leaving " + container.describe(false) + " trapped at the bottom.";
   }
 }
 
 function defaultStuffShoe(container, macro, verbose) {
   if (container.count == 0) {
-    return "You don't have anything to stuff into your shoes.";
+    return "You don't have anything to stuff into your " + macro.shoeDesc(true) + ".";
   } else {
-    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your shoe!";
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your " + macro.shoeDesc() + "!";
   }
 }
 
 function defaultStuffSock(container, macro, verbose) {
   if (container.count == 0) {
-    return "You don't have anything to stuff into your socks.";
+    return "You don't have anything to stuff into your " + macro.sockDesc(true) + ".";
   } else {
-    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your sock!";
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your " + macro.sockDesc() + "!";
   }
 }
 
 function defaultDumpShoe(container, macro, verbose) {
   if (container.count == 0) {
-    return "Your shoes are empty, silly.";
+    return "Your " + macro.shoeDesc(true) + " are empty, silly.";
   } else {
-    return "You shake out your shoes, dumping " + container.describe(false) + " onto the ground.";
+    return "You shake out your " + macro.shoeDesc(true) + ", dumping " + container.describe(false) + " onto the ground.";
   }
 }
 
 function defaultDumpSock(container, macro, verbose) {
   if (container.count == 0) {
-    return "You don't have anything to stuff into your socks.";
+    return "You don't have anything to stuff into your " + macro.sockDesc(true) + ".";
   } else {
-    return "You turn your socks inside-out, dumping " + container.describe(false) + " onto the ground.";
+    return "You turn your " + macro.shoeDesc(true) + " inside-out, dumping " + container.describe(false) + " onto the ground.";
   }
 }
 
