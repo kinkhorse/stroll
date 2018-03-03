@@ -2702,10 +2702,11 @@ function fart(vol)
 }
 
 function wear_shoes() {
-  macro.footShoeWorn = true;
 
   let line = describe("wear-shoe",macro.shoe.container,macro,verbose);
   let summary = summarize(macro.shoe.container.sum(),false);
+
+  macro.footShoeWorn = true;
 
   footwearUpdate();
 
@@ -2724,10 +2725,11 @@ function remove_shoes() {
 }
 
 function wear_socks() {
-  macro.footSockWorn = true;
 
   let line = describe("wear-sock",macro.sock.container,macro,verbose);
   let summary = summarize(macro.sock.container.sum(),false);
+
+  macro.footSockWorn = true;
 
   footwearUpdate();
 

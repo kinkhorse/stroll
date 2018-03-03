@@ -559,7 +559,7 @@ function defaultStuffShoe(container, macro, verbose) {
   if (container.count == 0) {
     return "You don't have anything to stuff into your " + macro.shoeDesc(true) + ".";
   } else {
-    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your " + macro.shoeDesc() + "!";
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your " + macro.shoeDesc(true) + "!";
   }
 }
 
@@ -567,7 +567,7 @@ function defaultStuffSock(container, macro, verbose) {
   if (container.count == 0) {
     return "You don't have anything to stuff into your " + macro.sockDesc(true) + ".";
   } else {
-    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your " + macro.sockDesc() + "!";
+    return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your " + macro.sockDesc(true) + "!";
   }
 }
 
