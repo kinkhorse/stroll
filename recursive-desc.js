@@ -136,7 +136,7 @@ function defaultStomp(container, macro, verbose) {
   if (container.count == 0)
     return "Your " + macro.footDesc() + " thumps the ground.";
   else if (isFatal(macro))
-    return "You crush " + container.describe(verbose) + " underfoot.";
+    return "You crush " + container.describe(verbose) + " under" + macro.footDesc() + ".";
   else
     return "You step on " + container.describe(verbose) + ".";
 }

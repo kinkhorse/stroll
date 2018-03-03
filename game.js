@@ -3,9 +3,9 @@
 /*jshint browser: true*/
 /*jshint devel: true*/
 
-let presets = [{"name":"Fen","species":"crux","scale":"1","baseHeight":2.26,"baseMass":135,"basePawArea":0.1,"baseHandArea":0.1,"baseAnalVoreDiameter":0.1,"baseAssArea":0.4,"brutality":"brutality-1","victimsMilitary":false,"victimsMacros":false,"victimsMicros":false,"humanMode":false,"sameSizeVore":true,"sameSizeStomp":true,"soulVoreEnabled":true,"footType":"paw","analVore":true,"analVoreToStomach":false,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":1,"tailType":"slinky","baseTailLength":1,"baseTailDiameter":0.3,"tailMaw":true,"hasPouch":true,"maleParts":true,"hasSheath":true,"dickType":"canine","baseDickLength":0.3,"baseDickDiameter":0.08,"baseBallDiameter":0.05,"baseCumRatio":1,"cumScale":1,"hasBreasts":true,"baseBreastDiameter":0.1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":true,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"baseFemcumRatio":1,"femcumScale":1},
-{"name":"Mekuto","species":"wahsune","scale":"1","baseHeight":1.778,"baseMass":66,"basePawArea":0.1,"baseHandArea":0.1,"baseAnalVoreDiameter":0.1,"baseAssArea":0.25,"brutality":"brutality-1","victimsMilitary":false,"victimsMacros":false,"victimsMicros":false,"humanMode":false,"sameSizeVore":true,"sameSizeStomp":false,"soulVoreEnabled":false,"footType":"paw","analVore":true,"analVoreToStomach":true,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":5,"tailType":"ravenous","baseTailLength":1.9,"baseTailDiameter":0.15,"tailMaw":true,"tailStretchiness":3,"hasPouch":false,"maleParts":true,"hasSheath":true,"dickType":"canine","baseDickLength":0.15,"baseDickDiameter":0.05,"dickStretchiness":3,"baseBallDiameter":0.03,"baseCumRatio":1,"cumScale":1,"hasBreasts":false,"baseBreastDiameter":0.1,"breastStretchiness":1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":false,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"vaginaStretchiness":1,"baseFemcumRatio":1,"femcumScale":1},
-{"name":"Vulpes","species":"fox","scale":"1","baseHeight":2,"baseMass":73,"basePawArea":0.25,"baseHandArea":0.1,"baseAnalVoreDiameter":0.1,"baseAssArea":0.2,"brutality":"brutality-2","victimsMilitary":false,"victimsMacros":true,"victimsMicros":false,"humanMode":false,"sameSizeVore":false,"sameSizeStomp":false,"soulVoreEnabled":true,"footType":"paw","analVore":true,"analVoreToStomach":true,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":1,"tailType":"fluffy","baseTailLength":1.3,"baseTailDiameter":0.3,"tailMaw":false,"tailStretchiness":1,"hasPouch":false,"maleParts":true,"hasSheath":true,"dickType":"sheathed","baseDickLength":0.25,"baseDickDiameter":0.1,"dickStretchiness":2,"baseBallDiameter":0.04,"baseCumRatio":1,"cumScale":1,"hasBreasts":false,"baseBreastDiameter":0.1,"breastStretchiness":1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":false,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"vaginaStretchiness":1,"baseFemcumRatio":1,"femcumScale":1}];
+let presets = [{"name":"Fen","species":"crux","scale":"1","baseHeight":2.26,"baseMass":135,"basePawArea":0.1,"baseHandArea":0.1,"baseAnalVoreDiameter":0.1,"baseAssArea":0.4,"brutality":"1","victimsMilitary":false,"victimsMacros":false,"victimsMicros":false,"humanMode":false,"sameSizeVore":true,"sameSizeStomp":true,"soulVoreEnabled":true,"footType":"paw","analVore":true,"analVoreToStomach":false,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":1,"tailType":"slinky","baseTailLength":1,"baseTailDiameter":0.3,"tailMaw":true,"hasPouch":true,"maleParts":true,"hasSheath":true,"dickType":"canine","baseDickLength":0.3,"baseDickDiameter":0.08,"baseBallDiameter":0.05,"baseCumRatio":1,"cumScale":1,"hasBreasts":true,"baseBreastDiameter":0.1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":true,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"baseFemcumRatio":1,"femcumScale":1},
+{"name":"Mekuto","species":"wahsune","scale":"1","baseHeight":1.778,"baseMass":66,"basePawArea":0.1,"baseHandArea":0.1,"baseAnalVoreDiameter":0.1,"baseAssArea":0.25,"brutality":"1","victimsMilitary":false,"victimsMacros":false,"victimsMicros":false,"humanMode":false,"sameSizeVore":true,"sameSizeStomp":false,"soulVoreEnabled":false,"footType":"paw","analVore":true,"analVoreToStomach":true,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":5,"tailType":"ravenous","baseTailLength":1.9,"baseTailDiameter":0.15,"tailMaw":true,"tailStretchiness":3,"hasPouch":false,"maleParts":true,"hasSheath":true,"dickType":"canine","baseDickLength":0.15,"baseDickDiameter":0.05,"dickStretchiness":3,"baseBallDiameter":0.03,"baseCumRatio":1,"cumScale":1,"hasBreasts":false,"baseBreastDiameter":0.1,"breastStretchiness":1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":false,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"vaginaStretchiness":1,"baseFemcumRatio":1,"femcumScale":1},
+{"name":"Vulpes","species":"fox","scale":"1","baseHeight":2,"baseMass":73,"basePawArea":0.25,"baseHandArea":0.1,"baseAnalVoreDiameter":0.1,"baseAssArea":0.2,"brutality":"2","victimsMilitary":false,"victimsMacros":true,"victimsMicros":false,"humanMode":false,"sameSizeVore":false,"sameSizeStomp":false,"soulVoreEnabled":true,"footType":"paw","analVore":true,"analVoreToStomach":true,"arousalEnabled":true,"arousalFactor":1,"hasTail":true,"tailCount":1,"tailType":"fluffy","baseTailLength":1.3,"baseTailDiameter":0.3,"tailMaw":false,"tailStretchiness":1,"hasPouch":false,"maleParts":true,"hasSheath":true,"dickType":"sheathed","baseDickLength":0.25,"baseDickDiameter":0.1,"dickStretchiness":2,"baseBallDiameter":0.04,"baseCumRatio":1,"cumScale":1,"hasBreasts":false,"baseBreastDiameter":0.1,"breastStretchiness":1,"lactationEnabled":true,"lactationFactor":0.25,"lactationScale":1,"breastVore":true,"femaleParts":false,"baseVaginaLength":0.1,"baseVaginaWidth":0.05,"vaginaStretchiness":1,"baseFemcumRatio":1,"femcumScale":1}];
 
 
 let errored = false;
@@ -2790,9 +2790,9 @@ function generateSettings() {
     else if (form[i].type == "checkbox") {
       settings[form[i].name] = form[i].checked;
     } else if (form[i].type == "radio") {
-      let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
+      let name = form[i].name;
       if (form[i].checked)
-        settings[name] = form[i].id;
+        settings[name] = form[i].value;
     } else if (form[i].type == "select-one") {
       settings[form[i].name] = form[i][form[i].selectedIndex].value;
     }
@@ -2846,11 +2846,11 @@ function loadSettings(settings = null) {
       else if (form[i].type == "checkbox") {
         form[i].checked = settings[form[i].name];
       } else if (form[i].type == "radio") {
-        let name = form[i].name.match(/(?:[a-zA-Z]+-)*[a-zA-Z]+/)[0];
-        form[i].checked = (settings[name] == form[i].id);
+        let name = form[i].name;
+        form[i].checked = (settings[name] == form[i].value);
       } else if (form[i].type == "select-one") {
         for (let j=0; j<form[i].length; j++) {
-          if (form[i][j].value == settings[form[i].name]) {
+          if (form[i][j].value == settings[form[i].value]) {
             form[i].selectedIndex = j;
             break;
           }
@@ -2902,30 +2902,11 @@ function startGame(e) {
 
   started = true;
 
-  let form = document.forms.namedItem("custom-species-form");
+  let settings = generateSettings();
 
-  for (let i=0; i<form.length; i++) {
-    if (form[i].value != "") {
-      if (form[i].type == "text")
-        macro[form[i].name] = form[i].value;
-      else if (form[i].type == "number")
-        macro[form[i].name] = parseFloat(form[i].value);
-      else if (form[i].type == "checkbox") {
-        if (form[i].name == "humanMode")
-          humanMode = form[i].checked;
-        else
-          macro[form[i].name] = form[i].checked;
-      } else if (form[i].type == "radio") {
-        if (form[i].checked) {
-          switch(form[i].id) {
-            case "brutality-0": macro.brutality = 0; break;
-            case "brutality-1": macro.brutality = 1; break;
-            case "brutality-2": macro.brutality = 2; break;
-          }
-        }
-      } else if (form[i].type == "select-one") {
-        macro[form[i].name] = form[i][form[i].selectedIndex].value;
-      }
+  for (var key in settings) {
+    if (settings.hasOwnProperty(key)) {
+      macro[key] = settings[key];
     }
   }
 
