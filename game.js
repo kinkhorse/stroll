@@ -3375,7 +3375,7 @@ function startGame(e) {
     things["Person"] = Human;
   }
 
-  if (macro.victimsMacro) {
+  if (macro.victimsMacros) {
     contents_insert("Town","Macro",2,5);
     contents_insert("City","Macro",5,20);
     contents_insert("Continent","Macro",100,300);
