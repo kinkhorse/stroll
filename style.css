@@ -127,6 +127,7 @@ body.dark #log {
 }
 
 .stat-container {
+  width: 100%;
   flex-wrap: wrap;
   flex-direction: row;
   flex: 1
@@ -156,9 +157,9 @@ body.dark #log {
 
 .stat-button {
   font-size: 20px;
-  width: 120px;
+  width: 50%;
   height: 75px;
-
+  display: block;
 }
 
 .option-form {
