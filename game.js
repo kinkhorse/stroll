@@ -3430,6 +3430,17 @@ function registerActions() {
   });
 }
 
+function debugLog() {
+  console.log("Your character settings:");
+  console.log(JSON.stringify(generateSettings()));
+  console.log("Current macro state:");
+  console.log(JSON.stringify( macro, function( key, value) {
+    if( key == 'owner') { return "owner";}
+    else {return value;}
+  }));
+  alert("Debug info has been logged to console. Press F12, click \"Console\", and copy all the text")
+}
+
 window.addEventListener('load', function(event) {
 
   (function() {
@@ -3467,6 +3478,7 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-dark-mode-game").addEventListener("click",toggleDarkMode);
 
   document.getElementById("button-stats").addEventListener("click",showStats);
+  document.getElementById("button-debug-log").addEventListener("click",debugLog);
 
   document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
   document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });
