@@ -587,10 +587,6 @@ function defaultDumpSock(container, macro, verbose) {
   }
 }
 
-
-
-
-
 // EATING
 
 rules["eat"].push({

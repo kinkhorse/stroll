@@ -134,7 +134,7 @@ var contents =
   "Car": [["Person",1,4]],
   "Bus": [["Person",2,30]],
   "Tram": [["Person",10,50]],
-  "Train": [["Person",1,4],["Train Car",2,10]],
+  "Train": [["Person",1,4,"engine"],["Train Car",2,10]],
   "Train Car": [["Person",10,40]],
   "House": [["Person",0,8],["Empty Car",0,2]],
   "Barn": [["Person",0,2],["Cow",30,70]],
@@ -170,14 +170,44 @@ function contents_substitute(from,to) {
   }
 }
 
+// remove all instances of thing
+function contents_remove(thing) {
+  for (let key in contents) {
+    if (contents.hasOwnProperty(key)) {
+      let type = contents[key];
+      for (let i=0; i<type.length; i++) {
+        if (type[i][0] == thing) {
+          type.splice(i,1);
+          --i;
+        }
+      }
+    }
+  }
+}
+
+// adds thing to parent
+function contents_insert(parent,thing,min,max,label) {
+  let owner = contents[parent];
+  if (label == undefined)
+    owner.push([thing,min,max]);
+  else
+    owner.push([thing,min,max,label]);
+}
+
 function initContents(name,count) {
   let result = {};
   let type = contents[name];
 
   for (let i=0; i<type.length; i++) {
     let amount = distribution(type[i][1],type[i][2],count);
-    if (amount > 0)
-      result[type[i][0]] = new things[type[i][0]](amount);
+    if (amount > 0) {
+      // if a custom label is supplied, use it!
+      if (type[i].length == 4)
+        result[type[i][3]] = new things[type[i][0]](amount);
+      else
+        result[type[i][0]] = new things[type[i][0]](amount);
+
+    }
   }
 
   return result;
@@ -500,7 +530,7 @@ function Person(count = 1) {
 }
 
 function Human(count = 1) {
-  this.name = "Human";
+  this.name = "Person";
 
   copy_defaults(this,new DefaultEntity());
 
@@ -510,7 +540,7 @@ function Human(count = 1) {
 
   this.describeOne = function (verbose=true) {
     var body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
-    var sex = random_desc(["man", "woman"], (verbose ? 1 : 0));
+    var sex = random_desc(["man", "woman"], 1);
     return "a " + merge_desc([body,sex]);
   };
 
@@ -715,10 +745,6 @@ function Train(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
   this.describeOne = function(verbose=true) {
     var adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
     var color = random_desc(["black","tan","gray"], (verbose ? 1 : 0));
@@ -733,9 +759,9 @@ function Train(count = 1) {
         for (var i = 0; i < this.count; i++) {
           list.push(this.describeOne(verbose));
         }
-        return merge_things(list) + " with " + this.contents["Person"].describe(false) + " in the engine and " + this.contents["Train Car"].describe()  + " attached";
+        return merge_things(list) + " with " + this.contents["engine"].describe(false) + " in the engine and " + this.contents["Train Car"].describe()  + " attached";
       } else {
-        return this.count + " trains with " + this.contents["Person"].describe(false) + " in the engine and " + this.contents["Train Car"].describe()  + " attached";
+        return this.count + " trains with " + this.contents["engine"].describe(false) + " in the engine and " + this.contents["Train Car"].describe()  + " attached";
       }
     } else {
       return (this.count > 1 ? this.count + " trains" : "a train");

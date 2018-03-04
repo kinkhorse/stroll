@@ -1328,14 +1328,14 @@ function getOnePrey(biome, area, sameSize = true)
   }
 
   if (sameSize)
-    return new Container([new Person(1)]);
+    return new Container([new things["Person"](1)]);
   else
     return new Container();
 }
 
 function getPrey(region, area, sameSize = false)
 {
-  let weights = {"Person": 1};
+  let weights = {};
 
   if (area > areas["Planet"]) {
     weights = {
@@ -1355,7 +1355,6 @@ function getPrey(region, area, sameSize = false)
   }
   else {
     weights = {
-      "Person": 0.017,
       "House": 0.1,
       "Car": 0.07,
       "Bus": 0.02,
@@ -1366,6 +1365,14 @@ function getPrey(region, area, sameSize = false)
       "Continent": 0.0005,
       "Planet": 0.0001
     };
+
+    if (!macro.victimsNoPeople) {
+      if (macro.victimsHuman) {
+        weights["Human"] = 0.017;
+      } else {
+        weights["Person"] = 0.017;
+      }
+    }
 
     if (macro.victimsMilitary) {
       weights["Soldier"] = 0.01;
@@ -3359,14 +3366,20 @@ function startGame(e) {
     document.getElementById("edge").style.display = "none";
   }
 
+  if (macro.victimsNoPeople) {
+    contents_remove("Person");
+  }
 
-  //let species = document.getElementById("option-species").value;
-  //let re = /^[a-zA-Z\- ]+$/;
+  if (macro.victimsHuman) {
+    // oh god this is bad bad bad bad bad bad BAD BAD BAD BAD BAD
+    things["Person"] = Human;
+  }
 
-  // tricksy tricksy players
-  //if (re.test(species)) {
-  //  macro.species = species;
-  //}
+  if (macro.victimsMacro) {
+    contents_insert("Town","Macro",2,5);
+    contents_insert("City","Macro",5,20);
+    contents_insert("Continent","Macro",100,300);
+  }
 
   macro.init();
 
