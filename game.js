@@ -3373,6 +3373,8 @@ function startGame(e) {
 
   document.getElementById("actions-body").style.display = 'flex';
   document.getElementById("stat-container").style.display = 'flex';
+
+  window.scroll(0,0);
 }
 
 function actionTab(e) {
