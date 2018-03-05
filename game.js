@@ -1276,7 +1276,7 @@ let macro =
   "growthPoints": 0,
 
   "addGrowthPoints": function(mass) {
-    this.growthPoints += Math.round(50 * mass / (this.scale*this.scale));
+    this.growthPoints += Math.round(mass / (this.scale*this.scale));
   },
 
   // 0 = entirely non-fatal
@@ -3068,7 +3068,6 @@ function update(lines = [])
 
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.mass, unit));
-  document.getElementById("growth-points").innerHTML = "Growth Points:" + macro.growthPoints;
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
   document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
   document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false));
@@ -3119,12 +3118,6 @@ function grow_pick(times) {
 
 function grow(times=1)
 {
-  if (macro.growthPoints < 100 * times) {
-    update(["You don't feel like growing right now."]);
-    return;
-  }
-
-  macro.growthPoints -= 100 * times;
 
   let oldHeight = macro.height;
   let oldMass = macro.mass;
@@ -3145,12 +3138,6 @@ function grow(times=1)
 
 function grow_dick(times=1)
 {
-  if (macro.growthPoints < 10 * times) {
-    update(["You don't feel like growing right now."]);
-    return;
-  }
-
-  macro.growthPoints -= 10 * times;
 
   let oldLength = macro.dickLength;
   let oldMass = macro.dickMass;
@@ -3164,12 +3151,7 @@ function grow_dick(times=1)
 
 function grow_balls(times=1)
 {
-  if (macro.growthPoints < 10 * times) {
-    update(["You don't feel like growing right now."]);
-    return;
-  }
 
-  macro.growthPoints -= 10 * times;
 
   let oldDiameter = macro.ballDiameter;
   let oldMass = macro.ballMass;
@@ -3183,12 +3165,7 @@ function grow_balls(times=1)
 
 function grow_breasts(times=1)
 {
-  if (macro.growthPoints < 10 * times) {
-    update(["You don't feel like growing right now."]);
-    return;
-  }
 
-  macro.growthPoints -= 10 * times;
 
   let oldDiameter = macro.breastDiameter;
   let oldMass = macro.breastMass;
@@ -3202,12 +3179,6 @@ function grow_breasts(times=1)
 
 function grow_vagina(times=1)
 {
-  if (macro.growthPoints < 10 * times) {
-    update(["You don't feel like growing right now."]);
-    return;
-  }
-
-  macro.growthPoints -= 10 * times;
 
   let oldLength = macro.vaginaLength;
 
@@ -3220,12 +3191,7 @@ function grow_vagina(times=1)
 
 function grow_ass(times=1)
 {
-  if (macro.growthPoints < 10 * times) {
-    update(["You don't feel like growing right now."]);
-    return;
-  }
 
-  macro.growthPoints -= 10 * times;
 
   let oldDiameter = Math.pow(macro.assArea,1/2);
 
@@ -3260,7 +3226,7 @@ function resetSettings() {
 
 function loadPreset() {
   resetSettings();
-  
+
   let select = document.getElementById("character-presets");
 
   loadSettings(presets[select.selectedIndex]);
