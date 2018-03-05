@@ -1587,6 +1587,8 @@ function chew()
 
   add_victim_people("chew",prey);
 
+  macro.stomach.feed(prey);
+
   update([sound,line,linesummary,newline]);
 
   macro.arouse(10);
