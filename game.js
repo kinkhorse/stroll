@@ -331,7 +331,7 @@ let macro =
     return this.dickLength * this.dickDiameter* Math.PI / 2;
   },
   get dickVolume() {
-    return this.dickLength * Math.pow(this.dickDiameter,2) * Math.PI;
+    return this.dickLength * Math.pow(this.dickDiameter/2,2) * Math.PI;
   },
   get dickMass() {
     return this.dickVolume * this.dickDensity;
@@ -467,7 +467,12 @@ let macro =
       return describe("stomach",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e4;
+      if (owner.gasEnabled)
+        owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e4;
+      if (owner.scatEnabled) {
+        owner.scatStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+        owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
+      }
     },
     get description() {
       let prey = new Container();
@@ -510,7 +515,12 @@ let macro =
       return describe("bowels",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+      if (owner.gasEnabled)
+        owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+      if (owner.scatEnabled) {
+        owner.scatStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+        owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
+      }
     },
     get description() {
       let prey = new Container();
@@ -654,6 +664,48 @@ let macro =
     "stages" : 2
   },
 
+  "bladder": {
+    "name" : "bladder",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      this.contents[0] = this.contents[0].merge(prey);
+    },
+    "describeDigestion": function(container) {
+      return describe("bladder",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+      if (macro.lactationEnabled) {
+        owner.pissStorage.amount += container.sum_property("mass") / 1e3;
+      }
+    },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your bladder has nobody in it.";
+      } else {
+        if (macro.brutality > 0)  {
+          return "Your bladder bulges, " + prey.describe(false) + " dissolving in your acrid piss.";
+        } else {
+          return "Your bladder bulges with " + prey.describe(false) + ".";
+        }
+      }
+    },
+    "contents" : [],
+    "stages" : 3
+  },
+
   soulVoreEnabled: true,
 
   "souls": {
@@ -777,11 +829,14 @@ let macro =
     this.womb.setup(this);
     this.balls.setup(this);
     this.breasts.setup(this);
+    this.bladder.setup(this);
     this.souls.setup(this);
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
     this.gasStorage.owner = this;
+    this.pissStorage.owner = this;
+    this.scatStorage.owner = this;
 
     if (this.analVoreToStomach) {
       this.bowels.moves = this.stomach;
@@ -797,6 +852,10 @@ let macro =
       this.quenchExcess(this);
     if (this.gasEnabled)
       this.fillGas(this);
+    if (this.pissEnabled)
+      this.fillPiss(this);
+    if (this.scatEnabled)
+      this.fillScat(this);
   },
 
   "maleParts": true,
@@ -854,6 +913,36 @@ let macro =
     update();
   },
 
+  "pissEnabled": true,
+  "pissScale": 1,
+  "baseUrethraDiameter": 0.03,
+  "urethraStretch": 5,
+  get urethraDiameter() {
+    return this.scaling(this.baseUrethraDiameter, this.scale, 1);
+  },
+  get urethraStretchDiameter() {
+    return this.urethraDiameter * this.urethraStretch;
+  },
+  get urethraStretchArea() {
+    return (this.urethraStretchDiameter * this.urethraStretchDiameter / 4) * Math.PI;
+  },
+
+  "fillPiss": function(self) {
+    self.pissStorage.amount += self.pissScale * self.pissStorage.limit / 1200;
+    if (self.pissStorage.amount > self.pissStorage.limit * 2)
+      piss(null,self.pissStorage.amount);
+    setTimeout(function () { self.fillPiss(self); }, 100);
+    update();
+  },
+
+  // no actual filling, but it handles updates
+  "fillScat": function(self) {
+    if (self.scatStorage.amount > self.scatStorage.limit * 2)
+      scat(null,self.scatStorage.amount);
+    setTimeout(function () { self.fillScat(self); }, 100);
+    update();
+  },
+
   "cumStorage": {
     "amount": 0,
     get limit() {
@@ -877,6 +966,23 @@ let macro =
 
   "gasStorage": {
     "amount": 0,
+    get limit() {
+      return Math.pow(this.owner.scale,3) / 1000;
+    }
+  },
+
+  "pissStorage": {
+    "amount": 0,
+    get limit() {
+      return Math.pow(this.owner.scale,3) / 5000;
+    }
+  },
+
+  "scatEnabled": true,
+
+  "scatStorage": {
+    "amount": 0,
+    "victims": new Container(),
     get limit() {
       return Math.pow(this.owner.scale,3) / 1000;
     }
@@ -2840,6 +2946,118 @@ function footwearUpdate() {
 
 }
 
+function piss(e,vol) {
+  if (vol == undefined) {
+    vol = macro.pissStorage.amount;
+  }
+
+  macro.pissStorage.amount -= vol;
+
+  let area = Math.pow(vol, 2/3);
+
+  let prey = getPrey(biome, area);
+  let line = describe("piss", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let sound = "Dribble.";
+
+  if (people < 3) {
+    sound = "Dribble.";
+  } else if (people < 10) {
+    sound = "Splash.";
+  } else if (people < 50) {
+    sound = "Splash!";
+  } else if (people < 500) {
+    sound = "SPLOOSH!";
+  } else if (people < 5000) {
+    sound = "SPLOOOOOOOOOOSH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  let preyMass = prey.sum_property("mass");
+
+  add_victim_people("piss",prey);
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(20);
+}
+
+function bladder_vore() {
+  let prey = getPrey(biome, macro.urethraStretchArea);
+  let line = describe("bladder-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let sound = "Shlp";
+
+  if (people < 3) {
+    sound = "Shlp.";
+  } else if (people < 10) {
+    sound = "Squelch.";
+  } else if (people < 50) {
+    sound = "Shlurrp.";
+  } else if (people < 500) {
+    sound = "SHLRP!";
+  } else if (people < 5000) {
+    sound = "SQLCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  let preyMass = prey.sum_property("mass");
+
+  add_victim_people("piss",prey);
+
+  macro.bladder.feed(prey);
+
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(20);
+}
+
+function scat(e,vol) {
+  if (vol == undefined) {
+    vol = macro.scatStorage.amount;
+  }
+
+  macro.scatStorage.amount -= vol;
+
+  let area = Math.pow(vol, 2/3);
+
+  let scatArea = macro.analVoreArea;
+  let scatLength = vol / macro.analVoreArea;
+  let prey = getPrey(biome, area);
+  let line = describe("scat", prey, macro, verbose).replace("$MASS",mass(vol,unit,true)).replace("$LENGTH",length(scatLength,unit,true));
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let sound = "Thump.";
+
+  if (people < 3) {
+    sound = "Thump.";
+  } else if (people < 10) {
+    sound = "THUMP.";
+  } else if (people < 50) {
+    sound = "SqlllchTHUMP!";
+  } else if (people < 500) {
+    sound = "THOOMP!";
+  } else if (people < 5000) {
+    sound = "THUUUUUUUMP.";
+  } else {
+    sound = "Oh the humanity!";
+  }
+
+  macro.scatStorage.victims = new Container();
+  add_victim_people("scat",prey);
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(50);
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -2871,6 +3089,10 @@ function update(lines = [])
   document.getElementById("milkPercent").innerHTML = Math.round(macro.milkStorage.amount / macro.milkStorage.limit * 100) + "%";
   document.getElementById("gas").innerHTML = "Gas: " + transformNumbers(volume(macro.gasStorage.amount,unit,false));
   document.getElementById("gasPercent").innerHTML = Math.round(macro.gasStorage.amount / macro.gasStorage.limit * 100) + "%";
+  document.getElementById("piss").innerHTML = "Piss: " + transformNumbers(volume(macro.pissStorage.amount,unit,false));
+  document.getElementById("pissPercent").innerHTML = Math.round(macro.pissStorage.amount / macro.pissStorage.limit * 100) + "%";
+  document.getElementById("scat").innerHTML = "Scat: " + transformNumbers(volume(macro.scatStorage.amount,unit,false));
+  document.getElementById("scatPercent").innerHTML = Math.round(macro.scatStorage.amount / macro.scatStorage.limit * 100) + "%";
 
 }
 
@@ -3358,6 +3580,32 @@ function startGame(e) {
     macro.footSockWorn = macro.footSockEnabled;
 
     footwearUpdate();
+  }
+
+  if (macro.pissEnabled) {
+    enable_panel("waste");
+
+    enable_button("piss");
+
+    enable_stat("piss");
+
+    enable_victim("piss","Pissed away");
+
+    if (macro.bladderVore) {
+      enable_button("bladder_vore");
+
+      enable_victim("bladder_vore","Dissolved into piss");
+    }
+  }
+
+  if (macro.scatEnabled) {
+    enable_panel("waste");
+
+    enable_button("scat");
+
+    enable_stat("scat");
+
+    enable_victim("scat","Shat on");
   }
 
   document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");

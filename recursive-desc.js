@@ -21,8 +21,8 @@ var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
-"paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","soul-digest",
-"wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock"];
+"paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
+"wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -507,6 +507,13 @@ function defaultBreasts(container, macro, verbose) {
     return "Your breasts slosh as they absorb " + container.describe(false);
 }
 
+function defaultBladder(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your bladder swells as it dissolves " + container.describe(false) + " into acrid piss";
+  else
+    return "Your bladder squeezes as it absorbs " + container.describe(false);
+}
+
 function defaultSoulDigest(container, macro, verbose) {
   let sum = container.sum()["Person"];
   switch(macro.soulVoreType) {
@@ -584,6 +591,53 @@ function defaultDumpSock(container, macro, verbose) {
     return "You don't have anything to stuff into your " + macro.sockDesc(true) + ".";
   } else {
     return "You turn your " + macro.shoeDesc(true) + " inside-out, dumping " + container.describe(false) + " onto the ground.";
+  }
+}
+
+function defaultPiss(container, macro, verbose) {
+  if (macro.maleParts) {
+    if (container.count == 0) {
+      return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeDick + " cock.";
+    } else {
+      return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeDick + " cock, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
+    }
+  } else if (macro.femaleParts) {
+    if (container.count == 0) {
+      return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeVagina + " slit.";
+    } else {
+      return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeVagina + " slit, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
+    }
+  } else {
+    if (container.count == 0) {
+      return "You sigh with relief as $VOLUME of piss erupts from between your legs.";
+    } else {
+      return "You sigh with relief as $VOLUME of piss erupts from between your legs, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
+    }
+  }
+}
+
+function defaultBladderVore(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You don't have anything to shove into your bladder!";
+  }
+  else {
+    if (macro.maleParts) {
+      return "You snatch up " + container.describe(verbose) + " and stuff them into your " + macro.describeDick + ", grinding them to its base and forcing them into your musky bladder.";
+    } else if (macro.femaleParts) {
+      return "You snatch " + container.describe(verbose) + " in your iron grip, grinding them against your " + macro.describeVagina + " slit before stuffing them into your urethra, sealing them away in your musky bladder.";
+    } else {
+      return "You grab " + container.describe(verbose) + " and grind them between your legs, slipping them into your urethra and imprisoning them in your bladder.";
+    }
+  }
+}
+
+function defaultScat(container, macro, verbose) {
+  if (macro.scatStorage.victims.count == 0) {
+    return "Your bowels are empty.";
+  } else if (macro.brutality > 0) {
+    return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose) + ". Embedded in the thick, chunky waste are the remains of " + listSum(macro.scatStorage.victims.sum()) + ", now little more than bones and wreckage in your shit.";
+  } else {
+    return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose);
   }
 }
 

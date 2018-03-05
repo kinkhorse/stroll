@@ -393,6 +393,16 @@ function defaultMerge(thing) {
   };
 }
 
+function listSum(sum) {
+  let result = [];
+  for (let key in sum) {
+    if (sum.hasOwnProperty(key)) {
+      result.push(new things[key](sum[key]).describe(false));
+    }
+  }
+
+  return merge_things(result);
+}
 function defaultSum(thing) {
   return function() {
     var counts = {};
