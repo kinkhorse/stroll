@@ -140,7 +140,7 @@ function customaryMass(kg, singular=false) {
     return mass + (singular || mass == 1 ? " pound" : " pounds");
   } else {
     let mass = round(lbs / 2000,1);
-    return mass + (singular || mass == 1 ? "ton" : " tons");
+    return mass + (singular || mass == 1 ? " ton" : " tons");
   }
 }
 
