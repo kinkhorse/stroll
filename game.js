@@ -3259,6 +3259,8 @@ function resetSettings() {
 }
 
 function loadPreset() {
+  resetSettings();
+  
   let select = document.getElementById("character-presets");
 
   loadSettings(presets[select.selectedIndex]);
