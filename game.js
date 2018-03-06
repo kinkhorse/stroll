@@ -882,7 +882,7 @@ let macro =
 
   "fillBreasts": function(self) {
     if (self.milkStorage.amount > self.milkStorage.limit) {
-      breast_milk(null, self.milkStorage.amount - self.milkStorage.limit);
+      breast_milk(self.milkStorage.amount - self.milkStorage.limit);
     }
     self.milkStorage.amount += self.lactationScale * self.milkStorage.limit / 1200;
 
@@ -933,7 +933,7 @@ let macro =
   "fillPiss": function(self) {
     self.pissStorage.amount += self.pissScale * self.pissStorage.limit / 1200;
     if (self.pissStorage.amount > self.pissStorage.limit * 2)
-      piss(null,self.pissStorage.amount);
+      piss(self.pissStorage.amount);
     setTimeout(function () { self.fillPiss(self); }, 100);
     update();
   },
@@ -941,7 +941,7 @@ let macro =
   // no actual filling, but it handles updates
   "fillScat": function(self) {
     if (self.scatStorage.amount > self.scatStorage.limit * 2)
-      scat(null,self.scatStorage.amount);
+      scat(self.scatStorage.amount);
     setTimeout(function () { self.fillScat(self); }, 100);
     update();
   },
@@ -1962,7 +1962,7 @@ function breast_crush()
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
     let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
-    breast_milk(null, amount);
+    breast_milk(amount);
   }
 
   macro.arouse(10);
@@ -2004,13 +2004,13 @@ function breast_vore()
 
   if (macro.lactationEnabled && macro.milkStorage.amount / macro.milkStorage.limit > 0.5) {
     let amount = Math.min(macro.lactationVolume, (macro.milkStorage.amount / macro.milkStorage.limit - 0.5) * macro.milkStorage.limit);
-    breast_milk(null, amount);
+    breast_milk(amount);
   }
 
   macro.arouse(10);
 }
 
-function breast_milk(e,vol)
+function breast_milk(vol)
 {
   if (vol == undefined) {
     vol = Math.min(macro.lactationVolume, macro.milkStorage.amount);
@@ -2741,6 +2741,10 @@ function soul_absorb_paw()
 
 function belch(vol)
 {
+  if (vol == undefined) {
+    vol = macro.gasStorage.amount;
+  }
+
   let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
@@ -2776,6 +2780,9 @@ function belch(vol)
 
 function fart(vol)
 {
+  if (vol == undefined) {
+    vol = macro.gasStorage.amount;
+  }
   let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
@@ -2937,7 +2944,7 @@ function footwearUpdate() {
 
 }
 
-function piss(e,vol) {
+function piss(vol) {
   if (vol == undefined) {
     vol = macro.pissStorage.amount;
   }
@@ -3000,7 +3007,7 @@ function bladder_vore() {
 
   let preyMass = prey.sum_property("mass");
 
-  add_victim_people("piss",prey);
+  add_victim_people("bladder_vore",prey);
 
   macro.bladder.feed(prey);
 
@@ -3009,7 +3016,7 @@ function bladder_vore() {
   macro.arouse(20);
 }
 
-function scat(e,vol) {
+function scat(vol) {
   if (vol == undefined) {
     vol = macro.scatStorage.amount;
   }
@@ -3026,7 +3033,7 @@ function scat(e,vol) {
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump.";
+  let sound = "Clench.";
 
   if (people < 3) {
     sound = "Thump.";
@@ -3525,9 +3532,11 @@ function startGame(e) {
   if (macro.gasEnabled) {
     enable_stat("gas");
     if (macro.belchEnabled) {
+      enable_button("belch");
       enable_victim("gas-belch","Belched on");
     }
     if (macro.fartEnabled) {
+      enable_button("fart");
       enable_victim("gas-fart","Farted on");
     }
   }
@@ -3633,7 +3642,7 @@ function registerActions() {
   buttons.forEach( function(button) {
     let name = button.id;
     name = name.replace(/button-action-/,"");
-    button.addEventListener("click", window[name]);
+    button.addEventListener("click", function() { window[name]() });
   });
 }
 
