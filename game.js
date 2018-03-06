@@ -3526,10 +3526,12 @@ function startGame(e) {
     warns.push("Gas is enabled.");
     enable_stat("gas");
     if (macro.belchEnabled) {
+      enable_panel("waste");
       enable_button("belch");
       enable_victim("gas-belch","Belched on");
     }
     if (macro.fartEnabled) {
+      enable_panel("waste");
       enable_button("fart");
       enable_victim("gas-fart","Farted on");
     }

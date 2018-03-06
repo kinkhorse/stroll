@@ -187,13 +187,18 @@
     <p><a href="https://t.me/joinchat/BSXHzUZmSqc-CXB1khkuYw">Telegram discussion group</a></p>
     <div><a href="https://discord.gg/7pdcVhD">Discord discussion group</a></div>
 
+    <p>Stroll is a text-based macro game. Stomp things, eat things, abuse things - then grow larger and do it all over again. </p>
+
+    <p>Build your Character (leave blank for reasonable normal-scale defaults)</p>
+    <p>Lengths in meters, areas in square meters, masses in kilograms</p>
+    <p>Click on highlight/darkened titles to enable and disabled features.</p>
     <div id="custom-species">
 
 
       <ul class="flex-outer">
 
         <div class="custom-category">
-          <p>Reset the sheet here (custom character data isn't affected)</p>
+          <p>Reset the sheet here (saved data isn't affected)</p>
 
           <div>
             <button class="option-button" id="button-reset-custom">Reset</button>
@@ -208,8 +213,7 @@
 
         <div class="custom-category">
           <button class="option-button" id="button-dark-mode-options">Toggle Dark Mode</button>
-          <p>Build your Character (leave blank for defaults)</p>
-          <p>Lengths in meters, areas in square meters, masses in kilograms</p>
+
         </div>
 
         <div class="custom-category">
@@ -254,7 +258,7 @@
                 <input type="text" id="species" name="species" placeholder="crux" />
               </li>
               <li>
-                <label for="scale" class="has-tooltip" title="Multiply your base height by this much">Scale (?)</label>
+                <label for="scale" class="has-tooltip" title="How many times larger than normal you start.">Scale (?)</label>
                 <input type="number" step="any" id="scale" name="scale" placeholder="1" />
               </li>
               <li>
@@ -397,7 +401,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="analVore" name="analVore" />
+            <input class="custom-header-checkbox" type="checkbox" id="analVore" name="analVore" />
             <label class="custom-header" for="analVore">Anal Vore</label>
             <div class="reveal-if-active">
               <li>
@@ -412,7 +416,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="arousalEnabled" name="arousalEnabled" />
+            <input class="custom-header-checkbox" type="checkbox" id="arousalEnabled" name="arousalEnabled" />
             <label class="custom-header" for="arousalEnabled">Arousal</label>
             <div class="reveal-if-active">
               <li>
@@ -427,7 +431,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasTail" name="hasTail" />
+            <input class="custom-header-checkbox" type="checkbox" id="hasTail" name="hasTail" />
             <label class="custom-header" for="hasTail">Tails</label>
             <div class="reveal-if-active">
               <li>
@@ -449,7 +453,7 @@
               <li>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" checked="true" id="tailMaw" name="tailMaw" />
+                    <input class="custom-header-checkbox" type="checkbox" id="tailMaw" name="tailMaw" />
                     <label class="custom-header" for="tailMaw">Tail Vore</label>
                     <div class="reveal-if-active">
                       <li>
@@ -464,7 +468,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasPouch" name="hasPouch" />
+            <input class="custom-header-checkbox" type="checkbox" id="hasPouch" name="hasPouch" />
             <label class="custom-header" for="hasPouch">Pouch</label>
             <div class="reveal-if-active">
               <li>
@@ -474,7 +478,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="maleParts" name="maleParts" />
+            <input class="custom-header-checkbox" type="checkbox" id="maleParts" name="maleParts" />
             <label class="custom-header" for="maleParts">Male genitals</label>
             <div class="reveal-if-active">
               <li>
@@ -513,7 +517,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="hasBreasts" name="hasBreasts" />
+            <input class="custom-header-checkbox" type="checkbox" id="hasBreasts" name="hasBreasts" />
             <label class="custom-header" for="hasBreasts">Breasts</label>
             <div class="reveal-if-active">
               <li>
@@ -541,7 +545,7 @@
               <li>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" checked="true" id="breastVore" name="breastVore" />
+                    <input class="custom-header-checkbox" type="checkbox" id="breastVore" name="breastVore" />
                     <label class="custom-header" for="breastVore">Breast Vore</label>
                     <div class="reveal-if-active">
                       <li>
@@ -556,7 +560,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" checked="true" id="femaleParts" name="femaleParts" />
+            <input class="custom-header-checkbox" type="checkbox" id="femaleParts" name="femaleParts" />
             <label class="custom-header" for="femaleParts">Female genitals</label>
             <div class="reveal-if-active">
               <li>
