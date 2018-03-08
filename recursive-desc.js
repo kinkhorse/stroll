@@ -16,7 +16,7 @@ function getDefault(name) {
   return window[funcName];
 }
 
-var actions = ["eat","chew","stomp","kick","anal-vore","ass-crush","tail-slap","tail-vore",
+var actions = ["eat","chew","stomp","stomp-wedge","kick","anal-vore","ass-crush","tail-slap","tail-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
@@ -140,6 +140,18 @@ function defaultStomp(container, macro, verbose) {
     return "You crush " + container.describe(verbose) + " under" + macro.footDesc(false,false,true) + ".";
   else
     return "You step on " + container.describe(verbose) + ".";
+}
+
+function defaultStompWedge(container, macro, verbose) {
+  if (container.count == 1) {
+    let line = container.describe(verbose);
+    line = line.charAt(0).toUpperCase() + line.slice(1);
+    return line + " is wedged between your " + macro.toeDesc(true);
+  } else {
+    let line = container.describe(verbose);
+    line = line.charAt(0).toUpperCase() + line.slice(1);
+    return line + " are wedged between your " + macro.toeDesc(true);
+  }
 }
 
 function defaultKick(container, macro, verbose) {

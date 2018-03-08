@@ -354,7 +354,6 @@ function distribution(min, max, samples) {
     }
   }
 
-
   return result;
 }
 
@@ -511,7 +510,6 @@ function Person(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
   this.describeOne = function (verbose=true) {
     var body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
     var sex = random_desc(["male", "female"], (verbose ? 1 : 0));
@@ -547,7 +545,6 @@ function Human(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
   this.describeOne = function (verbose=true) {
     var body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
     var sex = random_desc(["man", "woman"], 1);
@@ -581,7 +578,6 @@ function Cow(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
   this.describeOne = function (verbose=true) {
     var body = random_desc(["skinny","fat","tall","short","stocky","spindly"], (verbose ? 0.6 : 0));
     var sex = random_desc(["male", "female"], (verbose ? 1 : 0));
@@ -613,9 +609,6 @@ function EmptyCar(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
-
 
   this.describeOne = function(verbose=true) {
     var color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"]);
@@ -649,8 +642,6 @@ function Car(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
   this.describeOne = function(verbose=true) {
     var color = random_desc(["black","black","gray","gray","blue","red","tan","white","white"], (verbose ? 1 : 0));
     var adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
@@ -682,8 +673,6 @@ function Bus(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
 
   this.describeOne = function(verbose=true) {
     var adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
@@ -717,8 +706,6 @@ function Tram(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
   this.describeOne = function(verbose=true) {
     var adjective = random_desc(["rusty","weathered"], (verbose ? 0.3 : 0));
     var color = random_desc(["blue","brown","gray"], (verbose ? 1 : 0));
@@ -741,7 +728,6 @@ function Tram(count = 1) {
       return (this.count > 1 ? this.count + " trams" : "a tram");
     }
   };
-
 
   this.anal_vore = function() {
     return "You slide " + this.describe() + " up your tight ass";
@@ -792,8 +778,6 @@ function TrainCar(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
   this.describeOne = function(verbose=true) {
     var adjective = random_desc(["rusty","brand-new"], (verbose ? 0.3 : 0));
     var color = random_desc(["black","tan","gray"], (verbose ? 1 : 0));
@@ -815,9 +799,6 @@ function House(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
-
 
   this.describeOne = function(verbose=true) {
     var size = random_desc(["little","two-story","large"], (verbose ? 0.5 : 0));
@@ -849,10 +830,6 @@ function Barn(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
   this.describeOne = function(verbose=true) {
     var size = random_desc(["little","big","large"], (verbose ? 0.5 : 0));
     var color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
@@ -882,10 +859,6 @@ function SmallSkyscraper(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
-
-
 
   this.describeOne = function(verbose=true) {
     var color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
@@ -917,10 +890,6 @@ function LargeSkyscraper(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
   this.describeOne = function(verbose=true) {
     var color = random_desc(["blue","white","gray","tan","green"], (verbose ? 0.5 : 0));
     var name = random_desc(["skyscraper","office tower","office building"], 1);
@@ -950,13 +919,6 @@ function ParkingGarage(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
-
-
-
   this.describeOne = function(verbose=true) {
     return "a parking garage";
   };
@@ -976,18 +938,6 @@ function Town(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
-
-
-
-
-
-
-
-
   this.describe = function(verbose = true) {
     if (verbose) {
       return (this.count == 1 ? "a town" : this.count + " towns") + " with " + describe_all(this.contents, verbose) + " in " + (this.count == 1 ? "it" : "them");
@@ -1003,26 +953,6 @@ function City(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -1040,18 +970,6 @@ function Continent(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
-
-
-
-
-
-
-
-
   this.describe = function(verbose = true) {
     if (verbose) {
       return (this.count == 1 ? "a continent" : this.count + " continents") + " with " + describe_all(this.contents, verbose) + " on " + (this.count == 1 ? "it" : "them");
@@ -1067,8 +985,6 @@ function Planet(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -1098,10 +1014,6 @@ function SolarSystem(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
-
-
   this.describe = function(verbose = true) {
     if (verbose) {
       return (this.count == 1 ? "a solar system" : this.count + " solar systems") + " made up of " + describe_all(this.contents, verbose);
@@ -1117,10 +1029,6 @@ function Galaxy(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
-
-
 
   this.describe = function(verbose = true) {
     if (verbose) {
@@ -1150,8 +1058,6 @@ function Tank(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
   this.describe = function(verbose = true) {
     if (verbose) {
       return (this.count == 1 ? "a tank" : this.count + " tanks") + " with " + describe_all(this.contents, verbose) + " trapped inside.";
@@ -1168,8 +1074,6 @@ function Artillery(count = 1) {
   this.count = count;
   this.contents = initContents(this.name,this.count);
 
-
-
   this.describe = function(verbose = true) {
     if (verbose) {
       return (this.count == 1 ? "an artillery unit" : this.count + " artillery units") + " with " + describe_all(this.contents, verbose) + " trapped inside.";
@@ -1185,8 +1089,6 @@ function Helicopter(count = 1) {
   copy_defaults(this,new DefaultEntity());
   this.count = count;
   this.contents = initContents(this.name,this.count);
-
-
 
   this.describe = function(verbose = true) {
     if (verbose) {

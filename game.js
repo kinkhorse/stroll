@@ -397,7 +397,7 @@ let macro =
   },
 
   "digest": function(owner,organ) {
-    setTimeout(function() { owner.digest(owner,organ); }, 5000);
+    setTimeout(function() { owner.digest(owner,organ); }, 100);
 
     let count = Math.min(organ.contents.length, organ.maxDigest);
 
@@ -464,7 +464,7 @@ let macro =
       if (owner.gasEnabled)
         owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e4;
       if (owner.scatEnabled) {
-        owner.scatStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+        owner.scatStorage.amount += container.sum_property("mass") * this.owner.scatDigestFactor / 1e3;
         owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
       }
     },
@@ -512,7 +512,7 @@ let macro =
       if (owner.gasEnabled)
         owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
       if (owner.scatEnabled) {
-        owner.scatStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+        owner.scatStorage.amount += container.sum_property("mass") * this.owner.scatDigestFactor / 1e3;
         owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
       }
     },
@@ -658,6 +658,8 @@ let macro =
     "stages" : 2
   },
 
+  "pissDigestFactor": 1,
+
   "bladder": {
     "name" : "bladder",
     "setup": function(owner) {
@@ -677,7 +679,7 @@ let macro =
     },
     "fill": function(owner,container) {
       if (macro.lactationEnabled) {
-        owner.pissStorage.amount += container.sum_property("mass") / 1e3;
+        owner.pissStorage.amount += container.sum_property("mass") * owner.pissDigestFactor / 1e3;
       }
     },
     get description() {
@@ -817,6 +819,20 @@ let macro =
     }
   },
 
+  "paws": {
+    "name": "paws",
+    "container": new Container(),
+    get description() {
+      if (this.container.count == 0)
+        return "You don't have anyone stuck between your " + this.owner.toeDesc(true);
+      else
+        return "You have " + this.container.describe(false) + " wedged between your " + this.owner.toeDesc(true);
+    },
+    "add": function(victims) {
+      this.container = this.container.merge(victims);
+    }
+  },
+
   "init": function() {
     this.stomach.setup(this);
     this.bowels.setup(this);
@@ -831,6 +847,8 @@ let macro =
     this.gasStorage.owner = this;
     this.pissStorage.owner = this;
     this.scatStorage.owner = this;
+
+    this.paws.owner = this;
 
     if (this.analVoreToStomach) {
       this.bowels.moves = this.stomach;
@@ -901,7 +919,7 @@ let macro =
       } else if (self.fartEnabled) {
         fart(amount);
       }
-      self.gasStorage.amount = self.gasStorage.limit*3/4;
+
     }
     setTimeout(function () { self.fillGas(self); }, 100);
     update();
@@ -928,6 +946,8 @@ let macro =
     setTimeout(function () { self.fillPiss(self); }, 100);
     update();
   },
+
+  "scatDigestFactor": 1,
 
   // no actual filling, but it handles updates
   "fillScat": function(self) {
@@ -1145,6 +1165,24 @@ let macro =
     }
   },
 
+  get totalMass() {
+    let base = this.baseMass;
+
+    if (this.hasTail) {
+      base += this.tailMass * this.tailCount;
+    }
+
+    if (this.maleParts) {
+      base += this.dickMass;
+      base += this.ballMass * 2;
+    }
+
+    if (this.hasBreasts) {
+      base += this.breastMass * 2;
+    }
+
+    return base;
+  },
 
   get description() {
     let result = [];
@@ -1211,6 +1249,11 @@ let macro =
       line = this.pouch.description;
       result.push(line);
     }
+
+    line = "Your two " + macro.footDesc(true) + " shake the earth.";
+    result.push(line);
+
+
 
 
     return result;
@@ -1609,9 +1652,53 @@ function stomp()
 
   macro.arouse(5);
 
+  stomp_wedge();
+
   if (macro.stenchEnabled) {
     paw_stench();
   }
+}
+
+function stomp_wedge() {
+  let area = 0;
+
+  if (!macro.footWear || (!macro.footSockWorn && !macro.footShoeWorn))
+    area = macro.pawArea/10;
+  else if (macro.footShoeWorn)
+    area = macro.pawArea/25;
+  else
+    area = 0;
+
+  let prey = getPrey(biome, area, false);
+
+  if (prey.count == 0)
+    return;
+
+  let line = describe("stomp-wedge", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let sound = "Thump";
+
+  if (people < 3) {
+    sound = "Thump!";
+  } else if (people < 10) {
+    sound = "Squish!";
+  } else if (people < 50) {
+    sound = "Crunch!";
+  } else if (people < 500) {
+    sound = "CRUNCH!";
+  } else if (people < 5000) {
+    sound = "CRRUUUNCH!!";
+  } else {
+    sound = "Oh the humanity!";
+  }
+  let preyMass = prey.sum_property("mass");
+
+  add_victim_people("stomped",prey);
+
+  update([sound,line,linesummary,newline]);
 }
 
 function paw_stench() {
@@ -2731,8 +2818,10 @@ function soul_absorb_paw()
 function belch(vol)
 {
   if (vol == undefined) {
-    vol = macro.gasStorage.amount;
+    vol = Math.min(macro.gasStorage.amount,macro.gasStorage.limit/3);
   }
+
+  macro.gasStorage.amount -= vol;
 
   let area = Math.pow(vol, 2/3);
 
@@ -2770,8 +2859,11 @@ function belch(vol)
 function fart(vol)
 {
   if (vol == undefined) {
-    vol = macro.gasStorage.amount;
+    vol = Math.min(macro.gasStorage.amount,macro.gasStorage.limit/2);
   }
+
+  macro.gasStorage.amount -= vol;
+
   let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
@@ -3063,7 +3155,7 @@ function update(lines = [])
     log.scrollTop = log.scrollHeight;
 
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
-  document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.mass, unit));
+  document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.totalMass, unit));
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
   document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
   document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false));
