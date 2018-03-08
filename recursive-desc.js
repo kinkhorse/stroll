@@ -16,7 +16,7 @@ function getDefault(name) {
   return window[funcName];
 }
 
-var actions = ["eat","chew","stomp","stomp-wedge","kick","anal-vore","ass-crush","tail-slap","tail-vore",
+var actions = ["eat","chew","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
@@ -151,6 +151,30 @@ function defaultStompWedge(container, macro, verbose) {
     let line = container.describe(verbose);
     line = line.charAt(0).toUpperCase() + line.slice(1);
     return line + " are wedged between your " + macro.toeDesc(true);
+  }
+}
+
+function defaultFlexToes(container, macro, verbose) {
+  if (container.count == 0) {
+    if (macro.footShoeWorn) {
+      return "You flex your " + macro.toeNoShoeDesc(true) + " inside your " + macro.footDesc(true) + ".";
+    } else {
+      return "You flex your " + macro.toeDesc(true) + ".";
+    }
+  } else {
+    if (macro.footShoeWorn || macro.footSockWorn) {
+      if (macro.brutality == 0) {
+        return "You clench your " + macro.toeNoShoeDesc(true) + ", grinding them against the " + container.describe(false) + " trapped between your " + macro.footDesc(true) + " and your " + macro.toeOnlyDesc(true) + ".";
+      } else {
+        return "You clench your " + macro.toeNoShoeDesc(true) + ", crushing " + container.describe(false) + " between your " + macro.footDesc(true) + " and your " + macro.toeOnlyDesc(true) + ".";
+      }
+    } else {
+      if (macro.brutality == 0) {
+        return "You flex your " + macro.toeNoShoeDesc(true) + ", causing " + container.describe(false) + " to tumble out and fall to the ground.";
+      } else {
+        return "You flex and squeeze your " + macro.toeNoShoeDesc(true) + ", crushing " + container.describe(false) + " between them.";
+      }
+    }
   }
 }
 

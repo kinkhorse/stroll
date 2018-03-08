@@ -88,7 +88,7 @@ let macro =
   "footSock": "none",
   "footShoe": "none",
   "footSockWorn": false,
-  "footShoeWorn": true,
+  "footShoeWorn": false,
 
   "footOnlyDesc": function(plural=false,capital=false) {
     let result = "";
@@ -139,6 +139,20 @@ let macro =
 
     if(possessive) {
       result = " your " + result;
+    }
+    return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
+  },
+
+  "toeNoShoeDesc": function(plural=false,capital=false) {
+    let result = "";
+
+    if (!this.footSockWorn && !this.footShoeWorn) {
+      return this.toeOnlyDesc(plural,capital);
+    } else if (this.footSockWorn) {
+      switch(this.footSock) {
+        case "sock":
+          result = "socked " + this.toeOnlyDesc(plural,false);
+      }
     }
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
@@ -1664,8 +1678,6 @@ function stomp_wedge() {
 
   if (!macro.footWear || (!macro.footSockWorn && !macro.footShoeWorn))
     area = macro.pawArea/10;
-  else if (macro.footShoeWorn)
-    area = macro.pawArea/25;
   else
     area = 0;
 
@@ -1696,9 +1708,51 @@ function stomp_wedge() {
   }
   let preyMass = prey.sum_property("mass");
 
+  macro.paws.add(prey);
+
   add_victim_people("stomped",prey);
 
   update([sound,line,linesummary,newline]);
+}
+
+function flex_toes() {
+
+  let prey = new Container();
+
+  if (!macro.footWear || (!macro.footSockWorn && !macro.footShoeWorn)) {
+    prey = macro.paws.container;
+    macro.paws.container = new Container();
+  }
+  else if (macro.footSockWorn && macro.footShoeWorn) {
+    prey = macro.shoe.container.merge(macro.sock.container);
+    if (macro.brutality > 0) {
+      macro.shoe.container = new Container();
+      macro.sock.container = new Container();
+    }
+  } else if (macro.footSockWorn) {
+    prey = macro.sock.container;
+    if (macro.brutality > 0) {
+      macro.sock.container = new Container();
+    }
+  } else if (macro.footShoeWorn) {
+    prey = macro.shoe.container;
+    if (macro.brutality > 0) {
+      macro.sock.container = new Container();
+    }
+  }
+
+  let line = describe("flex-toes", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("flex-toes",prey);
+
+  update([line,linesummary,newline]);
 }
 
 function paw_stench() {
@@ -2899,7 +2953,8 @@ function fart(vol)
 
 function wear_shoes() {
 
-  let line = describe("wear-shoe",macro.shoe.container,macro,verbose);
+  let line = describe("wear-shoe",macro.shoe.container.merge(macro.paws.container),macro,verbose);
+  macro.paws.container = new Container();
   let summary = summarize(macro.shoe.container.sum(),false);
 
   macro.footShoeWorn = true;
@@ -2921,8 +2976,10 @@ function remove_shoes() {
 }
 
 function wear_socks() {
+  macro.sock.container = macro.sock.container.merge(macro.paws.container);
 
   let line = describe("wear-sock",macro.sock.container,macro,verbose);
+  macro.paws.container = new Container();
   let summary = summarize(macro.sock.container.sum(),false);
 
   macro.footSockWorn = true;
@@ -3462,6 +3519,7 @@ function startGame(e) {
   }
 
   enable_victim("stomped","Stomped");
+  enable_victim("flex-toes","Squished between toes");
   enable_victim("eaten","Devoured");
   enable_victim("ass-crush","Sat on");
   enable_victim("humped","Humped");
@@ -3473,6 +3531,7 @@ function startGame(e) {
   enable_panel("body");
   enable_button("feed");
   enable_button("stomp");
+  enable_button("flex_toes");
   enable_button("sit");
   enable_button("grind");
 
