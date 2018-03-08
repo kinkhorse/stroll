@@ -135,7 +135,7 @@ body.dark #log {
 }
 
 .action-part-container {
-  max-height: 400px;
+  max-height: 1000px;
   display: flex;
   flex-wrap: wrap;
 }
