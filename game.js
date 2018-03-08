@@ -100,7 +100,7 @@ let macro =
       case "hoof":
         result = plural ? "hooves" : "hoof";
         break;
-      case "feet":
+      case "foot":
       case "avian":
         result = plural ? "feet" : "foot";
         break;
@@ -167,7 +167,7 @@ let macro =
       case "hoof":
         result = plural ? "toes" : "toe";
         break;
-      case "feet":
+      case "foot":
         result = plural ? "toes" : "toe";
         break;
       case "avian":
@@ -411,7 +411,7 @@ let macro =
   },
 
   "digest": function(owner,organ) {
-    setTimeout(function() { owner.digest(owner,organ); }, 100);
+    setTimeout(function() { owner.digest(owner,organ); }, 5000);
 
     let count = Math.min(organ.contents.length, organ.maxDigest);
 
@@ -1674,6 +1674,9 @@ function stomp()
 }
 
 function stomp_wedge() {
+  if (macro.footType == "hoof")
+    return;
+  
   let area = 0;
 
   if (!macro.footWear || (!macro.footSockWorn && !macro.footShoeWorn))
@@ -3531,7 +3534,10 @@ function startGame(e) {
   enable_panel("body");
   enable_button("feed");
   enable_button("stomp");
-  enable_button("flex_toes");
+
+  if (macro.footType != "hoof")
+    enable_button("flex_toes");
+
   enable_button("sit");
   enable_button("grind");
 
