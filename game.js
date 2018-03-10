@@ -1456,7 +1456,7 @@ function getOnePrey(biome, area, sameSize = true)
   let potential = ["Person"];
 
   if (area >= areas["Planet"])
-    potential = ["Planet","Star","Solar System","Galaxy"];
+    potential = ["Planet","Star","Solar System","Galaxy","Cluster","Universe","Multiverse"];
   else if (area >= areas["Town"])
     potential = ["Town","City","Continent","Planet"];
   else
@@ -1500,6 +1500,9 @@ function getPrey(region, area, sameSize = false)
       "Star": 1.7713746e-12,
       "Solar System": 4e-10,
       "Galaxy": 0.1,
+      "Cluster": 0.5,
+      "Universe": 1,
+      "Multiverse": 1
     };
   }
   else if (area > areas["Town"]) {
@@ -1676,7 +1679,7 @@ function stomp()
 function stomp_wedge() {
   if (macro.footType == "hoof")
     return;
-  
+
   let area = 0;
 
   if (!macro.footWear || (!macro.footSockWorn && !macro.footShoeWorn))

@@ -24,6 +24,9 @@ var things =
   "Star": Star,
   "Solar System": SolarSystem,
   "Galaxy": Galaxy,
+  "Cluster": Cluster,
+  "Universe": Universe,
+  "Multiverse": Multiverse,
   "Soldier": Soldier,
   "Tank": Tank,
   "Artillery": Artillery,
@@ -55,6 +58,9 @@ var areas =
   "Star": 3e18,
   "Solar System": 3e21,
   "Galaxy": 2e42,
+  "Cluster": 2e46,
+  "Universe": 2e52,
+  "Multiverse": 2e55,
   "Soldier": 1,
   "Tank": 10,
   "Artillery": 12,
@@ -86,6 +92,9 @@ var masses =
   "Star": 1e40,
   "Solar System": 1,
   "Galaxy": 1,
+  "Cluster": 1,
+  "Universe": 1,
+  "Multiverse": 1,
   "Soldier": 80,
   "Tank": 5000,
   "Artillery": 7000,
@@ -117,6 +126,9 @@ var clusters =
   "Star": 1,
   "Solar System": 1,
   "Galaxy": 1,
+  "Cluster": 1,
+  "Universe": 1,
+  "Multiverse": 1,
   "Soldier": 0,
   "Tank": 0,
   "Artillery": 0,
@@ -148,6 +160,9 @@ var contents =
   "Star": [],
   "Solar System": [["Star",1,1],["Planet",5,15]],
   "Galaxy": [["Star",1e9,500e9],["Solar System",1e8,500e8]],
+  "Cluster": [["Galaxy",200,5000]],
+  "Universe": [["Cluster",1.5e9,2.5e9]],
+  "Multiverse": [["Universe",100,1000]],
   "Soldier": [],
   "Tank": [["Soldier",3,5]],
   "Artillery": [["Soldier",4,6]],
@@ -206,7 +221,6 @@ function initContents(name,count) {
         result[type[i][3]] = new things[type[i][0]](amount);
       else
         result[type[i][0]] = new things[type[i][0]](amount);
-
     }
   }
 
@@ -1035,6 +1049,54 @@ function Galaxy(count = 1) {
       return (this.count == 1 ? "a galaxy" : this.count + " galaxies") + " made up of " + describe_all(this.contents, verbose);
     } else {
       return (this.count == 1 ? "a galaxy" : this.count + " galaxies");
+    }
+  };
+}
+
+function Cluster(count = 1) {
+  this.name = "Cluster";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = initContents(this.name,this.count);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a cluster" : this.count + " clusters") + " made up of " + describe_all(this.contents, verbose);
+    } else {
+      return (this.count == 1 ? "a cluster" : this.count + " clusters");
+    }
+  };
+}
+
+function Universe(count = 1) {
+  this.name = "Universe";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = initContents(this.name,this.count);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a universe" : this.count + " universes") + " made up of " + describe_all(this.contents, verbose);
+    } else {
+      return (this.count == 1 ? "a universe" : this.count + " universes");
+    }
+  };
+}
+
+function Multiverse(count = 1) {
+  this.name = "Multiverse";
+
+  copy_defaults(this,new DefaultEntity());
+  this.count = count;
+  this.contents = initContents(this.name,this.count);
+
+  this.describe = function(verbose = true) {
+    if (verbose) {
+      return (this.count == 1 ? "a multiverse" : this.count + " multiverses") + " made up of " + describe_all(this.contents, verbose);
+    } else {
+      return (this.count == 1 ? "a multiverse" : this.count + " multiverses");
     }
   };
 }
