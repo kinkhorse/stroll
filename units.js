@@ -211,9 +211,15 @@ function approxLength(m, singular=false) {
   } else if (m < 149.6e12) {
     let length = round(m/149.6e9,1);
     return length + (singular || length == 1 ? " AU" : " AUs");
-  } else {
+  } else if (m < 9.4607e22) {
     let length = round(m/9.4607e15,4);
     return length + (singular || length == 1 ? " light year" : " light years");
+  } else if (m < 5e26) {
+    let length = round(m/9.4607e21,3);
+    return length + (singular || length == 1 ? " galaxy" : " galaxies");
+  } else {
+    let length = round(m/4.40e26,3);
+    return length + (singular || length == 1 ? " universe" : " universes");
   }
 }
 
