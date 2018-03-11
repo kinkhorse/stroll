@@ -1177,7 +1177,7 @@ let macro =
   },
 
   get totalMass() {
-    let base = this.baseMass;
+    let base = Math.pow(this.scale,3) * this.baseMass;
 
     if (this.hasTail) {
       base += this.tailMass * this.tailCount;
