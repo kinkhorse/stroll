@@ -40,9 +40,6 @@ let started = false;
 
 let strolling = false;
 
-let maxStomachDigest = 10;
-let maxBowelsDigest = 10;
-
 let unit = "metric";
 
 let numbers = "full";
@@ -1264,7 +1261,19 @@ let macro =
       result.push(line);
     }
 
-    line = "Your two " + macro.footDesc(true) + " shake the earth.";
+    line = "Your two " + this.footDesc(true) + " shake the earth.";
+
+    if (this.footShoeWorn && this.shoe.container.count > 0) {
+      line += " Within " + (this.shoe.container.count > 1 ? "are" : "is") + " " + this.shoe.container.describe(false);
+      if (this.footSockWorn && this.sock.container.count > 0) {
+        line += " and " + this.sock.container.describe(false) + " in your socks.";
+      }
+    } else if (this.footSockWorn && this.sock.container.count > 0) {
+      line += " Within " + (this.sock.container.count > 1 ? "are" : "is") + " " + this.sock.container.describe(false);
+    } else if (this.paws.container.count > 0) {
+      line += " You have " + this.paws.container.describe(false) + " wedged between your toes.";
+    }
+
     result.push(line);
 
 
