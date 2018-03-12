@@ -231,7 +231,7 @@ function initContents(name,count) {
 
 function fill_area(area, weights, variance=0.15)
 {
-  area = area + Math.random() * variance * 2 - variance;
+  area = area + Math.random() * variance * 2 * area - variance * area;
   var result = [];
   var candidates = [];
   for (var key in weights) {

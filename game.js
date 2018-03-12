@@ -805,6 +805,9 @@ let macro =
     }
   },
 
+  "shoeTrapped": [],
+  "sockTrapped": [],
+
   "shoe": {
     "name": "shoe",
     "container": new Container(),
@@ -1273,8 +1276,10 @@ let macro =
       }
     } else if (this.footSockWorn && this.sock.container.count > 0) {
       line += " Within " + (this.sock.container.count > 1 ? "are" : "is") + " " + this.sock.container.describe(false);
-    } else if (this.paws.container.count > 0) {
-      line += " You have " + this.paws.container.describe(false) + " wedged between your toes.";
+    }
+
+    if (this.paws.container.count > 0) {
+      line += " You have " + this.paws.container.describe(false) + " wedged between your " + macro.toeDesc(true);
     }
 
     result.push(line);
@@ -1667,9 +1672,11 @@ function stomp_wedge() {
   let area = 0;
 
   if (!macro.footWear || (!macro.footSockWorn && !macro.footShoeWorn))
-    area = macro.pawArea/10;
+    area = macro.pawArea / 10;
+  else if (macro.footShoeWorn)
+    area = macro.pawArea / 25;
   else
-    area = 0;
+    area = macro.pawArea / 50;
 
   let prey = getPrey(biome, area, false);
 
@@ -2520,6 +2527,7 @@ function fart(vol)
 }
 
 function wear_shoes() {
+  macro.shoe.container = macro.shoe.container.merge(macro.paws.container);
 
   let line = describe("wear-shoe",macro.shoe.container.merge(macro.paws.container),macro,verbose);
   macro.paws.container = new Container();
@@ -2529,11 +2537,17 @@ function wear_shoes() {
 
   footwearUpdate();
 
+  macro.paws.container = macro.shoeTrapped;
+  macro.shoeTrapped = [];
+
   update([line,summary,newline]);
 }
 
 function remove_shoes() {
   macro.footShoeWorn = false;
+
+  macro.shoeTrapped = macro.paws.container;
+  macro.paws.container = new Container();
 
   let line = describe("remove-shoe",macro.shoe.container,macro,verbose);
   let summary = summarize(macro.shoe.container.sum(),false);
@@ -2552,6 +2566,9 @@ function wear_socks() {
 
   macro.footSockWorn = true;
 
+  macro.paws.container = macro.sockTrapped;
+  macro.sockTrapped = [];
+
   footwearUpdate();
 
   update([line,summary,newline]);
@@ -2559,6 +2576,9 @@ function wear_socks() {
 
 function remove_socks() {
   macro.footSockWorn = false;
+
+  macro.sockTrapped = macro.paws.container;
+  macro.paws.container = new Container();
 
   let line = describe("remove-sock",macro.sock.container,macro,verbose);
   let summary = summarize(macro.sock.container.sum(),false);
