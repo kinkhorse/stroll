@@ -19,6 +19,7 @@
     "describe_all": true,
     "contents_insert": true,
     "contents_remove": true,
-    "contents_replace": true
+    "contents_replace": true,
+    "getSound": true
   }
 }

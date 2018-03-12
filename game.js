@@ -420,6 +420,7 @@ let macro =
 
     if (organ.moves != undefined) {
       organ.moves.feed(container);
+      let sound = getSound("insert",container.sum_property("mass"));
       let line = organ.describeMove(container);
       let summary = summarize(container.sum(),false);
       update([line, summary, newline]);
@@ -434,6 +435,8 @@ let macro =
       }
     }
 
+    let sound = getSound("digest",container.sum_property("mass"));
+
     let line = organ.describeDigestion(container);
     organ.fill(this,container);
     let lethal = macro.brutality != 0 && (!macro.soulVoreEnabled || organ.name === "souls");
@@ -447,9 +450,9 @@ let macro =
         soulLine = "Their " + (soulCount == 1 ? "soul is" : "souls are") + " trapped in your depths!";
       else
         soulLine = "No souls, though...";
-      update([line,summary,soulLine,newline]);
+      update([sound,line,summary,soulLine,newline]);
     } else {
-      update([line,summary,newline]);
+      update([sound,line,summary,newline]);
     }
 
   },
@@ -1573,24 +1576,10 @@ function feed()
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
-  let sound = "";
-  if (people == 0) {
-    sound = "";
-  } else if (people < 3) {
-    sound = "Ulp.";
-  } else if (people < 10) {
-    sound = "Gulp.";
-  } else if (people < 50) {
-    sound = "Glrrp.";
-  } else if (people < 500) {
-    sound = "Glrrrpkh!";
-  } else if (people < 5000) {
-    sound = "GLRRKPKH!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("swallow",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -1652,25 +1641,11 @@ function stomp()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+  let sound = getSound("crush",preyMass);
 
+  macro.addGrowthPoints(preyMass);
 
   add_victim_people("stomped",prey);
 
@@ -1706,22 +1681,9 @@ function stomp_wedge() {
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.paws.add(prey);
 
@@ -1763,11 +1725,13 @@ function flex_toes() {
 
   let preyMass = prey.sum_property("mass");
 
+  let sound = getSound("crush",preyMass);
+
   macro.addGrowthPoints(preyMass);
 
   add_victim_people("flex-toes",prey);
 
-  update([line,linesummary,newline]);
+  update([sound,line,linesummary,newline]);
 }
 
 function paw_stench() {
@@ -1808,23 +1772,10 @@ function grind()
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
-  let sound = "";
-
-  if (people < 3) {
-    sound = "Thump.";
-  } else if (people < 10) {
-    sound = "Crunch.";
-  } else if (people < 50) {
-    sound = "Crrrrunch.";
-  } else if (people < 500) {
-    sound = "SMASH!";
-  } else if (people < 5000) {
-    sound = "CCCRASH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -1844,23 +1795,10 @@ function anal_vore()
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
-  let sound = "Shlp";
-
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -1885,27 +1823,12 @@ function sit()
   let linesummary = summarize(crushed.sum(), true);
 
   let people = get_living_prey(crushed.sum());
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let crushedMass = crushed.sum_property("mass");
 
+  let sound = getSound("crush",crushedMass);
+
   macro.addGrowthPoints(crushedMass);
-
-
 
   update([sound,line,linesummary,newline]);
 
@@ -1950,24 +1873,11 @@ function cleavage_stuff()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Smish!";
-  } else if (people < 500) {
-    sound = "SQUISH!";
-  } else if (people < 5000) {
-    sound = "SMISH!";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   macro.cleavage.add(prey);
 
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   update([sound,line,linesummary,newline]);
 
@@ -1983,22 +1893,9 @@ function cleavage_crush()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Smish!";
-  } else if (people < 500) {
-    sound = "SQUISH!";
-  } else if (people < 5000) {
-    sound = "SMISH!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("cleavage-crush",prey);
@@ -2017,22 +1914,9 @@ function cleavage_drop()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump.";
-  } else if (people < 10) {
-    sound = "Splat.";
-  } else if (people < 50) {
-    sound = "Thump!";
-  } else if (people < 500) {
-    sound = "THUMP!";
-  } else if (people < 5000) {
-    sound = "SPLAT!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("drop",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("cleavage-drop",prey);
@@ -2050,23 +1934,9 @@ function cleavage_absorb()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Slurp.";
-  } else if (people < 50) {
-    sound = "Shlrrrrp!";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SHLLLLURP!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("cleavage-absorb",prey);
@@ -2084,26 +1954,12 @@ function breast_crush()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("breast-crush",prey);
-
 
   update([sound,line,linesummary,newline]);
 
@@ -2125,22 +1981,9 @@ function breast_vore()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "";
-
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Slurp.";
-  } else if (people < 50) {
-    sound = "Shlrrrrp!";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SHLLLLURP!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("breast-vore",prey);
@@ -2173,22 +2016,9 @@ function breast_milk(vol)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Dribble.";
-
-  if (people < 3) {
-    sound = "Dribble.";
-  } else if (people < 10) {
-    sound = "Splash.";
-  } else if (people < 50) {
-    sound = "Splash!";
-  } else if (people < 500) {
-    sound = "SPLOOSH!";
-  } else if (people < 5000) {
-    sound = "SPLOOOOOOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("liquid",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("milk-flood",prey);
@@ -2206,23 +2036,9 @@ function unbirth()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "";
-
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -2242,21 +2058,9 @@ function sheath_stuff()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "";
+  let preyMass = prey.sum_property("mass");
 
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
+  let sound = getSound("insert",preyMass);
 
   macro.sheath.add(prey);
   update([sound,line,linesummary,newline]);
@@ -2272,21 +2076,9 @@ function sheath_squeeze()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "";
+  let preyMass = prey.sum_property("mass");
 
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
+  let sound = getSound("insert",preyMass);
 
   update([sound,line,linesummary,newline]);
   macro.arouse(15);
@@ -2301,21 +2093,9 @@ function sheath_crush()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "";
+  let preyMass = prey.sum_property("mass");
 
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
+  let sound = getSound("crush",preyMass);
 
   add_victim_people("sheath-crush",prey);
   update([sound,line,linesummary,newline]);
@@ -2331,21 +2111,9 @@ function sheath_absorb()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "";
+  let preyMass = prey.sum_property("mass");
 
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
+  let sound = getSound("insert",preyMass);
 
   add_victim_people("sheath-absorb",prey);
   update([sound,line,linesummary,newline]);
@@ -2362,23 +2130,9 @@ function cockslap()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("cock-slap",prey);
@@ -2396,27 +2150,13 @@ function cock_vore()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "lp";
-
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
   macro.balls.feed(prey);
-
 
   add_victim_people("cock-vore",prey);
   update([sound,line,linesummary,newline]);
@@ -2433,22 +2173,9 @@ function ball_smother()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Smoosh!";
-  } else if (people < 500) {
-    sound = "SMOOSH!";
-  } else if (people < 5000) {
-    sound = "SMOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -2468,22 +2195,9 @@ function male_spurt(vol)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Spurt!";
-
-  if (people < 3) {
-    sound = "Spurt!";
-  } else if (people < 10) {
-    sound = "Sploosh!";
-  } else if (people < 50) {
-    sound = "Sploooooosh!";
-  } else if (people < 500) {
-    sound = "SPLOOSH!";
-  } else if (people < 5000) {
-    sound = "SPLOOOOOOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("liquid",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("cum-flood",prey);
@@ -2502,22 +2216,9 @@ function male_orgasm(vol,times)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Spurt!";
-
-  if (people < 3) {
-    sound = "Spurt!";
-  } else if (people < 10) {
-    sound = "Sploosh!";
-  } else if (people < 50) {
-    sound = "Sploooooosh!";
-  } else if (people < 500) {
-    sound = "SPLOOSH!";
-  } else if (people < 5000) {
-    sound = "SPLOOOOOOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("liquid",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("cum-flood",prey);
@@ -2535,22 +2236,9 @@ function female_spurt(vol)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Spurt!";
-
-  if (people < 3) {
-    sound = "Spurt!";
-  } else if (people < 10) {
-    sound = "Sploosh!";
-  } else if (people < 50) {
-    sound = "Sploooooosh!";
-  } else if (people < 500) {
-    sound = "SPLOOSH!";
-  } else if (people < 5000) {
-    sound = "SPLOOOOOOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("liquid",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("femcum-flood",prey);
@@ -2569,22 +2257,9 @@ function female_orgasm(vol,times)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Spurt!";
-
-  if (people < 3) {
-    sound = "Spurt!";
-  } else if (people < 10) {
-    sound = "Sploosh!";
-  } else if (people < 50) {
-    sound = "Sploooooosh!";
-  } else if (people < 500) {
-    sound = "SPLOOSH!";
-  } else if (people < 5000) {
-    sound = "SPLOOOOOOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("liquid",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("femcum-flood",prey);
@@ -2602,22 +2277,9 @@ function tail_slap()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("tail-slap",prey);
@@ -2665,23 +2327,9 @@ function tail_vore(count)
 
   let people = get_living_prey(totalPrey.sum());
 
-  let sound = "";
-  if (people == 0) {
-    sound = "";
-  } else if (people < 3) {
-    sound = "Ulp.";
-  } else if (people < 10) {
-    sound = "Gulp.";
-  } else if (people < 50) {
-    sound = "Glrrp.";
-  } else if (people < 500) {
-    sound = "Glrrrpkh!";
-  } else if (people < 5000) {
-    sound = "GLRRKPKH!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = totalPrey.sum_property("mass");
+
+  let sound = getSound("swallow",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -2703,21 +2351,9 @@ function pouch_stuff()
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Thump";
+  let preyMass = prey.sum_property("mass");
 
-  if (people < 3) {
-    sound = "Slp.";
-  } else if (people < 10) {
-    sound = "Squeeze.";
-  } else if (people < 50) {
-    sound = "Thump!";
-  } else if (people < 500) {
-    sound = "THOOOMP!";
-  } else if (people < 5000) {
-    sound = "THOOOOOOOMP!";
-  } else {
-    sound = "Oh the humanity!";
-  }
+  let sound = getSound("insert",preyMass);
 
   macro.pouch.add(prey);
 
@@ -2745,24 +2381,10 @@ function pouch_eat()
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
-  let sound = "";
-  if (people == 0) {
-    sound = "";
-  } else if (people < 3) {
-    sound = "Ulp.";
-  } else if (people < 10) {
-    sound = "Gulp.";
-  } else if (people < 50) {
-    sound = "Glrrp.";
-  } else if (people < 500) {
-    sound = "Glrrrpkh!";
-  } else if (people < 5000) {
-    sound = "GLRRKPKH!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("swallow",preyMass);
 
   macro.addGrowthPoints(preyMass);
   macro.stomach.feed(prey);
@@ -2783,24 +2405,10 @@ function pouch_absorb()
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
-  let sound = "";
-  if (people == 0) {
-    sound = "";
-  } else if (people < 3) {
-    sound = "Slp.";
-  } else if (people < 10) {
-    sound = "Shlp.";
-  } else if (people < 50) {
-    sound = "Shlorp.";
-  } else if (people < 500) {
-    sound = "Shlrrrrp!";
-  } else if (people < 5000) {
-    sound = "SHLRP!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -2822,24 +2430,10 @@ function soul_vore()
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
-  let sound = "";
-  if (people == 0) {
-    sound = "";
-  } else if (people < 3) {
-    sound = "Ulp.";
-  } else if (people < 10) {
-    sound = "Gulp.";
-  } else if (people < 50) {
-    sound = "Glrrp.";
-  } else if (people < 500) {
-    sound = "Glrrrpkh!";
-  } else if (people < 5000) {
-    sound = "GLRRKPKH!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("swallow",preyMass);
 
   macro.addGrowthPoints(preyMass);
 
@@ -2858,23 +2452,10 @@ function soul_absorb_paw()
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
-  let sound = "";
-
-  if (people < 3) {
-    sound = "Thump!";
-  } else if (people < 10) {
-    sound = "Squish!";
-  } else if (people < 50) {
-    sound = "Crunch!";
-  } else if (people < 500) {
-    sound = "CRUNCH!";
-  } else if (people < 5000) {
-    sound = "CRRUUUNCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
 
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("soul-paw",prey);
@@ -2900,23 +2481,9 @@ function belch(vol)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Urp.";
-
-  if (people < 3) {
-    sound = "Burp.";
-  } else if (people < 10) {
-    sound = "Urph.";
-  } else if (people < 50) {
-    sound = "Urrrrrph.";
-  } else if (people < 500) {
-    sound = "UUURRP!";
-  } else if (people < 5000) {
-    sound = "BUUUUURRRRRRRRRRPHHH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("belch",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("gas-belch",prey);
@@ -2941,23 +2508,9 @@ function fart(vol)
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Pft.";
-
-  if (people < 3) {
-    sound = "Pft.";
-  } else if (people < 10) {
-    sound = "Pffft.";
-  } else if (people < 50) {
-    sound = "Pfffbt.";
-  } else if (people < 500) {
-    sound = "Pffffffbt.";
-  } else if (people < 5000) {
-    sound = "PFFFBT.";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("fart",preyMass);
 
   macro.addGrowthPoints(preyMass);
   add_victim_people("gas-fart",prey);
@@ -3111,22 +2664,9 @@ function piss(vol) {
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Dribble.";
-
-  if (people < 3) {
-    sound = "Dribble.";
-  } else if (people < 10) {
-    sound = "Splash.";
-  } else if (people < 50) {
-    sound = "Splash!";
-  } else if (people < 500) {
-    sound = "SPLOOSH!";
-  } else if (people < 5000) {
-    sound = "SPLOOOOOOOOOOSH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("liquid",preyMass);
 
   add_victim_people("piss",prey);
   update([sound,line,linesummary,newline]);
@@ -3141,23 +2681,9 @@ function bladder_vore() {
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Shlp";
-
-  if (people < 3) {
-    sound = "Shlp.";
-  } else if (people < 10) {
-    sound = "Squelch.";
-  } else if (people < 50) {
-    sound = "Shlurrp.";
-  } else if (people < 500) {
-    sound = "SHLRP!";
-  } else if (people < 5000) {
-    sound = "SQLCH!!";
-  } else {
-    sound = "Oh the humanity!";
-  }
-
   let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
 
   add_victim_people("bladder_vore",prey);
 
@@ -3185,21 +2711,9 @@ function scat(vol) {
 
   let people = get_living_prey(prey.sum());
 
-  let sound = "Clench.";
+  let preyMass = prey.sum_property("mass");
 
-  if (people < 3) {
-    sound = "Thump.";
-  } else if (people < 10) {
-    sound = "THUMP.";
-  } else if (people < 50) {
-    sound = "SqlllchTHUMP!";
-  } else if (people < 500) {
-    sound = "THOOMP!";
-  } else if (people < 5000) {
-    sound = "THUUUUUUUMP.";
-  } else {
-    sound = "Oh the humanity!";
-  }
+  let sound = getSound("scat",preyMass);
 
   macro.scatStorage.victims = new Container();
   add_victim_people("scat",prey);
