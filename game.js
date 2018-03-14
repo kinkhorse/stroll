@@ -1470,19 +1470,15 @@ function summarize(sum, fatal = true)
 
 function getOnePrey(biome, area, sameSize = true)
 {
-  let potential = ["Person"];
+  let weights = getWeights(biome, area);
 
-  if (area >= areas["Planet"])
-    potential = ["Planet","Star","Solar System","Galaxy","Cluster","Universe","Multiverse"];
-  else if (area >= areas["Town"])
-    potential = ["Town","City","Continent","Planet"];
-  else
-    switch(biome) {
-      case "suburb": potential = ["Person", "Car", "Bus", "Train", "House"]; break;
-      case "city": potential = ["Person", "Car", "Bus", "Train", "Tram", "House", "Parking Garage"]; break;
-      case "downtown": potential = ["Person", "Car", "Bus", "Tram", "Small Skyscraper", "Large Skyscraper", "Parking Garage"]; break;
-      case "rural": potential = ["Person", "Barn", "House", "Cow"]; break;
+  let potential = [];
+
+  for (let key in weights) {
+    if (weights.hasOwnProperty(key)) {
+      potential.push(key);
     }
+  }
 
   let potAreas = [];
 
@@ -1507,8 +1503,7 @@ function getOnePrey(biome, area, sameSize = true)
     return new Container();
 }
 
-function getPrey(region, area, sameSize = false)
-{
+function getWeights(region, area) {
   let weights = {};
 
   if (area > areas["Planet"]) {
@@ -1565,6 +1560,14 @@ function getPrey(region, area, sameSize = false)
       weights["Macro"] = 0.0001;
     }
   }
+
+  return weights;
+}
+
+function getPrey(region, area, sameSize = false)
+{
+  let weights = getWeights(region, area);
+
   var prey = fill_area(area,weights);
 
   if (prey.count == 0 && sameSize)

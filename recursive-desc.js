@@ -3,7 +3,7 @@
 /*jshint browser: true*/
 
 var rules = {};
-var defaults= {};
+var defaults = {};
 
 function getDefault(name) {
   let tokens = name.split("-");
@@ -284,14 +284,14 @@ function defaultBreastMilk(container, macro, verbose) {
 
 function defaultUnbirth(container, macro, verbose) {
   if (container.count == 0)
-    return "You grab " + new Person(1).describe(verbose) + " and grind them against your slit...but they won't fit.";
+    return "You grab " + (macro.victimsHuman ? new Human(1).describe(verbose) : new Person(1).describe(verbose)) + " and grind them against your slit...but they won't fit.";
   else
     return "You gasp as you slide " + container.describe(verbose) + " up your slit. ";
 }
 
 function defaultSheathStuff(container, macro, verbose) {
   if (container.count == 0)
-    return "You grab a " + new Person(1).describe(verbose) + " and grind them against your sheath-slit...but they won't fit.";
+    return "You grab a " + (macro.victimsHuman ? new Human(1).describe(verbose) : new Person(1).describe(verbose)) + " and grind them against your sheath-slit...but they won't fit.";
   else
     return "You pluck " + container.describe(verbose) + " from the ground and slip them into your musky sheath.";
 }
@@ -344,7 +344,7 @@ function defaultSheathAbsorb(container, macro, verbose) {
 
 function defaultCockVore(container, macro, verbose) {
   if (container.count == 0)
-    return "You grab " + new Person(1).describe(verbose) + " and grind them against your cock...but they won't fit.";
+    return "You grab " + (macro.victimsHuman ? new Human(1).describe(verbose) : new Person(1).describe(verbose)) + " and grind them against your cock...but they won't fit.";
   else
     return "You stuff " + container.describe(verbose) + " into your throbbing shaft, forcing them down to your heavy balls.";
 }
@@ -420,7 +420,7 @@ function defaultGrind(container, macro, verbose) {
 
 function defaultPouchStuff(container, macro, verbose) {
   if (container.count == 0)
-    return "You grab " + new Person(1).describe(verbose) + " and stuff them against your pouch...but they won't fit!";
+    return "You grab " + (macro.victimsHuman ? new Human(1).describe(verbose) : new Person(1).describe(verbose)) + " and stuff them against your pouch...but they won't fit!";
   else
     return "You grab " + container.describe(verbose) + " and stuff " + (container.count > 1 ? "them" : "it") + " into your pouch.";
 }
@@ -782,8 +782,8 @@ rules["chew"].push({
      hasExactly(container, "Person", 2) &&
      isGory(macro);
   }, "desc": function(container, macro, verbose) {
-    var prey1 = new Person(1).describe(verbose);
-    var prey2 = new Person(1).describe(verbose);
+    var prey1 = macro.victimsHuman ? new Human(1).describe(verbose) : new Person(1).describe(verbose);
+    var prey2 = macro.victimsHuman ? new Human(1).describe(verbose) : new Person(1).describe(verbose);
     return "Powerful " + macro.jawDesc(true) + "  obliterate " + prey1  +"'s body. You toss your head back and swallow their gory remains, your free hand slowly crushing " + prey2 + " like a nut \
     in a vice. A heartbeat later, their face is jammed into your bloody throat. A squeeze of your " + macro.jawDesc(true) + " snaps their spine with ease, and their limp body plunges down into \
     your churning depths to be destroyed.";
