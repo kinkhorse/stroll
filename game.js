@@ -1284,9 +1284,6 @@ let macro =
 
     result.push(line);
 
-
-
-
     return result;
   },
 
@@ -2092,6 +2089,24 @@ function sheath_squeeze()
 
   update([sound,line,linesummary,newline]);
   macro.arouse(15);
+}
+
+function sheath_clench()
+{
+  let prey = macro.sheath.container;
+  macro.sheath.container = new Container();
+  let line = describe("sheath-clench", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("crush",preyMass);
+
+  add_victim_people("sheath-crush",prey);
+  update([sound,line,linesummary,newline]);
+  macro.arouse(45);
 }
 
 function sheath_crush()
@@ -3143,6 +3158,7 @@ function startGame(e) {
 
       enable_button("sheath_stuff");
       enable_button("sheath_squeeze");
+      enable_button("sheath_clench");
       enable_button("sheath_absorb");
     }
 

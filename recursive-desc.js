@@ -18,7 +18,7 @@ function getDefault(name) {
 
 var actions = ["eat","chew","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
-"breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-crush",
+"breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-clench","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
@@ -322,6 +322,17 @@ function defaultSheathSqueeze(container, macro, verbose) {
       return "Trembling with your impending orgasm, your fingers play over your sheath.";
     }
   }
+}
+
+function defaultSheathClench(container, macro, verbose) {
+  if (container.count == 0)
+    return "You squeeze your sheath.";
+  else if (isGory(macro))
+    return "You squeeze you packed sheath, reducing " + container.describe(false) + " to a gory paste that slickens your throbbing shaft.";
+  else if (isFatal(macro))
+    return "Your fingers run over your packed sheath, squeezing on the " + macro.describeDick + " shaft within and smashing " + container.describe(false);
+  else
+    return "Your squeeze your sheath, pushing " + container.describe(false) + " out of your sheath.";
 }
 
 function defaultSheathCrush(container, macro, verbose) {
