@@ -1820,9 +1820,6 @@ function anal_vore()
 
 function sit()
 {
-  if (macro.analVore)
-    anal_vore();
-
   let area = macro.assArea;
   let crushed = getPrey(biome, area, macro.sameSizeStomp);
 
