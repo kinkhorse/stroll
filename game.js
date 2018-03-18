@@ -2107,7 +2107,7 @@ function unbirth()
 
 function sheath_stuff()
 {
-  let area = Math.min(macro.handArea, macro.dickArea);
+  let area = Math.min(macro.handArea, macro.dickArea, macro.sameSizeVore);
   let prey = getPrey(biome, area);
   let line = describe("sheath-stuff", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
@@ -2762,7 +2762,7 @@ function piss(vol) {
 }
 
 function bladder_vore() {
-  let prey = getPrey(biome, macro.urethraStretchArea);
+  let prey = getPrey(biome, macro.urethraStretchArea, macro.sameSizeVore);
   let line = describe("bladder-vore", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
