@@ -2086,8 +2086,8 @@ function unbirth()
 
 function sheath_stuff()
 {
-  let area = Math.min(macro.handArea, macro.dickArea, macro.sameSizeVore);
-  let prey = getPrey(biome, area);
+  let area = Math.min(macro.handArea, macro.dickArea);
+  let prey = getPrey(biome, area, macro.sameSizeVore);
   let line = describe("sheath-stuff", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
