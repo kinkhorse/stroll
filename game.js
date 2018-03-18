@@ -1209,7 +1209,10 @@ let macro =
     result.push(line);
 
     result.push(macro.stomach.description);
-    result.push(macro.bowels.description);
+
+    if (this.analVore) {
+      result.push(macro.bowels.description);
+    }
 
     if (this.hasTail) {
       line = "Your " + macro.describeTail + (macro.tailCount > 1 ? " tails sway as you walk. " : " tail sways as you walk. ");
@@ -1254,17 +1257,19 @@ let macro =
 
       if (this.cleavage.container.count > 0)
         line += " Between them are " + this.cleavage.container.describe(false) + ".";
+
       result.push(line);
-      result.push(macro.breasts.description);
+      if (this.breastVore) {
+        result.push(this.breasts.description);
+      }
     }
 
     if (this.soulVoreEnabled) {
-      result.push(macro.souls.description);
+      result.push(this.souls.description);
     }
 
     if (this.hasPouch) {
-      line = this.pouch.description;
-      result.push(line);
+      result.push(this.pouch.description);
     }
 
     line = "Your two " + this.footDesc(true) + " shake the earth.";
