@@ -194,7 +194,7 @@ body.dark #log {
 input[type="radio"]:checked ~ .reveal-if-active,
 input[type="checkbox"]:checked ~ .reveal-if-active {
   opacity: 1;
-  max-height: 200px; /* little bit of a magic number :( */
+  max-height: 500000px; /* little bit of a magic number :( */
   overflow: visible;
 }
 

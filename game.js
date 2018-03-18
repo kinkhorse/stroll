@@ -457,6 +457,16 @@ let macro =
 
   },
 
+  "baseScatDigestFactor": 1,
+  "scatScaleWithSize": true,
+  get scatDigestFactor() {
+    if (this.scatScaleWithSize) {
+      return this.baseScatDigestFactor * this.scale;
+    } else {
+      return this.baseScatDigestFactor;
+    }
+  },
+
   "stomach": {
     "name": "stomach",
     "setup": function(owner) {
@@ -476,9 +486,9 @@ let macro =
     },
     "fill": function(owner,container) {
       if (owner.gasEnabled)
-        owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e4;
+        owner.gasStorage.amount += container.sum_property("mass") * owner.gasDigestFactor / 1e4;
       if (owner.scatEnabled) {
-        owner.scatStorage.amount += container.sum_property("mass") * this.owner.scatDigestFactor / 1e3;
+        owner.scatStorage.amount += container.sum_property("mass") * owner.scatDigestFactor / 1e3;
         owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
       }
     },
@@ -524,9 +534,9 @@ let macro =
     },
     "fill": function(owner,container) {
       if (owner.gasEnabled)
-        owner.gasStorage.amount += container.sum_property("mass") * this.owner.gasDigestFactor / 1e3;
+        owner.gasStorage.amount += container.sum_property("mass") * owner.gasDigestFactor / 1e3;
       if (owner.scatEnabled) {
-        owner.scatStorage.amount += container.sum_property("mass") * this.owner.scatDigestFactor / 1e3;
+        owner.scatStorage.amount += container.sum_property("mass") * owner.scatDigestFactor / 1e3;
         owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
       }
     },
@@ -550,6 +560,16 @@ let macro =
     "stages" : 3
   },
 
+  "baseFemcumDigestFactor": 1,
+  "femcumScaleWithSize": true,
+  get femcumDigestFactor() {
+    if (this.femcumScaleWithSize) {
+      return this.baseFemcumDigestFactor * this.scale;
+    } else {
+      return this.baseFemcumDigestFactor;
+    }
+  },
+
   "womb": {
     "name" : "womb",
     "setup": function(owner) {
@@ -568,7 +588,7 @@ let macro =
       return describe("womb",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      owner.femcumStorage.amount += container.sum_property("mass") / 1e3;
+      owner.femcumStorage.amount += container.sum_property("mass") * owner.femcumDigestFactor / 1e3;
     },
     get description() {
       let prey = new Container();
@@ -590,6 +610,16 @@ let macro =
     "stages" : 2
   },
 
+  "baseCumDigestFactor": 1,
+  "cumScaleWithSize": true,
+  get cumDigestFactor() {
+    if (this.cumScaleWithSize) {
+      return this.baseCumDigestFactor * this.scale;
+    } else {
+      return this.baseCumDigestFactor;
+    }
+  },
+
   "balls": {
     "name" : "balls",
     "setup": function(owner) {
@@ -608,7 +638,7 @@ let macro =
       return describe("balls",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
-      owner.cumStorage.amount += container.sum_property("mass") / 1e3;
+      owner.cumStorage.amount += container.sum_property("mass") * owner.cumDigestFactor / 1e3;
     },
     get description() {
       let prey = new Container();
@@ -630,6 +660,16 @@ let macro =
     "stages" : 2
   },
 
+  "baseMilkDigestFactor": 1,
+  "milkScaleWithSize": true,
+  get milkDigestFactor() {
+    if (this.milkScaleWithSize) {
+      return this.baseMilkDigestFactor * this.scale;
+    } else {
+      return this.baseMilkDigestFactor;
+    }
+  },
+
   "breasts": {
     "name" : "breasts",
     "setup": function(owner) {
@@ -649,7 +689,7 @@ let macro =
     },
     "fill": function(owner,container) {
       if (macro.lactationEnabled) {
-        owner.milkStorage.amount += container.sum_property("mass") / 1e3;
+        owner.milkStorage.amount += container.sum_property("mass") * owner.milkDigestFactor / 1e3;
       }
     },
     get description() {
@@ -672,7 +712,15 @@ let macro =
     "stages" : 2
   },
 
-  "pissDigestFactor": 1,
+  "basePissDigestFactor": 1,
+  "pissScaleWithSize": true,
+  get pissDigestFactor() {
+    if (this.pissScaleWithSize) {
+      return this.basePissDigestFactor * this.scale;
+    } else {
+      return this.basePissDigestFactor;
+    }
+  },
 
   "bladder": {
     "name" : "bladder",
@@ -946,6 +994,7 @@ let macro =
   "pissScale": 1,
   "baseUrethraDiameter": 0.03,
   "urethraStretch": 5,
+
   get urethraDiameter() {
     return this.scaling(this.baseUrethraDiameter, this.scale, 1);
   },
@@ -963,8 +1012,6 @@ let macro =
     setTimeout(function () { self.fillPiss(self); }, 100);
     update();
   },
-
-  "scatDigestFactor": 1,
 
   "fillScat": function(self) {
     self.scatStorage.amount += self.scatScale * self.scatStorage.limit / 100;
