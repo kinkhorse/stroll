@@ -891,7 +891,7 @@ let macro =
   "femaleParts": true,
 
   "fillCum": function(self) {
-    self.cumStorage.amount += self.cumScale * self.ballVolume / 1200;
+    self.cumStorage.amount += self.cumScale * self.cumStorage.limit / 1200;
     if (self.cumStorage.amount > self.cumStorage.limit)
       self.arouse(1 * (self.cumStorage.amount / self.cumStorage.limit - 1));
     setTimeout(function () { self.fillCum(self); }, 100);
@@ -899,7 +899,7 @@ let macro =
   },
 
   "fillFemcum": function(self) {
-    self.femcumStorage.amount += self.femcumScale * self.vaginaVolume / 1200;
+    self.femcumStorage.amount += self.femcumScale * self.femcumStorage.limit / 1200;
     if (self.femcumStorage.amount > self.femcumStorage.limit)
       self.arouse(1 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
     setTimeout(function () { self.fillFemcum(self); }, 100);
@@ -966,8 +966,8 @@ let macro =
 
   "scatDigestFactor": 1,
 
-  // no actual filling, but it handles updates
   "fillScat": function(self) {
+    self.scatStorage.amount += self.scatScale * self.scatStorage.limit / 100;
     if (self.scatStorage.amount > self.scatStorage.limit * 2)
       scat(self.scatStorage.amount);
     setTimeout(function () { self.fillScat(self); }, 100);
@@ -977,35 +977,35 @@ let macro =
   "cumStorage": {
     "amount": 0,
     get limit() {
-      return this.owner.ballVolume;
+      return this.owner.ballVolume * this.owner.cumStorageScale;
     }
   },
 
   "femcumStorage": {
     "amount": 0,
     get limit() {
-      return this.owner.vaginaVolume;
+      return this.owner.vaginaVolume * this.owner.femcumStorageScale;
     }
   },
 
   "milkStorage": {
     "amount": 0,
     get limit() {
-      return this.owner.breastVolume * 2;
+      return this.owner.breastVolume * 2 * this.owner.milkStorageScale;
     }
   },
 
   "gasStorage": {
     "amount": 0,
     get limit() {
-      return Math.pow(this.owner.scale,3) / 1000;
+      return Math.pow(this.owner.scale,3) / 1000 * this.owner.gasStorageScale;
     }
   },
 
   "pissStorage": {
     "amount": 0,
     get limit() {
-      return Math.pow(this.owner.scale,3) / 5000;
+      return Math.pow(this.owner.scale,3) / 5000 * this.owner.pissStorageScale;
     }
   },
 
@@ -1015,7 +1015,7 @@ let macro =
     "amount": 0,
     "victims": new Container(),
     get limit() {
-      return Math.pow(this.owner.scale,3) / 1000;
+      return Math.pow(this.owner.scale,3) / 1000 * this.owner.scatStorageScale;
     }
   },
 
@@ -2739,8 +2739,6 @@ function scat(vol) {
     vol = macro.scatStorage.amount;
   }
 
-  macro.scatStorage.amount -= vol;
-
   let area = Math.pow(vol, 2/3);
 
   let scatArea = macro.analVoreArea;
@@ -2758,6 +2756,8 @@ function scat(vol) {
   macro.scatStorage.victims = new Container();
   add_victim_people("scat",prey);
   update([sound,line,linesummary,newline]);
+
+  macro.scatStorage.amount -= vol;
 
   macro.arouse(50);
 }

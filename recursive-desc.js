@@ -679,9 +679,9 @@ function defaultBladderVore(container, macro, verbose) {
 }
 
 function defaultScat(container, macro, verbose) {
-  if (macro.scatStorage.victims.count == 0) {
+  if (macro.scatStorage.amount == 0) {
     return "Your bowels are empty.";
-  } else if (macro.brutality > 0) {
+  } else if (macro.brutality > 0 && macro.scatStorage.victims.amount > 0) {
     return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose) + ". Embedded in the thick, chunky waste are the remains of " + listSum(macro.scatStorage.victims.sum()) + ", now little more than bones and wreckage in your shit.";
   } else {
     return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose);
