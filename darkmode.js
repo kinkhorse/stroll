@@ -19,13 +19,8 @@ function setDarkMode(darkMode) {
   }
 }
 
-function loadDarkMode() {
+let storage = window.localStorage;
 
-  (function() {
-    let storage = window.localStorage;
-
-    if (storage.getItem("dark-mode") != null) {
-      setDarkMode(storage.getItem("dark-mode") === "true");
-    }
-  }());
-};
+if (storage.getItem("dark-mode") != null) {
+  setDarkMode(storage.getItem("dark-mode") === "true");
+}
