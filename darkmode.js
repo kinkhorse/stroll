@@ -19,7 +19,7 @@ function setDarkMode(darkMode) {
   }
 }
 
-window.addEventListener('load', function(event) {
+function loadDarkMode() {
 
   (function() {
     let storage = window.localStorage;
@@ -28,4 +28,4 @@ window.addEventListener('load', function(event) {
       setDarkMode(storage.getItem("dark-mode") === "true");
     }
   }());
-});
+};
