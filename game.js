@@ -3342,6 +3342,13 @@ function actionTab(e) {
 
 function showStats() {
   let lines = [];
+
+  if (macro.brutality > 0) {
+    lines.push("Total kills:");
+  } else {
+    lines.push("Total victims:");
+  }
+
   let total = 0;
   for (var key in victims) {
     if (victims.hasOwnProperty(key)) {
