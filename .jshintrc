@@ -20,6 +20,7 @@
     "contents_insert": true,
     "contents_remove": true,
     "contents_replace": true,
-    "getSound": true
+    "getSound": true,
+    "get_living_prey": true
   }
 }

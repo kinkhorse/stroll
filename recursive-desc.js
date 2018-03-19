@@ -40,6 +40,10 @@ function isGory(macro) {
   return macro.brutality >= 2;
 }
 
+function isSadistic(macro) {
+  return macro.brutality >= 3;
+}
+
 function hasNothing(container, thing, amount) {
   for (var key in container.contents) {
     if (container.contents.hasOwnProperty(key))
@@ -123,12 +127,14 @@ function defaultEat(container, macro, verbose) {
 }
 
 function defaultChew(container, macro, verbose) {
+  let pronoun = (container.count > 1 ? "them" : "it");
   if (container.count == 0)
     return "You reach down for a delicious treat and grab - oh, nothing.";
+  else if (isSadistic(macro))
+    return "Your greedy fingers gather up " + container.describe(verbose) + ", stuffing " + pronoun + " into your " + macro.jawDesc(true) + ". A slow, lazy bite " + macro.biteDesc() + pronoun + ", rending flesh, snapping bone, and crushing everything between your savage " + macro.jawDesc(true) + ". You tip back your head and swallow...consigning the gory remains to your roiling gut.";
   else if (isNonFatal(macro))
     return defaultEat(container, macro, verbose);
   else {
-    let pronoun = (container.count > 1 ? "them" : "it");
     return "You scoop up " + container.describe(verbose) + " and " + macro.biteDesc() + " " + pronoun + " with your " + macro.jawDesc(true) + ", then swallow them down.";
   }
 }
@@ -136,6 +142,8 @@ function defaultChew(container, macro, verbose) {
 function defaultStomp(container, macro, verbose) {
   if (container.count == 0)
     return "Your " + macro.footDesc() + " thumps the ground.";
+  else if (isSadistic(macro))
+    return "Your " + macro.footDesc(false) + " comes down on " + container.describe(verbose) + ", crushing your prey into gore and rubble with ease as your " + macro.toeDesc(true) + " shear bone and snap metal.";
   else if (isFatal(macro))
     return "You crush " + container.describe(verbose) + " under" + macro.footDesc(false,false,true) + ".";
   else
@@ -193,8 +201,11 @@ function defaultAnalVore(container, macro, verbose) {
 }
 
 function defaultAssCrush(container, macro, verbose) {
+  let count = get_living_prey(container.sum());
   if (container.count == 0)
     return "You take a seat. It's good to have a break!";
+  else if (isSadistic(macro))
+    return "You lower your heavy ass to the ground, biting you lip as you feel " + container.describe(verbose) + " collapse beneath your massive cheeks. " + (count > 1 ? count + " lives are" : "A life is") + " snuffed out as you settle down, grinding your ass into the remains before slowly rising back up.";
   else if (isFatal(macro))
     return "Your heavy ass obliterates " + container.describe(verbose) + ". ";
   else
@@ -232,6 +243,8 @@ function defaultCleavageStuff(container, macro, verbose) {
 function defaultCleavageCrush(container, macro, verbose) {
   if (container.count == 0)
     return "You grasp your breasts and forcefully squeeze them together.";
+  else if (isSadistic(macro))
+    return "You grasp your breasts and slowly bring them together, steadily crushing the life from " + container.describe(false) + " trapped in between - savoring every last <i>pop</i> and <i>crunch</i> as you exterminate your prey.";
   else if (isGory(macro))
     return "You grasp your breasts and forcefully shove them together, crushing the life from " + container.describe(false) + ".";
   else if (isFatal(macro))
@@ -399,6 +412,8 @@ function defaultMaleOrgasm(container, macro, verbose) {
 function defaultFemaleSpurt(container, macro, verbose) {
   if (container.count == 0)
     return "Your moist slit splatters $VOLUME of slick juices.";
+  else if (isSadistic(macro))
+    return "Your dripping slit splatters $VOLUME of your intoxicating juices, dissolving " + container.describe(verbose) + ".";
   else if (isFatal(macro))
     return "Your moist slit splatters $VOLUME of slick juices, drowning " + container.describe(verbose) + " in your building lust.";
   else
@@ -408,6 +423,8 @@ function defaultFemaleSpurt(container, macro, verbose) {
 function defaultFemaleOrgasm(container, macro, verbose) {
   if (container.count == 0)
     return "Your moist slit sprays $TIMES times, gushing out $VOLUME of slick femcum.";
+  else if (isSadistic(macro))
+    return "Your quivering slit sprays $VOLUME of your intoxicating femcum, dissolving " + container.describe(verbose) + "in an unstoppable torrent of deadly lust.";
   else if (isFatal(macro))
     return "Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in $TIMES consecutive bursts of lust.";
   else
@@ -465,7 +482,7 @@ function defaultSoulVore(container, macro, verbose) {
 }
 
 function defaultSoulAbsorbPaw(container, macro, verbose) {
-  let sum = container.sum()["Person"];
+  let sum = get_living_prey(container.sum());
   if (container.count == 0)
     return "Your " + macro.footDesc() + " thumps against the ground";
   else if (sum == 0)
@@ -475,7 +492,9 @@ function defaultSoulAbsorbPaw(container, macro, verbose) {
 }
 
 function defaultPawStench(container, macro, verbose) {
-  let sum = container.sum()["Person"];
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Horrific miasma flows from your " + macro.footDesc(true)+ ", the corrsoive fumes reducing " + (sum > 1 ? sum + " people" : "a person") + " to charred flesh as they wash over " + container.describe(false) + ".";
   if (isFatal(macro))
     return "Vile fumes waft from your " + macro.footDesc(true) + " , choking the life from " + (sum > 1 ? sum + " people." : "a person.");
   else
@@ -483,7 +502,9 @@ function defaultPawStench(container, macro, verbose) {
 }
 
 function defaultAssStench(container, macro, verbose) {
-  let sum = container.sum()["Person"];
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Rancid fumes from your ass sear the flesh of " + (sum > 1 ? sum + " people" : "a person") + " as they wash over " + container.describe(false) + ", corroding everything in their path.";
   if (isFatal(macro))
     return "Vile miasma from your bitter ass snuffs out " + (sum > 1 ? sum + " people" : "a person") + ", suffocating them in your stench.";
   else
@@ -491,9 +512,11 @@ function defaultAssStench(container, macro, verbose) {
 }
 
 function defaultBelch(container, macro, verbose) {
-  let sum = container.sum()["Person"];
+  let sum = get_living_prey(container.sum());
   if (container.count == 0)
     return "An ominous groan precedes a crass belch.";
+  if (isSadistic(macro))
+    return "A disgusting torrent of gas erupts from your rancid stomach, the vile green gale stopping hearts and burning flesh as it annihilates " + container.describe(verbose) + ".";
   if (isFatal(macro))
     return "A rancid belch flows from your " + macro.jawDesc(verbose) + ", corroding " + container.describe(verbose) + " with your vile fumes.";
   else
@@ -501,9 +524,11 @@ function defaultBelch(container, macro, verbose) {
 }
 
 function defaultFart(container, macro, verbose) {
-  let sum = container.sum()["Person"];
+  let sum = get_living_prey(container.sum());
   if (container.count == 0)
     return "An ominous groan precedes a loud, pungent fart.";
+  if (isSadistic(macro))
+    return "Your intestines snarl and lurch, expelling a powerful jet of utterly rancid stench from your bitter ass. The plume gushes over " + container.describe(verbose) + ", ending " + (sum > 1 ? sum + " lives" : "a life") + " and annihilating everything in its path.";
   if (isFatal(macro))
     return "An ominous groan precedes a loud, pungent fart, corroding " + container.describe(verbose) + " with truly vile vapors.";
   else
@@ -511,7 +536,9 @@ function defaultFart(container, macro, verbose) {
 }
 
 function defaultStomach(container, macro, verbose) {
-  if (isGory(macro))
+  if (isSadistic(macro))
+    return "Your churning guts crushes your prey into a gory paste, annihilating " + container.describe(false) + " and reducing everything to rancid chyme.";
+  else if (isGory(macro))
     return "Your caustic stomach grinds " + container.describe(false) + " to a gory pulp.";
   else if (isFatal(macro))
     return "Your stomach gurgles as it digests " + container.describe(false) + ".";
@@ -520,6 +547,8 @@ function defaultStomach(container, macro, verbose) {
 }
 
 function defaultBowels(container, macro, verbose) {
+  if (isSadistic(macro))
+    return "Your rancid bowels clench and churn, crushing " + container.describe(false) + " into a paste of gore and rubble - and then swiftly absorbing everything.";
   if (isFatal(macro))
     return "Your bowels churn as they melt down " + container.describe(false) + " and absorb them into your body";
   else
@@ -555,14 +584,21 @@ function defaultBreasts(container, macro, verbose) {
 }
 
 function defaultBladder(container, macro, verbose) {
-  if (isFatal(macro))
+  if (isSadistic(macro)) {
+    let fatalities = get_living_prey(container.sum());
+    let line = "Your bladder swells as " + container.describe(false) + " are dissolved in your acrid piss.";
+    if (fatalities > 0) {
+      line += " " + (fatalities > 1 ? fatalities + " lives are" : "a life is") + " snuffed out by the horrific yellow tide, corroded and annihilated amongst the unbearable stench of urine.";
+    }
+    return line;
+  } else if (isFatal(macro))
     return "Your bladder swells as it dissolves " + container.describe(false) + " into acrid piss";
   else
     return "Your bladder squeezes as it absorbs " + container.describe(false);
 }
 
 function defaultSoulDigest(container, macro, verbose) {
-  let sum = container.sum()["Person"];
+  let sum = get_living_prey(container.sum());
   switch(macro.soulVoreType) {
     case "release":
       return (sum > 1 ? sum + " souls escape" : "A soul escapes") + " your depths.";

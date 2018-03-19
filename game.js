@@ -1405,18 +1405,6 @@ function look()
   update(desc);
 }
 
-function get_living_prey(sum) {
-  let total = 0;
-  for (let key in sum) {
-    if (sum.hasOwnProperty(key)) {
-      if (key == "Micro" || key == "Macro" || key == "Person" || key == "Cow")
-        total += sum[key];
-    }
-  }
-
-  return total;
-}
-
 function toggle_auto()
 {
   strolling = !strolling;
@@ -1781,7 +1769,7 @@ function paw_stench() {
 
   let people = get_living_prey(prey.sum());
 
-  if (prey.sum()["Person"] == undefined)
+  if (get_living_prey(prey.sum()) == 0)
     return;
 
   let preyMass = prey.sum_property("mass");
@@ -2770,7 +2758,7 @@ function scat(vol) {
   let scatArea = macro.analVoreArea;
   let scatLength = vol / macro.analVoreArea;
   let prey = getPrey(biome, area);
-  let line = describe("scat", prey, macro, verbose).replace("$MASS",mass(vol,unit,true)).replace("$LENGTH",length(scatLength,unit,true));
+  let line = describe("scat", prey, macro, verbose).replace("$MASS",mass(vol*1000,unit,true)).replace("$LENGTH",length(scatLength,unit,true));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
