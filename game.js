@@ -902,7 +902,7 @@ let macro =
       this.fillCum(this);
     if (this.femaleParts)
       this.fillFemcum(this);
-    if (this.lactationEnabled)
+    if (this.lactationEnabled && this.hasBreasts)
       this.fillBreasts(this);
     if (this.arousalEnabled)
       this.quenchExcess(this);
