@@ -175,6 +175,16 @@ body.dark #log {
   display: none;
 }
 
+.locked {
+  background: repeating-linear-gradient(
+    45deg,
+    #FF0000,
+    #FF0000 10px,
+    #000000 10px,
+    #000000 20px
+    ) !important;
+}
+
 #victim-table {
   display: none;
   margin: auto;

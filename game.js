@@ -31,6 +31,9 @@ let newline = "&nbsp;";
 
 let victims = {};
 
+let unlocks = {};
+let unlockTypes = [];
+
 let macro =
 {
   "scaling": function(value, scale, factor) { return value * Math.pow(scale,factor); },
@@ -2796,6 +2799,7 @@ function update(lines = [])
 
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.totalMass, unit));
+  document.getElementById("growth-points").innerHTML = "Fen Coins: " + macro.growthPoints;
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
   document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
   document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false));
@@ -2823,24 +2827,58 @@ function pick_move()
   stomp();
 }
 
+function fenbook(e, quality) {
+  switch(quality) {
+    case 1:
+      let div = document.createElement("div");
+
+      div.innerHTML = "You only bought a <i>normal crate?</i> You lose ten followers.";
+      e.target.parentElement.replaceChild(div, e.target);
+      let log = document.getElementById("log");
+      log.scrollTop = log.scrollHeight;
+      break;
+  }
+}
+
+// this code itself is a prank
+// jesus christ on a bike
+
 function grow_pick(times) {
-  if (document.getElementById("part-body").checked === true) {
-    grow(times);
-  }
-  else if (document.getElementById("part-ass").checked === true) {
-    grow_ass(times);
-  }
-  else if (document.getElementById("part-dick").checked === true) {
-    grow_dick(times);
-  }
-  else if (document.getElementById("part-balls").checked === true) {
-    grow_balls(times);
-  }
-  else if (document.getElementById("part-breasts").checked === true) {
-    grow_breasts(times);
-  }
-  else if (document.getElementById("part-vagina").checked === true) {
-    grow_vagina(times);
+  switch(times) {
+    case 1:
+      if (macro.growthPoints < 1000) {
+        macro.growthPoints = 0;
+        update(["You need at least 1000 Fen Coins. Are you <b>that poor?</B>? Good lord.",newline,"I deleted all of your Fen Coins for you."]);
+        return;
+      }
+      let lines = [];
+
+      lines.push("Christ, you're buying a <i>normal crate?</i> Are you poor?");
+      lines.push(newline);
+
+      let name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
+
+      if (unlocks[name] == false) {
+        name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
+        if (unlocks[name] == false) {
+          lines.push("Congratulations! You've unboxed " + name + "!");
+          lines.push("Click this button to tell all your friends");
+          unlocks[name] = true;
+          lines.push(newline);
+          update(lines);
+          let button = document.createElement("button");
+          let log = document.getElementById("log");
+          button.innerHTML = "SHARE TO FENBOOK";
+          button.addEventListener("click", function(e) { fenbook(e, 1); });
+          log.appendChild(button);
+          return;
+        }
+      }
+
+      lines.push("Oh, <i>dang</i>, looks like you already had " + name + "...");
+      lines.push(newline);
+      update(lines);
+      break;
   }
 }
 
@@ -3054,6 +3092,13 @@ function enable_victim(category, name) {
 }
 
 function enable_button(name) {
+  if (name == "stomp")
+    unlocks[name] = true;
+  else
+    unlocks[name] = false;
+
+  unlockTypes.push(name);
+
   document.getElementById("button-action-" + name).style.display = "inline";
 }
 
@@ -3068,10 +3113,6 @@ function enable_panel(name) {
 function enable_stat(name) {
   document.getElementById(name).style.display = 'block';
   document.getElementById(name + "Percent").style.display = 'block';
-}
-
-function enable_growth_part(name) {
-  document.querySelector("#part-" + name + "+label").style.display = 'inline';
 }
 
 function disable_button(name) {
@@ -3121,9 +3162,6 @@ function startGame(e) {
   enable_button("sit");
   enable_button("grind");
 
-  enable_growth_part("body");
-  enable_growth_part("ass");
-
   if (macro.brutality > 0) {
     warns.push("Fatal actions are enabled.");
     enable_button("chew");
@@ -3164,10 +3202,6 @@ function startGame(e) {
     enable_button("ball_smother");
 
     enable_stat("cum");
-
-    enable_growth_part("dick");
-    enable_growth_part("balls");
-
     if (macro.hasSheath) {
       enable_victim("sheath-crush","Crushed in sheath");
       enable_victim("sheath-absorb","Absorbed by sheath");
@@ -3192,8 +3226,6 @@ function startGame(e) {
 
     enable_stat("femcum");
 
-    enable_growth_part("vagina");
-
     if (macro.arousalEnabled) {
       enable_victim("femcum-flood","Flooded by femcum");
     }
@@ -3212,8 +3244,6 @@ function startGame(e) {
     enable_button("cleavage_crush");
     enable_button("cleavage_drop");
     enable_button("cleavage_absorb");
-
-    enable_growth_part("breasts");
 
     if (macro.lactationEnabled) {
       warns.push("Lactation is enabled.");
@@ -3356,7 +3386,23 @@ function actionTab(e) {
   });
 
   e.target.classList.add("active");
+
+
   document.getElementById(target).style.display = "flex";
+
+  document.querySelectorAll(".action-tab#actions-" + name + ">button").forEach(function (element) {
+    let buttonName = element.id.replace("button-action-","");
+    element.classList.remove("locked");
+    if (unlocks[buttonName])
+      element.classList.add("locked");
+  });
+}
+
+function checkUnlock(name) {
+  if (unlocks[name])
+    window[name]();
+  else
+    update(["Ooooops! You haven't unlocked " + name + " yet! Better buy some more FenCrates!"]);
 }
 
 function showStats() {
@@ -3385,7 +3431,7 @@ function registerActions() {
   buttons.forEach( function(button) {
     let name = button.id;
     name = name.replace(/button-action-/,"");
-    button.addEventListener("click", function() { window[name]() });
+    button.addEventListener("click", function() { checkUnlock(name); });
   });
 }
 
@@ -3444,9 +3490,6 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
   document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });
   document.getElementById("button-amount-10").addEventListener("click",function() { grow_pick(10); });
-  document.getElementById("button-amount-20").addEventListener("click",function() { grow_pick(20); });
-  document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
-  document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
 
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
