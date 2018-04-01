@@ -5,11 +5,19 @@
   font-family: Arial;
 }
 
-body {
+.vr {
   animation-duration: 120s;
   animation-name: fuck;
   animation-iteration-count: infinite;
 }
+
+.supervr {
+  animation-duration: 10s;
+  animation-name: bigfuck;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 .dark {
   color: #eee;
   background: #111;
@@ -457,6 +465,11 @@ ul {
   50% { transform: rotate(0deg); }
   75% { transform: rotate(-10deg); }
   100% { transform: rotate(0deg); }
+}
+
+@keyframes bigfuck {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .blink {

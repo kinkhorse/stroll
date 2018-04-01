@@ -3514,6 +3514,19 @@ function registerActions() {
   });
 }
 
+function novomit() {
+  let body = document.querySelector("body");
+
+  body.classList.remove("vr");
+  body.classList.remove("supervr");
+}
+function vomit() {
+  let body = document.querySelector("body");
+
+  body.classList.remove("vr");
+  body.classList.add("supervr");
+}
+
 function debugLog() {
   console.log("Your character settings:");
   console.log(JSON.stringify(generateSettings()));
@@ -3593,6 +3606,8 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-reset-custom").addEventListener("click",resetSettings);
   document.getElementById("button-load-custom").addEventListener("click",function() { loadSettings(); });
   document.getElementById("button-save-custom").addEventListener("click",saveSettings);
+  document.getElementById("button-novomit").addEventListener("click",novomit);
   document.getElementById("button-start").addEventListener("click",startGame);
+  document.getElementById("button-vomit").addEventListener("click",vomit);
   setTimeout(pick_move, 2000);
 });
