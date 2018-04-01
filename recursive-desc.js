@@ -681,18 +681,24 @@ function defaultPiss(container, macro, verbose) {
   if (macro.maleParts) {
     if (container.count == 0) {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeDick + " cock.";
+    } else if (isSadistic(macro)) {
+      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from your " + macro.describeDick + " cock, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death."
     } else {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeDick + " cock, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
     }
   } else if (macro.femaleParts) {
     if (container.count == 0) {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeVagina + " slit.";
+    } else if (isSadistic(macro)) {
+      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from your " + macro.describeVagina + " slit, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death."
     } else {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeVagina + " slit, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
     }
   } else {
     if (container.count == 0) {
       return "You sigh with relief as $VOLUME of piss erupts from between your legs.";
+    } else if (isSadistic(macro)) {
+      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from between your legs, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death."
     } else {
       return "You sigh with relief as $VOLUME of piss erupts from between your legs, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
     }
@@ -715,9 +721,16 @@ function defaultBladderVore(container, macro, verbose) {
 }
 
 function defaultScat(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
   if (macro.scatStorage.amount == 0) {
     return "Your bowels are empty.";
-  } else if (macro.brutality > 0 && macro.scatStorage.victims.amount > 0) {
+  } else if (isSadistic(macro)) {
+    let line = "You squat down, letting out a grunt as your rancid bowels force out a $MASS, $LENGTH-long heap of shit. The fatally-pungent scat buries " + container.describe(verbose) + ", ending " + numberRough(sum,"of") + " lives and entombing them in your shit.";
+    if (macro.scatStorage.victims.count > 0) {
+      line += " Embedded in the vomit-inducing heap are the mangled, crushed remains of " + listSum(macro.scatStorage.victims.sum()) + ", " + numberRough(get_living_prey(macro.scatStorage.victims.sum()), "of") + " living creatures converted to noxious scat by your disgusting depths.";
+    }
+    return line;
+  } else if (macro.brutality > 0 && macro.scatStorage.victims.count > 0) {
     return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose) + ". Embedded in the thick, chunky waste are the remains of " + listSum(macro.scatStorage.victims.sum()) + ", now little more than bones and wreckage in your shit.";
   } else {
     return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose);

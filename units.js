@@ -4,6 +4,31 @@ function round(number,precision=3) {
   return Math.round(number*Math.pow(10,precision)) / Math.pow(10,precision);
 }
 
+function numberRough(value,suffix="") {
+  var scale = Math.floor(Math.log10(value));
+  switch(scale) {
+    case 0: return "a single";
+    case 1: return "dozens " + suffix;
+    case 2: return "hundreds " + suffix;
+    default:
+      let prefix = "";
+
+      if (scale % 3 == 1)
+        prefix = "tens of ";
+      else if (scale % 3 == 2)
+        prefix = "hundreds of ";
+
+      let order = Math.floor(scale/3);
+
+      switch(order) {
+        case 1: return prefix + "thousands " + suffix;
+        case 2: return prefix + "millions " + suffix;
+        case 3: return prefix + "billions " + suffix;
+        case 4: return prefix + "trillions " + suffix;
+        case 5: return "uncountably many";
+      }
+  }
+}
 function number(value, type="full", precision=3) {
   var val = parseFloat(value);
   switch(type) {

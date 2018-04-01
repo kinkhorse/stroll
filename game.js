@@ -141,7 +141,7 @@ let macro =
         result = plural ? "toes" : "toe";
         break;
       case "hoof":
-        result = plural ? "toes" : "toe";
+        result = plural ? "hooves" : "hoof";
         break;
       case "foot":
         result = plural ? "toes" : "toe";
