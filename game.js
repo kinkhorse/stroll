@@ -31,8 +31,18 @@ let newline = "&nbsp;";
 
 let victims = {};
 
+let currentTab = "";
+
 let unlocks = {};
 let unlockTypes = [];
+
+let ads = [
+  "Pre-Order Star Wars™ Battlefront™ 3™ and receive 1000 bonus StarWarsTokens™!",
+  "Gamers! Are you ready for triple XP Mountain Dew and Doritos and Brake Cleaner Weekend? Get chugging!",
+  "<b>Sims™ 5™: Now With No Content!</b> Fuck you!",
+  "Did you buy the DLC? You didn't buy the DLC. Peasant.",
+  "You could always just buy some FenCoins with some real money..."
+];
 
 let macro =
 {
@@ -1374,7 +1384,7 @@ let macro =
   "growthPoints": 0,
 
   "addGrowthPoints": function(mass) {
-    this.growthPoints += Math.round(mass / (this.scale*this.scale));
+    this.growthPoints += Math.round(Math.sqrt(mass) * Math.sqrt(80));
   },
 
   // 0 = entirely non-fatal
@@ -2788,9 +2798,21 @@ function update(lines = [])
 {
   let log = document.getElementById("log");
 
+  if (Math.random() < 0.1) {
+    lines.push("******");
+    lines.push(ads[Math.floor(Math.random() * ads.length)]);
+    lines.push("******");
+  }
+
+  let ad = false;
+
   lines.forEach(function (x) {
+    if (x == "******")
+      ad = true;
     let line = document.createElement('div');
     line.innerHTML = transformNumbers(x);
+    if (ad)
+      line.classList.add("advertisement");
     log.appendChild(line);
   });
 
@@ -2832,7 +2854,7 @@ function fenbook(e, quality) {
     let div = document.createElement("div");
 
     div.innerHTML = "You only bought a <i>normal crate?</i> You lose ten followers and shrink out of shame.";
-    macro.scale /= 100;
+    macro.scale /= 10;
     e.target.parentElement.replaceChild(div, e.target);
     let log = document.getElementById("log");
     log.scrollTop = log.scrollHeight;
@@ -2841,7 +2863,7 @@ function fenbook(e, quality) {
     let div = document.createElement("div");
 
     div.innerHTML = "Your followers are SOMEWHAT IMPRESSED. You lose three anyway. You also shrink lol";
-    macro.scale /= 10;
+    macro.scale /= 2;
     e.target.parentElement.replaceChild(div, e.target);
     let log = document.getElementById("log");
     log.scrollTop = log.scrollHeight;
@@ -2866,25 +2888,36 @@ function grow_pick(times) {
 
     lines.push("Christ, you're buying a <i>normal crate?</i> Are you poor?");
     lines.push(newline);
+    lines.push(newline);
 
     let name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
 
-    if (unlocks[name] == false) {
-      name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
+    if (Math.random() < 0.5) {
       if (unlocks[name] == false) {
-        lines.push("Congratulations! You've unboxed " + name + "!");
-        lines.push("Click this button to tell all your friends");
-        unlocks[name] = true;
-        lines.push(newline);
-        update(lines);
-        let button = document.createElement("button");
-        let log = document.getElementById("log");
-        button.innerHTML = "SHARE TO FENBOOK";
-        button.addEventListener("click", function(e) { fenbook(e, 1); });
-        log.appendChild(button);
-        return;
+        name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
+        if (unlocks[name] == false) {
+          lines.push("Congratulations! You've unboxed " + name + "!");
+          lines.push("Click this button to tell all your friends");
+          unlocks[name] = true;
+          lines.push(newline);
+          update(lines);
+          let button = document.createElement("button");
+          let log = document.getElementById("log");
+          button.innerHTML = "SHARE TO FENBOOK";
+          button.addEventListener("click", function(e) { fenbook(e, 1); });
+          log.appendChild(button);
+          setLocked(currentTab);
+          return;
+        }
       }
+    } else {
+      lines.push("You unboxed another 1.1x increase in height! You lucky dog!");
+      macro.scale *= 1.1;
+      lines.push(newline);
+      update(lines);
+      return;
     }
+
 
     lines.push("Oh, <i>dang</i>, looks like you already had " + name + "...");
     lines.push(newline);
@@ -2903,6 +2936,9 @@ function grow_pick(times) {
       lines.push("Congratulations! You've received one Advanced FenCrate? Does your life have meaning yet?");
       lines.push("This one is less likely to have duplicates. Probably. Trust us.");
       lines.push(newline);
+      lines.push("You're guaranteed to grow 2x!");
+      macro.scale *= 2;
+      lines.push(newline);
 
       let name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
 
@@ -2917,6 +2953,7 @@ function grow_pick(times) {
         button.innerHTML = "SHARE TO FENBOOK";
         button.addEventListener("click", function(e) { fenbook(e, 2); });
         log.appendChild(button);
+        setLocked(currentTab);
         return;
       }
 
@@ -3016,21 +3053,9 @@ function grow_ass(times=1)
 
 function grow_lots()
 {
-  let oldHeight = macro.height;
-  let oldMass = macro.mass;
-
-  macro.scale *= 100;
-
-  let newHeight = macro.height;
-  let newMass = macro.mass;
-
-  let heightDelta = newHeight - oldHeight;
-  let massDelta = newMass - oldMass;
-
-  let heightStr = length(heightDelta, unit);
-  let massStr = mass(massDelta, unit);
-
-  update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
+  update(["Oooooops! You need the <i>Deluxe Edition</i> to use this button! Piracy detected! Deleting button!",newline]);
+  let button = document.getElementById("button-grow-lots");
+  button.parentElement.removeChild(button);
 }
 
 function resetSettings() {
@@ -3418,10 +3443,22 @@ function startGame(e) {
   document.getElementById("stat-container").style.display = 'flex';
 
   window.scroll(0,0);
+
+  document.getElementById("action-part-body").click();
 }
 
+function setLocked(tab) {
+  document.querySelectorAll(".action-tab#actions-" + tab + ">button").forEach(function (element) {
+    let buttonName = element.id.replace("button-action-","");
+    element.classList.remove("locked");
+    if (!unlocks[buttonName])
+      element.classList.add("locked");
+  });
+}
 function actionTab(e) {
   let name = e.target.id;
+
+  currentTab = name.replace(/action-part-/,"");
 
   let target = "actions-" + name.replace(/action-part-/,"");
 
@@ -3437,12 +3474,7 @@ function actionTab(e) {
 
   document.getElementById(target).style.display = "flex";
 
-  document.querySelectorAll(".action-tab#actions-" + name + ">button").forEach(function (element) {
-    let buttonName = element.id.replace("button-action-","");
-    element.classList.remove("locked");
-    if (unlocks[buttonName])
-      element.classList.add("locked");
-  });
+  setLocked(currentTab);
 }
 
 function checkUnlock(name) {
@@ -3493,7 +3525,21 @@ function debugLog() {
   alert("Debug info has been logged to console. Press F12, click \"Console\", and copy all the text");
 }
 
+function blink() {
+  document.querySelectorAll(".blink").forEach(function (x) {
+    if (x.style.visibility == "hidden") {
+      x.style.visibility = "visible";
+    } else {
+      x.style.visibility = "hidden";
+    }
+  })
+
+  setTimeout(blink, 250);
+}
+
 window.addEventListener('load', function(event) {
+
+  blink();
 
   (function() {
     let storage = window.localStorage;
