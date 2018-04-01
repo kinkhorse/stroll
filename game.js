@@ -360,7 +360,7 @@ let macro =
   },
 
   hasBreasts: true,
-  lactationEnabled: true,
+  lactationEnabled: false,
   lactationScale: 1,
   lactationFactor: 0.25,
 
@@ -2828,58 +2828,105 @@ function pick_move()
 }
 
 function fenbook(e, quality) {
-  switch(quality) {
-    case 1:
-      let div = document.createElement("div");
+  if (quality == 1) {
+    let div = document.createElement("div");
 
-      div.innerHTML = "You only bought a <i>normal crate?</i> You lose ten followers.";
-      e.target.parentElement.replaceChild(div, e.target);
-      let log = document.getElementById("log");
-      log.scrollTop = log.scrollHeight;
-      break;
+    div.innerHTML = "You only bought a <i>normal crate?</i> You lose ten followers and shrink out of shame.";
+    macro.scale /= 100;
+    e.target.parentElement.replaceChild(div, e.target);
+    let log = document.getElementById("log");
+    log.scrollTop = log.scrollHeight;
+    update();
+  } else if (quality == 2) {
+    let div = document.createElement("div");
+
+    div.innerHTML = "Your followers are SOMEWHAT IMPRESSED. You lose three anyway. You also shrink lol";
+    macro.scale /= 10;
+    e.target.parentElement.replaceChild(div, e.target);
+    let log = document.getElementById("log");
+    log.scrollTop = log.scrollHeight;
+    update();
   }
 }
+
 
 // this code itself is a prank
 // jesus christ on a bike
 
 function grow_pick(times) {
-  switch(times) {
-    case 1:
-      if (macro.growthPoints < 1000) {
-        macro.growthPoints = 0;
-        update(["You need at least 1000 Fen Coins. Are you <b>that poor?</B>? Good lord.",newline,"I deleted all of your Fen Coins for you."]);
+  if (times == 1) {
+    if (macro.growthPoints < 1000) {
+      macro.growthPoints = 0;
+      update(["You need at least 1000 Fen Coins. Are you <b>that poor?</B>? Good lord.",newline,"I deleted all of your Fen Coins for you."]);
+      return;
+    }
+
+    macro.growthPoints -= 1000;
+    let lines = [];
+
+    lines.push("Christ, you're buying a <i>normal crate?</i> Are you poor?");
+    lines.push(newline);
+
+    let name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
+
+    if (unlocks[name] == false) {
+      name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
+      if (unlocks[name] == false) {
+        lines.push("Congratulations! You've unboxed " + name + "!");
+        lines.push("Click this button to tell all your friends");
+        unlocks[name] = true;
+        lines.push(newline);
+        update(lines);
+        let button = document.createElement("button");
+        let log = document.getElementById("log");
+        button.innerHTML = "SHARE TO FENBOOK";
+        button.addEventListener("click", function(e) { fenbook(e, 1); });
+        log.appendChild(button);
         return;
       }
+    }
+
+    lines.push("Oh, <i>dang</i>, looks like you already had " + name + "...");
+    lines.push(newline);
+    update(lines);
+
+  } else if (times == 2) {
+      if (macro.growthPoints < 5000) {
+        macro.growthPoints = -2500;
+        update(["You need at least 5000 Fen Coins. Try not being so poor. Christ. Now you're even poorer."]);
+        return;
+      }
+
+      macro.growthPoints -= 5000;
       let lines = [];
 
-      lines.push("Christ, you're buying a <i>normal crate?</i> Are you poor?");
+      lines.push("Congratulations! You've received one Advanced FenCrate? Does your life have meaning yet?");
+      lines.push("This one is less likely to have duplicates. Probably. Trust us.");
       lines.push(newline);
 
       let name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
 
       if (unlocks[name] == false) {
-        name = unlockTypes[Math.floor(Math.random() * unlockTypes.length)];
-        if (unlocks[name] == false) {
-          lines.push("Congratulations! You've unboxed " + name + "!");
-          lines.push("Click this button to tell all your friends");
-          unlocks[name] = true;
-          lines.push(newline);
-          update(lines);
-          let button = document.createElement("button");
-          let log = document.getElementById("log");
-          button.innerHTML = "SHARE TO FENBOOK";
-          button.addEventListener("click", function(e) { fenbook(e, 1); });
-          log.appendChild(button);
-          return;
-        }
+        lines.push("Congratulations! You've unboxed " + name + "!");
+        lines.push("Click this button to tell all your friends");
+        unlocks[name] = true;
+        lines.push(newline);
+        update(lines);
+        let button = document.createElement("button");
+        let log = document.getElementById("log");
+        button.innerHTML = "SHARE TO FENBOOK";
+        button.addEventListener("click", function(e) { fenbook(e, 2); });
+        log.appendChild(button);
+        return;
       }
 
       lines.push("Oh, <i>dang</i>, looks like you already had " + name + "...");
       lines.push(newline);
       update(lines);
-      break;
+  } else {
+    update(["Ooooooops! You need the <i>Season Pass</i> to access that exclusive pre-order content!"]);
   }
+
 }
 
 function grow(times=1)
@@ -3488,8 +3535,8 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-debug-log").addEventListener("click",debugLog);
 
   document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
-  document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });
-  document.getElementById("button-amount-10").addEventListener("click",function() { grow_pick(10); });
+  document.getElementById("button-amount-2").addEventListener("click",function() { grow_pick(2); });
+  document.getElementById("button-amount-3").addEventListener("click",function() { grow_pick(3); });
 
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
