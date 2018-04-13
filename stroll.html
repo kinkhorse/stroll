@@ -46,32 +46,32 @@
       <div class="stat-header-self">Growth</div>
       <table id="grow-panel">
         <tr>
-          <th><input class="growth-option" type="radio" name="part" checked="true" id="part-body">
+          <th><input autocomplete="off" class="growth-option" type="radio" name="part" checked="true" id="part-body">
             <label class="growth-label" for="part-body">Body</label></th>
           <th><button class="growth-amount" id="button-amount-1">1x</button></th>
         </tr>
         <tr>
-          <th><input class="growth-option" type="radio" name="part" id="part-ass">
+          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-ass">
             <label class="growth-label" for="part-ass">Ass</label></th>
           <th><button class="growth-amount" id="button-amount-5">5x</button></th>
         </tr>
         <tr>
-          <th><input class="growth-option" type="radio" name="part" id="part-dick">
+          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-dick">
             <label class="growth-label" for="part-dick">Cock</label></th>
           <th><button class="growth-amount" id="button-amount-10">10x</button></th>
         </tr>
         <tr>
-          <th><input class="growth-option" type="radio" name="part" id="part-balls">
+          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-balls">
             <label class="growth-label" for="part-balls">Balls</label></th>
           <th><button class="growth-amount" id="button-amount-20">20x</button></th>
         </tr>
         <tr>
-          <th><input class="growth-option" type="radio" name="part" id="part-breasts">
+          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-breasts">
             <label class="growth-label" for="part-breasts">Breasts</label></th>
           <th><button class="growth-amount" id="button-amount-50">50x</button></th>
         </tr>
         <tr>
-          <th><input class="growth-option" type="radio" name="part" id="part-vagina">
+          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-vagina">
             <label class="growth-label" for="part-vagina">Slit</label></th>
           <th><button class="growth-amount" id="button-amount-100">100x</button></th>
         </tr>
@@ -217,7 +217,7 @@
 
         <div class="custom-category">
           <button class="option-button" id="button-dark-mode-options">Toggle Dark Mode</button>
-
+          <button class="option-button" id="button-units-options">Units: Metric</button>
         </div>
 
         <div class="custom-category">
@@ -244,7 +244,7 @@
             <button type="button" class="option-button" id="button-export-preset">Export Your Character</button>
             <button type="button" class="option-button" id="button-import-preset">Import Your Character</button>
 
-            <p><input type="text" id="export-area" placeholder="Paste character data here..."></p>
+            <p><input autocomplete="off" type="text" id="export-area" placeholder="Paste character data here..."></p>
           </div>
         </div>
       </ul>
@@ -255,40 +255,40 @@
             <div>
               <li>
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" />
+                <input autocomplete="off" type="text" id="name" name="name" />
               </li>
               <li>
                 <label for="species">Species</label>
-                <input type="text" id="species" name="species" placeholder="crux" />
+                <input autocomplete="off" type="text" id="species" name="species" placeholder="crux" />
               </li>
               <li>
                 <label for="scale" class="has-tooltip" title="How many times larger than normal you start.">Scale (?)</label>
-                <input type="number" step="any" id="scale" name="scale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="scale" name="scale" placeholder="1" />
                 <div class="preview" id="scalePreview"></div>
               </li>
               <li>
                 <label for="baseHeight">Height</label>
-                <input type="number" step="any" id="baseHeight" name="baseHeight" placeholder="2.26" />
+                <input autocomplete="off" type="number" step="any" id="baseHeight" name="baseHeight" data-unit="length" placeholder="2.26" />
                 <div class="preview" id="baseHeightPreview"></div>
               </li>
               <li>
                 <label for="baseMass">Weight</label>
-                <input type="number" step="any" id="baseMass" name="baseMass" placeholder="135">
+                <input autocomplete="off" type="number" step="any" id="baseMass" name="baseMass" data-unit="mass" placeholder="135">
                 <div class="preview" id="baseMassPreview"></div>
               </li>
               <li>
                 <label for="basePawArea">Paw area</label>
-                <input type="number" step="any" id="basePawArea" name="basePawArea" placeholder="0.1">
+                <input autocomplete="off" type="number" step="any" id="basePawArea" name="basePawArea" data-unit="area" placeholder="0.1">
                 <div class="preview" id="basePawAreaPreview"></div>
               </li>
               <li>
                 <label for="baseHandArea">Hand area</label>
-                <input type="number" step="any" id="baseHandArea" name="baseHandArea" placeholder="0.1">
+                <input autocomplete="off" type="number" step="any" id="baseHandArea" name="baseHandArea" data-unit="area" placeholder="0.1">
                 <div class="preview" id="baseHandAreaPreview"></div>
               </li>
               <li>
                 <label for="baseAssArea">Ass area</label>
-                <input type="number" step="any" id="baseAssArea" name="baseAssArea" placeholder="0.4">
+                <input autocomplete="off" type="number" step="any" id="baseAssArea" name="baseAssArea" data-unit="area" placeholder="0.4">
                 <div class="preview" id="baseAssAreaPreview"></div>
               </li>
             </div>
@@ -299,19 +299,19 @@
             <div>
               <ul>
                 <li>
-                  <input type="radio" name="brutality" id="brutality-0" value="0">
+                  <input autocomplete="off" type="radio" name="brutality" id="brutality-0" value="0">
                   <label for="brutality-0">Non-fatal</label>
                 </li>
                 <li>
-                  <input type="radio" name="brutality" checked="true" id="brutality-1" value="1">
+                  <input autocomplete="off" type="radio" name="brutality" checked="true" id="brutality-1" value="1">
                   <label for="brutality-1">Fatal, no gore</label>
                 </li>
                 <li>
-                  <input type="radio" name="brutality" id="brutality-2" value="2">
+                  <input autocomplete="off" type="radio" name="brutality" id="brutality-2" value="2">
                   <label for="brutality-2">Gory</label>
                 </li>
                 <li>
-                  <input type="radio" name="brutality" id="brutality-3" value="3">
+                  <input autocomplete="off" type="radio" name="brutality" id="brutality-3" value="3">
                   <label for="brutality-3">Sadistic</label>
                 </li>
               </ul>
@@ -323,19 +323,19 @@
             <div>
               <li>
                 <label for="victimsHuman">Human prey (instead of anthros)</label>
-                <input type="checkbox" name="victimsHuman" id="victimsHuman" />
+                <input autocomplete="off" type="checkbox" name="victimsHuman" id="victimsHuman" />
               </li>
               <li>
                 <label for="military">Military</label>
-                <input type="checkbox" name="victimsMilitary" id="victimsMilitary" />
+                <input autocomplete="off" type="checkbox" name="victimsMilitary" id="victimsMilitary" />
               </li>
               <li>
                 <label for="macros">Smaller macros</label>
-                <input type="checkbox" name="victimsMacros" id="victimsMacros" />
+                <input autocomplete="off" type="checkbox" name="victimsMacros" id="victimsMacros" />
               </li>
               <li>
                 <label for="micros">Micros</label>
-                <input type="checkbox" name="victimsMicros" id="victimsMicros" />
+                <input autocomplete="off" type="checkbox" name="victimsMicros" id="victimsMicros" />
               </li>
             </div>
           </div>
@@ -345,11 +345,11 @@
             <div>
               <li>
                 <label class="has-tooltip" for="sameSizeVore" title="Can you eat people your own size?">Same-size predator</label>
-                <input type="checkbox" checked="true" name="sameSizeVore" />
+                <input autocomplete="off" type="checkbox" checked="true" name="sameSizeVore" />
               </li>
               <li>
                 <label class="has-tooltip" for="sameSizeStomp" title="Can you stomp and sit on people your own size?">Same-size stomper</label>
-                <input type="checkbox" checked="true" name="sameSizeStomp" />
+                <input autocomplete="off" type="checkbox" checked="true" name="sameSizeStomp" />
               </li>
               <li>
                 <label for="footType">Foot type</label>
@@ -371,13 +371,13 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="footWear" name="footWear" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="footWear" name="footWear" />
             <label class="custom-header" for="footWear">Footwear</label>
             <div class="reveal-if-active">
               <li>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" checked="true" id="footSockEnabled" name="footSockEnabled" />
+                    <input autocomplete="off" class="custom-header-checkbox" type="checkbox" checked="true" id="footSockEnabled" name="footSockEnabled" />
                     <label class="custom-header" for="footSockEnabled">Socks</label>
                     <div class="reveal-if-active">
                       <li>
@@ -391,7 +391,7 @@
                 </div>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" checked="true" id="footShoeEnabled" name="footShoeEnabled" />
+                    <input autocomplete="off" class="custom-header-checkbox" type="checkbox" checked="true" id="footShoeEnabled" name="footShoeEnabled" />
                     <label class="custom-header" for="footShoeEnabled">Shoes</label>
                     <div class="reveal-if-active">
                       <li>
@@ -411,65 +411,67 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="analVore" name="analVore" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="analVore" name="analVore" />
             <label class="custom-header" for="analVore">Anal Vore</label>
             <div class="reveal-if-active">
               <li>
                 <label for="baseAnalVoreDiameter">Tailhole diameter</label>
-                <input type="number" step="any" id="baseAnalVoreDiameter" name="baseAnalVoreDiameter" placeholder="0.1">
+                <input autocomplete="off" type="number" step="any" id="baseAnalVoreDiameter" name="baseAnalVoreDiameter" data-unit="area" placeholder="0.1">
                 <div class="preview" id="baseAnalVoreDiameterPreview"></div>
               </li>
               <li>
                 <label class="has-tooltip" for="analVoreToStomach" title="Otherwise, bowels absorb/digest">Anal vore goes to stomach</label>
-                <input type="checkbox" name="analVoreToStomach" id="analVoreToStomach" />
+                <input autocomplete="off" type="checkbox" name="analVoreToStomach" id="analVoreToStomach" />
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="arousalEnabled" name="arousalEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="arousalEnabled" name="arousalEnabled" />
             <label class="custom-header" for="arousalEnabled">Arousal</label>
             <div class="reveal-if-active">
               <li>
                 <label class="has-tooltip" for="arousalFactor" title="Multiplies arousal gain by this much">Arousal multiplier</label>
-                <input type="number" step="any" name="arousalFactor" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" name="arousalFactor" placeholder="1" />
               </li>
               <li>
                 <label class="has-tooltip" for="edgeFactor" title="Multiplies edge gain by this much">Edge multiplier</label>
-                <input type="number" step="any" name="arousalFactor" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" name="arousalFactor" placeholder="1" />
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="hasTail" name="hasTail" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="hasTail" name="hasTail" />
             <label class="custom-header" for="hasTail">Tails</label>
             <div class="reveal-if-active">
               <li>
                 <label for="tailCount">Tail count</label>
-                <input type="number" step="any" name="tailCount" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" name="tailCount" placeholder="1" />
               </li>
               <li>
                 <label for="tailType">Tail type</label>
-                <input type="text" name="tailType" placeholder="slinky" />
+                <input autocomplete="off" type="text" name="tailType" placeholder="slinky" />
               </li>
               <li>
                 <label for="baseTailLength">Tail length</label>
-                <input type="number" step="any" name="baseTailLength" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" name="baseTailLength" id="baseTailLength" data-unit="length" placeholder="1" />
+                <div class="preview" id="baseTailLengthPreview"></div>
               </li>
               <li>
                 <label for="baseTailDiameter">Tail diameter</label>
-                <input type="number" step="any" name="baseTailDiameter" placeholder="0.3" />
+                <input autocomplete="off" type="number" step="any" name="baseTailDiameter" id="baseTailDiameter" data-unit="area" placeholder="0.3" />
+                <div class="preview" id="baseTailDiameterPreview"></div>
               </li>
               <li>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" id="tailMaw" name="tailMaw" />
+                    <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="tailMaw" name="tailMaw" />
                     <label class="custom-header" for="tailMaw">Tail Vore</label>
                     <div class="reveal-if-active">
                       <li>
                         <label for="tailStretchiness">Tail stretchiness</label>
-                        <input type="number" step="any" name="tailStretchiness" placeholder="1" />
+                        <input autocomplete="off" type="number" step="any" name="tailStretchiness" placeholder="1" />
                       </li>
                     </div>
                   </ul>
@@ -479,7 +481,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="hasPouch" name="hasPouch" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="hasPouch" name="hasPouch" />
             <label class="custom-header" for="hasPouch">Pouch</label>
             <div class="reveal-if-active">
               <li>
@@ -489,91 +491,91 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="maleParts" name="maleParts" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="maleParts" name="maleParts" />
             <label class="custom-header" for="maleParts">Male genitals</label>
             <div class="reveal-if-active">
               <li>
                 <label for="hasSheath">Sheath</label>
-                <input type="checkbox" id="hasSheath" name="hasSheath" checked="true" />
+                <input autocomplete="off" type="checkbox" id="hasSheath" name="hasSheath" checked="true" />
               </li>
               <li>
                 <label for="dickType">Cock type</label>
-                <input type="text" id="dickType" name="dickType" placeholder="canine" />
+                <input autocomplete="off" type="text" id="dickType" name="dickType" placeholder="canine" />
               </li>
               <li>
                 <label for="baseDickLength">Cock length</label>
-                <input type="number" step="any" id="baseDickLength" name="baseDickLength" placeholder="0.3" />
+                <input autocomplete="off" type="number" step="any" id="baseDickLength" name="baseDickLength" data-unit="length" placeholder="0.3" />
                 <div class="preview" id="baseDickLengthPreview"></div>
               </li>
               <li>
                 <label for="baseDickDiameter">Cock diameter</label>
-                <input type="number" step="any" id="baseDickDiameter" name="baseDickDiameter" placeholder="0.08" />
+                <input autocomplete="off" type="number" step="any" id="baseDickDiameter" name="baseDickDiameter" data-unit="length" placeholder="0.08" />
                 <div class="preview" id="baseDickDiameterPreview"></div>
               </li>
               <li>
                 <label for="dickStretchiness">Cock stretchiness</label>
-                <input type="number" step="any" name="dickStretchiness" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" name="dickStretchiness" placeholder="1" />
               </li>
               <li>
                 <label for="baseBallDiameter">Ball diameter</label>
-                <input type="number" step="any" id="baseBallDiameter" name="baseBallDiameter" placeholder="0.05" />
+                <input autocomplete="off" type="number" step="any" id="baseBallDiameter" name="baseBallDiameter" data-unit="length" placeholder="0.05" />
                 <div class="preview" id="baseBallDiameterPreview"></div>
               </li>
               <li>
                 <label for="baseCumRatio" class="has-tooltip" title="scales how much cum is released with each shot">Orgasm cum ratio</label>
-                <input type="number" step="any" id="baseCumRatio" name="baseCumRatio" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="baseCumRatio" name="baseCumRatio" placeholder="1" />
                 <div class="preview" id="baseCumRatioPreview"></div>
               </li>
               <li>
                 <label for="baseMass">Cum production factor</label>
-                <input type="number" step="any" id="cumScale" name="cumScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="cumScale" name="cumScale" placeholder="1" />
                 <div class="preview" id="cumScalePreview"></div>
               </li>
               <li>
                 <label for="cumStorageScale">Cum storage multiplier</label>
-                <input type="number" step="any" id="cumStorageScale" name="cumStorageScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="cumStorageScale" name="cumStorageScale" placeholder="1" />
                 <div class="preview" id="cumStorageScalePreview"></div>
               </li>
               <li>
                 <label for="baseCumDigestFactor">Cum digestion factor</label>
-                <input type="number" step="any" id="baseCumDigestFactor" name="baseCumDigestFactor" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="baseCumDigestFactor" name="baseCumDigestFactor" placeholder="1" />
                 <div class="preview" id="baseCumDigestFactorPreview"></div>
               </li>
               <li>
                 <label class="has-tooltip" for="cumScaleWithSize" title="If checked, produces more cum from the same prey as you get larger">Scale cum with size</label>
-                <input type="checkbox" id="cumScaleWithSize" name="cumScaleWithSize" />
+                <input autocomplete="off" type="checkbox" id="cumScaleWithSize" name="cumScaleWithSize" />
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="hasBreasts" name="hasBreasts" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="hasBreasts" name="hasBreasts" />
             <label class="custom-header" for="hasBreasts">Breasts</label>
             <div class="reveal-if-active">
               <li>
                 <label for="baseBreastDiameter">Breast diameter</label>
-                <input type="number" step="any" id="baseBreastDiameter" name="baseBreastDiameter" placeholder="0.1" />
+                <input autocomplete="off" type="number" step="any" id="baseBreastDiameter" name="baseBreastDiameter" data-unit="length" placeholder="0.1" />
                 <div class="preview" id="baseBreastDiameterPreview"></div>
               </li>
               <li>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" checked="true" id="lactationEnabled" name="lactationEnabled" />
+                    <input autocomplete="off" class="custom-header-checkbox" type="checkbox" checked="true" id="lactationEnabled" name="lactationEnabled" />
                     <label class="custom-header" for="lactationEnabled">Lactation</label>
                     <div class="reveal-if-active">
                       <li>
                         <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
-                        <input type="number" step="any" id="lactationFactor" name="lactationFactor" placeholder="0.25" />
+                        <input autocomplete="off" type="number" step="any" id="lactationFactor" name="lactationFactor" placeholder="0.25" />
                 <div class="preview" id="lactationFactorPreview"></div>
                       </li>
                       <li>
                         <label for="lactationScale">Milk production factor</label>
-                        <input type="number" step="any" id="lactationScale" name="lactationScale" placeholder="1" />
+                        <input autocomplete="off" type="number" step="any" id="lactationScale" name="lactationScale" placeholder="1" />
                 <div class="preview" id="lactationScalePreview"></div>
                       </li>
                       <li>
                         <label for="milkStorageScale">Milk storage multiplier</label>
-                        <input type="number" step="any" id="milkStorageScale" name="milkStorageScale" placeholder="1" />
+                        <input autocomplete="off" type="number" step="any" id="milkStorageScale" name="milkStorageScale" placeholder="1" />
                 <div class="preview" id="milkStorageScalePreview"></div>
                       </li>
                     </div>
@@ -583,21 +585,21 @@
               <li>
                 <div class="custom-category-sub">
                   <ul class="flex-outer-sub">
-                    <input class="custom-header-checkbox" type="checkbox" id="breastVore" name="breastVore" />
+                    <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="breastVore" name="breastVore" />
                     <label class="custom-header" for="breastVore">Breast Vore</label>
                     <div class="reveal-if-active">
                       <li>
                         <label for="breastStretchiness">Breast stretchiness</label>
-                        <input type="number" step="any" name="breastStretchiness" placeholder="1" />
+                        <input autocomplete="off" type="number" step="any" name="breastStretchiness" placeholder="1" />
                       </li>
                       <li>
                         <label for="baseMilkDigestFactor">Milk digestion factor</label>
-                        <input type="number" step="any" id="baseMilkDigestFactor" name="baseMilkDigestFactor" placeholder="1" />
+                        <input autocomplete="off" type="number" step="any" id="baseMilkDigestFactor" name="baseMilkDigestFactor" placeholder="1" />
                 <div class="preview" id="baseMilkDigestFactorPreview"></div>
                       </li>
                       <li>
                         <label class="has-tooltip" for="milkScaleWithSize" title="If checked, produces more milk from the same prey as you get larger">Scale milk with size</label>
-                        <input type="checkbox" id="milkScaleWithSize" name="milkScaleWithSize" />
+                        <input autocomplete="off" type="checkbox" id="milkScaleWithSize" name="milkScaleWithSize" />
                       </li>
                     </div>
                   </ul>
@@ -607,126 +609,126 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="femaleParts" name="femaleParts" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="femaleParts" name="femaleParts" />
             <label class="custom-header" for="femaleParts">Female genitals</label>
             <div class="reveal-if-active">
               <li>
                 <label for="baseVaginaLength">Slit length</label>
-                <input type="number" step="any" id="baseVaginaLength" name="baseVaginaLength" placeholder="0.1" />
+                <input autocomplete="off" type="number" step="any" id="baseVaginaLength" name="baseVaginaLength" data-unit="length" placeholder="0.1" />
                 <div class="preview" id="baseVaginaLengthPreview"></div>
               </li>
               <li>
                 <label for="baseVaginaWidth">Slit width</label>
-                <input type="number" step="any" id="baseVaginaWidth" name="baseVaginaWidth" placeholder="0.05" />
+                <input autocomplete="off" type="number" step="any" id="baseVaginaWidth" name="baseVaginaWidth" data-unit="length" placeholder="0.05" />
                 <div class="preview" id="baseVaginaWidthPreview"></div>
               </li>
               <li>
                 <label for="vaginaStretchiness">Slit stretchiness</label>
-                <input type="number" step="any" name="vaginaStretchiness" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" name="vaginaStretchiness" placeholder="1" />
               </li>
               <li>
                 <label for="baseFemcumRatio" class="has-tooltip" title="scales how much femcum is released with each shot">Orgasm femcum ratio</label>
-                <input type="number" step="any" id="baseFemcumRatio" name="baseFemcumRatio" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="baseFemcumRatio" name="baseFemcumRatio" placeholder="1" />
                 <div class="preview" id="baseFemcumRatioPreview"></div>
               </li>
               <li>
                 <label for="femcumScale">Femcum production factor</label>
-                <input type="number" step="any" id="femcumScale" name="femcumScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="femcumScale" name="femcumScale" placeholder="1" />
                 <div class="preview" id="femcumScalePreview"></div>
               </li>
               <li>
                 <label for="femcumStorageScale">Femcum storage multiplier</label>
-                <input type="number" step="any" id="femcumStorageScale" name="femcumStorageScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="femcumStorageScale" name="femcumStorageScale" placeholder="1" />
                 <div class="preview" id="femcumStorageScalePreview"></div>
               </li>
               <li>
                 <label for="baseFemcumDigestFactor">Femcum digestion factor</label>
-                <input type="number" step="any" id="baseFemcumDigestFactor" name="baseFemcumDigestFactor" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="baseFemcumDigestFactor" name="baseFemcumDigestFactor" placeholder="1" />
                 <div class="preview" id="baseFemcumDigestFactorPreview"></div>
               </li>
               <li>
                 <label class="has-tooltip" for="femcumScaleWithSize" title="If checked, produces more femcum from the same prey as you get larger">Scale femcum with size</label>
-                <input type="checkbox" id="femcumScaleWithSize" name="femcumScaleWithSize" />
+                <input autocomplete="off" type="checkbox" id="femcumScaleWithSize" name="femcumScaleWithSize" />
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="stenchEnabled" name="stenchEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="stenchEnabled" name="stenchEnabled" />
             <label class="custom-header" for="stenchEnabled">Stench</label>
             <div class="reveal-if-active">
               <li>
                 <label class="has-tooltip" for="basePawStenchArea" title="How many times your paw area should be covered in stench">Paw stench area</label>
-                <input type="number" step="any" id="basePawStenchArea" name="basePawStenchArea" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="basePawStenchArea" name="basePawStenchArea" placeholder="1" />
                 <div class="preview" id="basePawStenchAreaPreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="baseAssStenchArea" title="How many times your ass' area should be covered in stench">Ass stench area</label>
-                <input type="number" step="any" id="baseAssStenchArea" name="baseAssStenchArea" placeholder="1" />
+                <label class="has-tooltip" for="baseAssStenchArea" title="How many times your ass area should be covered in stench">Ass stench area</label>
+                <input autocomplete="off" type="number" step="any" id="baseAssStenchArea" name="baseAssStenchArea" placeholder="1" />
                 <div class="preview" id="baseAssStenchAreaPreview"></div>
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="gasEnabled" name="gasEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="gasEnabled" name="gasEnabled" />
             <label class="custom-header" for="gasEnabled">Gas</label>
             <div class="reveal-if-active">
               <li>
                 <label for="belchEnabled">Belching</label>
-                <input type="checkbox" checked="true" name="belchEnabled" />
+                <input autocomplete="off" type="checkbox" checked="true" name="belchEnabled" />
               </li>
               <li>
                 <label for="fartEnabled">Farting</label>
-                <input type="checkbox" name="fartEnabled" />
+                <input autocomplete="off" type="checkbox" name="fartEnabled" />
               </li>
               <li>
                 <label for="gasScale">Gas production factor</label>
-                <input type="number" step="any" id="gasScale" name="gasScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="gasScale" name="gasScale" placeholder="1" />
                 <div class="preview" id="gasScalePreview"></div>
               </li>
               <li>
                 <label for="gasStorageScale">Gas storage multiplier</label>
-                <input type="number" step="any" id="gasStorageScale" name="gasStorageScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="gasStorageScale" name="gasStorageScale" placeholder="1" />
                 <div class="preview" id="gasStorageScalePreview"></div>
               </li>
               <li>
                 <label for="baseGasDigestFactor">Gas digestion factor</label>
-                <input type="number" step="any" id="baseGasDigestFactor" name="baseGasDigestFactor" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="baseGasDigestFactor" name="baseGasDigestFactor" placeholder="1" />
                 <div class="preview" id="baseGasDigestFactorPreview"></div>
               </li>
               <li>
                 <label class="has-tooltip" for="gasScaleWithSize" title="If checked, produces more gas from the same prey as you get larger">Scale gas with size</label>
-                <input type="checkbox" id="gasScaleWithSize" name="gasScaleWithSize" />
+                <input autocomplete="off" type="checkbox" id="gasScaleWithSize" name="gasScaleWithSize" />
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="soulVoreEnabled" name="soulVoreEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="soulVoreEnabled" name="soulVoreEnabled" />
             <label class="custom-header" for="soulVoreEnabled">Soul Vore</label>
             <div class="reveal-if-active">
               <li>
                 <ul>
                   <label>Soul destination</label>
                   <li>
-                    <input type="radio" name="soulVoreType" id="soulvore-release" value="release">
+                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-release" value="release">
                     <label class="has-tooltip" for="soulvore-release">Released</label>
                   </li>
                   <li>
-                    <input type="radio" name="soulVoreType" id="soulvore-predscape" value="predscape">
+                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-predscape" value="predscape">
                     <label class="has-tooltip" for="soulvore-predscape" title="A sort of afterlife or 'other plane' within the predator">Predscape</label>
                   </li>
                   <li>
-                    <input type="radio" name="soulVoreType" checked="true" id="soulvore-afterlife" value="afterlife">
+                    <input autocomplete="off" type="radio" name="soulVoreType" checked="true" id="soulvore-afterlife" value="afterlife">
                     <label for="soulvore-afterlife">Afterlife</label>
                   </li>
                   <li>
-                    <input type="radio" name="soulVoreType" id="soulvore-body" value="body">
+                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-body" value="body">
                     <label class="has-tooltip" for="soulvore-body" title="Trapped on the predator's body">Predator's body</label>
                   </li>
                   <li>
-                    <input type="radio" name="soulVoreType" id="soulvore-oblivion" value="oblivion">
+                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-oblivion" value="oblivion">
                     <label for="soulvore-oblivion">Oblivion</label>
                   </li>
                 </ul>
@@ -735,42 +737,42 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="pissEnabled" name="pissEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="pissEnabled" name="pissEnabled" />
             <label class="custom-header" for="pissEnabled">Watersports</label>
             <div class="reveal-if-active">
               <li>
                 <label for="pissScale" >Piss production scale</label>
-                <input type="number" step="any" id="pissScale" name="pissScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="pissScale" name="pissScale" placeholder="1" />
                 <div class="preview" id="pissScalePreview"></div>
               </li>
               <li>
                 <label for="pissStorageScale">Piss storage multiplier</label>
-                <input type="number" step="any" id="pissStorageScale" name="pissStorageScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="pissStorageScale" name="pissStorageScale" placeholder="1" />
                 <div class="preview" id="pissStorageScalePreview"></div>
               </li>
               <div class="custom-category-sub">
                 <ul class="flex-outer-sub">
-                  <input class="custom-header-checkbox" type="checkbox" id="bladderVore" name="bladderVore" />
+                  <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="bladderVore" name="bladderVore" />
                   <label class="custom-header" for="bladderVore">Bladder Vore</label>
                   <div class="reveal-if-active">
                     <li>
                       <label for="baseUrethraDiameter">Urethra diameter</label>
-                      <input type="number" step="any" id="baseUrethraDiameter" name="baseUrethraDiameter" placeholder="0.03" />
+                      <input autocomplete="off" type="number" step="any" id="baseUrethraDiameter" name="baseUrethraDiameter" data-unit="length" placeholder="0.03" />
                 <div class="preview" id="baseUrethraDiameterPreview"></div>
                     </li>
                     <li>
                       <label for="urethraStretchiness">Urethra stretchiness</label>
-                      <input type="number" step="any" id="urethraStretchiness" name="urethraStretchiness" placeholder="5" />
+                      <input autocomplete="off" type="number" step="any" id="urethraStretchiness" name="urethraStretchiness" placeholder="5" />
                 <div class="preview" id="urethraStretchinessPreview"></div>
                     </li>
                     <li>
                       <label for="basePissDigestFactor">Piss digestion factor</label>
-                      <input type="number" step="any" id="basePissDigestFactor" name="basePissDigestFactor" placeholder="1" />
+                      <input autocomplete="off" type="number" step="any" id="basePissDigestFactor" name="basePissDigestFactor" placeholder="1" />
                 <div class="preview" id="basePissDigestFactorPreview"></div>
                     </li>
                     <li>
                       <label class="has-tooltip" for="pissScaleWithSize" title="If checked, produces more piss from the same prey as you get larger">Scale piss with size</label>
-                      <input type="checkbox" id="pissScaleWithSize" name="pissScaleWithSize" />
+                      <input autocomplete="off" type="checkbox" id="pissScaleWithSize" name="pissScaleWithSize" />
                     </li>
                   </div>
                 </ul>
@@ -779,7 +781,7 @@
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="scatEnabled" name="scatEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="scatEnabled" name="scatEnabled" />
             <label class="custom-header" for="scatEnabled">Scat</label>
             <div class="reveal-if-active">
               <li>
@@ -787,28 +789,28 @@
               </li>
               <li>
                 <label for="baseScatDigestFactor">Scat digestion factor</label>
-                <input type="number" step="any" id="baseScatDigestFactor" name="baseScatDigestFactor" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="baseScatDigestFactor" name="baseScatDigestFactor" placeholder="1" />
                 <div class="preview" id="baseScatDigestFactorPreview"></div>
               </li>
               <li>
                 <label class="has-tooltip" for="scatScale" title="1 = 1% fill per second">Passive scat production</label>
-                <input type="number" step="any" id="scatScale" name="scatScale" placeholder="0" />
+                <input autocomplete="off" type="number" step="any" id="scatScale" name="scatScale" placeholder="0" />
                 <div class="preview" id="scatScalePreview"></div>
               </li>
               <li>
                 <label for="scatStorageScale">Scat storage multiplier</label>
-                <input type="number" step="any" id="scatStorageScale" name="scatStorageScale" placeholder="1" />
+                <input autocomplete="off" type="number" step="any" id="scatStorageScale" name="scatStorageScale" placeholder="1" />
                 <div class="preview" id="scatStorageScalePreview"></div>
               </li>
               <li>
                 <label class="has-tooltip" for="scatScaleWithSize" title="If checked, produces more scat from the same prey as you get larger">Scale scat with size</label>
-                <input type="checkbox" id="scatScaleWithSize" name="scatScaleWithSize" />
+                <input autocomplete="off" type="checkbox" id="scatScaleWithSize" name="scatScaleWithSize" />
               </li>
             </div>
           </div>
 
           <div class="custom-category">
-            <input class="custom-header-checkbox" type="checkbox" id="gooEnabled" name="gooEnabled" />
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="gooEnabled" name="gooEnabled" />
             <label class="custom-header" for="gooEnabled">Goo (not in yet)</label>
           </div>
         </ul>

@@ -1428,6 +1428,18 @@ function toggle_units()
   update();
 }
 
+function toggle_units_options()
+{
+  switch(unit) {
+    case "metric": unit = "customary"; break;
+    case "customary": unit = "metric"; break;
+  }
+
+  document.getElementById("button-units-options").innerHTML = "Units: " + unit.charAt(0).toUpperCase() + unit.slice(1);
+
+  updateAllPreviews();
+}
+
 function toggle_numbers() {
   switch(numbers) {
     case "full": numbers="prefix"; break;
@@ -3397,11 +3409,30 @@ function updateAllPreviews() {
 }
 
 function updatePreview(name) {
+  let scale = document.getElementById("scale").value;
+  if (scale == "")
+    scale = document.getElementById("scale").placeholder;
+
   let value = document.getElementById(name).value;
+  let unitType = document.getElementById(name).dataset.unit;
+
   if (value == "")
     value = document.getElementById(name).placeholder;
-  document.getElementById(name + "Preview").innerHTML = value;
+
+  let result = "";
+
+  if (unitType == "length")
+    result = length(value * scale, unit);
+  else if (unitType == "area")
+    result = area(value * scale * scale, unit);
+  else if (unitType == "volume")
+    result = volume(value * scale * scale * scale, unit);
+  else if (unitType == "mass")
+    result = mass(value * scale * scale * scale, unit);
+
+  document.getElementById(name + "Preview").innerHTML = result;
 }
+
 function debugLog() {
   console.log("Your character settings:");
   console.log(JSON.stringify(generateSettings()));
@@ -3426,7 +3457,11 @@ window.addEventListener('load', function(event) {
   document.querySelectorAll("input[type='number']").forEach(function(x) {
     x.addEventListener("input", function() { updatePreview(x.id); });
   });
-  
+
+  updateAllPreviews();
+
+  document.querySelector("#scale").addEventListener("input", updateAllPreviews);
+
   presets.sort(function(x,y) {return x.name.localeCompare(y.name); } );
 
   let list = document.getElementById("character-presets");
@@ -3454,6 +3489,8 @@ window.addEventListener('load', function(event) {
 
   document.getElementById("button-dark-mode-options").addEventListener("click",toggleDarkMode);
   document.getElementById("button-dark-mode-game").addEventListener("click",toggleDarkMode);
+
+  document.getElementById("button-units-options").addEventListener("click",toggle_units_options);
 
   document.getElementById("button-stats").addEventListener("click",showStats);
   document.getElementById("button-debug-log").addEventListener("click",debugLog);

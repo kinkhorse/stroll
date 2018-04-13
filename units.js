@@ -121,6 +121,14 @@ function length(m, type="metric", singular=false) {
   }
 }
 
+function area(m2, type="metric", singular=false) {
+  switch(type) {
+    case "metric": return metricArea(m2, singular);
+    case "customary": return customaryArea(m2, singular);
+    case "approx": return approxArea(m2, singular);
+  }
+}
+
 function volume(m3, type="metric", singular=false) {
   switch(type) {
     case "metric": return metricVolume(m3, singular);
@@ -245,6 +253,34 @@ function approxLength(m, singular=false) {
   } else {
     let length = round(m/4.40e26,3);
     return length + (singular || length == 1 ? " universe" : " universes");
+  }
+}
+
+function metricArea(m2, singular=false) {
+  if (m2 < 1/1000) {
+    let area = round(m2 * 10000,2);
+    return area + (singular || area == 1 ? " square centimeter" : " square centimeters");
+  } else if (m2 < 100000) {
+    let area = round(m2 * 100,0);
+    return area + (singular || area == 1 ? " square meter" : " square centimeters");
+  } else {
+    let area = round(m2 / 1e6,2);
+    return area + (singular || area == 1 ? " kilometer" : " square kilometers");
+  }
+}
+
+function customaryArea(m2, singular=false) {
+  let ft2 = m2 * 3.28084 * 3.28084;
+
+  if (ft2 < 1) {
+    let area = round(ft2 * 144,0);
+    return area + (singular || area == 1 ? " square inch" : " square inches");
+  } else if (ft2 < 5280 * 5280 / 10) {
+    let area = round(ft2,1);
+    return area + (singular || area == 1 ? " square foot" : " square feet");
+  } else {
+    let length = round(ft2 /5280 / 5280,1);
+    return area + (singular || area == 1 ? " square mile" : " square miles");
   }
 }
 
