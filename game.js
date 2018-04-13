@@ -2962,6 +2962,7 @@ function grow_lots()
 
 function resetSettings() {
   document.forms.namedItem("custom-species-form").reset();
+  updateAllPreviews();
 }
 
 function loadPreset() {
@@ -3052,6 +3053,7 @@ function loadSettings(settings = null) {
       }
     }
   }
+  updateAllPreviews();
 }
 
 function add_victim_people(category, prey) {
