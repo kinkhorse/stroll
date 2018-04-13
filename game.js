@@ -3385,10 +3385,23 @@ function registerActions() {
   buttons.forEach( function(button) {
     let name = button.id;
     name = name.replace(/button-action-/,"");
-    button.addEventListener("click", function() { window[name]() });
+    button.addEventListener("click", function() { window[name](); });
   });
 }
 
+function updateAllPreviews() {
+  document.querySelectorAll(".preview").forEach(function(prev) {
+    let name = prev.id.replace("Preview","");
+    updatePreview(name);
+  });
+}
+
+function updatePreview(name) {
+  let value = document.getElementById(name).value;
+  if (value == "")
+    value = document.getElementById(name).placeholder;
+  document.getElementById(name + "Preview").innerHTML = value;
+}
 function debugLog() {
   console.log("Your character settings:");
   console.log(JSON.stringify(generateSettings()));
@@ -3410,6 +3423,10 @@ window.addEventListener('load', function(event) {
     }
   }());
 
+  document.querySelectorAll("input[type='number']").forEach(function(x) {
+    x.addEventListener("input", function() { updatePreview(x.id); });
+  });
+  
   presets.sort(function(x,y) {return x.name.localeCompare(y.name); } );
 
   let list = document.getElementById("character-presets");

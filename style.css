@@ -301,13 +301,17 @@ body.dark input[type="checkbox"]:checked+
 
 .flex-outer label,
 .flex-outer > div > div > li > label {
-  flex: 1 0 150px;
+  flex: 0 0 200px;
 }
 
 .flex-outer > li > label + *,
 .flex-outer label + *,
 .flex-inner {
-  flex: 1 0 200px;
+  flex: 1 0 100px;
+}
+
+.preview {
+  flex: 1 0 100px;
 }
 
 .flex-outer-sub {
