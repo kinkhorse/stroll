@@ -3415,13 +3415,21 @@ function updatePreview(name) {
   if (scale == "")
     scale = document.getElementById("scale").placeholder;
 
-  let value = document.getElementById(name).value;
+  let element = document.getElementById(name);
+
+  if (element == undefined)
+    return;
+
+  let value = element.value;
   let unitType = document.getElementById(name).dataset.unit;
 
   if (value == "")
     value = document.getElementById(name).placeholder;
 
   let result = "";
+
+  if (unitType == undefined)
+    return;
 
   if (unitType == "length")
     result = length(value * scale, unit);
