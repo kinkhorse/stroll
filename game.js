@@ -1980,6 +1980,22 @@ function cleavage_absorb()
   macro.arouse((preyMass > 0 ? 15 : 5));
 }
 
+function breast_toy()
+{
+  let prey = macro.cleavage.container;
+  let line = describe("breast-toy", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
+
+  update([sound,line,linesummary,newline]);
+  macro.arouse(15);
+}
+
 function breast_crush()
 {
   let area = macro.breastArea;
@@ -2084,6 +2100,22 @@ function unbirth()
   macro.arouse(20);
 }
 
+function slit_toy()
+{
+  let prey = macro.womb.contents[0].merge(macro.womb.contents[1]);
+  let line = describe("slit-toy", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
+
+  update([sound,line,linesummary,newline]);
+  macro.arouse(15);
+}
+
 function sheath_stuff()
 {
   let area = Math.min(macro.handArea, macro.dickArea);
@@ -2103,10 +2135,10 @@ function sheath_stuff()
   macro.arouse(15);
 }
 
-function sheath_squeeze()
+function sheath_toy()
 {
   let prey = macro.sheath.container;
-  let line = describe("sheath-squeeze", prey, macro, verbose);
+  let line = describe("sheath-toy", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
@@ -3187,7 +3219,7 @@ function startGame(e) {
       enable_victim("sheath-absorb","Absorbed by sheath");
 
       enable_button("sheath_stuff");
-      enable_button("sheath_squeeze");
+      enable_button("sheath_toy");
       enable_button("sheath_clench");
       enable_button("sheath_absorb");
     }
@@ -3203,6 +3235,7 @@ function startGame(e) {
     enable_panel("vagina");
 
     enable_button("unbirth");
+    enable_button("slit_toy");
 
     enable_stat("femcum");
 
@@ -3222,6 +3255,7 @@ function startGame(e) {
     enable_panel("breasts");
 
     enable_button("breast_crush");
+    enable_button("breast_toy");
     enable_button("cleavage_stuff");
     enable_button("cleavage_crush");
     enable_button("cleavage_drop");

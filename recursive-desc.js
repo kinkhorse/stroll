@@ -18,11 +18,12 @@ function getDefault(name) {
 
 var actions = ["eat","chew","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
-"breast-vore","breast-milk","unbirth","sheath-stuff","sheath-squeeze","sheath-clench","sheath-crush",
+"breast-vore","breast-milk","unbirth","sheath-stuff","sheath-clench","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
-"wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat"];
+"wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
+"sheath-toy","slit-toy","breast-toy",""];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -309,7 +310,23 @@ function defaultSheathStuff(container, macro, verbose) {
     return "You pluck " + container.describe(verbose) + " from the ground and slip them into your musky sheath.";
 }
 
-function defaultSheathSqueeze(container, macro, verbose) {
+function defaultBreastToy(container, macro, verbose) {
+  if (container.count > 0) {
+    return "You smush your breasts together, squeezing " + container.describe(false) + " between the heavy mounds.";
+  } else {
+    return "You smush your breasts together.";
+  }
+}
+
+function defaultSlitToy(container, macro, verbose) {
+  if (container.count > 0) {
+    return "You slip your fingers into your snatch, teasing yourself and pushing the " + container.describe(false) + " within a little deeper.";
+  } else {
+    return "Your slp your fingers into your snatch and tease yourself.";
+  }
+}
+
+function defaultSheathToy(container, macro, verbose) {
   if (container.count > 0) {
     if (macro.orgasm) {
       return "You stroke your spurting cock, then reach down to give your sheath a firm <i>squeeze</i>. Anything within has been ground away to nothingness by the force of your orgasm.";
