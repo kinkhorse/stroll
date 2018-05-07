@@ -261,8 +261,8 @@ function metricArea(m2, singular=false) {
     let area = round(m2 * 10000,2);
     return area + (singular || area == 1 ? " square centimeter" : " square centimeters");
   } else if (m2 < 100000) {
-    let area = round(m2 * 100,0);
-    return area + (singular || area == 1 ? " square meter" : " square centimeters");
+    let area = round(m2,0);
+    return area + (singular || area == 1 ? " square meter" : " square meters");
   } else {
     let area = round(m2 / 1e6,2);
     return area + (singular || area == 1 ? " kilometer" : " square kilometers");
