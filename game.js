@@ -972,13 +972,13 @@ let macro =
   "pissEnabled": true,
   "pissScale": 1,
   "baseUrethraDiameter": 0.03,
-  "urethraStretch": 5,
+  "urethraStretchiness": 5,
 
   get urethraDiameter() {
     return this.scaling(this.baseUrethraDiameter, this.scale, 1);
   },
   get urethraStretchDiameter() {
-    return this.urethraDiameter * this.urethraStretch;
+    return this.urethraDiameter * this.urethraStretchiness;
   },
   get urethraStretchArea() {
     return (this.urethraStretchDiameter * this.urethraStretchDiameter / 4) * Math.PI;
