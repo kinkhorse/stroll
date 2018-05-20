@@ -299,9 +299,25 @@ body.dark input[type="checkbox"]:checked+
   width: 500px;
 }
 
-.flex-outer label,
-.flex-outer > div > div > li > label {
-  flex: 0 0 200px;
+.flex-outer label {
+  flex: 1 1 200px;
+}
+
+.flex-outer input[type="radio"],
+.flex-outer input[type="checkbox"] {
+  display: none;
+}
+
+.flex-outer input[type="radio"] + label:not(.custom-header),
+.flex-outer input[type="checkbox"] + label:not(.custom-header) {
+  color: #888;
+  background: #311;
+}
+
+.flex-outer input[type="radio"]:checked + label:not(.custom-header),
+.flex-outer input[type="checkbox"]:checked + label:not(.custom-header) {
+  color: #fff;
+  background: #131;
 }
 
 .flex-outer > li > label + *,
