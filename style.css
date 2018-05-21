@@ -307,7 +307,8 @@ body.dark input[type="checkbox"]:checked+
 .flex-outer input[type="radio"] + label:not(.custom-header),
 .flex-outer input[type="checkbox"] + label:not(.custom-header) {
   user-select: none;
-  flex: 1 0 300px;
+  flex: 1 0 400px;
+  font-size: 24px;
 }
 
 body.dark .flex-outer input[type="radio"] + label:not(.custom-header),
