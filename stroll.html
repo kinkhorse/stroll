@@ -420,8 +420,8 @@
                 <div class="preview" id="baseAnalVoreDiameterPreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="analVoreToStomach" title="Otherwise, bowels absorb/digest">Anal vore goes to stomach</label>
                 <input autocomplete="off" type="checkbox" name="analVoreToStomach" id="analVoreToStomach" />
+                <label class="has-tooltip" for="analVoreToStomach" title="Otherwise, bowels absorb/digest">Anal vore goes to stomach</label>
               </li>
             </div>
           </div>
@@ -495,10 +495,6 @@
             <label class="custom-header" for="maleParts">Male genitals</label>
             <div class="reveal-if-active">
               <li>
-                <label for="hasSheath">Sheath</label>
-                <input autocomplete="off" type="checkbox" id="hasSheath" name="hasSheath" checked="true" />
-              </li>
-              <li>
                 <label for="dickType">Cock type</label>
                 <input autocomplete="off" type="text" id="dickType" name="dickType" placeholder="canine" />
               </li>
@@ -542,8 +538,12 @@
                 <div class="preview" id="baseCumDigestFactorPreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="cumScaleWithSize" title="If checked, produces more cum from the same prey as you get larger">Scale cum with size</label>
+                <input autocomplete="off" type="checkbox" id="hasSheath" name="hasSheath" checked="true" />
+                <label for="hasSheath">Sheath</label>
+              </li>
+              <li>
                 <input autocomplete="off" type="checkbox" id="cumScaleWithSize" name="cumScaleWithSize" />
+                <label class="has-tooltip" for="cumScaleWithSize" title="If checked, produces more cum from the same prey as you get larger">Scale cum with size</label>
               </li>
             </div>
           </div>
@@ -566,17 +566,17 @@
                       <li>
                         <label for="lactationFactor" class="has-tooltip" title="scales how much milk is released with each squeeze">Lactation ratio</label>
                         <input autocomplete="off" type="number" step="any" id="lactationFactor" name="lactationFactor" placeholder="0.25" />
-                <div class="preview" id="lactationFactorPreview"></div>
+                        <div class="preview" id="lactationFactorPreview"></div>
                       </li>
                       <li>
                         <label for="lactationScale">Milk production factor</label>
                         <input autocomplete="off" type="number" step="any" id="lactationScale" name="lactationScale" placeholder="1" />
-                <div class="preview" id="lactationScalePreview"></div>
+                        <div class="preview" id="lactationScalePreview"></div>
                       </li>
                       <li>
                         <label for="milkStorageScale">Milk storage multiplier</label>
                         <input autocomplete="off" type="number" step="any" id="milkStorageScale" name="milkStorageScale" placeholder="1" />
-                <div class="preview" id="milkStorageScalePreview"></div>
+                        <div class="preview" id="milkStorageScalePreview"></div>
                       </li>
                     </div>
                   </ul>
@@ -598,8 +598,8 @@
                 <div class="preview" id="baseMilkDigestFactorPreview"></div>
                       </li>
                       <li>
-                        <label class="has-tooltip" for="milkScaleWithSize" title="If checked, produces more milk from the same prey as you get larger">Scale milk with size</label>
                         <input autocomplete="off" type="checkbox" id="milkScaleWithSize" name="milkScaleWithSize" />
+                        <label class="has-tooltip" for="milkScaleWithSize" title="If checked, produces more milk from the same prey as you get larger">Scale milk with size</label>
                       </li>
                     </div>
                   </ul>
@@ -647,8 +647,8 @@
                 <div class="preview" id="baseFemcumDigestFactorPreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="femcumScaleWithSize" title="If checked, produces more femcum from the same prey as you get larger">Scale femcum with size</label>
                 <input autocomplete="off" type="checkbox" id="femcumScaleWithSize" name="femcumScaleWithSize" />
+                <label class="has-tooltip" for="femcumScaleWithSize" title="If checked, produces more femcum from the same prey as you get larger">Scale femcum with size</label>
               </li>
             </div>
           </div>
@@ -698,8 +698,8 @@
                 <div class="preview" id="baseGasDigestFactorPreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="gasScaleWithSize" title="If checked, produces more gas from the same prey as you get larger">Scale gas with size</label>
                 <input autocomplete="off" type="checkbox" id="gasScaleWithSize" name="gasScaleWithSize" />
+                <label class="has-tooltip" for="gasScaleWithSize" title="If checked, produces more gas from the same prey as you get larger">Scale gas with size</label>
               </li>
             </div>
           </div>
@@ -708,31 +708,27 @@
             <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="soulVoreEnabled" name="soulVoreEnabled" />
             <label class="custom-header" for="soulVoreEnabled">Soul Vore</label>
             <div class="reveal-if-active">
-              <li>
-                <ul>
-                  <label>Soul destination</label>
-                  <li>
-                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-release" value="release">
-                    <label class="has-tooltip" for="soulvore-release">Released</label>
-                  </li>
-                  <li>
-                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-predscape" value="predscape">
-                    <label class="has-tooltip" for="soulvore-predscape" title="A sort of afterlife or 'other plane' within the predator">Predscape</label>
-                  </li>
-                  <li>
-                    <input autocomplete="off" type="radio" name="soulVoreType" checked="true" id="soulvore-afterlife" value="afterlife">
-                    <label for="soulvore-afterlife">Afterlife</label>
-                  </li>
-                  <li>
-                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-body" value="body">
-                    <label class="has-tooltip" for="soulvore-body" title="Trapped on the predator's body">Predator's body</label>
-                  </li>
-                  <li>
-                    <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-oblivion" value="oblivion">
-                    <label for="soulvore-oblivion">Oblivion</label>
-                  </li>
-                </ul>
-              </li>
+                <label>Soul destination</label>
+                <li>
+                  <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-release" value="release">
+                  <label class="has-tooltip" for="soulvore-release">Released</label>
+                </li>
+                <li>
+                  <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-predscape" value="predscape">
+                  <label class="has-tooltip" for="soulvore-predscape" title="A sort of afterlife or 'other plane' within the predator">Predscape</label>
+                </li>
+                <li>
+                  <input autocomplete="off" type="radio" name="soulVoreType" checked="true" id="soulvore-afterlife" value="afterlife">
+                  <label for="soulvore-afterlife">Afterlife</label>
+                </li>
+                <li>
+                  <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-body" value="body">
+                  <label class="has-tooltip" for="soulvore-body" title="Trapped on the predator's body">Predator's body</label>
+                </li>
+                <li>
+                  <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-oblivion" value="oblivion">
+                  <label for="soulvore-oblivion">Oblivion</label>
+                </li>
             </div>
           </div>
 
@@ -758,21 +754,21 @@
                     <li>
                       <label for="baseUrethraDiameter">Urethra diameter</label>
                       <input autocomplete="off" type="number" step="any" id="baseUrethraDiameter" name="baseUrethraDiameter" data-unit="length" placeholder="0.03" />
-                <div class="preview" id="baseUrethraDiameterPreview"></div>
+                      <div class="preview" id="baseUrethraDiameterPreview"></div>
                     </li>
                     <li>
                       <label for="urethraStretchiness">Urethra stretchiness</label>
                       <input autocomplete="off" type="number" step="any" id="urethraStretchiness" name="urethraStretchiness" placeholder="5" />
-                <div class="preview" id="urethraStretchinessPreview"></div>
+                      <div class="preview" id="urethraStretchinessPreview"></div>
                     </li>
                     <li>
                       <label for="basePissDigestFactor">Piss digestion factor</label>
                       <input autocomplete="off" type="number" step="any" id="basePissDigestFactor" name="basePissDigestFactor" placeholder="1" />
-                <div class="preview" id="basePissDigestFactorPreview"></div>
+                      <div class="preview" id="basePissDigestFactorPreview"></div>
                     </li>
                     <li>
-                      <label class="has-tooltip" for="pissScaleWithSize" title="If checked, produces more piss from the same prey as you get larger">Scale piss with size</label>
                       <input autocomplete="off" type="checkbox" id="pissScaleWithSize" name="pissScaleWithSize" />
+                      <label class="has-tooltip" for="pissScaleWithSize" title="If checked, produces more piss from the same prey as you get larger">Scale piss with size</label>
                     </li>
                   </div>
                 </ul>
@@ -803,8 +799,8 @@
                 <div class="preview" id="scatStorageScalePreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="scatScaleWithSize" title="If checked, produces more scat from the same prey as you get larger">Scale scat with size</label>
                 <input autocomplete="off" type="checkbox" id="scatScaleWithSize" name="scatScaleWithSize" />
+                <label class="has-tooltip" for="scatScaleWithSize" title="If checked, produces more scat from the same prey as you get larger">Scale scat with size</label>
               </li>
             </div>
           </div>

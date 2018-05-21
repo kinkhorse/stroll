@@ -299,10 +299,6 @@ body.dark input[type="checkbox"]:checked+
   width: 500px;
 }
 
-.flex-outer label {
-  flex: 1 1 200px;
-}
-
 .flex-outer input[type="radio"],
 .flex-outer input[type="checkbox"] {
   display: none;
@@ -311,6 +307,7 @@ body.dark input[type="checkbox"]:checked+
 .flex-outer input[type="radio"] + label:not(.custom-header),
 .flex-outer input[type="checkbox"] + label:not(.custom-header) {
   user-select: none;
+  flex: 1 0 300px;
 }
 
 body.dark .flex-outer input[type="radio"] + label:not(.custom-header),
@@ -337,37 +334,28 @@ body.light .flex-outer input[type="checkbox"]:checked + label:not(.custom-header
   background: #afa;
 }
 
-.flex-outer > li > label + *,
-.flex-outer label + *,
-.flex-inner {
-  flex: 1 0 100px;
+.flex-outer label {
+  flex: 0 1 40%;
+}
+
+.flex-outer label + * {
+  flex: 1 1 20%;
 }
 
 .preview {
-  flex: 1 0 100px;
+  flex: 1 1 10%;
 }
 
 .flex-outer-sub {
   padding: 0px;
+  align-items: center;
 }
 
-.flex-outer-sub li,
-.flex-inner {
+.flex-outer-sub li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  width: 400px;
-}
-
-.flex-outer-sub label,
-.flex-outer-sub > div > div > li > label {
-  flex: 1 0 150px;
-}
-
-.flex-outer-sub > li > label + *,
-.flex-outer-sub label + *,
-.flex-inner {
-  flex: 1 0 200px;
+  width: 80%;
 }
 
 body.light .has-tooltip {
