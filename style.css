@@ -310,14 +310,31 @@ body.dark input[type="checkbox"]:checked+
 
 .flex-outer input[type="radio"] + label:not(.custom-header),
 .flex-outer input[type="checkbox"] + label:not(.custom-header) {
+  user-select: none;
+}
+
+body.dark .flex-outer input[type="radio"] + label:not(.custom-header),
+body.dark .flex-outer input[type="checkbox"] + label:not(.custom-header) {
   color: #888;
   background: #311;
 }
 
-.flex-outer input[type="radio"]:checked + label:not(.custom-header),
-.flex-outer input[type="checkbox"]:checked + label:not(.custom-header) {
+body.dark .flex-outer input[type="radio"]:checked + label:not(.custom-header),
+body.dark .flex-outer input[type="checkbox"]:checked + label:not(.custom-header) {
   color: #fff;
   background: #131;
+}
+
+body.light .flex-outer input[type="radio"] + label:not(.custom-header),
+body.light .flex-outer input[type="checkbox"] + label:not(.custom-header) {
+  color: #555;
+  background: #faa;
+}
+
+body.light .flex-outer input[type="radio"]:checked + label:not(.custom-header),
+body.light .flex-outer input[type="checkbox"]:checked + label:not(.custom-header) {
+  color: #111;
+  background: #afa;
 }
 
 .flex-outer > li > label + *,
