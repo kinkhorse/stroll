@@ -2854,6 +2854,7 @@ function update(lines = [])
 function stylePercentage(name, storage) {
   document.getElementById(name).innerHTML = name + ": " + transformNumbers(volume(storage.amount,unit,false));
   let meterPos = 150 - storage.amount / storage.limit * 150;
+  meterPos = meterPos < 0 ? 0 : meterPos;
   document.querySelector("#" + name + "Meter .fill").style.setProperty("transform", "translate(0px, " + Math.round(meterPos) + "px)");
 }
 
