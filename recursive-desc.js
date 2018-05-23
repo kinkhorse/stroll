@@ -380,7 +380,7 @@ function defaultSheathAbsorb(container, macro, verbose) {
   if (container.count > 0)
     return "You grip your sheath and give it a firm <i>squeeze</i>, abruptly absorbing " + container.describe(false) + " into your musky body.";
   else
-    return defaultSheathSqueeze(container, macro, verbose);
+    return defaultSheathToy(container, macro, verbose);
 }
 
 function defaultCockVore(container, macro, verbose) {
@@ -441,7 +441,7 @@ function defaultFemaleOrgasm(container, macro, verbose) {
   if (container.count == 0)
     return "Your moist slit sprays $TIMES times, gushing out $VOLUME of slick femcum.";
   else if (isSadistic(macro))
-    return "Your quivering slit sprays $VOLUME of your intoxicating femcum, dissolving " + container.describe(verbose) + "in an unstoppable torrent of deadly lust.";
+    return "Your quivering slit sprays $VOLUME of your intoxicating femcum, dissolving " + container.describe(verbose) + " in an unstoppable torrent of deadly lust.";
   else if (isFatal(macro))
     return "Your moist slit sprays $VOLUME of slick femcum, obliterating " + container.describe(verbose) + " in $TIMES consecutive bursts of lust.";
   else

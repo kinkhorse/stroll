@@ -295,7 +295,7 @@ function metricVolume(m3, singular=false) {
     let volume = round(m3, 0);
     return volume + (singular || volume == 1 ? " cubic meter" : " cubic meters");
   } else if (m3 < 1e12){
-    let volume = round(m3/1e9, 6);
+    let volume = round(m3/1e9, 3);
     return volume + (singular || volume == 1 ? " cubic kilometer" : " cubic kilometers");
   } else {
     let volume = round(m3/1e9, 0);

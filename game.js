@@ -3121,6 +3121,7 @@ function enable_panel(name) {
 
 function enable_stat(name) {
   document.getElementById(name).style.display = 'block';
+  document.querySelector("#" + name + "Meter .meterLabel").style.display = 'block';
 }
 
 function enable_growth_part(name) {
