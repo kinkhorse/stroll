@@ -100,7 +100,36 @@ body.dark #log {
 .stat-line-hidden {
   font-weight: normal;
   font-size: 12pt;
+}
+
+.stat-line-hidden {
   display: none;
+  background-color: #f00;
+  position: relative;
+}
+
+.stat-line-hidden:before {
+  content: attr(data-stat);
+  position: absolute;
+  text-align: center;
+  top: 5px;
+  left: 0;
+  right: 0;
+}
+
+.stat-line-hidden .value {
+  background-color: #0f0;
+  display: inline-block;
+  height: 24px;
+  width: attr(data-percent percentage);
+}
+
+progress {
+  background: blue;
+}
+
+.stat-percent-full {
+  background: #f00;
 }
 
 .sidebar {
@@ -456,4 +485,70 @@ ul {
   width: 50%;
   height: 100px;
   background: #555;
+}
+
+/* SRC: https://stackoverflow.com/questions/29738787/filling-water-animation/29740828 */
+
+.meter {
+  border-radius: 0%;
+  width: 10%;
+  height: 150px;
+  background: #000;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  display: inline-block;
+}
+
+.meter #waveShape {
+  animation-name: waveAction;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 0.5s;
+  width:300px;
+  height: 150px;
+  fill: #04ACFF;
+}
+
+.meter#cumMeter #waveShape {
+  fill: #EEEEEE;
+}
+
+.meter#femcumMeter #waveShape {
+  fill: #999999;
+}
+
+.meter#milkMeter #waveShape {
+  fill: #FFFFFF;
+}
+
+.meter#gasMeter #waveShape {
+  fill: #33FF33;
+}
+
+.meter#pissMeter #waveShape {
+  fill: #FFFF33;
+}
+
+.meter#scatMeter #waveShape {
+  animation-duration: 2s;
+  fill: #552222;
+}
+
+@keyframes fillAction {
+    0% {
+        transform: translate(0, 150px);
+    }
+    100% {
+        transform: translate(0, -5px);
+    }
+}
+
+@keyframes waveAction {
+    0% {
+        transform: translate(-150px, 0);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
 }

@@ -2842,19 +2842,26 @@ function update(lines = [])
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.totalMass, unit));
   document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
   document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
-  document.getElementById("cum").innerHTML = "Cum: " + transformNumbers(volume(macro.cumStorage.amount,unit,false));
-  document.getElementById("cumPercent").innerHTML = Math.round(macro.cumStorage.amount / macro.cumStorage.limit * 100) + "%";
-  document.getElementById("femcum").innerHTML = "Femcum: " + transformNumbers(volume(macro.femcumStorage.amount,unit,false));
-  document.getElementById("femcumPercent").innerHTML = Math.round(macro.femcumStorage.amount / macro.femcumStorage.limit * 100) + "%";
-  document.getElementById("milk").innerHTML = "Milk: " + transformNumbers(volume(macro.milkStorage.amount,unit,false));
-  document.getElementById("milkPercent").innerHTML = Math.round(macro.milkStorage.amount / macro.milkStorage.limit * 100) + "%";
-  document.getElementById("gas").innerHTML = "Gas: " + transformNumbers(volume(macro.gasStorage.amount,unit,false));
-  document.getElementById("gasPercent").innerHTML = Math.round(macro.gasStorage.amount / macro.gasStorage.limit * 100) + "%";
-  document.getElementById("piss").innerHTML = "Piss: " + transformNumbers(volume(macro.pissStorage.amount,unit,false));
-  document.getElementById("pissPercent").innerHTML = Math.round(macro.pissStorage.amount / macro.pissStorage.limit * 100) + "%";
-  document.getElementById("scat").innerHTML = "Scat: " + transformNumbers(volume(macro.scatStorage.amount,unit,false));
-  document.getElementById("scatPercent").innerHTML = Math.round(macro.scatStorage.amount / macro.scatStorage.limit * 100) + "%";
 
+  stylePercentage("cum", macro.cumStorage);
+  stylePercentage("femcum", macro.femcumStorage);
+  stylePercentage("milk", macro.milkStorage);
+  stylePercentage("gas", macro.gasStorage);
+  stylePercentage("piss", macro.pissStorage);
+  stylePercentage("scat", macro.scatStorage);
+}
+
+function stylePercentage(name, storage) {
+  document.getElementById(name).innerHTML = name + ": " + transformNumbers(volume(storage.amount,unit,false));
+  let meterPos = 150 - storage.amount / storage.limit * 150;
+  document.querySelector("#" + name + "Meter .fill").style.setProperty("transform", "translate(0px, " + Math.round(meterPos) + "px)");
+}
+
+function stylePercentages() {
+  document.querySelectorAll(".meter .fill").forEach(function(x) {
+    let amount = 150 - x.value / x.max * 150;
+    x.style.setProperty("transform", "translate(0px, " + amount + ")");
+  });
 }
 
 function pick_move()
@@ -3113,7 +3120,6 @@ function enable_panel(name) {
 
 function enable_stat(name) {
   document.getElementById(name).style.display = 'block';
-  document.getElementById(name + "Percent").style.display = 'block';
 }
 
 function enable_growth_part(name) {
