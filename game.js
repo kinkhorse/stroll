@@ -3060,6 +3060,13 @@ function saveSettings() {
   storage.setItem('settings',JSON.stringify(settings));
 }
 
+function loadAutosave() {
+  if (window.localStorage.getItem('autosave') == null)
+    return;
+
+  loadSettings(JSON.parse(window.localStorage.getItem('autosave')));
+}
+
 function loadSettings(settings = null) {
 
   if (settings == null) {
@@ -3141,6 +3148,8 @@ function startGame(e) {
     return;
 
   started = true;
+
+  window.localStorage.setItem('autosave',JSON.stringify(generateSettings()));
 
   let warns = [];
   let settings = generateSettings();
@@ -3553,7 +3562,6 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-amount-20").addEventListener("click",function() { grow_pick(20); });
   document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
   document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
-
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
   document.getElementById("button-export-clear").addEventListener("click",clearExport);
@@ -3561,6 +3569,8 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-import-preset").addEventListener("click",importSettings);
 
   document.getElementById("button-reset-custom").addEventListener("click",resetSettings);
+  document.getElementById("button-load-autosave").addEventListener("click",loadAutosave);
+
   document.getElementById("button-load-custom").addEventListener("click",function() { loadSettings(); });
   document.getElementById("button-save-custom").addEventListener("click",saveSettings);
   document.getElementById("button-start").addEventListener("click",startGame);
