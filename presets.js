@@ -65,7 +65,7 @@ let presets = [{
     "baseGasDigestFactor": 1,
     "gasScaleWithSize": false,
     "soulVoreEnabled": false,
-    "soulVoreType": "afterlife"
+    "soulVoreType": "release"
   },
   {
     "name": "Mekuto",
@@ -251,7 +251,7 @@ let presets = [{
     "baseGasDigestFactor": 1,
     "gasScaleWithSize": true,
     "soulVoreEnabled": true,
-    "soulVoreType": "predscape",
+    "soulVoreType": "release",
     "pissEnabled": false,
     "pissScale": 1,
     "pissStorageScale": 1,

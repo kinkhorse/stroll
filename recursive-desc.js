@@ -619,10 +619,6 @@ function defaultSoulDigest(container, macro, verbose) {
   switch(macro.soulVoreType) {
     case "release":
       return (sum > 1 ? sum + " souls escape" : "A soul escapes") + " your depths.";
-    case "predscape":
-      return "Your depths squeeze " + (sum > 1 ? sum + " souls" : "a soul") + " into your predscape.";
-    case "afterlife":
-      return "A tingle of energy washes through you as you sap the energy from " + (sum > 1 ? sum + " souls" : "a soul") + " and consign " + (sum > 1 ? "them" : "it") + " to the afterlife.";
     case "body":
       return "Your body claims " + (sum > 1 ? sum + " souls" : "a soul") + ", imprisoning " + (sum > 1 ? "them" : "it") + " in your body for good.";
     case "oblivion":
