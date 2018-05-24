@@ -785,6 +785,49 @@ let macro =
     "stages" : 2
   },
 
+  "gooEnabled": true,
+  "gooMolten": false,
+
+  "goo": {
+    "name" : "goo",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner,this);
+    },
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      this.contents[0] = this.contents[0].merge(prey);
+    },
+    "describeDigestion": function(container) {
+      return describe("goo",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+
+    },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "You contain no prey.";
+      } else {
+        if (macro.gooDigestion > 0)  {
+          return "Your gooey body contains " + prey.describe(false) + ", gradually absorbing them into your bulk.";
+        } else {
+          return "Your gooey body contains " + prey.describe(false) + ".";
+        }
+      }
+    },
+    "contents" : [],
+    "stages" : 4
+  },
+
   // holding spots
 
   hasPouch: true,
@@ -1487,11 +1530,11 @@ function summarize(sum, fatal = true)
   let word;
   let count = get_living_prey(sum);
   if (fatal && macro.brutality > 0)
-    word = count > 1 ? "kills" : "kill";
+    word = count == 1 ? "kills" : "kill";
   else if (!fatal && macro.brutality > 0)
     word = "prey";
   else
-    word = count > 1 ? "victims" : "victim";
+    word = count == 1 ? "victims" : "victim";
 
   return "<b>(" + count + " " + word + ")</b>";
 }
@@ -2819,6 +2862,42 @@ function scat(vol) {
 
   macro.arouse(50);
 }
+
+function melt()
+{
+  macro.gooMolten = true;
+
+  let line = describe("melt", new Container(), macro, verbose);
+
+  update([line, newline]);
+}
+
+function solidify()
+{
+  let prey = new Container();
+  macro.goo.contents.forEach(function(x) {
+    prey = prey.merge(x);
+  });
+
+  let line = describe("solidify", prey, macro, verbose);
+
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
+
+  macro.gooMolten = false;
+
+  if (macro.gooDigest) {
+    update([sound, line, linesummary, newline]);
+  } else {
+    update([sound, line, newline]);
+  }
+}
+
 
 function transformNumbers(line)
 {

@@ -23,7 +23,7 @@ var actions = ["eat","chew","stomp","stomp-wedge","flex-toes","kick","anal-vore"
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
 "wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
-"sheath-toy","slit-toy","breast-toy",""];
+"sheath-toy","slit-toy","breast-toy","melt","solidify"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -749,6 +749,21 @@ function defaultScat(container, macro, verbose) {
     return "You squat down, grunting as your lower guts squeeze out a $MASS, $LENGTH-long log of scat that smothers " + container.describe(verbose);
   }
 }
+
+function defaultMelt(container, macro, verbose) {
+  return "Your body turns gooey.";
+}
+
+function defaultSolidify(container, macro, verbose) {
+  if (container.count == 0) {
+    return "Your body turns solid.";
+  } else if (macro.gooDigest > 0) {
+    return "Your body turns solid, pushing out " + container.describe(verbose);
+  } else {
+    return "Your body turns solid, swiftly absorbing" + container.describe(verbose);
+  }
+}
+
 
 // EATING
 
