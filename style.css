@@ -493,11 +493,18 @@ ul {
   border-radius: 0%;
   width: 10%;
   height: 150px;
-  background: #000;
   overflow: hidden;
   backface-visibility: hidden;
   transform: translate3d(0, 0, 0);
   display: inline-block;
+}
+
+body.light .meter {
+  background: #ddd !important;
+}
+
+body.dark .meter {
+  background: #222 !important;
 }
 
 .meter .meterLabel {
@@ -506,7 +513,6 @@ ul {
   writing-mode: vertical-lr;
   text-orientation: upright;
   background: none;
-  mix-blend-mode: exclusion;
   transform: rotate(0deg);
   font-size: 12px;
   text-align: center;
@@ -514,6 +520,15 @@ ul {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+body.light .meterLabel {
+  color: #000;
+}
+
+body.dark .meterLabel {
+  color: #fff;
+  mix-blend-mode: exclusion;
 }
 
 .meter .fill {
