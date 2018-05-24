@@ -11,6 +11,8 @@ let sounds = {
   ["Clench.","Squeeeeeze.","Squeeeeeeeeeeeze.","Sqlllllch.","SQLLLLLLCH!"],
   "digest":
   ["Grrgle.","Grrrrgle","Grrrrlglorp.","GrrrrGLRRRLPH!","GRRRRRLGPRLHK!"],
+  "goo":
+  ["Splat.", "Squish.", "Squish!", "SQLCH!", "SQLLLLRCH!", "SQQQQUEEEEELLCH!"]
 };
 
 function pickByMass(list, mass) {

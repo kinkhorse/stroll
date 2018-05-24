@@ -23,7 +23,7 @@ var actions = ["eat","chew","stomp","stomp-wedge","flex-toes","kick","anal-vore"
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
 "wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
-"sheath-toy","slit-toy","breast-toy","melt","solidify"];
+"sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -132,7 +132,7 @@ function defaultChew(container, macro, verbose) {
   if (container.count == 0)
     return "You reach down for a delicious treat and grab - oh, nothing.";
   else if (isSadistic(macro))
-    return "Your greedy fingers gather up " + container.describe(verbose) + ", stuffing " + pronoun + " into your " + macro.jawDesc(true) + ". A slow, lazy bite " + macro.biteDesc() + pronoun + ", rending flesh, snapping bone, and crushing everything between your savage " + macro.jawDesc(true) + ". You tip back your head and swallow...consigning the gory remains to your roiling gut.";
+    return "Your greedy fingers gather up " + container.describe(verbose) + ", stuffing " + pronoun + " into your " + macro.jawDesc(true) + ". A slow, lazy bite " + macro.biteDesc(true) + " " + pronoun + ", rending flesh, snapping bone, and crushing everything between your savage " + macro.jawDesc(true) + ". You tip back your head and swallow...consigning the gory remains to your roiling gut.";
   else if (isNonFatal(macro))
     return defaultEat(container, macro, verbose);
   else {
@@ -758,12 +758,31 @@ function defaultSolidify(container, macro, verbose) {
   if (container.count == 0) {
     return "Your body turns solid.";
   } else if (macro.gooDigest > 0) {
-    return "Your body turns solid, pushing out " + container.describe(verbose);
+    return "Your body turns solid, pushing out " + container.describe(verbose) + ".";
   } else {
-    return "Your body turns solid, swiftly absorbing" + container.describe(verbose);
+    return "Your body turns solid, swiftly absorbing " + container.describe(verbose) + ".";
   }
 }
 
+function defaultStompGoo(container, macro, verbose) {
+  if (container.count == 0) {
+    return "Your gooey paw hits the ground.";
+  } else {
+    return "Your gooey paws falls over " + container.describe(verbose) + ", smothering them in goo and pulling them into your body.";
+  }
+}
+
+function defaultAssGoo(container, macro, verbose) {
+  if (container.count == 0) {
+    return "Your gooey ass sits down on the ground.";
+  } else {
+    return "You sit your gooey ass down on " + container.describe(verbose) + ", pulling them right into your body.";
+  }
+}
+
+function defaultGooDigest(container, macro, verbose) {
+  return "Your goopy depths dissolve " + container.describe(false) + ".";
+}
 
 // EATING
 

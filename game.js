@@ -787,14 +787,21 @@ let macro =
 
   "gooEnabled": true,
   "gooMolten": false,
+  "gooDigestion": true,
 
   "goo": {
     "name" : "goo",
     "setup": function(owner) {
       this.owner = owner;
+
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+
+      if (owner.gooDigestion) {
+        owner.digest(owner,this);
+      }
+
+
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -803,7 +810,8 @@ let macro =
       this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion": function(container) {
-      return describe("goo",container,this.owner,verbose);
+      add_victim_people("goo", container);
+      return describe("goo-digest",container,this.owner,verbose);
     },
     "fill": function(owner,container) {
 
@@ -817,7 +825,7 @@ let macro =
       if (prey.count == 0) {
         return "You contain no prey.";
       } else {
-        if (macro.gooDigestion > 0)  {
+        if (macro.gooDigestion)  {
           return "Your gooey body contains " + prey.describe(false) + ", gradually absorbing them into your bulk.";
         } else {
           return "Your gooey body contains " + prey.describe(false) + ".";
@@ -928,6 +936,7 @@ let macro =
     this.breasts.setup(this);
     this.bladder.setup(this);
     this.souls.setup(this);
+    this.goo.setup(this);
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
@@ -1358,6 +1367,10 @@ let macro =
 
     result.push(line);
 
+    if (this.gooMolten) {
+      result.push(this.goo.description);
+    }
+
     return result;
   },
 
@@ -1530,11 +1543,11 @@ function summarize(sum, fatal = true)
   let word;
   let count = get_living_prey(sum);
   if (fatal && macro.brutality > 0)
-    word = count == 1 ? "kills" : "kill";
+    word = count != 1 ? "kills" : "kill";
   else if (!fatal && macro.brutality > 0)
     word = "prey";
   else
-    word = count == 1 ? "victims" : "victim";
+    word = count != 1 ? "victims" : "victim";
 
   return "<b>(" + count + " " + word + ")</b>";
 }
@@ -1713,10 +1726,15 @@ function chew()
 
 function stomp()
 {
+  if (macro.gooMolten) {
+    stomp_goo();
+    return;
+  }
+
   let area = macro.pawArea;
   let prey = getPrey(biome, area, macro.sameSizeStomp);
   let line = describe("stomp", prey, macro, verbose);
-  let linesummary = summarize(prey.sum(), true);
+  let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
 
@@ -1771,6 +1789,31 @@ function stomp_wedge() {
   add_victim_people("stomped",prey);
 
   update([sound,line,linesummary,newline]);
+}
+
+function stomp_goo() {
+  let area = macro.pawArea;
+  let prey = getPrey(biome, area, macro.sameSizeStomp);
+  let line = describe("stomp-goo", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("goo",preyMass);
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.goo.feed(prey);
+
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
+
+  if (macro.stenchEnabled) {
+    paw_stench();
+  }
 }
 
 function flex_toes() {
@@ -1894,6 +1937,11 @@ function anal_vore()
 
 function sit()
 {
+  if (macro.gooMolten) {
+    sit_goo();
+    return;
+  }
+
   let area = macro.assArea;
   let crushed = getPrey(biome, area, macro.sameSizeStomp);
 
@@ -1913,6 +1961,33 @@ function sit()
   add_victim_people("ass-crush",crushed);
 
   macro.arouse(5);
+
+  if (macro.stenchEnabled) {
+    ass_stench();
+  }
+}
+
+function sit_goo()
+{
+  let area = macro.assArea;
+  let prey = getPrey(biome, area, macro.sameSizeStomp);
+
+  let line = describe("ass-goo", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let crushedMass = prey.sum_property("mass");
+
+  let sound = getSound("goo",crushedMass);
+
+  macro.goo.feed(prey);
+
+  macro.addGrowthPoints(crushedMass);
+
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(15);
 
   if (macro.stenchEnabled) {
     ass_stench();
@@ -2863,9 +2938,26 @@ function scat(vol) {
   macro.arouse(50);
 }
 
+function setButton(button, state) {
+  if (state) {
+    enable_button(button);
+  } else {
+    disable_button(button);
+  }
+}
+
+function gooButtons(molten) {
+  setButton("melt", !molten);
+  setButton("solidify", molten);
+  setButton("push-stomach", molten);
+  setButton("pull-stomach", molten);
+}
+
 function melt()
 {
   macro.gooMolten = true;
+
+  gooButtons(macro.gooMolten);
 
   let line = describe("melt", new Container(), macro, verbose);
 
@@ -2874,6 +2966,10 @@ function melt()
 
 function solidify()
 {
+  macro.gooMolten = false;
+
+  gooButtons(macro.gooMolten);
+
   let prey = new Container();
   macro.goo.contents.forEach(function(x) {
     prey = prey.merge(x);
@@ -2889,10 +2985,9 @@ function solidify()
 
   let sound = getSound("insert",preyMass);
 
-  macro.gooMolten = false;
-
-  if (macro.gooDigest) {
+  if (macro.gooDigestion) {
     update([sound, line, linesummary, newline]);
+    add_victim_people("goo", prey);
   } else {
     update([sound, line, newline]);
   }
@@ -3454,6 +3549,16 @@ function startGame(e) {
     enable_stat("scat");
 
     enable_victim("scat","Shat on");
+  }
+
+  if (macro.gooEnabled) {
+    enable_panel("goo");
+
+    enable_button("melt");
+
+    if (macro.gooDigestion) {
+      enable_victim("goo","Absorbed into the goo");
+    }
   }
 
   document.getElementById("button-arousal").innerHTML = (macro.arousalEnabled ? "Arousal On" : "Arousal Off");
