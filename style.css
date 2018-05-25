@@ -104,7 +104,6 @@ body.dark #log {
 
 .stat-line-hidden {
   display: none;
-  background-color: #f00;
   position: relative;
 }
 
