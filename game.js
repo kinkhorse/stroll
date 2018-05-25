@@ -1045,7 +1045,7 @@ let macro =
   },
 
   "fillScat": function(self) {
-    self.scatStorage.amount += self.scatScale * self.scatStorage.limit / self.scatStorageScale / 100;
+    self.scatStorage.amount += self.scatScale * self.scatStorage.limit / self.scatStorageScale / 600;
     if (self.scatStorage.amount > self.scatStorage.limit * 2)
       scat(self.scatStorage.amount);
     setTimeout(function () { self.fillScat(self); }, 100);

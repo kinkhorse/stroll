@@ -751,6 +751,8 @@ function defaultScat(container, macro, verbose) {
   let sum = get_living_prey(container.sum());
   if (macro.scatStorage.amount == 0) {
     return "Your bowels are empty.";
+  } else if (container.count == 0) {
+    return "You squat down and let out a $MASS log of shit.";
   } else if (isSadistic(macro)) {
     let line = "You squat down, letting out a grunt as your rancid bowels force out a $MASS, $LENGTH-long heap of shit. The fatally-pungent scat buries " + container.describe(verbose) + ", ending " + numberRough(sum,"of") + " lives and entombing them in your shit.";
     if (macro.scatStorage.victims.count > 0) {
