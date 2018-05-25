@@ -1524,9 +1524,15 @@ function toggle_arousal()
   if (macro.arousalEnabled) {
     document.getElementById("arousal").style.display = "block";
     document.getElementById("edge").style.display = "block";
+    document.querySelector("#arousalMeter").style.display = 'inline-block';
+    document.querySelector("#orgasmMeter").style.display = 'inline-block';
+    document.querySelector("#edgeMeter").style.display = 'inline-block';
   } else {
     document.getElementById("arousal").style.display = "none";
     document.getElementById("edge").style.display = "none";
+    document.querySelector("#arousalMeter").style.display = 'none';
+    document.querySelector("#orgasmMeter").style.display = 'none';
+    document.querySelector("#edgeMeter").style.display = 'none';
   }
 
   macro.orgasm = false;
@@ -3014,9 +3020,10 @@ function update(lines = [])
 
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.totalMass, unit));
-  document.getElementById("arousal").innerHTML = "Arousal: " + round(macro.arousal,0) + "%";
-  document.getElementById("edge").innerHTML = "Edge: " + round(macro.edge * 100,0) + "%";
 
+  applyPercentage("arousal", 150 - macro.arousal * 1.5);
+  applyPercentage("orgasm", 150 - (macro.arousal - 100) * 1.5);
+  applyPercentage("edge", 150 - macro.edge * 150);
   stylePercentage("cum", macro.cumStorage);
   stylePercentage("femcum", macro.femcumStorage);
   stylePercentage("milk", macro.milkStorage);
@@ -3025,18 +3032,15 @@ function update(lines = [])
   stylePercentage("scat", macro.scatStorage);
 }
 
-function stylePercentage(name, storage) {
-  document.getElementById(name).innerHTML = name + ": " + transformNumbers(volume(storage.amount,unit,false));
-  let meterPos = 150 - storage.amount / storage.limit * 150;
+function applyPercentage(name, meterPos) {
   meterPos = meterPos < 0 ? 0 : meterPos;
   document.querySelector("#" + name + "Meter .fill").style.setProperty("transform", "translate(0px, " + Math.round(meterPos) + "px)");
 }
 
-function stylePercentages() {
-  document.querySelectorAll(".meter .fill").forEach(function(x) {
-    let amount = 150 - x.value / x.max * 150;
-    x.style.setProperty("transform", "translate(0px, " + amount + ")");
-  });
+function stylePercentage(name, storage) {
+  document.getElementById(name).innerHTML = name + ": " + transformNumbers(volume(storage.amount,unit,false));
+  let meterPos = 150 - storage.amount / storage.limit * 150;
+  applyPercentage(name, meterPos);
 }
 
 function pick_move()
@@ -3302,7 +3306,7 @@ function enable_panel(name) {
 
 function enable_stat(name) {
   document.getElementById(name).style.display = 'block';
-  document.querySelector("#" + name + "Meter .meterLabel").style.display = 'block';
+  document.querySelector("#" + name + "Meter").style.display = 'inline-block';
 }
 
 function enable_growth_part(name) {
@@ -3365,6 +3369,12 @@ function startGame(e) {
     warns.push("Fatal actions are enabled.");
     enable_button("chew");
     enable_victim("chew","Chewed");
+  }
+
+  if (macro.arousalEnabled) {
+    document.querySelector("#arousalMeter").style.display = 'inline-block';
+    document.querySelector("#orgasmMeter").style.display = 'inline-block';
+    document.querySelector("#edgeMeter").style.display = 'inline-block';
   }
 
   if (macro.analVore) {

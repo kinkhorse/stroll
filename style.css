@@ -508,7 +508,6 @@ body.dark .meter {
 }
 
 .meter .meterLabel {
-  display: none;
   z-index: 1;
   writing-mode: vertical-lr;
   text-orientation: upright;
@@ -531,6 +530,10 @@ body.dark .meterLabel {
   mix-blend-mode: exclusion;
 }
 
+.meter {
+  display: none
+}
+
 .meter .fill {
   position: absolute;
   top: 0;
@@ -545,6 +548,18 @@ body.dark .meterLabel {
   width:300px;
   height: 150px;
   fill: #04ACFF;
+}
+
+.meter#arousalMeter #waveShape {
+  fill: #FF0000;
+}
+
+.meter#orgasmMeter #waveShape {
+  fill: #FFFFFF;
+}
+
+.meter#edgeMeter #waveShape {
+  fill: #FF6600;
 }
 
 .meter#cumMeter #waveShape {

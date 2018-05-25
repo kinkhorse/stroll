@@ -257,11 +257,11 @@ function approxLength(m, singular=false) {
 }
 
 function metricArea(m2, singular=false) {
-  if (m2 < 1/1000) {
+  if (m2 < 1/10) {
     let area = round(m2 * 10000,2);
     return area + (singular || area == 1 ? " square centimeter" : " square centimeters");
   } else if (m2 < 100000) {
-    let area = round(m2,0);
+    let area = round(m2,2);
     return area + (singular || area == 1 ? " square meter" : " square meters");
   } else {
     let area = round(m2 / 1e6,2);
