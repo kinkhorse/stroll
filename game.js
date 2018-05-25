@@ -2955,8 +2955,8 @@ function setButton(button, state) {
 function gooButtons(molten) {
   setButton("melt", !molten);
   setButton("solidify", molten);
-  setButton("push-stomach", molten);
-  setButton("pull-stomach", molten);
+  setButton("goo_stomach_pull", molten);
+  setButton("goo_stomach_push", molten);
 }
 
 function melt()
@@ -2999,6 +2999,55 @@ function solidify()
   }
 }
 
+function vomit() {
+  let prey = new Container();
+
+  for (let i = 0; i < macro.stomach.contents.length; i++) {
+    prey = prey.merge(macro.stomach.contents[i]);
+    macro.stomach.contents[i] = new Container();
+  }
+
+  let line = describe("vomit", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+  let preyMass = prey.sum_property("mass");
+  let sound = getSound("vomit", preyMass);
+
+  update([sound, line, linesummary, newline]);
+  add_victim_people("vomit", prey);
+}
+
+function move_prey(from, to) {
+  let prey = new Container();
+
+  for (let i = 0; i < from.contents.length; i++) {
+    prey = prey.merge(from.contents[i]);
+    from.contents[i] = new Container();
+  }
+
+  to.feed(prey);
+
+  return prey;
+}
+
+function goo_stomach_pull() {
+  let prey = move_prey(macro.stomach, macro.goo);
+  let line = describe("goo-stomach-pull", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+  let preyMass = prey.sum_property("mass");
+  let sound = getSound("goo", preyMass);
+
+  update([sound, line, linesummary, newline]);
+}
+
+function goo_stomach_push() {
+  let prey = move_prey(macro.goo, macro.stomach);
+  let line = describe("goo-stomach-push", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+  let preyMass = prey.sum_property("mass");
+  let sound = getSound("goo", preyMass);
+
+  update([sound, line, linesummary, newline]);
+}
 
 function transformNumbers(line)
 {
@@ -3355,6 +3404,11 @@ function startGame(e) {
   enable_panel("body");
   enable_button("feed");
   enable_button("stomp");
+
+  if (macro.vomitEnabled) {
+    enable_button("vomit");
+    enable_victim("vomit");
+  }
 
   if (macro.footType != "hoof")
     enable_button("flex_toes");

@@ -16,14 +16,14 @@ function getDefault(name) {
   return window[funcName];
 }
 
-var actions = ["eat","chew","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore",
+var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-clench","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
 "wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
-"sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo"];
+"sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -137,6 +137,20 @@ function defaultChew(container, macro, verbose) {
     return defaultEat(container, macro, verbose);
   else {
     return "You scoop up " + container.describe(verbose) + " and " + macro.biteDesc() + " " + pronoun + " with your " + macro.jawDesc(true) + ", then swallow them down.";
+  }
+}
+
+function defaultVomit(container, macro, verbose) {
+  if (container.count == 0) {
+    return "You retch, but nothing happens.";
+  } else if (isSadistic(macro)) {
+    return "You gag and lean over, vomiting up " + container.describe(false) + ". A thick, hissing slurry of molten meat and acid drenches your still-writhing prey, searing flesh and ensuring their wretched, rancid deaths.";
+  } else if (isGory(macro)) {
+    return "You retch and vomit up " + container.describe(false) + ", spewing them out amidst a thick slurry of chyme and leaving them to melt.";
+  } else if (isFatal(macro)) {
+    return "You vomit up " + container.describe(false) + ", leaving them to stew in your stomach juices.";
+  } else {
+    return "You hack up " + container.describe(false) + ".";
   }
 }
 
@@ -782,6 +796,14 @@ function defaultAssGoo(container, macro, verbose) {
 
 function defaultGooDigest(container, macro, verbose) {
   return "Your goopy depths dissolve " + container.describe(false) + ".";
+}
+
+function defaultGooStomachPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your stomach, drawing them into the viscous goo.";
+}
+
+function defaultGooStomachPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your churning stomach.";
 }
 
 // EATING

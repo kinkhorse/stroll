@@ -230,6 +230,7 @@
       <div class="action-tab" id="actions-body">
         <button class="action-button" id="button-action-feed">Eat</button>
         <button class="action-button" id="button-action-chew">Chew</button>
+        <button class="action-button" id="button-action-vomit">Vomit</button>
         <button class="action-button" id="button-action-stomp">Stomp</button>
         <button class="action-button" id="button-action-flex_toes">Flex Toes</button>
         <button class="action-button" id="button-action-sit">Sit</button>
@@ -298,8 +299,8 @@
       <div class="action-tab" id="actions-goo">
         <button class="action-button" id="button-action-solidify">Solidify</button>
         <button class="action-button" id="button-action-melt">Melt</button>
-        <button class="action-button" id="button-action-push-stomach">Push to Stomach</button>
-        <button class="action-button" id="button-action-pull-stomach">Pull from Stomach</button>
+        <button class="action-button" id="button-action-goo_stomach_push">Push to Stomach</button>
+        <button class="action-button" id="button-action-goo_stomach_pull">Pull from Stomach</button>
       </div>
 
       <div class="action-tab" id="actions-misc">
@@ -477,6 +478,10 @@
               <li>
                 <input autocomplete="off" type="checkbox" checked="true" name="sameSizeStomp" id="sameSizeStomp"/>
                 <label class="has-tooltip" for="sameSizeStomp" title="Can you stomp and sit on people your own size?">Same-size stomper</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="checkbox" name="vomitEnabled" id="vomitEnabled"/>
+                <label for="vomitEnabled">Vomiting</label>
               </li>
               <li>
                 <label for="footType">Foot type</label>
