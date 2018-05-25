@@ -538,6 +538,7 @@ body.dark .meterLabel {
   position: absolute;
   top: 0;
   left: 0;
+  background: none;
 }
 
 .meter #waveShape {
