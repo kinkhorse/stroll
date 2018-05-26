@@ -279,7 +279,7 @@ function customaryArea(m2, singular=false) {
     let area = round(ft2,1);
     return area + (singular || area == 1 ? " square foot" : " square feet");
   } else {
-    let length = round(ft2 /5280 / 5280,1);
+    let area = round(ft2 / 5280 / 5280,1);
     return area + (singular || area == 1 ? " square mile" : " square miles");
   }
 }
