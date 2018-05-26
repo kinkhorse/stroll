@@ -122,7 +122,7 @@ let macro =
   "toeNoShoeDesc": function(plural=false,capital=false) {
     let result = "";
 
-    if (!this.footSockWorn && !this.footShoeWorn) {
+    if (!this.footSockWorn) {
       return this.toeOnlyDesc(plural,capital);
     } else if (this.footSockWorn) {
       switch(this.footSock) {
@@ -130,6 +130,7 @@ let macro =
           result = "socked " + this.toeOnlyDesc(plural,false);
       }
     }
+
     return capital ? result.charAt(0).toUpperCase() + result.slice(1) : result;
   },
 
@@ -1844,7 +1845,7 @@ function flex_toes() {
   } else if (macro.footShoeWorn) {
     prey = macro.shoe.container;
     if (macro.brutality > 0) {
-      macro.sock.container = new Container();
+      macro.shoe.container = new Container();
     }
   }
 
