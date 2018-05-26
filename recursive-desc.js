@@ -23,7 +23,8 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder","soul-digest",
 "wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
-"sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push"];
+"sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
+"goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -372,7 +373,7 @@ function defaultSheathClench(container, macro, verbose) {
   if (container.count == 0)
     return "You squeeze your sheath.";
   else if (isGory(macro))
-    return "You squeeze you packed sheath, reducing " + container.describe(false) + " to a gory paste that slickens your throbbing shaft.";
+    return "You squeeze your packed sheath, reducing " + container.describe(false) + " to a gory paste that slickens your throbbing shaft.";
   else if (isFatal(macro))
     return "Your fingers run over your packed sheath, squeezing on the " + macro.describeDick + " shaft within and smashing " + container.describe(false);
   else
@@ -433,7 +434,7 @@ function defaultMaleSpurt(container, macro, verbose) {
 
 function defaultMaleOrgasm(container, macro, verbose) {
   if (container.count == 0)
-    return "Your " + macro.describeDick + " cock spurts $TIMES times, gushing $VOLUME of seed.";
+    return "Your " + macro.describeDick + " cock spurts $TIMES times, gushing out a $VOLUME glob of cum.";
   else if (isFatal(macro))
     return "You're cumming! Your " + macro.describeDick + " cock erupts with $TIMES ropes of seed, obliterating " + container.describe(verbose) + " in a $VOLUME-torrent of cum.";
   else
@@ -595,21 +596,21 @@ function defaultBowelsToStomach(container, macro, verbose) {
 
 function defaultWomb(container, macro, verbose) {
   if (isFatal(macro))
-    return "Your womb squeezes and dissolves " + container.describe(false) + ", turning them into slick femcum.";
+    return "Your womb squeezes and dissolves " + container.describe(false) + ", turning them into $VOLUME of slick femcum.";
   else
     return "Your womb squeezes as it absorbs " + container.describe(false);
 }
 
 function defaultBalls(container, macro, verbose) {
   if (isFatal(macro))
-    return "Your balls slosh as they digest " + container.describe(false) + " into cum";
+    return "Your balls slosh as they digest " + container.describe(false) + " into $VOLUME of cum";
   else
     return "Your balls slosh as they absorb " + container.describe(false);
 }
 
 function defaultBreasts(container, macro, verbose) {
-  if (isFatal(macro))
-    return "Your breasts grrgle as they digest " + container.describe(false) + " into milk";
+  if (isFatal(macro) && macro.lactationEnabled)
+    return "Your breasts grrgle as they digest " + container.describe(false) + " into $VOLUME of milk";
   else
     return "Your breasts slosh as they absorb " + container.describe(false);
 }
@@ -617,13 +618,13 @@ function defaultBreasts(container, macro, verbose) {
 function defaultBladder(container, macro, verbose) {
   if (isSadistic(macro)) {
     let fatalities = get_living_prey(container.sum());
-    let line = "Your bladder swells as " + container.describe(false) + " are dissolved in your acrid piss.";
+    let line = "Your bladder swells as " + container.describe(false) + " are dissolved in your acrid piss, digesting them down to $VOLUME of fresh urine";
     if (fatalities > 0) {
       line += " " + (fatalities > 1 ? fatalities + " lives are" : "a life is") + " snuffed out by the horrific yellow tide, corroded and annihilated amongst the unbearable stench of urine.";
     }
     return line;
   } else if (isFatal(macro))
-    return "Your bladder swells as it dissolves " + container.describe(false) + " into acrid piss";
+    return "Your bladder swells as it dissolves " + container.describe(false) + " into $VOLUME of acrid piss";
   else
     return "Your bladder squeezes as it absorbs " + container.describe(false);
 }
@@ -738,7 +739,7 @@ function defaultBladderVore(container, macro, verbose) {
   }
   else {
     if (macro.maleParts) {
-      return "You snatch up " + container.describe(verbose) + " and stuff them into your " + macro.describeDick + ", grinding them to its base and forcing them into your musky bladder.";
+      return "You snatch up " + container.describe(verbose) + " and stuff them into your " + macro.describeDick + " cock, grinding them to its base and forcing them into your musky bladder.";
     } else if (macro.femaleParts) {
       return "You snatch " + container.describe(verbose) + " in your iron grip, grinding them against your " + macro.describeVagina + " slit before stuffing them into your urethra, sealing them away in your musky bladder.";
     } else {
@@ -805,7 +806,31 @@ function defaultGooStomachPull(container, macro, verbose) {
 }
 
 function defaultGooStomachPush(container, macro, verobse) {
-  return "Your churning goo herds " + container.describe(false) + " into your churning stomach.";
+  return "Your churning goo herds " + container.describe(false) + " into your gurgling stomach.";
+}
+
+function defaultGooBowelsPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your bowels, drawing them into the viscous goo.";
+}
+
+function defaultGooBowelsPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your clenching bowels.";
+}
+
+function defaultGooWombPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your womb, drawing them into the viscous goo.";
+}
+
+function defaultGooWombPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your slick womb.";
+}
+
+function defaultGooBallsPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your balls, drawing them into the viscous goo.";
+}
+
+function defaultGooBallsPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your musky balls.";
 }
 
 // EATING

@@ -417,8 +417,8 @@ let macro =
 
     let sound = getSound("digest",container.sum_property("mass"));
 
-    let line = organ.describeDigestion(container);
-    organ.fill(this,container);
+    let vol = organ.fill(this,container);
+    let line = organ.describeDigestion(container, vol);
     let lethal = macro.brutality != 0 && (!macro.soulVoreEnabled || organ.name === "souls");
     let summary = summarize(container.sum(),lethal);
 
@@ -564,11 +564,13 @@ let macro =
     "feedFunc": function(prey,self,owner) {
       this.contents[0] = this.contents[0].merge(prey);
     },
-    "describeDigestion" : function(container) {
-      return describe("womb",container,this.owner,verbose);
+    "describeDigestion": function(container, vol) {
+      return describe("womb",container,this.owner,verbose).replace("$VOLUME",volume(vol,unit,false));
     },
     "fill": function(owner,container) {
-      owner.femcumStorage.amount += container.sum_property("mass") * owner.femcumDigestFactor / 1e3;
+      let amount = container.sum_property("mass") * owner.femcumDigestFactor / 1e3;
+      owner.femcumStorage.amount += amount;
+      return amount;
     },
     get description() {
       let prey = new Container();
@@ -614,11 +616,13 @@ let macro =
     "feedFunc": function(prey,self,owner) {
       this.contents[0] = this.contents[0].merge(prey);
     },
-    "describeDigestion": function(container) {
-      return describe("balls",container,this.owner,verbose);
+    "describeDigestion": function(container, vol) {
+      return describe("balls",container,this.owner,verbose).replace("$VOLUME",volume(vol,unit,false));
     },
     "fill": function(owner,container) {
-      owner.cumStorage.amount += container.sum_property("mass") * owner.cumDigestFactor / 1e3;
+      let amount = container.sum_property("mass") * owner.cumDigestFactor / 1e3;
+      owner.cumStorage.amount += amount;
+      return amount;
     },
     get description() {
       let prey = new Container();
@@ -664,12 +668,14 @@ let macro =
     "feedFunc": function(prey,self,owner) {
       this.contents[0] = this.contents[0].merge(prey);
     },
-    "describeDigestion": function(container) {
-      return describe("breasts",container,this.owner,verbose);
+    "describeDigestion": function(container, vol) {
+      return describe("breasts",container,this.owner,verbose).replace("$VOLUME",volume(vol,unit,false));
     },
     "fill": function(owner,container) {
       if (macro.lactationEnabled) {
-        owner.milkStorage.amount += container.sum_property("mass") * owner.milkDigestFactor / 1e3;
+        let amount = container.sum_property("mass") * owner.milkDigestFactor / 1e3;
+        owner.milkStorage.amount += amount;
+        return amount;
       }
     },
     get description() {
@@ -716,13 +722,13 @@ let macro =
     "feedFunc": function(prey,self,owner) {
       this.contents[0] = this.contents[0].merge(prey);
     },
-    "describeDigestion": function(container) {
-      return describe("bladder",container,this.owner,verbose);
+    "describeDigestion": function(container, vol) {
+      return describe("bladder",container,this.owner,verbose).replace("$VOLUME",volume(vol,unit,false));
     },
     "fill": function(owner,container) {
-      if (macro.lactationEnabled) {
-        owner.pissStorage.amount += container.sum_property("mass") * owner.pissDigestFactor / 1e3;
-      }
+      let amount = container.sum_property("mass") * owner.pissDigestFactor / 1e3;
+      owner.pissStorage.amount += amount;
+      return amount;
     },
     get description() {
       let prey = new Container();
@@ -758,7 +764,8 @@ let macro =
       this.feedFunc(prey,this,this.owner);
     },
     "feedFunc": function(prey,self,owner) {
-      this.contents[0] = this.contents[0].merge(prey);
+      if (get_living_prey(prey.sum()) > 0)
+        this.contents[0] = this.contents[0].merge(prey);
     },
     "describeDigestion": function(container) {
       return describe("soul-digest",container,this.owner,verbose);
@@ -772,13 +779,15 @@ let macro =
         prey = prey.merge(x);
       });
 
-      if (prey.count == 0) {
+      let souls = get_living_prey(prey.sum());
+
+      if (souls == 0) {
         return "Your depths hold no souls.";
       } else {
         if (macro.brutality > 0)  {
-          return "Your depths bubble and boil with energy, slowly digesting the " + (prey.count > 1 ? "souls of " : "soul of ") + prey.describe(false);
+          return "Your depths bubble and boil with energy, slowly digesting " + (souls > 1 ? souls + " souls." : "a lonely soul");
         } else {
-          return "You feel " + (prey.count > 1 ? prey.count + " souls " : "a soul ") + "trapped in your depths.";
+          return "You feel " + (souls > 1 ? souls + " souls " : "a soul ") + "trapped in your depths.";
         }
       }
     },
@@ -2421,7 +2430,7 @@ function male_orgasm(vol,times)
   let area = Math.pow(vol, 2/3);
 
   let prey = getPrey(biome, area);
-  let line = describe("male-orgasm", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,false));
+  let line = describe("male-orgasm", prey, macro, verbose).replace("$TIMES",times).replace("$VOLUME",volume(vol*times,unit,true));
   let linesummary = summarize(prey.sum(), true);
 
   let people = get_living_prey(prey.sum());
@@ -2958,6 +2967,21 @@ function gooButtons(molten) {
   setButton("solidify", molten);
   setButton("goo_stomach_pull", molten);
   setButton("goo_stomach_push", molten);
+
+  if (macro.analVore) {
+    setButton("goo_bowels_pull", molten);
+    setButton("goo_bowels_push", molten);
+  }
+
+  if (macro.femaleParts) {
+    setButton("goo_womb_pull", molten);
+    setButton("goo_womb_push", molten);
+  }
+
+  if (macro.maleParts) {
+    setButton("goo_balls_pull", molten);
+    setButton("goo_balls_push", molten);
+  }
 }
 
 function melt()
@@ -3030,9 +3054,9 @@ function move_prey(from, to) {
   return prey;
 }
 
-function goo_stomach_pull() {
-  let prey = move_prey(macro.stomach, macro.goo);
-  let line = describe("goo-stomach-pull", prey, macro, verbose);
+function goo_move_prey(from, to, name) {
+  let prey = move_prey(from, to);
+  let line = describe(name, prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
   let preyMass = prey.sum_property("mass");
   let sound = getSound("goo", preyMass);
@@ -3040,14 +3064,36 @@ function goo_stomach_pull() {
   update([sound, line, linesummary, newline]);
 }
 
-function goo_stomach_push() {
-  let prey = move_prey(macro.goo, macro.stomach);
-  let line = describe("goo-stomach-push", prey, macro, verbose);
-  let linesummary = summarize(prey.sum(), false);
-  let preyMass = prey.sum_property("mass");
-  let sound = getSound("goo", preyMass);
+function goo_stomach_pull() {
+  return goo_move_prey(macro.stomach, macro.goo, "goo-stomach-pull");
+}
 
-  update([sound, line, linesummary, newline]);
+function goo_stomach_push() {
+  return goo_move_prey(macro.goo, macro.stomach, "goo-stomach-push");
+}
+
+function goo_bowels_pull() {
+  return goo_move_prey(macro.bowels, macro.goo, "goo-bowels-pull");
+}
+
+function goo_bowels_push() {
+  return goo_move_prey(macro.goo, macro.bowels, "goo-bowels-push");
+}
+
+function goo_womb_pull() {
+  return goo_move_prey(macro.womb, macro.goo, "goo-womb-pull");
+}
+
+function goo_womb_push() {
+  return goo_move_prey(macro.goo, macro.womb, "goo-womb-push");
+}
+
+function goo_balls_pull() {
+  return goo_move_prey(macro.balls, macro.goo, "goo-balls-pull");
+}
+
+function goo_balls_push() {
+  return goo_move_prey(macro.goo, macro.balls, "goo-balls-push");
 }
 
 function transformNumbers(line)
