@@ -768,7 +768,12 @@ function defaultScat(container, macro, verbose) {
 }
 
 function defaultMelt(container, macro, verbose) {
-  return "Your body turns gooey.";
+  if (container.count == 0) {
+    return "Your body turns gooey.";
+  } else {
+    return "Your body turns gooey, sucking " + container.describe(false) + " into your molten self.";
+  }
+
 }
 
 function defaultSolidify(container, macro, verbose) {

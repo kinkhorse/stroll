@@ -893,8 +893,8 @@ let macro =
     }
   },
 
-  "shoeTrapped": [],
-  "sockTrapped": [],
+  "shoeTrapped": new Container(),
+  "sockTrapped": new Container(),
 
   "shoe": {
     "name": "shoe",
@@ -2750,7 +2750,7 @@ function wear_shoes() {
   footwearUpdate();
 
   macro.paws.container = macro.shoeTrapped;
-  macro.shoeTrapped = [];
+  macro.shoeTrapped = new Container();
 
   update([line,summary,newline]);
 }
@@ -2779,7 +2779,7 @@ function wear_socks() {
   macro.footSockWorn = true;
 
   macro.paws.container = macro.sockTrapped;
-  macro.sockTrapped = [];
+  macro.sockTrapped = new Container();
 
   footwearUpdate();
 
@@ -2990,7 +2990,22 @@ function melt()
 
   gooButtons(macro.gooMolten);
 
-  let line = describe("melt", new Container(), macro, verbose);
+  let prey = new Container();
+
+  prey = prey.merge(macro.paws.container);
+  macro.paws.container = new Container();
+
+  if (macro.footSockWorn) {
+    prey = prey.merge(macro.sock.container);
+    macro.sock.container = new Container();
+  } else if (macro.footShoeWorn) {
+    prey = prey.merge(macro.shoe.container);
+    macro.shoe.container = new Container();
+  }
+
+  let line = describe("melt", prey, macro, verbose);
+
+  macro.goo.feed(prey);
 
   update([line, newline]);
 }
@@ -3002,9 +3017,11 @@ function solidify()
   gooButtons(macro.gooMolten);
 
   let prey = new Container();
-  macro.goo.contents.forEach(function(x) {
-    prey = prey.merge(x);
-  });
+
+  for (let i=0; i < macro.goo.contents.length; i++) {
+    prey = prey.merge(macro.goo.contents[i]);
+    macro.goo.contents[i] = new Container();
+  }
 
   let line = describe("solidify", prey, macro, verbose);
 
