@@ -474,15 +474,11 @@ ul {
   border: 1px;
   font-size: 30px;
   width: 50%;
-  height: 100px;
+  height: 70px;
   display: none;
 }
 
 .action-part-button.active {
-  border: 1px;
-  font-size: 30px;
-  width: 50%;
-  height: 100px;
   background: #555;
 }
 
@@ -603,4 +599,19 @@ body.dark .meterLabel {
     100% {
         transform: translate(0, 0);
     }
+}
+
+/* stolen directly from w3schools lol */
+
+.shaking {
+  animation: shake 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(0px, 0px); }
+    10% { transform: translate(0px, -2px); }
+    25% { transform: translate(0px, 0px); }
+    100% { transform: translate(0px, 0px); }
+
 }

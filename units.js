@@ -25,7 +25,7 @@ function numberRough(value,suffix="") {
         case 2: return prefix + "millions " + suffix;
         case 3: return prefix + "billions " + suffix;
         case 4: return prefix + "trillions " + suffix;
-        case 5: return "uncountably many";
+        default: return "uncountably many";
       }
   }
 }

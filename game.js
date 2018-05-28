@@ -3148,6 +3148,13 @@ function update(lines = [])
 function applyPercentage(name, meterPos) {
   meterPos = meterPos < 0 ? 0 : meterPos;
   document.querySelector("#" + name + "Meter .fill").style.setProperty("transform", "translate(0px, " + Math.round(meterPos) + "px)");
+
+  let meter = document.querySelector("#" + name + "Meter");
+  if (meterPos == 0) {
+    meter.classList.add("shaking");
+  } else {
+    meter.classList.remove("shaking");
+  }
 }
 
 function stylePercentage(name, storage) {
@@ -3464,6 +3471,8 @@ function startGame(e) {
   document.getElementById("log-area").style.display = 'inline';
   document.getElementById("custom-species").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
+
+  enable_panel("options");
 
   enable_panel("body");
   enable_button("feed");
