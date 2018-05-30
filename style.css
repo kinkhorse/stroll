@@ -447,27 +447,6 @@ th {
   font-weight: normal;
 }
 
-.growth-option {
-  display: none;
-}
-
-.growth-option+label {
-  display: none;
-}
-
-.growth-label {
-  font-size: 20pt;
-}
-
-input[type="radio"]:checked+
-.growth-label {
-  font-weight: bold;
-}
-
-.growth-amount {
-  width: 50%;
-}
-
 ul {
   list-style: none;
 }
@@ -621,5 +600,31 @@ body.dark .meterLabel {
     10% { transform: translate(0px, -2px); }
     25% { transform: translate(0px, 0px); }
     100% { transform: translate(0px, 0px); }
+}
+
+.growth-box {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  flex: 0 1 300px;
+}
+
+.growth-box > * {
+  margin: 0px;
+  display: block;
+  width: 50%;
+  height: 50px;
+}
+
+.growth-part {
+
+}
+
+.growth-part-active {
+  background: #555 !important;
+}
+
+.growth-amount {
 
 }

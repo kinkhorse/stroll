@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        <p>
+        <p></p>
         <!-- external svg is such a pain in the ass -->
 
         <div class="meter" id="cumMeter">
@@ -160,38 +160,27 @@
         <div class="stat-line-hidden" id="scat"></div>
       </div>
       <div class="stat-header-self">Growth</div>
-      <table id="grow-panel">
-        <tr>
-          <th><input autocomplete="off" class="growth-option" type="radio" name="part" checked="true" id="part-body">
-            <label class="growth-label" for="part-body">Body</label></th>
-          <th><button class="growth-amount" id="button-amount-1">1x</button></th>
-        </tr>
-        <tr>
-          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-ass">
-            <label class="growth-label" for="part-ass">Ass</label></th>
-          <th><button class="growth-amount" id="button-amount-5">5x</button></th>
-        </tr>
-        <tr>
-          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-dick">
-            <label class="growth-label" for="part-dick">Cock</label></th>
-          <th><button class="growth-amount" id="button-amount-10">10x</button></th>
-        </tr>
-        <tr>
-          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-balls">
-            <label class="growth-label" for="part-balls">Balls</label></th>
-          <th><button class="growth-amount" id="button-amount-20">20x</button></th>
-        </tr>
-        <tr>
-          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-breasts">
-            <label class="growth-label" for="part-breasts">Breasts</label></th>
-          <th><button class="growth-amount" id="button-amount-50">50x</button></th>
-        </tr>
-        <tr>
-          <th><input autocomplete="off" class="growth-option" type="radio" name="part" id="part-vagina">
-            <label class="growth-label" for="part-vagina">Slit</label></th>
-          <th><button class="growth-amount" id="button-amount-100">100x</button></th>
-        </tr>
-      </table>
+
+      <div class="growth-box">
+        <button class="growth-part growth-part-active" id="button-body">Body</button>
+        <button class="growth-part" id="button-ass">Ass</button>
+        <button class="growth-part" id="button-cock">Cock</button>
+        <button class="growth-part" id="button-balls">Balls</button>
+        <button class="growth-part" id="button-slit">Slit</button>
+        <button class="growth-part" id="button-breasts">Breasts</button>
+        <button class="growth-amount" id="button-growth-1.1">1.1x</button>
+        <button class="growth-amount" id="button-growth-1.5">1.5x</button>
+        <button class="growth-amount" id="button-growth-2">2x</button>
+        <button class="growth-amount" id="button-growth-3">3x</button>
+        <button class="growth-amount" id="button-growth-5">5x</button>
+        <button class="growth-amount" id="button-growth-10">10x</button>
+      </div>
+
+      <div class="stat-container">
+        <button class="stat-button" id="button-look">Look Around</button>
+        <button class="stat-button" id="button-grow-lots">SUPER BIG</button>
+        <button class="stat-button" id="button-stats">Stats</button>
+      </div>
     </div>
     <div id="log-area">
       <div id="log">
@@ -306,15 +295,12 @@
       </div>
 
       <div class="action-tab" id="actions-options">
-        <button class="stat-button" id="button-look">Look Around</button>
         <button class="stat-button" id="button-arousal">Arousal On</button>
         <button class="stat-button" id="button-stroll">Status: Standing</button>
         <button class="stat-button" id="button-numbers">Numbers: Full</button>
         <button class="stat-button" id="button-units">Units: Metric</button>
         <button class="stat-button" id="button-verbose">Verbose Text</button>
-        <button class="stat-button" id="button-grow-lots">SUPER BIG</button>
         <button class="stat-button" id="button-dark-mode-game">Toggle Dark Mode</button>
-        <button class="stat-button" id="button-stats">Stats</button>
         <button class="stat-button" id="button-debug-log">Debug Log</button>
       </div>
     </div>

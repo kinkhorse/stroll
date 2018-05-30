@@ -3173,24 +3173,22 @@ function pick_move()
   stomp();
 }
 
+function grow_part_pick(id) {
+  document.querySelector(".growth-part-active").classList.remove("growth-part-active");
+  document.querySelector("#" + id).classList.add("growth-part-active");
+}
+
 function grow_pick(times) {
-  if (document.getElementById("part-body").checked === true) {
-    grow(times);
-  }
-  else if (document.getElementById("part-ass").checked === true) {
-    grow_ass(times);
-  }
-  else if (document.getElementById("part-dick").checked === true) {
-    grow_dick(times);
-  }
-  else if (document.getElementById("part-balls").checked === true) {
-    grow_balls(times);
-  }
-  else if (document.getElementById("part-breasts").checked === true) {
-    grow_breasts(times);
-  }
-  else if (document.getElementById("part-vagina").checked === true) {
-    grow_vagina(times);
+
+  let button = document.querySelector(".growth-part-active");
+
+  switch (button.id.replace("button-", "")) {
+    case "body": grow(times); break;
+    case "ass": grow_ass(times); break;
+    case "dick": grow_dick(times); break;
+    case "balls": grow_balls(times); break;
+    case "slit": grow_vagina(times); break;
+    case "breasts": grow_breasts(times); break;
   }
 }
 
@@ -3430,7 +3428,7 @@ function enable_stat(name) {
 }
 
 function enable_growth_part(name) {
-  document.querySelector("#part-" + name + "+label").style.display = 'inline';
+  //document.querySelector("#part-" + name + "+label").style.display = 'inline';
 }
 
 function disable_button(name) {
@@ -3877,12 +3875,17 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-stats").addEventListener("click",showStats);
   document.getElementById("button-debug-log").addEventListener("click",debugLog);
 
-  document.getElementById("button-amount-1").addEventListener("click",function() { grow_pick(1); });
-  document.getElementById("button-amount-5").addEventListener("click",function() { grow_pick(5); });
-  document.getElementById("button-amount-10").addEventListener("click",function() { grow_pick(10); });
-  document.getElementById("button-amount-20").addEventListener("click",function() { grow_pick(20); });
-  document.getElementById("button-amount-50").addEventListener("click",function() { grow_pick(50); });
-  document.getElementById("button-amount-100").addEventListener("click",function() { grow_pick(100); });
+  document.querySelectorAll(".growth-part").forEach(function (button) {
+    button.addEventListener("click", function() { grow_part_pick(button.id); });
+  });
+
+  document.getElementById("button-growth-1.1").addEventListener("click",function() { grow_pick(1); });
+  document.getElementById("button-growth-1.5").addEventListener("click",function() { grow_pick(5); });
+  document.getElementById("button-growth-2").addEventListener("click",function() { grow_pick(10); });
+  document.getElementById("button-growth-3").addEventListener("click",function() { grow_pick(20); });
+  document.getElementById("button-growth-5").addEventListener("click",function() { grow_pick(40); });
+  document.getElementById("button-growth-10").addEventListener("click",function() { grow_pick(90); });
+
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
   document.getElementById("button-export-clear").addEventListener("click",clearExport);
