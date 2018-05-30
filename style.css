@@ -70,14 +70,22 @@ body.light #log {
   height: 900px;
   overflow: auto;
   color: #000;
-  background-color: #fff;
+  background-color: #e7e7e7;
+}
+
+body.light #log div {
+  background-color: #e7e7e7;
 }
 
 body.dark #log {
   height: 900px;
   overflow: auto;
   color: #eee;
-  background-color: #111;
+  background-color: #151515;
+}
+
+body.dark #log div {
+  background-color: #151515;
 }
 
 .stat-header-self {
