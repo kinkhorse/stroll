@@ -3192,13 +3192,13 @@ function grow_pick(times) {
   }
 }
 
-function grow(times=1)
+function grow(factor=1)
 {
 
   let oldHeight = macro.height;
   let oldMass = macro.mass;
 
-  macro.scale *= Math.pow(1.02,times);
+  macro.scale *= factor;
 
   let newHeight = macro.height;
   let newMass = macro.mass;
@@ -3275,25 +3275,6 @@ function grow_ass(times=1)
 
   let diameterDelta = Math.pow(macro.assArea,1/2) - oldDiameter;
   update(["Power surges through you as your ass swells by " + length(diameterDelta, unit, false),newline]);
-}
-
-function grow_lots()
-{
-  let oldHeight = macro.height;
-  let oldMass = macro.mass;
-
-  macro.scale *= 100;
-
-  let newHeight = macro.height;
-  let newMass = macro.mass;
-
-  let heightDelta = newHeight - oldHeight;
-  let massDelta = newMass - oldMass;
-
-  let heightStr = length(heightDelta, unit);
-  let massStr = mass(massDelta, unit);
-
-  update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
 function resetSettings() {
@@ -3865,7 +3846,6 @@ window.addEventListener('load', function(event) {
   document.getElementById("button-units").addEventListener("click",toggle_units);
   document.getElementById("button-verbose").addEventListener("click",toggle_verbose);
   document.getElementById("button-arousal").addEventListener("click",toggle_arousal);
-  document.getElementById("button-grow-lots").addEventListener("click",grow_lots);
 
   document.getElementById("button-dark-mode-options").addEventListener("click",toggleDarkMode);
   document.getElementById("button-dark-mode-game").addEventListener("click",toggleDarkMode);
@@ -3879,12 +3859,12 @@ window.addEventListener('load', function(event) {
     button.addEventListener("click", function() { grow_part_pick(button.id); });
   });
 
-  document.getElementById("button-growth-1.1").addEventListener("click",function() { grow_pick(1); });
-  document.getElementById("button-growth-1.5").addEventListener("click",function() { grow_pick(5); });
-  document.getElementById("button-growth-2").addEventListener("click",function() { grow_pick(10); });
-  document.getElementById("button-growth-3").addEventListener("click",function() { grow_pick(20); });
-  document.getElementById("button-growth-5").addEventListener("click",function() { grow_pick(40); });
-  document.getElementById("button-growth-10").addEventListener("click",function() { grow_pick(90); });
+  document.getElementById("button-growth-1.1").addEventListener("click",function() { grow_pick(1.1); });
+  document.getElementById("button-growth-1.5").addEventListener("click",function() { grow_pick(1.5); });
+  document.getElementById("button-growth-2").addEventListener("click",function() { grow_pick(2); });
+  document.getElementById("button-growth-5").addEventListener("click",function() { grow_pick(5); });
+  document.getElementById("button-growth-20").addEventListener("click",function() { grow_pick(20); });
+  document.getElementById("button-growth-100").addEventListener("click",function() { grow_pick(100); });
 
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
