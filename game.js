@@ -1376,6 +1376,10 @@ let macro =
         line += (macro.tailCount > 1 ? "Their maws are drooling" : "Its maw is drooling");
       }
       result.push(line);
+
+      if (this.tailMaw) {
+        result.push(this.tail.description);
+      }
     }
     if (this.arousalEnabled) {
       if (this.afterglow) {
@@ -1447,6 +1451,10 @@ let macro =
 
     if (this.gooMolten) {
       result.push(this.goo.description);
+    }
+
+    if (this.pawVoreEnabled) {
+      result.push(this.pawsVore.description);
     }
 
     return result;
@@ -1834,7 +1842,7 @@ function digest_goo() {
 }
 
 function digest_paws() {
-  digest_all(macro.paw);
+  digest_all(macro.pawsVore);
 }
 
 
@@ -3386,6 +3394,15 @@ function paw_vore()
   let prey = getPrey(biome, area, macro.sameSizeVore);
 
   let line = describe("paw-vore", prey, macro, verbose);
+
+  let lines = [line];
+
+  if (macro.paws.container.count > 0) {
+    prey = prey.merge(macro.paws.container);
+    lines.push(describe("paw-vore-toes", macro.paws.container, macro, verbose));
+    macro.paws.container = new Container();
+  }
+
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
@@ -3400,7 +3417,7 @@ function paw_vore()
 
   add_victim_people("paw-vore",prey);
 
-  update([sound,line,linesummary,newline]);
+  update([sound].concat(lines).concat([linesummary,newline]));
 
   macro.arouse(5);
 }
