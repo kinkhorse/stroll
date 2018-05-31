@@ -162,18 +162,24 @@
       <div class="stat-header-self">Growth</div>
 
       <div class="growth-box">
-        <button class="growth-part growth-part-active" id="button-body">Body</button>
-        <button class="growth-part" id="button-ass">Ass</button>
-        <button class="growth-part" id="button-dick">Cock</button>
-        <button class="growth-part" id="button-balls">Balls</button>
-        <button class="growth-part" id="button-slit">Slit</button>
-        <button class="growth-part" id="button-breasts">Breasts</button>
-        <button class="growth-amount" id="button-growth-1.1">1.1x</button>
-        <button class="growth-amount" id="button-growth-1.5">1.5x</button>
-        <button class="growth-amount" id="button-growth-2">2x</button>
-        <button class="growth-amount" id="button-growth-5">5x</button>
-        <button class="growth-amount" id="button-growth-20">20x</button>
-        <button class="growth-amount" id="button-growth-100">100x</button>
+        <div id="growth-box-left">
+          <button class="growth-part growth-part-active" id="button-growth-body">Body</button>
+          <button class="growth-part" id="button-growth-paws">Paws</button>
+          <button class="growth-part" id="button-growth-tail">Tail</button>
+          <button class="growth-part" id="button-growth-ass">Ass</button>
+          <button class="growth-part" id="button-growth-dick">Cock</button>
+          <button class="growth-part" id="button-growth-balls">Balls</button>
+          <button class="growth-part" id="button-growth-slit">Slit</button>
+          <button class="growth-part" id="button-growth-breasts">Breasts</button>
+        </div>
+        <div id="growth-box-right">
+          <button class="growth-amount" id="button-growth-1.1">1.1x</button>
+          <button class="growth-amount" id="button-growth-1.5">1.5x</button>
+          <button class="growth-amount" id="button-growth-2">2x</button>
+          <button class="growth-amount" id="button-growth-5">5x</button>
+          <button class="growth-amount" id="button-growth-20">20x</button>
+          <button class="growth-amount" id="button-growth-100">100x</button>
+        </div>
       </div>
 
       <div class="stat-container">
@@ -411,7 +417,7 @@
               </li>
               <li>
                 <label for="baseAssArea">Ass area</label>
-                <input autocomplete="off" type="number" step="any" id="baseAssArea" name="baseAssArea" data-unit="area" placeholder="0.4">
+                <input autocomplete="off" type="number" step="any" id="baseAssArea" name="baseAssArea" data-unit="area" placeholder="0.25">
                 <div class="preview" id="baseAssAreaPreview"></div>
               </li>
             </div>

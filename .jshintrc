@@ -10,6 +10,7 @@
     "areas": true,
     "fill_area": true,
     "length": true,
+    "area": true,
     "mass": true,
     "volume": true,
     "round": true,

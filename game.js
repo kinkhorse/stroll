@@ -41,11 +41,12 @@ let macro =
   get height() { return this.scaling(this.baseHeight, this.scale, 1); },
   "baseMass": 135,
   get mass () { return this.scaling(this.baseMass, this.scale, 3); },
+  "pawScale": 1,
   "basePawArea": 0.1,
-  get pawArea() { return this.scaling(this.basePawArea, this.scale, 2); },
+  get pawArea() { return this.scaling(this.basePawArea * this.pawScale * this.pawScale, this.scale, 2); },
   "baseAnalVoreDiameter": 0.1,
-  get analVoreArea() { return this.scaling(Math.pow(this.baseAnalVoreDiameter, 2), this.scale, 2); },
-  "baseAssArea": 0.4,
+  get analVoreArea() { return this.scaling(Math.pow(this.baseAnalVoreDiameter * this.assScale, 2), this.scale, 2); },
+  "baseAssArea": 0.25,
   get assArea() { return this.scaling(this.baseAssArea * this.assScale, this.scale, 2); },
   "baseHandArea": 0.1,
   get handArea() { return this.scaling(this.baseHandArea, this.scale, 2); },
@@ -3182,8 +3183,10 @@ function grow_pick(times) {
 
   let button = document.querySelector(".growth-part-active");
 
-  switch (button.id.replace("button-", "")) {
+  switch (button.id.replace("button-growth-", "")) {
     case "body": grow(times); break;
+    case "paws": grow_paws(times); break;
+    case "tail": grow_tail(times); break;
     case "ass": grow_ass(times); break;
     case "dick": grow_dick(times); break;
     case "balls": grow_balls(times); break;
@@ -3212,66 +3215,93 @@ function grow(factor=1)
   update(["Power surges through you as you grow " + heightStr + " taller and gain " + massStr + " of mass",newline]);
 }
 
-function grow_dick(times=1)
+function grow_paws(factor)
+{
+
+  let oldArea = macro.pawArea;
+
+  macro.pawScale *= factor;
+
+  let areaDelta = macro.pawArea - oldArea;
+
+  let areaStr = area(areaDelta, unit, false);
+
+  update(["Power surges through you as your " + macro.footDesc(true) + " grow, gaining " + areaStr + " of area.",newline]);
+}
+
+function grow_tail(factor)
+{
+
+  let oldLength = macro.tailLength;
+  let oldMass = macro.tailMass;
+
+  macro.tailScale *= factor;
+
+  let lengthDelta = macro.tailLength - oldLength;
+  let massDelta = macro.tailMass - oldMass;
+  update(["Power surges through you as your " + macro.tailType + " tail grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
+}
+
+function grow_dick(factor)
 {
 
   let oldLength = macro.dickLength;
   let oldMass = macro.dickMass;
 
-  macro.dickScale = Math.pow(macro.dickScale * macro.dickScale + 1.02*times, 1/2) ;
+  macro.dickScale *= factor;
 
   let lengthDelta = macro.dickLength - oldLength;
   let massDelta = macro.dickMass - oldMass;
   update(["Power surges through you as your " + macro.dickType + " cock grows " + length(lengthDelta, unit, false) + " longer and gains " + mass(massDelta, unit, false) + " of mass",newline]);
 }
 
-function grow_balls(times=1)
+function grow_balls(factor)
 {
 
 
   let oldDiameter = macro.ballDiameter;
   let oldMass = macro.ballMass;
 
-  macro.ballScale = Math.pow(macro.ballScale * macro.ballScale + 1.02*times, 1/2) ;
+  macro.ballScale *= factor;
 
   let diameterDelta = macro.ballDiameter - oldDiameter;
   let massDelta = macro.ballMass - oldMass;
   update(["Power surges through you as your balls swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
 }
 
-function grow_breasts(times=1)
+function grow_breasts(factor)
 {
 
 
   let oldDiameter = macro.breastDiameter;
   let oldMass = macro.breastMass;
 
-  macro.breastScale = Math.pow(macro.breastScale * macro.breastScale + 1.02*times, 1/2) ;
+  macro.breastScale *= factor;
 
   let diameterDelta = macro.breastDiameter - oldDiameter;
   let massDelta = macro.breastMass - oldMass;
   update(["Power surges through you as your breasts swell by " + length(diameterDelta, unit, false) + ", gaining " + mass(massDelta, unit, false) + " of mass apiece",newline]);
 }
 
-function grow_vagina(times=1)
+function grow_vagina(factor)
 {
 
   let oldLength = macro.vaginaLength;
 
-  macro.vaginaScale = Math.pow(macro.vaginaScale * macro.vaginaScale + 1.02*times, 1/2) ;
+  macro.vaginaScale *= factor;
 
   let lengthDelta = macro.vaginaLength - oldLength;
 
   update(["Power surges through you as your moist slit expands by by " + length(lengthDelta, unit, false),newline]);
 }
 
-function grow_ass(times=1)
+function grow_ass(factor)
 {
 
 
   let oldDiameter = Math.pow(macro.assArea,1/2);
 
-  macro.assScale = Math.pow(macro.assScale * macro.assScale + 1.02*times, 1/2) ;
+  macro.assScale *= factor;
 
   let diameterDelta = Math.pow(macro.assArea,1/2) - oldDiameter;
   update(["Power surges through you as your ass swells by " + length(diameterDelta, unit, false),newline]);
@@ -3409,7 +3439,7 @@ function enable_stat(name) {
 }
 
 function enable_growth_part(name) {
-  //document.querySelector("#part-" + name + "+label").style.display = 'inline';
+  document.querySelector("#button-growth-" + name).style.display = 'block';
 }
 
 function disable_button(name) {
@@ -3441,6 +3471,7 @@ function startGame(e) {
     macro.tailCount = 0;
   }
 
+  enable_growth_part("paws");
   enable_victim("stomped","Stomped");
   enable_victim("flex-toes","Squished between toes");
   enable_victim("eaten","Devoured");
@@ -3490,6 +3521,7 @@ function startGame(e) {
 
   if (macro.tailCount > 0) {
     enable_panel("tails");
+    enable_growth_part("tail");
     enable_button("tail_slap");
     enable_victim("tail-slap","Tail slapped");
 
@@ -3546,7 +3578,7 @@ function startGame(e) {
 
     enable_stat("femcum");
 
-    enable_growth_part("vagina");
+    enable_growth_part("slit");
 
     if (macro.arousalEnabled) {
       enable_victim("femcum-flood","Flooded by femcum");

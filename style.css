@@ -607,18 +607,25 @@ body.dark .meterLabel {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  flex: 0 1 300px;
+  flex: 0 1 400px;
 }
 
-.growth-box > * {
+.growth-box > div > * {
   margin: 0px;
-  display: block;
-  width: 50%;
+  width: 100%;
   height: 50px;
 }
 
-.growth-part {
+#growth-box-left {
+  height: 100%;
+}
 
+#growth-box-right {
+  height: 100%;
+}
+
+.growth-part {
+  display: none;
 }
 
 .growth-part-active {
@@ -626,5 +633,5 @@ body.dark .meterLabel {
 }
 
 .growth-amount {
-
+  display: block;
 }
