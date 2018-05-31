@@ -389,7 +389,11 @@ let macro =
   },
 
   "digest": function(owner, organ, time=15) {
-    setTimeout(function() { owner.digest(owner, organ, time); }, time * 1000 / organ.stages);
+
+    // ignore if using manual digestion
+    if (time != 0) {
+      setTimeout(function() { owner.digest(owner, organ, time); }, time * 1000 / organ.stages);
+    }
 
     let count = Math.min(organ.contents.length, organ.maxDigest);
 
@@ -399,42 +403,7 @@ let macro =
     if (container.count == 0)
       return;
 
-    if (organ.moves != undefined) {
-      organ.moves.feed(container);
-      let sound = getSound("insert",container.sum_property("mass"));
-      let line = organ.describeMove(container);
-      let summary = summarize(container.sum(),false);
-      update([line, summary, newline]);
-      return;
-    }
-
-    let digested = container.sum();
-    for (let key in victims[organ.name]) {
-      if (victims[organ.name].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
-        victims["digested"][key] += digested[key];
-        victims[organ.name][key] -= digested[key];
-      }
-    }
-
-    let sound = getSound("digest",container.sum_property("mass"));
-
-    let vol = organ.fill(this,container);
-    let line = organ.describeDigestion(container, vol);
-    let lethal = macro.brutality != 0 && (!macro.soulVoreEnabled || organ.name === "souls");
-    let summary = summarize(container.sum(),lethal);
-
-    if (macro.soulVoreEnabled && organ.name != "souls") {
-      owner.souls.feed(container);
-      let soulCount = container.sum()["Person"];
-      let soulLine = "";
-      if (soulCount > 0)
-        soulLine = "Their " + (soulCount == 1 ? "soul is" : "souls are") + " trapped in your depths!";
-      else
-        soulLine = "No souls, though...";
-      update([sound,line,summary,soulLine,newline]);
-    } else {
-      update([sound,line,summary,newline]);
-    }
+    do_digestion(owner, organ, container);
 
   },
 
@@ -1675,6 +1644,93 @@ function getPrey(region, area, sameSize = false)
     return getOnePrey(biome, area, true);
   return prey;
 }
+
+function digest_all(organ) {
+  let prey = new Container();
+
+  for (let i = 0; i < organ.stages; i++) {
+    prey = prey.merge(organ.contents[i]);
+    organ.contents[i] = new Container();
+  }
+
+  if (prey.count == 0) {
+    return;
+  }
+  
+  do_digestion(organ.owner, organ, prey);
+}
+
+function do_digestion(owner, organ, container) {
+  if (organ.moves != undefined) {
+    organ.moves.feed(container);
+    let sound = getSound("insert",container.sum_property("mass"));
+    let line = organ.describeMove(container);
+    let summary = summarize(container.sum(),false);
+    update([line, summary, newline]);
+    return;
+  }
+
+  let digested = container.sum();
+  for (let key in victims[organ.name]) {
+    if (victims[organ.name].hasOwnProperty(key) && digested.hasOwnProperty(key) ) {
+      victims["digested"][key] += digested[key];
+      victims[organ.name][key] -= digested[key];
+    }
+  }
+
+  let sound = getSound("digest",container.sum_property("mass"));
+
+  let vol = organ.fill(owner, container);
+  let line = organ.describeDigestion(container, vol);
+  let lethal = macro.brutality != 0 && (!macro.soulVoreEnabled || organ.name === "souls");
+  let summary = summarize(container.sum(),lethal);
+
+  if (macro.soulVoreEnabled && organ.name != "souls") {
+    owner.souls.feed(container);
+    let soulCount = container.sum()["Person"];
+    let soulLine = "";
+    if (soulCount > 0)
+      soulLine = "Their " + (soulCount == 1 ? "soul is" : "souls are") + " trapped in your depths!";
+    else
+      soulLine = "No souls, though...";
+    update([sound,line,summary,soulLine,newline]);
+  } else {
+    update([sound,line,summary,newline]);
+  }
+}
+
+function digest_stomach() {
+  digest_all(macro.stomach);
+}
+
+function digest_anal() {
+  digest_all(macro.bowels);
+}
+
+function digest_cock() {
+  digest_all(macro.balls);
+}
+
+function digest_breast() {
+  digest_all(macro.breasts);
+}
+
+function digest_unbirth() {
+  digest_all(macro.womb);
+}
+
+function digest_soul() {
+  digest_all(macro.souls);
+}
+
+function digest_bladder() {
+  digest_all(macro.bladder);
+}
+
+function digest_goo() {
+  digest_all(macro.goo);
+}
+
 
 function feed()
 {
@@ -3538,6 +3594,11 @@ function startGame(e) {
 
   enable_panel("body");
   enable_button("feed");
+
+  if (macro.oralDigestTime == 0) {
+    enable_button("digest_stomach");
+  }
+
   enable_button("stomp");
 
   if (macro.vomitEnabled) {
@@ -3569,6 +3630,10 @@ function startGame(e) {
   if (macro.analVore) {
     enable_button("anal_vore");
     enable_victim("anal-vore","Anal vore");
+
+    if (macro.analDigestTime == 0) {
+      enable_button("digest_anal");
+    }
   }
 
   if (macro.tailCount > 0) {
@@ -3605,6 +3670,10 @@ function startGame(e) {
     enable_growth_part("dick");
     enable_growth_part("balls");
 
+    if (macro.cockDigestTime == 0) {
+      enable_button("digest_cock");
+    }
+
     if (macro.hasSheath) {
       enable_victim("sheath-crush","Crushed in sheath");
       enable_victim("sheath-absorb","Absorbed by sheath");
@@ -3634,6 +3703,10 @@ function startGame(e) {
 
     if (macro.arousalEnabled) {
       enable_victim("femcum-flood","Flooded by femcum");
+    }
+
+    if (macro.unbirthDigestTime == 0) {
+      enable_button("digest_unbirth");
     }
   }
 
@@ -3666,6 +3739,10 @@ function startGame(e) {
       enable_victim("breast-vore","Stuffed into breasts");
 
       enable_button("breast_vore");
+
+      if (macro.breastDigestTime == 0) {
+        enable_button("digest_breast");
+      }
     }
   }
 
@@ -3690,6 +3767,10 @@ function startGame(e) {
 
     enable_button("soul_vore");
     enable_button("soul_absorb_paw");
+
+    if (macro.soulDigestTime == 0) {
+      enable_button("digest_soul");
+    }
 
   }
 
@@ -3737,6 +3818,10 @@ function startGame(e) {
       enable_button("bladder_vore");
 
       enable_victim("bladder_vore","Dissolved into piss");
+
+      if (macro.bladderDigestTime == 0) {
+        enable_button("digest_bladder");
+      }
     }
   }
 
@@ -3758,6 +3843,10 @@ function startGame(e) {
 
     if (macro.gooDigestion) {
       enable_victim("goo","Absorbed into the goo");
+
+      if (macro.gooDigestTime == 0) {
+        enable_button("digest_goo");
+      }
     }
   }
 
