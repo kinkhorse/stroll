@@ -3702,7 +3702,7 @@ function startGame(e) {
   enable_victim("humped","Humped");
 
   document.getElementById("log-area").style.display = 'inline';
-  document.getElementById("custom-species").style.display = 'none';
+  document.getElementById("character-build-area").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
   enable_panel("options");
