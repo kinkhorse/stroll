@@ -2613,7 +2613,7 @@ function male_spurt_musk(area) {
 
   macro.addGrowthPoints(preyMass);
 
-  add_victim_people("emale-spurt-musk",prey);
+  add_victim_people("male-spurt-musk",prey);
 
   update([line,linesummary,newline]);
 
