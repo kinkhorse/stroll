@@ -27,8 +27,9 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","piss-stench","scat-stench","belch","fart","stomach","tail","tail-to-stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
 "soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
-"sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
-"goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","paw-vore","paw-vore-toes","paws"];
+"sheath-toy","slit-toy","breast-toy","melt","solidify","flood","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
+"goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","goo-breasts-pull","goo-breasts-push",
+"goo-tail-pull","goo-tail-push","goo-paws-pull","goo-paws-push","paw-vore","paw-vore-toes","paws"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -828,6 +829,14 @@ function defaultSolidify(container, macro, verbose) {
   }
 }
 
+function defaultFlood(container, macro, verbose) {
+  if (container.count == 0) {
+    return "Your gooey body melts and floods outward..but doesn't catch anything.";
+  } else {
+    return "Your gooey body melts and floods outward, burying " + container.describe(verbose) + " in your thick, slimy self. You slowly reform, grinning as you feel the " + numberRough(container.count, "of") + " prey sloshing about within.";
+  }
+}
+
 function defaultStompGoo(container, macro, verbose) {
   if (container.count == 0) {
     return "Your gooey paw hits the ground.";
@@ -878,6 +887,30 @@ function defaultGooBallsPull(container, macro, verbose) {
 
 function defaultGooBallsPush(container, macro, verobse) {
   return "Your churning goo herds " + container.describe(false) + " into your musky balls.";
+}
+
+function defaultGooBreastsPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your breasts, drawing them into the viscous goo.";
+}
+
+function defaultGooBreastsPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your breasts.";
+}
+
+function defaultGooTailPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your " + macro.tailDesc + ", drawing them into the viscous goo.";
+}
+
+function defaultGooTailPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your " + macro.tailDesc;
+}
+
+function defaultGooPawsPull(container, macro, verbose) {
+  return "Your molten depths squeeze in around the " + container.describe(false) + " imprisoned in your " + macro.footOnlyDesc(true) + ", drawing them into the viscous goo.";
+}
+
+function defaultGooPawsPush(container, macro, verobse) {
+  return "Your churning goo herds " + container.describe(false) + " into your " + macro.footOnlyDesc(true) + ".";
 }
 
 function defaultPawVore(container, macro, verbose) {

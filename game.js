@@ -3240,6 +3240,7 @@ function setButton(button, state) {
 function gooButtons(molten) {
   setButton("melt", !molten);
   setButton("solidify", molten);
+  setButton("flood", molten);
   setButton("goo_stomach_pull", molten);
   setButton("goo_stomach_push", molten);
 
@@ -3256,6 +3257,21 @@ function gooButtons(molten) {
   if (macro.maleParts) {
     setButton("goo_balls_pull", molten);
     setButton("goo_balls_push", molten);
+  }
+
+  if (macro.hasBreasts) {
+    setButton("goo_breasts_pull", molten);
+    setButton("goo_breasts_push", molten);
+  }
+
+  if (macro.pawVoreEnabled) {
+    setButton("goo_paws_pull", molten);
+    setButton("goo_paws_push", molten);
+  }
+
+  if (macro.hasTail) {
+    setButton("goo_tail_pull", molten);
+    setButton("goo_tail_push", molten);
   }
 
   if (macro.gooDigestTime == 0) {
@@ -3287,6 +3303,26 @@ function melt()
   macro.goo.feed(prey);
 
   update([line, newline]);
+}
+
+function flood()
+{
+  let area = Math.pow(macro.totalMass / 1000, 2/3);
+  let prey = getPrey(biome, area, macro.sameSizeStomp);
+  let line = describe("flood", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("goo",preyMass);
+
+  macro.goo.feed(prey);
+
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function solidify()
@@ -3390,6 +3426,30 @@ function goo_balls_pull() {
 
 function goo_balls_push() {
   return goo_move_prey(macro.goo, macro.balls, "goo-balls-push");
+}
+
+function goo_breasts_pull() {
+  return goo_move_prey(macro.breasts, macro.goo, "goo-breasts-pull");
+}
+
+function goo_breasts_push() {
+  return goo_move_prey(macro.goo, macro.breasts, "goo-breasts-push");
+}
+
+function goo_tail_pull() {
+  return goo_move_prey(macro.tail, macro.goo, "goo-tail-pull");
+}
+
+function goo_tail_push() {
+  return goo_move_prey(macro.goo, macro.tail, "goo-tail-push");
+}
+
+function goo_paws_pull() {
+  return goo_move_prey(macro.pawsVore, macro.goo, "goo-paws-pull");
+}
+
+function goo_paws_push() {
+  return goo_move_prey(macro.goo, macro.pawsVore, "goo-paws-push");
 }
 
 function paw_vore()
@@ -4082,7 +4142,6 @@ function startGame(e) {
 
     if (macro.gooDigestion) {
       enable_victim("goo","Absorbed into the goo");
-
     }
   }
 
