@@ -870,6 +870,44 @@ let macro =
     "stages": 3
   },
 
+  "pawVoreEnabled": false,
+
+  "pawsVore": {
+    "name" : "paws",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner, this, owner.pawDigestTime);
+    },
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      this.contents[0] = this.contents[0].merge(prey);
+    },
+    "describeDigestion" : function(container) {
+      return describe("paws",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+
+    },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your " + this.owner.footOnlyDesc(true) + " don't contain any prey.";
+      } else {
+        return "Your " + this.owner.footOnlyDesc(true) + " have enveloped " + prey.describe(false);
+      }
+    },
+    "contents" : [],
+    "stages": 3
+  },
+
   // holding spots
 
   hasPouch: true,
@@ -972,6 +1010,7 @@ let macro =
     this.bladder.setup(this);
     this.souls.setup(this);
     this.goo.setup(this);
+    this.pawsVore.setup(this);
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
@@ -1792,6 +1831,10 @@ function digest_bladder() {
 
 function digest_goo() {
   digest_all(macro.goo);
+}
+
+function digest_paws() {
+  digest_all(macro.paw);
 }
 
 
@@ -3337,6 +3380,31 @@ function goo_balls_push() {
   return goo_move_prey(macro.goo, macro.balls, "goo-balls-push");
 }
 
+function paw_vore()
+{
+  let area = macro.pawArea;
+  let prey = getPrey(biome, area, macro.sameSizeVore);
+
+  let line = describe("paw-vore", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), false);
+
+  let people = get_living_prey(prey.sum());
+
+  let preyMass = prey.sum_property("mass");
+
+  let sound = getSound("insert",preyMass);
+
+  macro.addGrowthPoints(preyMass);
+
+  macro.pawsVore.feed(prey);
+
+  add_victim_people("paw-vore",prey);
+
+  update([sound,line,linesummary,newline]);
+
+  macro.arouse(5);
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });
@@ -3714,6 +3782,8 @@ function startGame(e) {
     enable_button("digest_stomach");
   }
 
+  enable_panel("paws");
+
   enable_button("stomp");
 
   if (macro.vomitEnabled) {
@@ -3974,6 +4044,16 @@ function startGame(e) {
       if (macro.gooDigestTime == 0) {
         enable_button("digest_goo");
       }
+    }
+  }
+
+  if (macro.pawVoreEnabled) {
+    enable_button("paw_vore");
+
+    enable_victim("paw-vore","Absorbed into paws");
+
+    if (macro.pawDigestTime == 0) {
+      enable_button("digest_paws");
     }
   }
 

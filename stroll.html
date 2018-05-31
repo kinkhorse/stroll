@@ -198,6 +198,7 @@
     <div class="sidebar" id="action-panel">
       <div class="action-part-container">
         <button class="active action-part-button" id="action-part-body">Body</button>
+        <button class="action-part-button" id="action-part-paws">Paws</button>
         <button class="action-part-button" id="action-part-dick">Cock</button>
         <button class="action-part-button" id="action-part-vagina">Slit</button>
         <button class="action-part-button" id="action-part-breasts">Breasts</button>
@@ -215,12 +216,17 @@
         <button class="action-button" id="button-action-digest_stomach">Digest</button>
         <button class="action-button" id="button-action-chew">Chew</button>
         <button class="action-button" id="button-action-vomit">Vomit</button>
-        <button class="action-button" id="button-action-stomp">Stomp</button>
-        <button class="action-button" id="button-action-flex_toes">Flex Toes</button>
         <button class="action-button" id="button-action-sit">Sit</button>
         <button class="action-button" id="button-action-anal_vore">Anal Vore</button>
         <button class="action-button" id="button-action-digest_anal">Digest Bowels</button>
         <button class="action-button" id="button-action-grind">Grind</button>
+      </div>
+
+      <div class="action-tab" id="actions-paws">
+        <button class="action-button" id="button-action-stomp">Stomp</button>
+        <button class="action-button" id="button-action-flex_toes">Flex Toes</button>
+        <button class="action-button" id="button-action-paw_vore">Absorb</button>
+        <button class="action-button" id="button-action-digest_paws">Digest</button>
       </div>
 
       <div class="action-tab" id="actions-tails">
@@ -994,6 +1000,17 @@
               <li>
                 <label for="gooDigestTime">Digestion time (0 for manual)</label>
                 <input autocomplete="off" type="number" step="any" id="gooDigestTime" name="gooDigestTime" placeholder="15">
+              </li>
+            </div>
+          </div>
+
+          <div class="custom-category">
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="pawVoreEnabled" name="pawVoreEnabled" />
+            <label class="custom-header" for="pawVoreEnabled">Paw Vore</label>
+            <div class="reveal-if-active">
+              <li>
+                <label for="pawDigestTime">Digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="pawDigestTime" name="pawDigestTime" placeholder="15">
               </li>
             </div>
           </div>

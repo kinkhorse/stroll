@@ -28,7 +28,7 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "paw-stench","ass-stench","piss-stench","scat-stench","belch","fart","stomach","tail","tail-to-stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
 "soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
 "sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
-"goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push"];
+"goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","paw-vore","paws"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -878,6 +878,14 @@ function defaultGooBallsPull(container, macro, verbose) {
 
 function defaultGooBallsPush(container, macro, verobse) {
   return "Your churning goo herds " + container.describe(false) + " into your musky balls.";
+}
+
+function defaultPawVore(container, macro, verbose) {
+  return "Your " + macro.footOnlyDesc(true) + " smother over " + container.describe(false) + ", absorbing them into your soles!";
+}
+
+function defaultPaws(container, macro, verbose) {
+  return "Your " + macro.footOnlyDesc(true) + " fully absorb " + container.describe(false) + ".";
 }
 
 // EATING
