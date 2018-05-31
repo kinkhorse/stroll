@@ -2768,6 +2768,32 @@ function remove_shoes() {
   footwearUpdate();
 
   update([line,summary,newline]);
+
+  if (macro.stenchEnabled) {
+    remove_shoes_stench();
+  }
+}
+
+function remove_shoes_stench() {
+    let area = macro.pawStenchArea * 2;
+    let prey = getPrey(biome, area);
+    let line = describe("paw-stench", prey, macro, verbose);
+    let linesummary = summarize(prey.sum(), true);
+
+    let people = get_living_prey(prey.sum());
+
+    if (get_living_prey(prey.sum()) == 0)
+      return;
+
+    let preyMass = prey.sum_property("mass");
+
+    macro.addGrowthPoints(preyMass);
+
+    add_victim_people("paw-stench",prey);
+
+    update([line,linesummary,newline]);
+
+    macro.arouse(5);
 }
 
 function wear_socks() {
@@ -2799,6 +2825,32 @@ function remove_socks() {
   footwearUpdate();
 
   update([line,summary,newline]);
+
+  if (macro.stenchEnabled) {
+    remove_socks_stench();
+  }
+}
+
+function remove_socks_stench() {
+    let area = macro.pawStenchArea * 2;
+    let prey = getPrey(biome, area);
+    let line = describe("paw-stench", prey, macro, verbose);
+    let linesummary = summarize(prey.sum(), true);
+
+    let people = get_living_prey(prey.sum());
+
+    if (get_living_prey(prey.sum()) == 0)
+      return;
+
+    let preyMass = prey.sum_property("mass");
+
+    macro.addGrowthPoints(preyMass);
+
+    add_victim_people("paw-stench",prey);
+
+    update([line,linesummary,newline]);
+
+    macro.arouse(5);
 }
 
 function stuff_shoes() {
@@ -2862,22 +2914,22 @@ function footwearUpdate() {
     } else {
       enable_button("stuff_shoes");
       enable_button("dump_shoes");
-
-      if (!macro.footSockEnabled || macro.footSockWorn) {
-        enable_button("wear_shoes");
-      }
+      enable_button("wear_shoes");
     }
   }
 
-  if (!macro.footShoeEnabled || !macro.footShoeWorn) {
-    if (macro.footSockEnabled) {
+  if (macro.footSockEnabled) {
+    if (!macro.footShoeEnabled || !macro.footShoeWorn) {
       if (macro.footSockWorn) {
         enable_button("remove_socks");
       } else {
         enable_button("wear_socks");
-        enable_button("stuff_socks");
-        enable_button("dump_socks");
       }
+    }
+
+    if (!macro.footSockWorn) {
+      enable_button("stuff_socks");
+      enable_button("dump_socks");
     }
   }
 }
