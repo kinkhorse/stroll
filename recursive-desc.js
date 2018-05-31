@@ -5,6 +5,10 @@
 var rules = {};
 var defaults = {};
 
+function plural(quantity, singular, plural) {
+  return quantity > 1 ? plural : singular;
+}
+
 function getDefault(name) {
   let tokens = name.split("-");
   for (let i=0; i<tokens.length; i++) {
@@ -21,7 +25,7 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-clench","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
-"paw-stench","ass-stench","piss-stench","scat-stench","belch","fart","stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
+"paw-stench","ass-stench","piss-stench","scat-stench","belch","fart","stomach","tail","tail-to-stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
 "soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
 "sheath-toy","slit-toy","breast-toy","melt","solidify","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
 "goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push"];
@@ -243,10 +247,10 @@ function defaultTailVore(container, macro, verbose) {
     return "Your drooling tail swings to and fro";
   else if (isFatal(macro))
     return "Your tail lunges, maw agape, at " + container.describe(verbose) +
-     ". It scarfs down everything in seconds, gulping forcefully to drag your prey into your sloppy guts.";
+     ". It scarfs down everything in seconds, gulping forcefully to drag your prey into your sloppy confines.";
   else
     return "Your tail lunges, maw agape, at " + container.describe(verbose) +
-     ". It scarfs down everything in a second, gulping forcefully and pulling everything into your belly.";
+     ". It scarfs down everything in a second, gulping forcefully and pulling your prey inside.";
 }
 
 function defaultCleavageStuff(container, macro, verbose) {
@@ -596,6 +600,24 @@ function defaultStomach(container, macro, verbose) {
     return "Your stomach gurgles as it digests " + container.describe(false) + ".";
   else
     return "Your stomach groans and abosrbs " + container.describe(false) + ".";
+}
+
+function defaultTail(container, macro, verbose) {
+  if (isSadistic(macro))
+    return "Your " + macro.tailDesc + " " + (macro.tailCount > 1 ? "clench" : "clenches") + ", crushing " + container.describe(false) + " into unrecognizable paste.";
+  else if (isGory(macro))
+    return "Your fatal " + (macro.tailCount > 1 ? "tails crush " : "tail crushes ") + container.describe(false) + " to a gory pulp.";
+  else if (isFatal(macro))
+    return "Your " + (macro.tailCount > 1 ? "tails gurgles as they digest " : "tail gurgles as it digests ") + container.describe(false) + ".";
+  else
+    return "Your " + (macro.tailCount > 1 ? "tails groan and absorb " : "tail groans and absorbs ") + container.describe(false) + ".";
+}
+
+function defaultTailToStomach(container, macro, verbose) {
+  if (isFatal(macro))
+    return "Your " + (macro.tailCount > 1 ? "tails clench" : "tail clenches") + ", squeezing " + container.describe(false) + " into your gurgling stomach.";
+  else
+    return "Your " + (macro.tailCount > 1 ? "tails squeeze" : "tail squeezes") + " " + container.describe(false) + " into your belly.";
 }
 
 function defaultBowels(container, macro, verbose) {

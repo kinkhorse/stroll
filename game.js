@@ -281,6 +281,9 @@ let macro =
   get tailMass() {
     return this.tailVolume * this.tailDensity;
   },
+  get tailDesc() {
+    return this.tailType + " " + (this.tailCount > 1 ? "tails" : "tail");
+  },
   "dickType": "canine",
   "baseDickLength": 0.3,
   "baseDickDiameter": 0.08,
@@ -459,6 +462,57 @@ let macro =
       }
     },
     "contents": [],
+    "stages": 3
+  },
+
+  "tail": {
+    "name" : "tail",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner, this, owner.tailDigestTime);
+    },
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      this.contents[0] = this.contents[0].merge(prey);
+    },
+    "describeMove" : function(container) {
+      return describe("tail-to-stomach",container,this.owner,verbose);
+    },
+    "describeDigestion" : function(container) {
+      return describe("tail",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+      if (owner.gasEnabled)
+        owner.gasStorage.amount += container.sum_property("mass") * owner.gasDigestFactor / 1e3;
+      if (owner.scatEnabled) {
+        owner.scatStorage.amount += container.sum_property("mass") * owner.scatDigestFactor / 1e3;
+        owner.scatStorage.victims = owner.scatStorage.victims.merge(container);
+      }
+    },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your " + this.owner.tailDesc + " are empty.";
+      } else {
+        if (this.owner.tailVoreToStomach) {
+          return "Your " + this.owner.tailDesc + " " + (this.owner.tailCount > 1 ? "clench and squeeze around " : "clenches and squeezes around ") + prey.describe(false) + ", working them deeper and deeper inside.";
+        }
+        else if (macro.brutality > 0)  {
+          return "Your " + this.owner.tailDesc + " " +  (this.owner.tailCount > 1 ? "groans" : "groan") + " ominously as " + (this.owner.tailCount > 1 ? "they gurgle" : "it gurgles" ) + " around " + prey.describe(false) + ", slowly absorbing them into your musky depths.";
+        } else {
+          return "Your " + this.owner.tailDesc + " " + (this.owner.tailCount > 1 ? "bulge" : "bulges") + " with " + prey.describe(false) + ".";
+        }
+      }
+    },
+    "contents" : [],
     "stages": 3
   },
 
@@ -911,6 +965,7 @@ let macro =
   "init": function() {
     this.stomach.setup(this);
     this.bowels.setup(this);
+    this.tail.setup(this);
     this.womb.setup(this);
     this.balls.setup(this);
     this.breasts.setup(this);
@@ -928,6 +983,10 @@ let macro =
 
     if (this.analVoreToStomach) {
       this.bowels.moves = this.stomach;
+    }
+
+    if (this.tailVoreToStomach) {
+      this.tail.moves = this.stomach;
     }
 
     if (this.maleParts)
@@ -2601,6 +2660,8 @@ function tail_vore(count)
 
   lines.push(linesummary);
 
+  lines.push(newline);
+
   let people = get_living_prey(totalPrey.sum());
 
   let preyMass = totalPrey.sum_property("mass");
@@ -2609,7 +2670,7 @@ function tail_vore(count)
 
   macro.addGrowthPoints(preyMass);
 
-  macro.stomach.feed(totalPrey);
+  macro.tail.feed(totalPrey);
   add_victim_people("tail-vore",totalPrey);
 
 
