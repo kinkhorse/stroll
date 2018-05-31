@@ -3131,7 +3131,7 @@ function piss(vol) {
   macro.arouse(20);
 
   if (macro.stenchEnabled && macro.basePissStenchArea > 0) {
-    piss_stench(area);
+    piss_stench(area * macro.basePissStenchArea);
   }
 }
 
@@ -3204,7 +3204,7 @@ function scat(vol) {
   macro.arouse(50);
 
   if (macro.stenchEnabled && macro.baseScatStenchArea > 0) {
-    scat_stench(area);
+    scat_stench(area*macro.baseScatStenchArea);
   }
 }
 
@@ -3256,6 +3256,10 @@ function gooButtons(molten) {
   if (macro.maleParts) {
     setButton("goo_balls_pull", molten);
     setButton("goo_balls_push", molten);
+  }
+
+  if (macro.gooDigestTime == 0) {
+    setButton("digest_goo", molten);
   }
 }
 
@@ -4079,9 +4083,6 @@ function startGame(e) {
     if (macro.gooDigestion) {
       enable_victim("goo","Absorbed into the goo");
 
-      if (macro.gooDigestTime == 0) {
-        enable_button("digest_goo");
-      }
     }
   }
 
