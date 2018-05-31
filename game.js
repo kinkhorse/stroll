@@ -2592,8 +2592,32 @@ function male_spurt(vol)
   macro.addGrowthPoints(preyMass);
   add_victim_people("cum-flood",prey);
 
-
   update([sound,line,linesummary,newline]);
+
+  if (macro.maleMuskEnabled) {
+    male_spurt_musk(area * macro.baseMaleMuskArea);
+  }
+}
+
+function male_spurt_musk(area) {
+  let prey = getPrey(biome, area);
+  let line = describe("male-spurt-musk", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (get_living_prey(prey.sum()) == 0)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("emale-spurt-musk",prey);
+
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function male_orgasm(vol,times)
@@ -2614,6 +2638,31 @@ function male_orgasm(vol,times)
   add_victim_people("cum-flood",prey);
 
   update([sound,line,linesummary,newline]);
+
+  if (macro.maleMuskEnabled) {
+    male_orgasm_musk(area * macro.baseMaleMuskArea);
+  }
+}
+
+function male_orgasm_musk(area) {
+  let prey = getPrey(biome, area);
+  let line = describe("male-orgasm-musk", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (get_living_prey(prey.sum()) == 0)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("male-orgasm-musk",prey);
+
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function female_spurt(vol)
@@ -2633,8 +2682,32 @@ function female_spurt(vol)
   macro.addGrowthPoints(preyMass);
   add_victim_people("femcum-flood",prey);
 
-
   update([sound,line,linesummary,newline]);
+
+  if (macro.femaleMuskEnabled) {
+    female_spurt_musk(area * macro.baseFemaleMuskArea);
+  }
+}
+
+function female_spurt_musk(area) {
+  let prey = getPrey(biome, area);
+  let line = describe("female-spurt-musk", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (get_living_prey(prey.sum()) == 0)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("female-spurt-musk",prey);
+
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function female_orgasm(vol,times)
@@ -2654,8 +2727,32 @@ function female_orgasm(vol,times)
   macro.addGrowthPoints(preyMass);
   add_victim_people("femcum-flood",prey);
 
-
   update([sound,line,linesummary,newline]);
+
+  if (macro.femaleMuskEnabled) {
+    female_orgasm_musk(area * macro.baseFemaleMuskArea);
+  }
+}
+
+function female_orgasm_musk(area) {
+  let prey = getPrey(biome, area);
+  let line = describe("female-orgasm-musk", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (get_living_prey(prey.sum()) == 0)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("female-orgasm-musk",prey);
+
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function tail_slap()
@@ -3977,6 +4074,11 @@ function startGame(e) {
 
     if (macro.arousalEnabled) {
       enable_victim("cum-flood","Flooded by cum");
+
+      if (macro.maleMuskEnabled) {
+        enable_victim("male-spurt-musk","Inundated in masculine precum musk");
+        enable_victim("male-orgasm-musk","Inundated in masculine cum musk");
+      }
     }
   }
 
@@ -3994,6 +4096,11 @@ function startGame(e) {
 
     if (macro.arousalEnabled) {
       enable_victim("femcum-flood","Flooded by femcum");
+
+      if (macro.femaleMuskEnabled) {
+        enable_victim("female-spurt-musk","Inundated in feminine precum musk");
+        enable_victim("female-orgasm-musk","Inundated in feminine cum musk");
+      }
     }
 
     if (macro.unbirthDigestTime == 0) {

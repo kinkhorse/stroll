@@ -25,7 +25,8 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-clench","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
-"paw-stench","ass-stench","piss-stench","scat-stench","belch","fart","stomach","tail","tail-to-stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
+"paw-stench","ass-stench","piss-stench","scat-stench","male-orgasm-musk","female-orgasm-musk","male-spurt-musk","female-spurt-musk",
+"belch","fart","stomach","tail","tail-to-stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
 "soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
 "sheath-toy","slit-toy","breast-toy","melt","solidify","flood","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
 "goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","goo-breasts-pull","goo-breasts-push",
@@ -566,6 +567,46 @@ function defaultScatStench(container, macro, verbose) {
     return "Vile fumes waft from your scat, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
   else
     return "Your stinky scat overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultMaleSpurtMusk(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Waves of corrosive musk waft from your precum, the bitter cloud liquefying the flesh of  " + (sum > 1 ? numberRough(sum,"of") + " people" : "a person") + " as it dissolves " + container.describe(false) + ".";
+  if (isFatal(macro))
+    return "Powerful musk wafts from your precum, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
+  else
+    return "Your musky precum overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultFemaleSpurtMusk(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Waves of corrosive musk waft from your precum, the bitter cloud liquefying the flesh of  " + (sum > 1 ? numberRough(sum,"of") + " people" : "a person") + " as it dissolves " + container.describe(false) + ".";
+  if (isFatal(macro))
+    return "Powerful musk wafts from your precum, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
+  else
+    return "Your musky precum overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultMaleOrgasmMusk(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Waves of corrosive musk waft from your cum, the bitter cloud liquefying the flesh of  " + (sum > 1 ? numberRough(sum,"of") + " people" : "a person") + " as it dissolves " + container.describe(false) + ".";
+  if (isFatal(macro))
+    return "Powerful musk wafts from your cum, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
+  else
+    return "Your musky cum overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultFemaleOrgasmMusk(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Waves of corrosive musk waft from your cum, the bitter cloud liquefying the flesh of  " + (sum > 1 ? numberRough(sum,"of") + " people" : "a person") + " as it dissolves " + container.describe(false) + ".";
+  if (isFatal(macro))
+    return "Powerful musk wafts from your cum, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
+  else
+    return "Your musky cum overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
 }
 
 function defaultBelch(container, macro, verbose) {
