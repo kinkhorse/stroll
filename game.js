@@ -1762,6 +1762,10 @@ function digest_stomach() {
   digest_all(macro.stomach);
 }
 
+function digest_tail() {
+  digest_all(macro.tail);
+}
+
 function digest_anal() {
   digest_all(macro.bowels);
 }
@@ -3761,6 +3765,10 @@ function startGame(e) {
         enable_button("tail_vore_all");
       } else {
         enable_button("tail_vore_only");
+      }
+
+      if (macro.tailDigestTime == 0) {
+        enable_button("digest_tail");
       }
     }
   }
