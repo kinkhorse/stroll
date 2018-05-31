@@ -388,8 +388,8 @@ let macro =
     return volume * this.breastDensity;
   },
 
-  "digest": function(owner,organ) {
-    setTimeout(function() { owner.digest(owner,organ); }, 5000);
+  "digest": function(owner, organ, time=15) {
+    setTimeout(function() { owner.digest(owner, organ, time); }, time * 1000 / organ.stages);
 
     let count = Math.min(organ.contents.length, organ.maxDigest);
 
@@ -454,7 +454,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.oralDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -499,7 +499,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.analDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -538,7 +538,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 3
+    "stages": 3
   },
 
   "baseFemcumDigestFactor": 1,
@@ -557,7 +557,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.unbirthDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -590,7 +590,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 2
+    "stages": 3
   },
 
   "baseCumDigestFactor": 1,
@@ -609,7 +609,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.cockDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -642,7 +642,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 2
+    "stages": 3
   },
 
   "baseMilkDigestFactor": 1,
@@ -661,7 +661,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.breastDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -696,7 +696,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 2
+    "stages": 3
   },
 
   "basePissDigestFactor": 1,
@@ -715,7 +715,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.bladderDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -748,7 +748,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 3
+    "stages": 3
   },
 
   soulVoreEnabled: true,
@@ -759,7 +759,7 @@ let macro =
       this.owner = owner;
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner,this);
+      owner.digest(owner, this, owner.soulDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -793,7 +793,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 2
+    "stages": 3
   },
 
   "gooEnabled": true,
@@ -809,7 +809,7 @@ let macro =
         this.contents.push(new Container());
 
       if (owner.gooDigestion) {
-        owner.digest(owner,this);
+        owner.digest(owner, this, owner.gooDigestTime);
       }
 
 
@@ -844,7 +844,7 @@ let macro =
       }
     },
     "contents" : [],
-    "stages" : 4
+    "stages": 3
   },
 
   // holding spots

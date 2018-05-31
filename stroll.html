@@ -479,6 +479,10 @@
                 <label class="has-tooltip" for="sameSizeStomp" title="Can you stomp and sit on people your own size?">Same-size stomper</label>
               </li>
               <li>
+                <label for="oralDigestTime">Stomach digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="oralDigestTime" name="oralDigestTime" placeholder="15">
+              </li>
+              <li>
                 <input autocomplete="off" type="checkbox" name="vomitEnabled" id="vomitEnabled"/>
                 <label for="vomitEnabled">Vomiting</label>
               </li>
@@ -553,6 +557,10 @@
               <li>
                 <input autocomplete="off" type="checkbox" name="analVoreToStomach" id="analVoreToStomach" />
                 <label class="has-tooltip" for="analVoreToStomach" title="Otherwise, bowels absorb/digest">Anal vore goes to stomach</label>
+              </li>
+              <li>
+                <label for="analDigestTime">Digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="analDigestTime" name="analDigestTime" placeholder="15">
               </li>
             </div>
           </div>
@@ -669,6 +677,10 @@
                 <div class="preview" id="baseCumDigestFactorPreview"></div>
               </li>
               <li>
+                <label for="cockDigestTime">Digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="cockDigestTime" name="cockDigestTime" placeholder="15">
+              </li>
+              <li>
                 <input autocomplete="off" type="checkbox" id="hasSheath" name="hasSheath" checked="true" />
                 <label for="hasSheath">Sheath</label>
               </li>
@@ -729,6 +741,10 @@
                 <div class="preview" id="baseMilkDigestFactorPreview"></div>
                       </li>
                       <li>
+                        <label for="breastDigestTime">Digestion time (0 for manual)</label>
+                        <input autocomplete="off" type="number" step="any" id="breastDigestTime" name="breastDigestTime" placeholder="15">
+                      </li>
+                      <li>
                         <input autocomplete="off" type="checkbox" id="milkScaleWithSize" name="milkScaleWithSize" />
                         <label class="has-tooltip" for="milkScaleWithSize" title="If checked, produces more milk from the same prey as you get larger">Scale milk with size</label>
                       </li>
@@ -778,6 +794,10 @@
                 <div class="preview" id="baseFemcumDigestFactorPreview"></div>
               </li>
               <li>
+                <label for="unbirthDigestTime">Digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="unbirthDigestTime" name="unbirthDigestTime" placeholder="15">
+              </li>
+              <li>
                 <input autocomplete="off" type="checkbox" id="femcumScaleWithSize" name="femcumScaleWithSize" />
                 <label class="has-tooltip" for="femcumScaleWithSize" title="If checked, produces more femcum from the same prey as you get larger">Scale femcum with size</label>
               </li>
@@ -788,15 +808,26 @@
             <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="stenchEnabled" name="stenchEnabled" />
             <label class="custom-header" for="stenchEnabled">Stench</label>
             <div class="reveal-if-active">
+              <div>Areas are ratios; 1 means stomping 100 people catches 100 in stench</div>
               <li>
-                <label class="has-tooltip" for="basePawStenchArea" title="How many times your paw area should be covered in stench">Paw stench area</label>
+                <label for="basePawStenchArea">Paw stench area</label>
                 <input autocomplete="off" type="number" step="any" id="basePawStenchArea" name="basePawStenchArea" placeholder="1" />
                 <div class="preview" id="basePawStenchAreaPreview"></div>
               </li>
               <li>
-                <label class="has-tooltip" for="baseAssStenchArea" title="How many times your ass area should be covered in stench">Ass stench area</label>
-                <input autocomplete="off" type="number" step="any" id="baseAssStenchArea" name="baseAssStenchArea" placeholder="1" />
+                <label for="baseAssStenchArea">Ass stench area</label>
+                <input autocomplete="off" type="number" step="any" id="baseAssStenchArea" name="baseAssStenchArea" placeholder="2" />
                 <div class="preview" id="baseAssStenchAreaPreview"></div>
+              </li>
+              <li>
+                <label for="basePissStenchArea">Piss stench area</label>
+                <input autocomplete="off" type="number" step="any" id="basePissStenchArea" name="basePissStenchArea" placeholder="0.75" />
+                <div class="preview" id="basePissStenchAreaPreview"></div>
+              </li>
+              <li>
+                <label for="baseScatStenchArea">Scat stench area</label>
+                <input autocomplete="off" type="number" step="any" id="baseScatStenchArea" name="baseScatStenchArea" placeholder="1.5" />
+                <div class="preview" id="baseScatStenchAreaPreview"></div>
               </li>
             </div>
           </div>
@@ -839,19 +870,23 @@
             <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="soulVoreEnabled" name="soulVoreEnabled" />
             <label class="custom-header" for="soulVoreEnabled">Soul Vore</label>
             <div class="reveal-if-active">
-                <label>Soul destination</label>
-                <li>
-                  <input autocomplete="off" type="radio" name="soulVoreType" checked="true" id="soulvore-release" value="release">
-                  <label for="soulvore-release">Released</label>
-                </li>
-                <li>
-                  <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-body" value="body">
-                  <label for="soulvore-body">Trapped</label>
-                </li>
-                <li>
-                  <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-oblivion" value="oblivion">
-                  <label for="soulvore-oblivion">Digested</label>
-                </li>
+              <li>
+                <label for="soulDigestTime">Digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="soulDigestTime" name="soulDigestTime" placeholder="15">
+              </li>
+              <label>Soul destination</label>
+              <li>
+                <input autocomplete="off" type="radio" name="soulVoreType" checked="true" id="soulvore-release" value="release">
+                <label for="soulvore-release">Released</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-body" value="body">
+                <label for="soulvore-body">Trapped</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="radio" name="soulVoreType" id="soulvore-oblivion" value="oblivion">
+                <label for="soulvore-oblivion">Digested</label>
+              </li>
             </div>
           </div>
 
@@ -888,6 +923,10 @@
                       <label for="basePissDigestFactor">Piss digestion factor</label>
                       <input autocomplete="off" type="number" step="any" id="basePissDigestFactor" name="basePissDigestFactor" placeholder="1" />
                       <div class="preview" id="basePissDigestFactorPreview"></div>
+                    </li>
+                    <li>
+                      <label for="bladderDigestTime">Digestion time (0 for manual)</label>
+                      <input autocomplete="off" type="number" step="any" id="bladderDigestTime" name="bladderDigestTime" placeholder="15">
                     </li>
                     <li>
                       <input autocomplete="off" type="checkbox" id="pissScaleWithSize" name="pissScaleWithSize" />
@@ -935,6 +974,10 @@
               <li>
                 <input autocomplete="off" checked="true" type="checkbox" id="gooDigestion" name="gooDigestion" />
                 <label for="gooDigestion">Digestion</label>
+              </li>
+              <li>
+                <label for="gooDigestTime">Digestion time (0 for manual)</label>
+                <input autocomplete="off" type="number" step="any" id="gooDigestTime" name="gooDigestTime" placeholder="15">
               </li>
             </div>
           </div>
