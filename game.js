@@ -3390,17 +3390,38 @@ function goo_balls_push() {
 
 function paw_vore()
 {
-  let area = macro.pawArea;
-  let prey = getPrey(biome, area, macro.sameSizeVore);
+  let prey = new Container();
 
-  let line = describe("paw-vore", prey, macro, verbose);
+  let lines = [];
 
-  let lines = [line];
+  if ((!macro.footShoeEnabled || !macro.footShoeWorn) && (!macro.footSockEnabled || !macro.footSockWorn)) {
+    let area = macro.pawArea;
+    prey = prey.merge(getPrey(biome, area, macro.sameSizeVore));
+
+    lines.push(describe("paw-vore", prey, macro, verbose));
+  }
 
   if (macro.paws.container.count > 0) {
     prey = prey.merge(macro.paws.container);
     lines.push(describe("paw-vore-toes", macro.paws.container, macro, verbose));
     macro.paws.container = new Container();
+  }
+
+  if (macro.shoe.container.count > 0 && macro.footShoeWorn && (!macro.footSockEnabled || !macro.footSockWorn)) {
+    prey = prey.merge(macro.shoe.container);
+    lines.push(describe("paw-vore-toes", macro.shoe.container, macro, verbose));
+    macro.shoe.container = new Container();
+  }
+
+  if (macro.sock.container.count > 0 && macro.footSockWorn) {
+    prey = prey.merge(macro.sock.container);
+    lines.push(describe("paw-vore-toes", macro.sock.container, macro, verbose));
+    macro.sock.container = new Container();
+  }
+
+  if (lines.length == 0) {
+    update(["Nothing happens...",newline]);
+    return;
   }
 
   let linesummary = summarize(prey.sum(), false);
