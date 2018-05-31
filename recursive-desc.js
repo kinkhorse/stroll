@@ -530,7 +530,7 @@ function defaultPawStench(container, macro, verbose) {
   if (isFatal(macro))
     return "Vile fumes waft from your " + macro.footDesc(true) + " , choking the life from " + (sum > 1 ? sum + " people." : "a person.");
   else
-    return "Your stinky " + macro.footDesc(true) + " overwhelm" + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+    return "Your stinky " + macro.footDesc(true) + " overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
 }
 
 function defaultAssStench(container, macro, verbose) {
@@ -540,7 +540,27 @@ function defaultAssStench(container, macro, verbose) {
   if (isFatal(macro))
     return "Vile miasma from your bitter ass snuffs out " + (sum > 1 ? sum + " people" : "a person") + ", suffocating them in your stench.";
   else
-    return "Your stinky ass sicens " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+    return "Your stinky butt sickens " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultPissStench(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "Waves of corrosive fumes waft from your piss, the toxic cloud liquefying the flesh of  " + (sum > 1 ? numberRough(sum,"of") + " people" : "a person") + " as it dissolves " + container.describe(false) + ".";
+  if (isFatal(macro))
+    return "Vile fumes waft from your piss, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
+  else
+    return "Your stinky piss overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
+}
+
+function defaultScatStench(container, macro, verbose) {
+  let sum = get_living_prey(container.sum());
+  if (isSadistic(macro))
+    return "A rancid miasma spews from your shit - a thick, choking avalanche of toxic vapors that reduce " + (sum > 1 ? numberRough(sum,"of") + " people" : "a person") + " to nothing but bones as it melts " + container.describe(false) + ".";
+  if (isFatal(macro))
+    return "Vile fumes waft from your scat, choking the life from " + (sum > 1 ? sum + " people." : "a person.");
+  else
+    return "Your stinky scat overwhelms " + (sum > 1 ? sum + " people" : "a person") + " with your scent!";
 }
 
 function defaultBelch(container, macro, verbose) {

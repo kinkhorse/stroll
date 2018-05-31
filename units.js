@@ -5,28 +5,37 @@ function round(number,precision=3) {
 }
 
 function numberRough(value,suffix="") {
-  var scale = Math.floor(Math.log10(value));
-  switch(scale) {
-    case 0: return "a single";
-    case 1: return "dozens " + suffix;
-    case 2: return "hundreds " + suffix;
-    default:
-      let prefix = "";
+  if (value == 1) {
+    return "a single";
+  } else if (value < 5) {
+    return "a few";
+  } else if (value < 12) {
+    return "a handful " + suffix;
+  } else if (value == 12) {
+    return "a dozen";
+  } else {
+    var scale = Math.floor(Math.log10(value));
+    switch(scale) {
+      case 1: return "dozens " + suffix;
+      case 2: return "hundreds " + suffix;
+      default:
+        let prefix = "";
 
-      if (scale % 3 == 1)
-        prefix = "tens of ";
-      else if (scale % 3 == 2)
-        prefix = "hundreds of ";
+        if (scale % 3 == 1)
+          prefix = "tens of ";
+        else if (scale % 3 == 2)
+          prefix = "hundreds of ";
 
-      let order = Math.floor(scale/3);
+        let order = Math.floor(scale/3);
 
-      switch(order) {
-        case 1: return prefix + "thousands " + suffix;
-        case 2: return prefix + "millions " + suffix;
-        case 3: return prefix + "billions " + suffix;
-        case 4: return prefix + "trillions " + suffix;
-        default: return "uncountably many";
-      }
+        switch(order) {
+          case 1: return prefix + "thousands " + suffix;
+          case 2: return prefix + "millions " + suffix;
+          case 3: return prefix + "billions " + suffix;
+          case 4: return prefix + "trillions " + suffix;
+          default: return "uncountably many";
+        }
+    }
   }
 }
 function number(value, type="full", precision=3) {

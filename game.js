@@ -1656,7 +1656,7 @@ function digest_all(organ) {
   if (prey.count == 0) {
     return;
   }
-  
+
   do_digestion(organ.owner, organ, prey);
 }
 
@@ -1825,7 +1825,7 @@ function stomp()
 
   stomp_wedge();
 
-  if (macro.stenchEnabled) {
+  if (macro.stenchEnabled && macro.basePawStenchArea > 0) {
     paw_stench();
   }
 }
@@ -2035,7 +2035,7 @@ function sit()
 
   macro.arouse(5);
 
-  if (macro.stenchEnabled) {
+  if (macro.stenchEnabled && macro.baseAssStenchArea > 0) {
     ass_stench();
   }
 }
@@ -2062,7 +2062,7 @@ function sit_goo()
 
   macro.arouse(15);
 
-  if (macro.stenchEnabled) {
+  if (macro.stenchEnabled && macro.baseAssStenchArea > 0) {
     ass_stench();
   }
 }
@@ -3013,6 +3013,31 @@ function piss(vol) {
   update([sound,line,linesummary,newline]);
 
   macro.arouse(20);
+
+  if (macro.stenchEnabled && macro.basePissStenchArea > 0) {
+    piss_stench(area);
+  }
+}
+
+function piss_stench(area) {
+  let prey = getPrey(biome, area);
+  let line = describe("piss-stench", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (get_living_prey(prey.sum()) == 0)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("piss-stench",prey);
+
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function bladder_vore() {
@@ -3061,6 +3086,31 @@ function scat(vol) {
   macro.scatStorage.amount -= vol;
 
   macro.arouse(50);
+
+  if (macro.stenchEnabled && macro.baseScatStenchArea > 0) {
+    scat_stench(area);
+  }
+}
+
+function scat_stench(area) {
+  let prey = getPrey(biome, area);
+  let line = describe("scat-stench", prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+
+  let people = get_living_prey(prey.sum());
+
+  if (get_living_prey(prey.sum()) == 0)
+    return;
+
+  let preyMass = prey.sum_property("mass");
+
+  macro.addGrowthPoints(preyMass);
+
+  add_victim_people("scat-stench",prey);
+
+  update([line,linesummary,newline]);
+
+  macro.arouse(5);
 }
 
 function setButton(button, state) {
@@ -3823,6 +3873,10 @@ function startGame(e) {
         enable_button("digest_bladder");
       }
     }
+
+    if (macro.stenchEnabled) {
+      enable_victim("piss-stench","Smothered in piss stench");
+    }
   }
 
   if (macro.scatEnabled) {
@@ -3834,6 +3888,10 @@ function startGame(e) {
     enable_stat("scat");
 
     enable_victim("scat","Shat on");
+
+    if (macro.stenchEnabled) {
+      enable_victim("scat-stench","Smothered in scat stench");
+    }
   }
 
   if (macro.gooEnabled) {
