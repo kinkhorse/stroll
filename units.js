@@ -43,7 +43,11 @@ function numberRough(value,suffix="") {
 function number(value, type="full", precision=3) {
   var val = parseFloat(value);
   switch(type) {
-    case "full": return val.toString();
+    case "full":
+      if (Math.log(value) / Math.log(10) < 10) {
+        return val.toString();
+      }
+
     case "scientific": return val.toExponential(precision).toString();
     case "words": return number_words_repeated(val);
     case "prefix": return number_prefix(val);
