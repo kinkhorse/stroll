@@ -227,11 +227,12 @@ function initContents(name,count) {
   return result;
 }
 
+
 function get_living_prey(sum) {
   let total = 0;
   for (let key in sum) {
     if (sum.hasOwnProperty(key)) {
-      if (key == "Micro" || key == "Macro" || key == "Person" || key == "Cow")
+      if (key == "Micro" || key == "Macro" || key == "Person" || key == "Cow" || key == 'Soldier')
         total += sum[key];
     }
   }
