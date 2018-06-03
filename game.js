@@ -342,7 +342,7 @@ let macro =
   "baseCumRatio": 1,
   "cumScale": 1,
   get cumVolume() {
-    return this.dickGirth * this.baseCumRatio * this.cumScale * (1 + this.edge) + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
+    return this.dickGirth * this.baseCumRatio * (1 + this.edge) + Math.max(0,this.cumStorage.amount - this.cumStorage.limit);
   },
 
   "baseVaginaLength": 0.1,
@@ -358,7 +358,7 @@ let macro =
   "baseFemcumRatio": 1,
   "femcumScale": 1,
   get femcumVolume() {
-    return this.vaginaArea * this.baseFemcumRatio * this.femcumScale * (1 + this.edge) + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
+    return this.vaginaArea * this.baseFemcumRatio * (1 + this.edge) + Math.max(0,this.femcumStorage.amount - this.femcumStorage.limit);
   },
 
   hasBreasts: true,
@@ -1048,7 +1048,7 @@ let macro =
   "femaleParts": true,
 
   "fillCum": function(self) {
-    self.cumStorage.amount += self.cumScale * self.cumStorage.limit / self.cumStorageScale / 1200;
+    self.cumStorage.amount += self.cumScale * self.cumStorage.limit / self.cumStorageScale / 1000;
     if (self.cumStorage.amount > self.cumStorage.limit)
       self.arouse(1 * (self.cumStorage.amount / self.cumStorage.limit - 1));
     setTimeout(function () { self.fillCum(self); }, 100);
@@ -1056,7 +1056,7 @@ let macro =
   },
 
   "fillFemcum": function(self) {
-    self.femcumStorage.amount += self.femcumScale * self.femcumStorage.limit / self.femcumStorageScale / 1200;
+    self.femcumStorage.amount += self.femcumScale * self.femcumStorage.limit / self.femcumStorageScale / 1000;
     if (self.femcumStorage.amount > self.femcumStorage.limit)
       self.arouse(1 * (self.femcumStorage.amount / self.femcumStorage.limit - 1));
     setTimeout(function () { self.fillFemcum(self); }, 100);
@@ -1067,7 +1067,7 @@ let macro =
     if (self.milkStorage.amount > self.milkStorage.limit) {
       breast_milk(self.milkStorage.amount - self.milkStorage.limit);
     }
-    self.milkStorage.amount += self.lactationScale * self.milkStorage.limit / self.milkStorageScale / 1200;
+    self.milkStorage.amount += self.lactationScale * self.milkStorage.limit / self.milkStorageScale / 1000;
 
     if (self.milkStorage.amount > self.milkStorage.limit) {
       self.milkStorage.amount = self.milkStorage.limit;
@@ -1077,7 +1077,7 @@ let macro =
   },
 
   "fillGas": function(self) {
-    self.gasStorage.amount += self.gasScale * self.gasStorage.limit / self.gasStorageScale / 3600;
+    self.gasStorage.amount += self.gasScale * self.gasStorage.limit / self.gasStorageScale / 1000;
 
     let ratio = self.gasStorage.amount / self.gasStorage.limit;
 
@@ -1115,7 +1115,7 @@ let macro =
   },
 
   "fillPiss": function(self) {
-    self.pissStorage.amount += self.pissScale * self.pissStorage.limit / self.pissStorageScale / 1200;
+    self.pissStorage.amount += self.pissScale * self.pissStorage.limit / self.pissStorageScale / 1000;
     if (self.pissStorage.amount > self.pissStorage.limit * 2)
       piss(self.pissStorage.amount);
     setTimeout(function () { self.fillPiss(self); }, 100);
@@ -1123,7 +1123,7 @@ let macro =
   },
 
   "fillScat": function(self) {
-    self.scatStorage.amount += self.scatScale * self.scatStorage.limit / self.scatStorageScale / 600;
+    self.scatStorage.amount += self.scatScale * self.scatStorage.limit / self.scatStorageScale / 1000;
     if (self.scatStorage.amount > self.scatStorage.limit * 2)
       scat(self.scatStorage.amount);
     setTimeout(function () { self.fillScat(self); }, 100);
