@@ -874,7 +874,7 @@ function defaultFlood(container, macro, verbose) {
   if (container.count == 0) {
     return "Your gooey body melts and floods outward..but doesn't catch anything.";
   } else {
-    return "Your gooey body melts and floods outward, burying " + container.describe(verbose) + " in your thick, slimy self. You slowly reform, grinning as you feel the " + numberRough(container.count, "of") + " prey sloshing about within.";
+    return "Your gooey body melts and floods outward, burying " + container.describe(verbose) + " in your thick, slimy self. You slowly reform, grinning as you feel " + numberRough(get_living_prey(container.sum()), "of") + " prey sloshing about within.";
   }
 }
 

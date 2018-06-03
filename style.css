@@ -326,8 +326,7 @@ body.dark input[type="checkbox"]:checked+
   display: none;
 }
 
-.flex-outer li,
-.flex-inner {
+.flex-outer li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -392,7 +391,7 @@ body.light .flex-outer input[type="checkbox"]:checked + label:not(.custom-header
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  width: 80%;
+  width: 400px;
 }
 
 body.light .has-tooltip {

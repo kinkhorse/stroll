@@ -1913,7 +1913,7 @@ function chew()
 
 function stomp()
 {
-  if (macro.gooMolten) {
+  if (macro.gooMolten && !macro.footShoeWorn && !macro.footSockWorn) {
     stomp_goo();
     return;
   }
