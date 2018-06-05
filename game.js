@@ -3604,6 +3604,52 @@ function paw_vore()
   macro.arouse(5);
 }
 
+function cooldown_start(name) {
+  let button = document.querySelector("#" + "button-action-" + name);
+  let parent = button.parentElement;
+
+  let category = parent.id.replace("actions-", "");
+
+  Array.from(parent.children).forEach(function(x) {
+    x.disabled = true;
+    x.classList.add("action-button-disabled");
+  });
+
+  cooldown(category, 100, 100);
+}
+
+function cooldown(category, time, timestart) {
+  if (time <= 0) {
+    cooldown_end(category);
+  } else {
+    let button = document.getElementById("action-part-" + category);
+
+    let amount = Math.round((timestart - time) / timestart * 100);
+    console.log(amount);
+
+    let unselect = dark ? "#111" : "#ddd";
+    let select = dark ? "#444" : "#555";
+
+    button.style.setProperty("background", "linear-gradient(to right, " + select + " 0%, " + select + " " + amount + "%, " + unselect + " " + amount + "%, " + unselect + " 100%");
+    setTimeout(function() { cooldown(category, time - 1, timestart); }, 20);
+  }
+
+}
+
+function cooldown_end(category) {
+
+    let button = document.getElementById("action-part-" + category);
+
+    button.style.setProperty("background", null);
+
+    let parent = document.querySelector("#actions-" + category);
+
+    Array.from(parent.children).forEach(function(x) {
+      x.disabled = false;
+      x.classList.remove("action-button-disabled");
+    });
+}
+
 function transformNumbers(line)
 {
   return line.toString().replace(/[0-9]+(\.[0-9]+)?(e\+[0-9]+)?/g, function(text) { return number(text, numbers); });

@@ -211,6 +211,14 @@ progress {
   display: none;
 }
 
+body.light .action-button-disabled {
+  color: #777 !important;
+}
+
+body.dark .action-button-disabled {
+  color: #aaa !important;
+}
+
 #victim-table {
   display: none;
   margin: auto;
