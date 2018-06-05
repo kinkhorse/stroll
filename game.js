@@ -4003,6 +4003,8 @@ function startGame(e) {
     }
   }
 
+  registerActions();
+
   if (!macro.hasTail) {
     macro.tailCount = 0;
   }
@@ -4381,7 +4383,12 @@ function registerActions() {
   buttons.forEach( function(button) {
     let name = button.id;
     name = name.replace(/button-action-/,"");
-    button.addEventListener("click", function() { window[name](); });
+    if (macro.difficulty > 0) {
+      button.addEventListener("click", function() { cooldown_start(name); window[name](); });
+    } else {
+      button.addEventListener("click", function() { window[name](); });
+    }
+
   });
 }
 
@@ -4468,8 +4475,6 @@ window.addEventListener('load', function(event) {
   document.querySelectorAll(".action-part-button").forEach(function (element) {
     element.addEventListener("click",actionTab);
   });
-
-  registerActions();
 
   document.getElementById("button-look").addEventListener("click",look);
   document.getElementById("button-stroll").addEventListener("click",toggle_auto);
