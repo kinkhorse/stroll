@@ -1512,10 +1512,6 @@ let macro =
 
   "growthPoints": 0,
 
-  "addGrowthPoints": function(mass) {
-    this.growthPoints += Math.round(mass / (this.scale*this.scale));
-  },
-
   // 0 = entirely non-fatal
   // 1 = fatal, but not specific
   // 2 = gory
@@ -1860,7 +1856,7 @@ function feed()
 
   let sound = getSound("swallow",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.stomach.feed(prey);
 
@@ -1900,7 +1896,7 @@ function chew()
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("chew",prey);
 
@@ -1929,7 +1925,7 @@ function stomp()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("stomped",prey);
 
@@ -1990,7 +1986,7 @@ function stomp_goo() {
 
   let sound = getSound("goo",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.goo.feed(prey);
 
@@ -2038,7 +2034,7 @@ function flex_toes() {
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("flex-toes",prey);
 
@@ -2059,7 +2055,7 @@ function paw_stench() {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("paw-stench",prey);
 
@@ -2088,7 +2084,7 @@ function grind()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("humped",prey);
 
@@ -2111,7 +2107,7 @@ function anal_vore()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.bowels.feed(prey);
 
@@ -2141,7 +2137,7 @@ function sit()
 
   let sound = getSound("crush",crushedMass);
 
-  macro.addGrowthPoints(crushedMass);
+
 
   update([sound,line,linesummary,newline]);
 
@@ -2170,7 +2166,7 @@ function sit_goo()
 
   macro.goo.feed(prey);
 
-  macro.addGrowthPoints(crushedMass);
+
 
   update([sound,line,linesummary,newline]);
 
@@ -2195,7 +2191,7 @@ function ass_stench() {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("ass-stench",prey);
 
@@ -2237,7 +2233,7 @@ function cleavage_crush()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("cleavage-crush",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2258,7 +2254,7 @@ function cleavage_drop()
 
   let sound = getSound("drop",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("cleavage-drop",prey);
   update([sound,line,linesummary,newline]);
 
@@ -2278,7 +2274,7 @@ function cleavage_absorb()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("cleavage-absorb",prey);
   update([sound,line,linesummary,newline]);
 
@@ -2314,7 +2310,7 @@ function breast_crush()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("breast-crush",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2341,7 +2337,7 @@ function breast_vore()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("breast-vore",prey);
   macro.breasts.feed(prey);
 
@@ -2376,7 +2372,7 @@ function breast_milk(vol)
 
   let sound = getSound("liquid",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("milk-flood",prey);
   update([sound,line,linesummary,newline]);
 
@@ -2396,7 +2392,7 @@ function unbirth()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.womb.feed(prey);
   add_victim_people("unbirth",prey);
@@ -2524,7 +2520,7 @@ function cockslap()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("cock-slap",prey);
   update([sound,line,linesummary,newline]);
 
@@ -2544,7 +2540,7 @@ function cock_vore()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.balls.feed(prey);
 
@@ -2567,7 +2563,7 @@ function ball_smother()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("ball-smother",prey);
   update([sound,line,linesummary,newline]);
@@ -2589,7 +2585,7 @@ function male_spurt(vol)
 
   let sound = getSound("liquid",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("cum-flood",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2611,7 +2607,7 @@ function male_spurt_musk(area) {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("male-spurt-musk",prey);
 
@@ -2634,7 +2630,7 @@ function male_orgasm(vol,times)
 
   let sound = getSound("liquid",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("cum-flood",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2656,7 +2652,7 @@ function male_orgasm_musk(area) {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("male-orgasm-musk",prey);
 
@@ -2679,7 +2675,7 @@ function female_spurt(vol)
 
   let sound = getSound("liquid",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("femcum-flood",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2701,7 +2697,7 @@ function female_spurt_musk(area) {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("female-spurt-musk",prey);
 
@@ -2724,7 +2720,7 @@ function female_orgasm(vol,times)
 
   let sound = getSound("liquid",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("femcum-flood",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2746,7 +2742,7 @@ function female_orgasm_musk(area) {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("female-orgasm-musk",prey);
 
@@ -2768,7 +2764,7 @@ function tail_slap()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("tail-slap",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2820,7 +2816,7 @@ function tail_vore(count)
 
   let sound = getSound("swallow",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.tail.feed(totalPrey);
   add_victim_people("tail-vore",totalPrey);
@@ -2875,7 +2871,7 @@ function pouch_eat()
 
   let sound = getSound("swallow",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   macro.stomach.feed(prey);
   add_victim_people("eaten",prey);
 
@@ -2899,7 +2895,7 @@ function pouch_absorb()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.stomach.feed(prey);
   add_victim_people("pouch-absorb",prey);
@@ -2924,7 +2920,7 @@ function soul_vore()
 
   let sound = getSound("swallow",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.souls.feed(prey);
 
@@ -2946,7 +2942,7 @@ function soul_absorb_paw()
 
   let sound = getSound("crush",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("soul-paw",prey);
 
   update([sound,line,linesummary,newline]);
@@ -2974,7 +2970,7 @@ function belch(vol)
 
   let sound = getSound("belch",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("gas-belch",prey);
 
 
@@ -3001,7 +2997,7 @@ function fart(vol)
 
   let sound = getSound("fart",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
   add_victim_people("gas-fart",prey);
 
 
@@ -3056,7 +3052,7 @@ function remove_shoes_stench() {
 
     let preyMass = prey.sum_property("mass");
 
-    macro.addGrowthPoints(preyMass);
+
 
     add_victim_people("paw-stench",prey);
 
@@ -3113,7 +3109,7 @@ function remove_socks_stench() {
 
     let preyMass = prey.sum_property("mass");
 
-    macro.addGrowthPoints(preyMass);
+
 
     add_victim_people("paw-stench",prey);
 
@@ -3244,7 +3240,7 @@ function piss_stench(area) {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("piss-stench",prey);
 
@@ -3317,7 +3313,7 @@ function scat_stench(area) {
 
   let preyMass = prey.sum_property("mass");
 
-  macro.addGrowthPoints(preyMass);
+
 
   add_victim_people("scat-stench",prey);
 
@@ -3593,7 +3589,7 @@ function paw_vore()
 
   let sound = getSound("insert",preyMass);
 
-  macro.addGrowthPoints(preyMass);
+
 
   macro.pawsVore.feed(prey);
 
@@ -3671,6 +3667,9 @@ function update(lines = [])
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.totalMass, unit));
 
+  if (macro.difficulty > 0) {
+    document.getElementById("growth-points").innerHTML = "Growth points: " + macro.growthPoints;
+  }
   applyPercentage("arousal", 150 - macro.arousal * 1.5);
   applyPercentage("orgasm", 150 - (macro.arousal - 100) * 1.5);
   applyPercentage("edge", 150 - macro.edge * 150);
@@ -3719,15 +3718,25 @@ function grow_pick(times) {
 
   let button = document.querySelector(".growth-part-active");
 
-  switch (button.id.replace("button-growth-", "")) {
-    case "body": grow(times); break;
-    case "paws": grow_paws(times); break;
-    case "tail": grow_tail(times); break;
-    case "ass": grow_ass(times); break;
-    case "dick": grow_dick(times); break;
-    case "balls": grow_balls(times); break;
-    case "slit": grow_vagina(times); break;
-    case "breasts": grow_breasts(times); break;
+  if (macro.difficulty > 0 && macro.growthPoints < (times - 1) * 10) {
+    update(["You need " + times*10 + " growth points to grow that much.",newline]);
+  } else {
+    if (macro.difficulty > 0) {
+      macro.growthPoints -= (times - 1) * 10;
+    }
+
+    times /= 10;
+
+    switch (button.id.replace("button-growth-", "")) {
+      case "body": grow(times); break;
+      case "paws": grow_paws(times); break;
+      case "tail": grow_tail(times); break;
+      case "ass": grow_ass(times); break;
+      case "dick": grow_dick(times); break;
+      case "balls": grow_balls(times); break;
+      case "slit": grow_vagina(times); break;
+      case "breasts": grow_breasts(times); break;
+    }
   }
 }
 
@@ -3948,6 +3957,9 @@ function loadSettings(settings = null) {
 
 function add_victim_people(category, prey) {
   victims[category]["people"] += get_living_prey(prey.sum());
+
+  macro.growthPoints += get_living_prey(prey.sum()) * 100 / (1 + Math.log10(macro.scale));
+
   update();
 }
 
@@ -4495,12 +4507,12 @@ window.addEventListener('load', function(event) {
     button.addEventListener("click", function() { grow_part_pick(button.id); });
   });
 
-  document.getElementById("button-growth-1.1").addEventListener("click",function() { grow_pick(1.1); });
-  document.getElementById("button-growth-1.5").addEventListener("click",function() { grow_pick(1.5); });
-  document.getElementById("button-growth-2").addEventListener("click",function() { grow_pick(2); });
-  document.getElementById("button-growth-5").addEventListener("click",function() { grow_pick(5); });
-  document.getElementById("button-growth-20").addEventListener("click",function() { grow_pick(20); });
-  document.getElementById("button-growth-100").addEventListener("click",function() { grow_pick(100); });
+  document.getElementById("button-growth-1.1").addEventListener("click",function() { grow_pick(11); });
+  document.getElementById("button-growth-1.5").addEventListener("click",function() { grow_pick(15); });
+  document.getElementById("button-growth-2").addEventListener("click",function() { grow_pick(20); });
+  document.getElementById("button-growth-5").addEventListener("click",function() { grow_pick(50); });
+  document.getElementById("button-growth-20").addEventListener("click",function() { grow_pick(200); });
+  document.getElementById("button-growth-100").addEventListener("click",function() { grow_pick(1000); });
 
   document.getElementById("button-load-preset").addEventListener("click",loadPreset);
 
