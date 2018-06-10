@@ -20,7 +20,7 @@ function getDefault(name) {
   return window[funcName];
 }
 
-var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore",
+var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","anal-vore","ass-crush","tail-slap","tail-vore","tails-vore",
 "cleavage-stuff","cleavage-crush","cleavage-drop","cleavage-absorb","breast-crush",
 "breast-vore","breast-milk","unbirth","sheath-stuff","sheath-clench","sheath-crush",
 "sheath-absorb","cock-vore","cockslap","ball-smother","male-spurt","male-orgasm","female-spurt",
@@ -253,6 +253,17 @@ function defaultTailVore(container, macro, verbose) {
   else
     return "Your tail lunges, maw agape, at " + container.describe(verbose) +
      ". It scarfs down everything in a second, gulping forcefully and pulling your prey inside.";
+}
+
+function defaultTailsVore(container, macro, verbose) {
+  if (container.count == 0)
+    return "Your drooling tails swing to and fro";
+  else if (isFatal(macro))
+    return "Your $COUNT tails lunge, maws agape, at " + container.describe(verbose) +
+     ". They scarf down everything in seconds, gulping forcefully to drag your prey into your sloppy confines.";
+  else
+    return "Your $COUNT tails lunge, maws agape, at " + container.describe(verbose) +
+     ". They scarf down your prey, gulping forcefully and pulling them deep inside.";
 }
 
 function defaultCleavageStuff(container, macro, verbose) {

@@ -384,6 +384,18 @@ function distribution(min, max, samples) {
   return result;
 }
 
+function defaultMultiply(thing) {
+  return function(amount) {
+    thing.count *= amount;
+    for (var key in thing.contents) {
+      if (thing.contents.hasOwnProperty(key)) {
+        thing.contents[key].multiply(amount);
+      }
+    }
+  };
+
+}
+
 function defaultArea(thing) {
   return areas[thing.name];
 }
@@ -429,6 +441,7 @@ function listSum(sum) {
 
   return merge_things(result);
 }
+
 function defaultSum(thing) {
   return function() {
     var counts = {};
@@ -486,6 +499,7 @@ function DefaultEntity() {
   this.mass = defaultMass;
   this.sum_property = defaultSumProperty;
   this.merge = defaultMerge;
+  this.multiply = defaultMultiply;
 
   return this;
 }

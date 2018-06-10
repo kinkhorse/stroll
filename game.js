@@ -21,9 +21,11 @@ let strolling = false;
 
 let unit = "metric";
 
-let numbers = "full";
+let numbers = "words";
 
 let verbose = true;
+
+let autoVerbose = true;
 
 let biome = "city";
 
@@ -1052,7 +1054,7 @@ let macro =
     if (self.cumStorage.amount > self.cumStorage.limit)
       self.arouse(1 * (self.cumStorage.amount / self.cumStorage.limit - 1));
     setTimeout(function () { self.fillCum(self); }, 100);
-    update();
+    `update`();
   },
 
   "fillFemcum": function(self) {
@@ -2796,13 +2798,34 @@ function tail_vore(count)
 {
   let lines = [];
   let totalPrey = new Container();
-  for (let i=0; i<count; i++) {
+
+  if (count <= 3) {
+    for (let i=0; i<count; i++) {
+      let area = macro.tailStretchGirth;
+      let prey = getPrey(biome, area, macro.sameSizeVore);
+      totalPrey = totalPrey.merge(prey);
+      let line = describe("tail-vore", prey, macro, verbose);
+      lines.push(line);
+    }
+  } else {
     let area = macro.tailStretchGirth;
-    let prey = getPrey(biome, area, macro.sameSizeVore);
-    totalPrey = totalPrey.merge(prey);
-    let line = describe("tail-vore", prey, macro, verbose);
+
+    let i = 0;
+    for (i = 0; i < 10 && i < count; i++) {
+      let prey = getPrey(biome, area, macro.sameSizeVore);
+      for (var key in prey.contents) {
+        if (prey.contents.hasOwnProperty(key)) {
+          prey.contents[key].multiply(Math.ceil((count - i) / 10));
+        }
+      }
+      totalPrey = totalPrey.merge(prey);
+    }
+
+    console.log(i + ", " + area + ", " + area * i);
+    let line = describe("tails-vore", totalPrey, macro, verbose).replace("$COUNT", number(count, numbers));
     lines.push(line);
   }
+
 
   let linesummary = summarize(totalPrey.sum(), false);
 
@@ -3655,14 +3678,27 @@ function update(lines = [])
 {
   let log = document.getElementById("log");
 
+  let oldHeight = log.scrollHeight;
+
   lines.forEach(function (x) {
     let line = document.createElement('div');
     line.innerHTML = transformNumbers(x);
     log.appendChild(line);
   });
 
-  if (lines.length > 0)
+  if (lines.length > 0) {
     log.scrollTop = log.scrollHeight;
+
+    let deltaHeight = log.scrollHeight - oldHeight;
+
+    if (deltaHeight / window.innerHeight >= 0.2 && verbose && autoVerbose) {
+      update(["Switching to simple text!", newline]);
+      autoVerbose = false;
+      toggle_verbose();
+    }
+  }
+
+
 
   document.getElementById("height").innerHTML = "Height: " + transformNumbers(length(macro.height, unit));
   document.getElementById("mass").innerHTML = "Mass: " + transformNumbers(mass(macro.totalMass, unit));
