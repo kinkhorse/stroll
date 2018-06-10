@@ -1054,7 +1054,7 @@ let macro =
     if (self.cumStorage.amount > self.cumStorage.limit)
       self.arouse(1 * (self.cumStorage.amount / self.cumStorage.limit - 1));
     setTimeout(function () { self.fillCum(self); }, 100);
-    `update`();
+    update();
   },
 
   "fillFemcum": function(self) {
