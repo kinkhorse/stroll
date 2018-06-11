@@ -910,6 +910,47 @@ let macro =
     "stages": 3
   },
 
+  "cropEnabled": false,
+
+  "crop": {
+    "name" : "crop",
+    "setup": function(owner) {
+      this.owner = owner;
+      for (let i = 0; i < this.stages; i++)
+        this.contents.push(new Container());
+      owner.digest(owner, this, owner.cropTransferTime);
+    },
+    "feed": function(prey) {
+      this.feedFunc(prey,this,this.owner);
+    },
+    "feedFunc": function(prey,self,owner) {
+      this.contents[0] = this.contents[0].merge(prey);
+    },
+    "describeDigestion" : function(container) {
+      return describe("crop-transfer",container,this.owner,verbose);
+    },
+    "describeMove" : function(container) {
+      return describe("crop-transfer",container,this.owner,verbose);
+    },
+    "fill": function(owner,container) {
+
+    },
+    get description() {
+      let prey = new Container();
+      this.contents.forEach(function(x) {
+        prey = prey.merge(x);
+      });
+
+      if (prey.count == 0) {
+        return "Your crop don't contain any prey.";
+      } else {
+        return "Your crop bulges with " + prey.describe(false) + ".";
+      }
+    },
+    "contents" : [],
+    "stages": 3
+  },
+
   // holding spots
 
   hasPouch: true,
@@ -1013,6 +1054,7 @@ let macro =
     this.souls.setup(this);
     this.goo.setup(this);
     this.pawsVore.setup(this);
+    this.crop.setup(this);
     this.cumStorage.owner = this;
     this.femcumStorage.owner = this;
     this.milkStorage.owner = this;
@@ -1029,6 +1071,8 @@ let macro =
     if (this.tailVoreToStomach) {
       this.tail.moves = this.stomach;
     }
+
+    this.crop.moves = this.stomach;
 
     if (this.maleParts)
       this.fillCum(this);
@@ -1849,7 +1893,6 @@ function feed()
   let area = macro.handArea;
   let prey = getPrey(biome, area, macro.sameSizeVore);
 
-  let line = describe("eat", prey, macro, verbose);
   let linesummary = summarize(prey.sum(), false);
 
   let people = get_living_prey(prey.sum());
@@ -1858,9 +1901,16 @@ function feed()
 
   let sound = getSound("swallow",preyMass);
 
+  let line = "";
 
+  if (macro.cropEnabled) {
+    macro.crop.feed(prey);
+    line = describe("crop-swallow", prey, macro, verbose);
+  } else {
+    macro.stomach.feed(prey);
+    line = describe("eat", prey, macro, verbose);
+  }
 
-  macro.stomach.feed(prey);
 
   add_victim_people("eaten",prey);
 

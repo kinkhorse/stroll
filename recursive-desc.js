@@ -30,7 +30,7 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
 "sheath-toy","slit-toy","breast-toy","melt","solidify","flood","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
 "goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","goo-breasts-pull","goo-breasts-push",
-"goo-tail-pull","goo-tail-push","goo-paws-pull","goo-paws-push","paw-vore","paw-vore-toes","paws"];
+"goo-tail-pull","goo-tail-push","goo-paws-pull","goo-paws-push","paw-vore","paw-vore-toes","paws","crop-swallow","crop-transfer"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -975,6 +975,20 @@ function defaultPawVoreToes(container, macro, verbose) {
 
 function defaultPaws(container, macro, verbose) {
   return "Your " + macro.footOnlyDesc(true) + " fully absorb " + container.describe(false) + ".";
+}
+
+function defaultCropSwallow(container, macro, verbose) {
+  if (container.count == 0)
+    return "You reach down for a delicious treat and grab - oh, nothing.";
+  else
+    return "You scoop up " + container.describe(verbose) + " and swallow " + (container.count > 1 ? "them" : "it") + " whole, pulling your prey into your crop.";
+}
+
+function defaultCropTransfer(container, macro, verbose) {
+  if (container.count == 0)
+    return "You have nothing in your crop";
+  else
+    return "Your throat squeezes, forcing " + container.describe(verbose) + " out of your crop and in to your stomach.";
 }
 
 // EATING
