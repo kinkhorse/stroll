@@ -1887,6 +1887,11 @@ function digest_paws() {
   digest_all(macro.pawsVore);
 }
 
+function crop_swallow()
+{
+  digest_all(macro.crop);
+}
+
 
 function feed()
 {
@@ -4125,6 +4130,10 @@ function startGame(e) {
 
   if (macro.oralDigestTime == 0) {
     enable_button("digest_stomach");
+  }
+
+  if (macro.cropEnabled && macro.cropTransferTime == 0) {
+    enable_button("crop_swallow");
   }
 
   enable_panel("paws");
