@@ -4132,7 +4132,7 @@ function startGame(e) {
     enable_button("digest_stomach");
   }
 
-  if (macro.cropEnabled && macro.cropTransferTime == 0) {
+  if (macro.cropEnabled) {
     enable_button("crop_swallow");
   }
 
