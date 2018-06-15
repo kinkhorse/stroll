@@ -872,6 +872,11 @@ let macro =
     "stages": 3
   },
 
+  "breathEnabled": false,
+  "baseBreathArea": 10,
+  "breathStyle": "cone",
+  get breathArea() { return this.scaling(this.baseBreathArea, this.scale, 2); },
+
   "pawVoreEnabled": false,
 
   "pawsVore": {
@@ -3678,6 +3683,62 @@ function paw_vore()
   macro.arouse(5);
 }
 
+function breath(type, style) {
+  let area = macro.breathArea;
+  let prey = new Container();
+
+  if (style == "line") {
+    area *= 10;
+    prey = getOnePrey(biome, area, true);
+  } else if (style == "cone") {
+    prey = getPrey(biome, area, true);
+  }
+
+  let line = describe("breath-" + type, prey, macro, verbose);
+  let linesummary = summarize(prey.sum(), true);
+  let preyMass = prey.sum_property("mass");
+  let sound = getSound("breath", preyMass);
+
+  update([sound, line, linesummary, newline]);
+  add_victim_people("breath-" + type, prey);
+}
+
+function breath_fire() {
+  breath("fire", macro.breathStyle);
+}
+
+function breath_ice() {
+  breath("ice", macro.breathStyle);
+}
+
+function breath_electric() {
+  breath("electric", macro.breathStyle);
+}
+
+function breath_smoke() {
+  breath("smoke", macro.breathStyle);
+}
+
+function breath_radiation() {
+  breath("radiation", macro.breathStyle);
+}
+
+function breath_foul() {
+  breath("foul", macro.breathStyle);
+}
+
+function breath_line() {
+  macro.breathStyle = "line";
+
+  update(["You prepare to exhale a focused line of breath!",newline]);
+}
+
+function breath_cone() {
+  macro.breathStyle = "cone";
+
+  update(["You prepare to exhale a broad cone of breath!",newline]);
+}
+
 function cooldown_start(name) {
   let button = document.querySelector("#" + "button-action-" + name);
   let parent = button.parentElement;
@@ -4414,6 +4475,43 @@ function startGame(e) {
 
     if (macro.pawDigestTime == 0) {
       enable_button("digest_paws");
+    }
+  }
+
+  if (macro.breathEnabled) {
+    enable_panel("breath");
+
+    enable_button("breath_line");
+    enable_button("breath_cone");
+
+    if (macro.breathFire) {
+      enable_button("breath_fire");
+      enable_victim("breath-fire","Incinerated by fiery breath");
+    }
+
+    if (macro.breathIce) {
+      enable_button("breath_ice");
+      enable_victim("breath-ice","Frozen in icy breath");
+    }
+
+    if (macro.breathElectric) {
+      enable_button("breath_electric");
+      enable_victim("breath-electric","Fried by an electric gale");
+    }
+
+    if (macro.breathSmoke) {
+      enable_button("breath_smoke");
+      enable_victim("breath-smoke","Snuffed out by smoke");
+    }
+
+    if (macro.breathRadiation) {
+      enable_button("breath_radiation");
+      enable_victim("breath-radiation","Vaporized by radioactive power");
+    }
+
+    if (macro.breathFoul) {
+      enable_button("breath_foul");
+      enable_victim("breath-foul","Smothered in humid breath");
     }
   }
 

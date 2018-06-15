@@ -30,7 +30,8 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
 "sheath-toy","slit-toy","breast-toy","melt","solidify","flood","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
 "goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","goo-breasts-pull","goo-breasts-push",
-"goo-tail-pull","goo-tail-push","goo-paws-pull","goo-paws-push","paw-vore","paw-vore-toes","paws","crop-swallow","crop-transfer"];
+"goo-tail-pull","goo-tail-push","goo-paws-pull","goo-paws-push","paw-vore","paw-vore-toes","paws","crop-swallow","crop-transfer",
+"breath-fire","breath-ice","breath-electric","breath-smoke","breath-radiation","breath-foul"];
 
 for (let i=0; i<actions.length; i++) {
   rules[actions[i]] = [];
@@ -989,6 +990,109 @@ function defaultCropTransfer(container, macro, verbose) {
     return "You have nothing in your crop";
   else
     return "Your throat squeezes, forcing " + container.describe(verbose) + " out of your crop and in to your stomach.";
+}
+
+function nonFatalBreath(container, macro, verbose, type, verb) {
+  if (macro.breathStyle == "line") {
+    return "You exhale a narrow gout of " + type + ", " + verb + " " + container.describe(verbose) + ".";
+  } else if (macro.breathStyle == "cone") {
+    return "You exhale a broad cone of " + type + ", " + verb + " " + container.describe(verbose) + ".";
+  }
+}
+
+function defaultBreathFire(container, macro, verbose) {
+  if (isNonFatal(macro)) {
+    return nonFatalBreath(container, macro, verbose, "fire", "blasting");
+  }
+
+  if (isFatal(macro)) {
+      if (macro.breathStyle == "line") {
+        return "A withering spear of fire gouts from your maw, spearing through " + container.describe(verbose) + " and incinerating it in a torrid display of power.";
+      } else if (macro.breathStyle == "cone") {
+        return "You exhale a broad cone of powerful fire, burning " + container.describe(verbose) + " to a crisp in an inescapable tide of flames.";
+    }
+  }
+
+  return "FIRE" + container.describe(verbose);
+}
+function defaultBreathIce(container, macro, verbose) {
+  if (isNonFatal(macro)) {
+    return nonFatalBreath(container, macro, verbose, "cold", "freezing");
+  }
+
+  if (isFatal(macro)) {
+      if (macro.breathStyle == "line") {
+        return "You heave a lance of frigid cold from your gullet, freezing a " + container.describe(verbose) + " to the core.";
+      } else if (macro.breathStyle == "cone") {
+        return "A blizzard erupts from your maw, flash-freezing " + container.describe(verbose) + ". " + (container.count > 1 ? "They" : "It") + " shatters a heartbeat later, reduced to dust by your power.";
+    }
+  }
+
+  return "ICE" + container.describe(verbose);
+}
+
+function defaultBreathElectric(container, macro, verbose) {
+  if (isNonFatal(macro)) {
+    return nonFatalBreath(container, macro, verbose, "electricity", "shocking");
+  }
+
+  if (isFatal(macro)) {
+      if (macro.breathStyle == "line") {
+        return "A blinding lance of lightning blasts from your spread " + macro.jawDesc(true) + ", cooking a " + container.describe(verbose) + " from the inside out.";
+      } else if (macro.breathStyle == "cone") {
+        return "You exhale a brilliant, forking spray of lightning. The flickering bolts arc through " + container.describe(verbose) + ", cooking everything to a crisp.";
+    }
+  }
+
+  return "ELECTRIC" + container.describe(verbose);
+}
+
+function defaultBreathSmoke(container, macro, verbose) {
+  if (isNonFatal(macro)) {
+    return nonFatalBreath(container, macro, verbose, "smoke", "smothering");
+  }
+
+  if (isFatal(macro)) {
+      if (macro.breathStyle == "line") {
+        return "You part your " + macro.jawDesc(true) + " a touch and blow, casting a thin gout of smoke that envelops a " + container.describe(verbose) + ". Your prey is snuffed out like a candle.";
+      } else if (macro.breathStyle == "cone") {
+        return "You open wide and exhale. A rolling storm of smoke pours forth, smothering " + container.describe(verbose) + " in a pyroclastic flow.";
+    }
+  }
+
+  return "SMOKE" + container.describe(verbose);
+}
+
+function defaultBreathRadiation(container, macro, verbose) {
+  if (isNonFatal(macro)) {
+    return nonFatalBreath(container, macro, verbose, "radiation", "frying");
+  }
+
+  if (isFatal(macro)) {
+      if (macro.breathStyle == "line") {
+        return "Your depths pour out a narrow beam of crackling green energy, striking a " + container.describe(verbose) + " and frying it to a crisp, turning your prey to dust in the wind.";
+      } else if (macro.breathStyle == "cone") {
+        return "You part your " +  macro.jawDesc(true) + ", roaring as a massive tide of radiation spews forth. It rolls over " + container.describe(verbose) + ", evaporating " + (container.count > 1 ? "them" : "it") + " in seconds.";
+    }
+  }
+
+  return "RADIATION" + container.describe(verbose);
+}
+
+function defaultBreathFoul(container, macro, verbose) {
+  if (isNonFatal(macro)) {
+    return nonFatalBreath(container, macro, verbose, "foul air", "withering");
+  }
+
+  if (isFatal(macro)) {
+      if (macro.breathStyle == "line") {
+        return "You blow a narrow stream of breath, withering " + container.describe(verbose) + " in a focused torrent of foul, humid fumes.";
+      } else if (macro.breathStyle == "cone") {
+        return "You yawn wide and sigh, snuffing out " + container.describe(verbose) + " under a tide of hot, humid breath.";
+    }
+  }
+
+  return "FOUL" + container.describe(verbose);
 }
 
 // EATING

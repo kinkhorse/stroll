@@ -208,6 +208,7 @@
         <button class="action-part-button" id="action-part-waste">Waste</button>
         <button class="action-part-button" id="action-part-goo">Goo</button>
         <button class="action-part-button" id="action-part-misc">Misc</button>
+        <button class="action-part-button" id="action-part-breath">Breath</button>
         <button class="action-part-button" id="action-part-options">Options</button>
       </div>
 
@@ -320,6 +321,17 @@
         <button class="action-button" id="button-action-pouch_rub">Rub Pouch</button>
         <button class="action-button" id="button-action-pouch_eat">Eat From Pouch</button>
         <button class="action-button" id="button-action-pouch_absorb">Absorb Pouch</button>
+      </div>
+
+      <div class="action-tab" id="actions-breath">
+        <button class="action-button" id="button-action-breath_line">Line Shape</button>
+        <button class="action-button" id="button-action-breath_cone">Cone Shape</button>
+        <button class="action-button" id="button-action-breath_fire">Fire</button>
+        <button class="action-button" id="button-action-breath_ice">Ice</button>
+        <button class="action-button" id="button-action-breath_electric">Electric</button>
+        <button class="action-button" id="button-action-breath_smoke">Smoke</button>
+        <button class="action-button" id="button-action-breath_radiation">Radiation</button>
+        <button class="action-button" id="button-action-breath_foul">Foul</button>
       </div>
 
       <div class="action-tab" id="actions-options">
@@ -1072,6 +1084,37 @@
               <li>
                 <label for="pawDigestTime">Transfer time (0 for manual-only)</label>
                 <input autocomplete="off" type="number" step="any" id="cropTransferTime" name="cropTransferTime" placeholder="15">
+              </li>
+            </div>
+          </div>
+
+          <div class="custom-category">
+            <input autocomplete="off" class="custom-header-checkbox" type="checkbox" id="breathEnabled" name="breathEnabled" />
+            <label class="custom-header" for="breathEnabled">Breath</label>
+            <div class="reveal-if-active">
+              <li>
+                <input autocomplete="off" type="checkbox" name="breathFire" id="breathFire" />
+                <label for="breathFire">Fire</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="checkbox" name="breathIce" id="breathIce" />
+                <label for="breathIce">Ice</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="checkbox" name="breathElectric" id="breathElectric" />
+                <label for="breathElectric">Electric</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="checkbox" name="breathSmoke" id="breathSmoke" />
+                <label for="breathSmoke">Smoke</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="checkbox" name="breathRadiation" id="breathRadiation" />
+                <label for="breathRadiation">Radiation</label>
+              </li>
+              <li>
+                <input autocomplete="off" type="checkbox" name="breathFoul" id="breathFoul" />
+                <label for="breathFoul">Foul</label>
               </li>
             </div>
           </div>

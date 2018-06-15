@@ -14,7 +14,9 @@ let sounds = {
   "goo":
   ["Splat.", "Squish.", "Squish!", "SQLCH!", "SQLLLLRCH!", "SQQQQUEEEEELLCH!"],
   "vomit":
-  ["Hurk.", "Hurrk.", "Bleugh.", "Bleugh!", "Bleeeugh!", "BLEEEUGHK!"]
+  ["Hurk.", "Hurrk.", "Bleugh.", "Bleugh!", "Bleeeugh!", "BLEEEUGHK!"],
+  "breath":
+  ["Woosh.","Fwoosh.","FWOOSH.","FWOOSH!","FWOOOOOOSH!"]
 };
 
 function pickByMass(list, mass) {
