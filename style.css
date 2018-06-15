@@ -62,13 +62,25 @@ body.dark div {
 }
 
 #log-area {
+  padding-left: 1em;
   flex: 5;
   display:none;
+  flex-direction: column;
+}
+
+#look-around-log {
+  flex: none;
+  padding-bottom: 1em;
+  white-space: pre-wrap;
+}
+
+#log {
+  flex: 0 1 auto;
+  height: 600px;
+  overflow: auto;
 }
 
 body.light #log {
-  height: 900px;
-  overflow: auto;
   color: #000;
   background-color: #e7e7e7;
 }
@@ -78,8 +90,6 @@ body.light #log div {
 }
 
 body.dark #log {
-  height: 900px;
-  overflow: auto;
   color: #eee;
   background-color: #151515;
 }

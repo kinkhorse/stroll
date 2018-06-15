@@ -4181,7 +4181,7 @@ function startGame(e) {
   enable_victim("ass-crush","Sat on");
   enable_victim("humped","Humped");
 
-  document.getElementById("log-area").style.display = 'inline';
+  document.getElementById("log-area").style.display = 'flex';
   document.getElementById("character-build-area").style.display = 'none';
   document.getElementById("action-panel").style.display = 'flex';
 
@@ -4544,7 +4544,14 @@ function startGame(e) {
   document.getElementById("actions-body").style.display = 'flex';
   document.getElementById("stat-container").style.display = 'flex';
 
+  window.requestAnimationFrame(lookAroundUpdate);
+
   window.scroll(0,0);
+}
+
+function lookAroundUpdate() {
+  document.getElementById('look-around-log').textContent = macro.description.join('\n');
+  window.requestAnimationFrame(lookAroundUpdate);
 }
 
 function actionTab(e) {
