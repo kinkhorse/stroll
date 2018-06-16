@@ -62,21 +62,24 @@ body.dark div {
 }
 
 #log-area {
-  padding-left: 1em;
   flex: 5;
   display:none;
+  margin: 0.5em;
   flex-direction: column;
 }
 
 #look-around-log {
   flex: none;
-  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  background-color: #222;
   white-space: pre-wrap;
 }
 
 #log {
   flex: 0 1 auto;
   height: 600px;
+  padding: 1em;
   overflow: auto;
 }
 
