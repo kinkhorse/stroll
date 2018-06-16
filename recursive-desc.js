@@ -27,7 +27,7 @@ var actions = ["eat","chew","vomit","stomp","stomp-wedge","flex-toes","kick","an
 "female-orgasm","grind","pouch-stuff","pouch-rub","pouch-eat","pouch-absorb","soul-vore","soul-absorb-paw",
 "paw-stench","ass-stench","piss-stench","scat-stench","male-orgasm-musk","female-orgasm-musk","male-spurt-musk","female-spurt-musk",
 "belch","fart","stomach","tail","tail-to-stomach","womb","balls","bowels","bowels-to-stomach","breasts","bladder",
-"soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","bladder-vore","scat",
+"soul-digest","wear-shoe","remove-shoe","wear-sock","remove-sock","stuff-shoe","dump-shoe","stuff-sock","dump-sock","piss","piss-objects","bladder-vore","scat",
 "sheath-toy","slit-toy","breast-toy","melt","solidify","flood","stomp-goo","goo-digest","ass-goo","goo-stomach-pull","goo-stomach-push",
 "goo-bowels-pull","goo-bowels-push","goo-womb-pull","goo-womb-push","goo-balls-pull","goo-balls-push","goo-breasts-pull","goo-breasts-push",
 "goo-tail-pull","goo-tail-push","goo-paws-pull","goo-paws-push","paw-vore","paw-vore-toes","paws","crop-swallow","crop-transfer",
@@ -806,7 +806,7 @@ function defaultPiss(container, macro, verbose) {
     if (container.count == 0) {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeDick + " cock.";
     } else if (isSadistic(macro)) {
-      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from your " + macro.describeDick + " cock, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death."
+      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from your " + macro.describeDick + " cock, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death.";
     } else {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeDick + " cock, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
     }
@@ -814,7 +814,7 @@ function defaultPiss(container, macro, verbose) {
     if (container.count == 0) {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeVagina + " slit.";
     } else if (isSadistic(macro)) {
-      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from your " + macro.describeVagina + " slit, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death."
+      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from your " + macro.describeVagina + " slit, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death.";
     } else {
       return "You sigh with relief as $VOLUME of piss erupts from your " + macro.describeVagina + " slit, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
     }
@@ -822,11 +822,26 @@ function defaultPiss(container, macro, verbose) {
     if (container.count == 0) {
       return "You sigh with relief as $VOLUME of piss erupts from between your legs.";
     } else if (isSadistic(macro)) {
-      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from between your legs, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death."
+      return "You sigh with relief as $VOLUME of hot, rancid piss erupts from between your legs, inundating " + container.describe(verbose) + " in a disgusting tide of yellow death.";
     } else {
       return "You sigh with relief as $VOLUME of piss erupts from between your legs, spraying down " + container.describe(verbose) + " in a shower of golden, musky fluid.";
     }
   }
+}
+
+function defaultPissObjects(container, macro, verbose) {
+  if (container.count <= 0) return '';
+  // TODO: Brutality.
+  let line = `Your clenching bladder squeezes ${container.describe(false)} out into your urethra. `;
+  // These lines can somewhat redundant with pissing.
+  if (macro.maleParts) {
+    line += `They tumble from your ${macro.describeDick} cock.`;
+  } else if (macro.femaleParts) {
+    line += `They tumble from your ${macro.describeVagina} slit.`;
+  } else {
+    line += `They tumble from between your legs.`;
+  }
+  return line;
 }
 
 function defaultBladderVore(container, macro, verbose) {

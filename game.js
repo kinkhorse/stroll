@@ -738,9 +738,13 @@ let macro =
     "name" : "bladder",
     "setup": function(owner) {
       this.owner = owner;
+      this.resetContents();
+      owner.digest(owner, this, owner.bladderDigestTime);
+    },
+    "resetContents": function() {
+      this.contents = [];
       for (let i = 0; i < this.stages; i++)
         this.contents.push(new Container());
-      owner.digest(owner, this, owner.bladderDigestTime);
     },
     "feed": function(prey) {
       this.feedFunc(prey,this,this.owner);
@@ -756,19 +760,21 @@ let macro =
       owner.pissStorage.amount += amount;
       return amount;
     },
-    get description() {
+    get prey() {
       let prey = new Container();
       this.contents.forEach(function(x) {
         prey = prey.merge(x);
       });
-
-      if (prey.count == 0) {
+      return prey;
+    },
+    get description() {
+      if (this.prey.count == 0) {
         return "Your bladder has nobody in it.";
       } else {
         if (macro.brutality > 0)  {
-          return "Your bladder bulges, " + prey.describe(false) + " dissolving in your acrid piss.";
+          return "Your bladder bulges, " + this.prey.describe(false) + " dissolving in your acrid piss.";
         } else {
-          return "Your bladder bulges with " + prey.describe(false) + ".";
+          return "Your bladder bulges with " + this.prey.describe(false) + ".";
         }
       }
     },
@@ -1156,7 +1162,10 @@ let macro =
   "urethraStretchiness": 5,
 
   get urethraDiameter() {
-    return this.scaling(this.baseUrethraDiameter, this.scale, 1);
+    // dick, slit, null; same order as in bladder vore description.
+    const multiplier = this.maleParts ? this.dickScale :
+                          (this.femaleParts ? this.vaginaScale : 1);
+    return this.scaling(this.baseUrethraDiameter * multiplier, this.scale, 1);
   },
   get urethraStretchDiameter() {
     return this.urethraDiameter * this.urethraStretchiness;
@@ -1462,6 +1471,10 @@ let macro =
       line = "Your glistening " + this.describeVagina + " slit peeks out from between your legs.";
       result.push(line);
       result.push(macro.womb.description);
+    }
+
+    if (this.bladderVore) {
+      result.push(macro.bladder.description);
     }
 
     if (this.hasBreasts) {
@@ -3284,30 +3297,53 @@ function footwearUpdate() {
 }
 
 function piss(vol) {
+  // Combine multiple arouse calls to reduce the chance of an orgasm in the
+  // middle of pissing.
+  let pendingArousal = 0;
+
   if (vol == undefined) {
     vol = macro.pissStorage.amount;
   }
+  if (vol > 0) {
+    macro.pissStorage.amount -= vol;
 
-  macro.pissStorage.amount -= vol;
+    let area = Math.pow(vol, 2/3);
 
-  let area = Math.pow(vol, 2/3);
+    let prey = getPrey(biome, area);
+    let line = describe("piss", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
+    let linesummary = summarize(prey.sum(), true);
 
-  let prey = getPrey(biome, area);
-  let line = describe("piss", prey, macro, verbose).replace("$VOLUME",volume(vol,unit,false));
-  let linesummary = summarize(prey.sum(), true);
+    let people = get_living_prey(prey.sum());
 
-  let people = get_living_prey(prey.sum());
+    let preyMass = prey.sum_property("mass");
 
-  let preyMass = prey.sum_property("mass");
+    let sound = getSound("liquid",preyMass);
 
-  let sound = getSound("liquid",preyMass);
+    add_victim_people("piss",prey);
+    update([sound,line,linesummary,newline]);
 
-  add_victim_people("piss",prey);
-  update([sound,line,linesummary,newline]);
+    pendingArousal += 20;
+  }
 
-  macro.arouse(20);
+  const bladderObjects = macro.bladder.prey;
+  if (bladderObjects.count > 0) {
+    const emptyLine = describe("piss-objects", bladderObjects, macro, verbose);
+    const emptyLinesummary = summarize(bladderObjects.sum(), true);
+    macro.bladder.resetContents();
+
+    const objectsMass = bladderObjects.sum_property("mass");
+    const emptySound = getSound("liquid",objectsMass);
+
+    // No victim type because these were already counted as bladder vored.
+    update([emptySound,emptyLine,emptyLinesummary,newline]);
+
+    pendingArousal += 25;
+  }
+
+  macro.arouse(pendingArousal);
 
   if (macro.stenchEnabled && macro.basePissStenchArea > 0) {
+    // TODO: We can trigger orgasm before calling this.
     piss_stench(area * macro.basePissStenchArea);
   }
 }
